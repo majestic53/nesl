@@ -10,15 +10,11 @@ __NOTE__: This project is a currently a work-in-progress. Some features may not 
 
 ### Completed
 
-* Support for all official processor instructions.
-* Support for hardware peripherals (keyboard/controllers).
-* Support for common mapper types.
+`TBD`
 
 ### Work-in-progress
 
-* Support for unofficial processor instructions.
-* Support for less-common mapper types.
-* Support for audio playback.
+`TBD`
 
 ## Interface
 

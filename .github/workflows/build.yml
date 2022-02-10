@@ -22,7 +22,6 @@ jobs:
             - name: Build Debug
               run: |
                 make debug
-                make clean
               env:
                 CC: gcc
     Release:
@@ -40,6 +39,5 @@ jobs:
             - name: Build Release
               run: |
                 make release
-                make clean
               env:
                 CC: gcc

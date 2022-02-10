@@ -17,16 +17,15 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_INCLUDE=../include/
 DIR_BUILD=../build/
 DIR_SRC=./
 
 FILE_BIN=$(DIR_BUILD)nesl
 FILE_LIB=$(DIR_BUILD)libnesl.a
-FILE_SRC=$(shell find $(DIR_SRC) -name '*.c')
 FILE_OBJ=$(patsubst $(DIR_SRC)%.c, $(DIR_SRC)%.o, $(FILE_SRC))
+FILE_SRC=$(shell find $(DIR_SRC) -name '*.c')
 
-FLAG_LIB=-lnesl -lSDL2 -lSDL2main
+FLAG_LIB=-lSDL2 -lSDL2main
 
 .PHONY: all
 all: build
@@ -39,10 +38,11 @@ clean:
 	rm -rf $(FILE_OBJ)
 
 $(DIR_SRC)%.o: $(DIR_SRC)%.c
-	cc $(FLAGS) -I$(DIR_INCLUDE) -c -o $@ $<
+	cc $(FLAGS) -c -o $@ $<
 
 $(FILE_LIB): $(FILE_OBJ)
 	ar rcs $@ $(FILE_OBJ)
 
 $(FILE_BIN): $(FILE_LIB)
-	cc $(FLAGS) -L$(DIR_BUILD) $(FLAG_LIB) $(FILE_LIB) -o $@
+	cc $(FLAGS) $(FLAG_LIB) $(FILE_LIB) -o $@
+	rm -rf $(FILE_LIB)

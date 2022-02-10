@@ -23,7 +23,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <nesl.h>
+#include "../include/nesl.h"
 
 enum {
     FLAG_HELP = 0,
@@ -44,6 +44,17 @@ static const char *FLAG_DESCRIPTION[] = {
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+static int nesl_read_file(nesl_t *configuration, const char *path)
+{
+    int result;
+
+    /* TODO */
+    result = EXIT_SUCCESS;
+    /* --- */
+
+    return result;
+}
 
 static void nesl_show_version(FILE *stream, bool verbose)
 {
@@ -77,17 +88,6 @@ static void nesl_show_help(FILE *stream, bool verbose)
             fprintf(stream, "%s\t%s\n", FLAG[flag], FLAG_DESCRIPTION[flag]);
         }
     }
-}
-
-static int nesl_read_file(nesl_t *configuration, const char *path)
-{
-    int result;
-
-    /* TODO */
-    result = EXIT_SUCCESS;
-    /* --- */
-
-    return result;
 }
 
 int main(int argc, char *argv[])

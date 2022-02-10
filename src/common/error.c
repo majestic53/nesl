@@ -22,8 +22,8 @@
 #include "../../include/common.h"
 
 typedef struct {
-    char buffer[128];
     int error;
+    char buffer[128];
 } nesl_err_t;
 
 static nesl_err_t g_error = {};
