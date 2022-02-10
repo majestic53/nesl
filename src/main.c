@@ -36,7 +36,7 @@ static const char *FLAG[] = {
     "-v",
     };
 
-static const char *FLAG_DESCRIPTION[] = {
+static const char *DESCRIPTION[] = {
     "Show help information",
     "Show version information",
     };
@@ -85,7 +85,7 @@ static void nesl_show_help(FILE *stream, bool verbose)
         fprintf(stream, "\n");
 
         for(int flag = 0; flag < FLAG_MAX; ++flag) {
-            fprintf(stream, "%s\t%s\n", FLAG[flag], FLAG_DESCRIPTION[flag]);
+            fprintf(stream, "%s\t%s\n", FLAG[flag], DESCRIPTION[flag]);
         }
     }
 }

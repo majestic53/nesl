@@ -48,8 +48,7 @@ int nesl_error_set(int error, const char *file, const char *function, int line, 
         va_start(arguments, format);
         vsnprintf(g_error.buffer, sizeof(g_error.buffer), format, arguments);
         va_end(arguments);
-        snprintf(g_error.buffer + strlen(g_error.buffer), sizeof(g_error.buffer) - strlen(g_error.buffer),
-            " (%s:%s@%i)", function, file, line);
+        snprintf(g_error.buffer + strlen(g_error.buffer), sizeof(g_error.buffer) - strlen(g_error.buffer), " (%s:%s@%i)", function, file, line);
     }
 
     return g_error.error;

@@ -18,7 +18,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 DIR_BUILD=build/
-DIR_INCLUDE=include/
 DIR_SRC=src/
 
 FLAGS=-march=native\ -mtune=native\ -std=c99\ -Wall\ -Werror
