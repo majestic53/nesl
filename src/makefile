@@ -39,10 +39,10 @@ clean:
 	rm -rf $(FILE_OBJ)
 
 $(DIR_SRC)%.o: $(DIR_SRC)%.c
-	$(CC) $(FLAGS) -I$(DIR_INCLUDE) -c -o $@ $<
+	cc $(FLAGS) -I$(DIR_INCLUDE) -c -o $@ $<
 
 $(FILE_LIB): $(FILE_OBJ)
 	ar rcs $@ $(FILE_OBJ)
 
 $(FILE_BIN): $(FILE_LIB)
-	$(CC) $(FLAGS) -L$(DIR_BUILD) $(FLAG_LIB) $(FILE_LIB) -o $@
+	cc $(FLAGS) -L$(DIR_BUILD) $(FLAG_LIB) $(FILE_LIB) -o $@

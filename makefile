@@ -30,15 +30,15 @@ all: release
 
 .PHONY: debug
 debug: clean $(DIR_BUILD)
-	make -C $(DIR_SRC) build $(FLAGS_DEBUG)
+	@make -C $(DIR_SRC) build $(FLAGS_DEBUG)
 
 .PHONY: release
 release: clean $(DIR_BUILD)
-	make -C $(DIR_SRC) build $(FLAGS_RELEASE)
+	@make -C $(DIR_SRC) build $(FLAGS_RELEASE)
 
 .PHONY: clean
 clean:
-	make -C $(DIR_SRC) clean
+	@make -C $(DIR_SRC) clean
 	rm -rf $(DIR_BUILD)
 
 $(DIR_BUILD):
