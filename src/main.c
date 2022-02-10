@@ -27,7 +27,7 @@
 
 enum {
     FLAG_HELP = 0,
-    FLAG_VER,
+    FLAG_VERSION,
     FLAG_MAX,
 };
 
