@@ -19,17 +19,37 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../include/common.h"
+#include "../include/bus.h"
+#include "../include/service.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int nesl(const nesl_t *configuration)
+int nesl(const nesl_t *input)
 {
-    int result = EXIT_SUCCESS;
+    int result;
 
-    /* TODO */
+    if((result = nesl_bus_initialize(input->data, input->length)) != EXIT_SUCCESS) {
+        goto exit;
+    }
+
+    if((result = nesl_service_initialize(input->title, input->fullscreen, input->linear, input->scale)) != EXIT_SUCCESS) {
+        goto exit;
+    }
+
+    while(nesl_service_poll()) {
+
+        while(!nesl_bus_cycle());
+
+        if((result = nesl_service_show()) != EXIT_SUCCESS) {
+            goto exit;
+        }
+    }
+
+exit:
+    nesl_service_uninitialize();
+    nesl_bus_uninitialize();
 
     return result;
 }

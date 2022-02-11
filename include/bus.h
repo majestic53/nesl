@@ -19,36 +19,29 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef NESL_H_
-#define NESL_H_
+#ifndef NESL_BUS_H_
+#define NESL_BUS_H_
 
-typedef struct {
-    void *data;
-    int length;
-    char *title;
-    int fullscreen;
-    int linear;
-    int scale;
-} nesl_t;
-
-typedef struct {
-    int major;
-    int minor;
-    int patch;
-} nesl_version_t;
+#include "./common.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int nesl(const nesl_t *);
+bool nesl_bus_cycle(void);
 
-const char *nesl_error(void);
+int nesl_bus_initialize(const void *data, int length);
 
-const nesl_version_t *nesl_version(void);
+void nesl_bus_interrupt(int type);
+
+uint8_t nesl_bus_read(int type, uint16_t address);
+
+void nesl_bus_uninitialize(void);
+
+void nesl_bus_write(int type, uint16_t address, uint8_t data);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* NESL_H_ */
+#endif /* NESL_BUS_H_ */

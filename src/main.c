@@ -20,24 +20,35 @@
  */
 
 #include <getopt.h>
+#include <libgen.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/nesl.h"
 
 enum {
-    FLAG_HELP = 0,
-    FLAG_VERSION,
-    FLAG_MAX,
+    OPTION_FULLSCREEN = 0,
+    OPTION_HELP,
+    OPTION_LINEAR,
+    OPTION_SCALE,
+    OPTION_VERSION,
+    OPTION_MAX,
 };
 
-static const char *FLAG[] = {
+static const char *OPTION[] = {
+    "-f",
     "-h",
+    "-l",
+    "-s",
     "-v",
     };
 
 static const char *DESCRIPTION[] = {
+    "Set window fullscreen",
     "Show help information",
+    "Set linear scaling",
+    "Set window scaling",
     "Show version information",
     };
 
@@ -45,13 +56,47 @@ static const char *DESCRIPTION[] = {
 extern "C" {
 #endif /* __cplusplus */
 
-static int nesl_read_file(nesl_t *configuration, const char *path)
+static int nesl_read_file(nesl_t *input, char *base, char *path)
 {
-    int result;
+    FILE *file = NULL;
+    int result = EXIT_SUCCESS;
 
-    /* TODO */
-    result = EXIT_SUCCESS;
-    /* --- */
+    if(!(file = fopen(path, "rb"))) {
+        fprintf(stderr, "%s: File does not exist -- %s\n", base, path);
+        result = EXIT_FAILURE;
+        goto exit;
+    }
+
+    fseek(file, 0, SEEK_END);
+
+    if((input->length = ftell(file)) <= 0) {
+        fprintf(stderr, "%s: File is empty -- %s\n", base, path);
+        result = EXIT_FAILURE;
+        goto exit;
+    }
+
+    fseek(file, 0, SEEK_SET);
+
+    if(!(input->data = calloc(input->length, sizeof(uint8_t)))) {
+        fprintf(stderr, "%s: Failed to allocate buffer -- %.2f KB (%u bytes)\n", base, input->length / 1024.f, input->length);
+        result = EXIT_FAILURE;
+        goto exit;
+    }
+
+    if(fread(input->data, sizeof(uint8_t), input->length, file) != input->length) {
+        fprintf(stderr, "%s: Failed to read file -- %s\n", base, path);
+        result = EXIT_FAILURE;
+        goto exit;
+    }
+
+    input->title = basename(path);
+
+exit:
+
+    if(file) {
+        fclose(file);
+        file = NULL;
+    }
 
     return result;
 }
@@ -84,26 +129,35 @@ static void nesl_show_help(FILE *stream, bool verbose)
     if(verbose) {
         fprintf(stream, "\n");
 
-        for(int flag = 0; flag < FLAG_MAX; ++flag) {
-            fprintf(stream, "%s\t%s\n", FLAG[flag], DESCRIPTION[flag]);
+        for(int flag = 0; flag < OPTION_MAX; ++flag) {
+            fprintf(stream, "%s\t%s\n", OPTION[flag], DESCRIPTION[flag]);
         }
     }
 }
 
 int main(int argc, char *argv[])
 {
+    nesl_t input = {};
     char *path = NULL;
-    nesl_t configuration = {};
     int option, result = EXIT_SUCCESS;
 
     opterr = 1;
 
-    while((option = getopt(argc, argv, "hv")) != -1) {
+    while((option = getopt(argc, argv, "fhls:v")) != -1) {
 
         switch(option) {
+            case 'f':
+                input.fullscreen = true;
+                break;
             case 'h':
                 nesl_show_help(stdout, true);
                 goto exit;
+            case 'l':
+                input.linear = true;
+                break;
+            case 's':
+                input.scale = strtol(optarg, NULL, 10);
+                break;
             case 'v':
                 nesl_show_version(stdout, false);
                 goto exit;
@@ -119,20 +173,20 @@ int main(int argc, char *argv[])
         break;
     }
 
-    if((result = nesl_read_file(&configuration, path)) != EXIT_SUCCESS) {
+    if((result = nesl_read_file(&input, argv[0], path)) != EXIT_SUCCESS) {
         goto exit;
     }
 
-    if((result = nesl(&configuration)) != EXIT_SUCCESS) {
-        fprintf(stderr, "Error: %s\n", nesl_error());
+    if((result = nesl(&input)) != EXIT_SUCCESS) {
+        fprintf(stderr, "%s: Error -- %s\n", argv[0], nesl_error());
         goto exit;
     }
 
 exit:
 
-    if(configuration.data) {
-        free(configuration.data);
-        configuration.data = NULL;
+    if(input.data) {
+        free(input.data);
+        input.data = NULL;
     }
 
     return result;

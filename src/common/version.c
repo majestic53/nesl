@@ -21,7 +21,11 @@
 
 #include "../../include/common.h"
 
-static const nesl_version_t g_version = { .major = NESL_MAJOR, .minor = NESL_MINOR, .patch = NESL_PATCH };
+static const nesl_version_t g_version = {
+    .major = NESL_MAJOR,
+    .minor = NESL_MINOR,
+    .patch = NESL_PATCH
+    };
 
 #ifdef __cplusplus
 extern "C" {

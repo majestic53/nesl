@@ -16,23 +16,6 @@ __NOTE__: This project is a currently a work-in-progress. Some features may not 
 
 `TBD`
 
-## Interface
-
-Launch from the project build directory:
-
-```
-nesl [options] file
-```
-
-### Options
-
-The following options are available:
-
-|Option|Description             |
-|:-----|:-----------------------|
-|-h    |Show help information   |
-|-v    |Show version information|
-
 ## Latest release
 
 The latest release can be found here: `TBD`
@@ -79,6 +62,52 @@ cd nesl
 ```
 ```
 make
+```
+
+## Interface
+
+Launch from the project build directory:
+
+```
+nesl [options] file
+```
+
+### Options
+
+The following options are available:
+
+|Option|Description             |
+|:-----|:-----------------------|
+|-f    |Set window fullscreen   |
+|-h    |Show help information   |
+|-l    |Set linear scaling      |
+|-s    |Set window scaling      |
+|-v    |Show version information|
+
+#### Examples
+
+To launch with a file, run the following command:
+
+```
+nesl file
+```
+
+To launch with a file in fullscreen mode, run the following command:
+
+```
+nesl -f file
+```
+
+To launch with a file and nearest-scaling (1x-4x), run the following command:
+
+```
+nesl -s [1-4] file
+```
+
+To launch with a file and linearly-scaling (1x-4x), run the following command:
+
+```
+nesl -ls [1-4] file
 ```
 
 ## License

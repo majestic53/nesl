@@ -19,36 +19,31 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef NESL_H_
-#define NESL_H_
+#ifndef NESL_SERVICE_H_
+#define NESL_SERVICE_H_
 
-typedef struct {
-    void *data;
-    int length;
-    char *title;
-    int fullscreen;
-    int linear;
-    int scale;
-} nesl_t;
-
-typedef struct {
-    int major;
-    int minor;
-    int patch;
-} nesl_version_t;
+#include "./common.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int nesl(const nesl_t *);
+bool nesl_service_button(int controller, int button);
 
-const char *nesl_error(void);
+int nesl_service_initialize(const char *title, int fullscreen, int linear, int scale);
 
-const nesl_version_t *nesl_version(void);
+void nesl_service_pixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y);
+
+bool nesl_service_poll(void);
+
+void nesl_service_reset(void);
+
+int nesl_service_show(void);
+
+void nesl_service_uninitialize(void);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* NESL_H_ */
+#endif /* NESL_SERVICE_H_ */

@@ -24,7 +24,7 @@
 
 #include "./define.h"
 
-#define NESL_SET_ERROR(_FORMAT_, ...) \
+#define NESL_ERROR_SET(_FORMAT_, ...) \
     nesl_error_set(EXIT_FAILURE, __FILE__, __FUNCTION__, __LINE__, _FORMAT_, __VA_ARGS__)
 
 #ifdef __cplusplus
