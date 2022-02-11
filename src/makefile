@@ -45,4 +45,4 @@ $(FILE_LIB): $(FILES_OBJ)
 	ar rcs $@ $(FILES_OBJ)
 
 $(FILE_BIN): $(FILE_LIB)
-	cc $(FLAGS) $(FLAGS_LIB) $(FILE_LIB) -o $@
+	cc $(FLAGS) $(FILE_LIB) $(FLAGS_LIB) -o $@
