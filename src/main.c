@@ -56,7 +56,7 @@ static const char *DESCRIPTION[] = {
 extern "C" {
 #endif /* __cplusplus */
 
-static int nesl_read_file(nesl_t *input, char *base, char *path)
+static int read_file(nesl_t *input, char *base, char *path)
 {
     FILE *file = NULL;
     int result = NESL_SUCCESS;
@@ -101,7 +101,7 @@ exit:
     return result;
 }
 
-static void nesl_show_version(FILE *stream, bool verbose)
+static void show_version(FILE *stream, bool verbose)
 {
     const nesl_version_t *version = nesl_version();
 
@@ -116,11 +116,11 @@ static void nesl_show_version(FILE *stream, bool verbose)
     }
 }
 
-static void nesl_show_help(FILE *stream, bool verbose)
+static void show_help(FILE *stream, bool verbose)
 {
 
     if(verbose) {
-        nesl_show_version(stream, true);
+        show_version(stream, true);
         fprintf(stream, "\n");
     }
 
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
                 input.fullscreen = true;
                 break;
             case 'h':
-                nesl_show_help(stdout, true);
+                show_help(stdout, true);
                 goto exit;
             case 'l':
                 input.linear = true;
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
                 input.scale = strtol(optarg, NULL, 10);
                 break;
             case 'v':
-                nesl_show_version(stdout, false);
+                show_version(stdout, false);
                 goto exit;
             case '?':
             default:
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 
     for(option = optind; option < argc; ++option) {
 
-        if((result = nesl_read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
+        if((result = read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
             goto exit;
         }
 
