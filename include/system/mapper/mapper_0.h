@@ -19,18 +19,25 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef NESL_DEFINE_H_
-#define NESL_DEFINE_H_
+#ifndef NESL_MAPPER_0_H_
+#define NESL_MAPPER_0_H_
 
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "../mapper.h"
 
-#define NESL_MAJOR 0
-#define NESL_MINOR 1
-#define NESL_PATCH 1
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#endif /* NESL_DEFINE_H_ */
+int nesl_mapper_0_initialize(nesl_mapper_t *mapper);
+
+uint8_t nesl_mapper_0_ram_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+void nesl_mapper_0_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+
+uint8_t nesl_mapper_0_rom_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* NESL_MAPPER_0_H_ */

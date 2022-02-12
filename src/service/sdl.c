@@ -54,7 +54,7 @@ static uint32_t KEY[NESL_CONTROLLER_MAX][NESL_BUTTON_MAX] = {
         SDL_SCANCODE_UNKNOWN,
         SDL_SCANCODE_UNKNOWN,
         SDL_SCANCODE_UNKNOWN,
-    }
+    },
 };
 
 typedef union {

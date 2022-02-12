@@ -19,14 +19,14 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../include/bus.h"
+#include "../include/system/mapper.h"
 #include "../include/service.h"
 
 typedef struct {
     uint64_t cycle;
-    /*nesl_input_t input;
+    /*nesl_input_t input;*/
     nesl_mapper_t mapper;
-    nesl_processor_t processor;
+    /*nesl_processor_t processor;
     nesl_video_t video;*/
 } nesl_bus_t;
 
@@ -77,11 +77,11 @@ int nesl_bus_initialize(const void *data, int length)
 {
     int result;
 
-    /*if((result = nesl_mapper_initialize(&g_bus.mapper, data, length)) == NESL_FAILURE) {
+    if((result = nesl_mapper_initialize(&g_bus.mapper, data, length)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = nesl_input_initialize(&g_bus.input)) == NESL_FAILURE) {
+    /*if((result = nesl_input_initialize(&g_bus.input)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -107,7 +107,6 @@ int nesl_bus_interrupt(int type)
 
     switch(type) {
         case NESL_INTERRUPT_MASKABLE:
-            /* Fall-through */
         case NESL_INTERRUPT_NON_MASKABLE:
 
             /*if((result = nesl_processor_interrupt(&g_bus.processor, type == NESL_INTERRUPT_MASKABLE)) == NESL_FAILURE) {
@@ -124,9 +123,9 @@ int nesl_bus_interrupt(int type)
             break;
         case NESL_INTERRUPT_MAPPER:
 
-            /*if((result = nesl_mapper_interrupt(&g_bus.mapper)) == NESL_FAILURE) {
+            if((result = nesl_mapper_interrupt(&g_bus.mapper)) == NESL_FAILURE) {
                 goto exit;
-            }*/
+            }
 
             break;
         default:
@@ -155,10 +154,10 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                     //result = nesl_input_read(&g_bus.input, address);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    //result = nesl_mapper_read(&g_bus.mapper, NESL_RAM_PROGRAM, address);
+                    result = nesl_mapper_read(&g_bus.mapper, NESL_RAM_PROGRAM, address);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    //result = nesl_mapper_read(&g_bus.mapper, NESL_ROM_PROGRAM, address);
+                    result = nesl_mapper_read(&g_bus.mapper, NESL_ROM_PROGRAM, address);
                     break;
                 default:
                     break;
@@ -168,7 +167,7 @@ uint8_t nesl_bus_read(int type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    //result = nesl_mapper_read(&g_bus.mapper, NESL_ROM_CHARACTER, address);
+                    result = nesl_mapper_read(&g_bus.mapper, NESL_ROM_CHARACTER, address);
                     break;
                 case 0x2000 ... 0x3FFF:
                     //result = nesl_video_read(&g_bus.video, address);
@@ -198,8 +197,8 @@ void nesl_bus_uninitialize(void)
 {
     /*nesl_video_uninitialize(&g_bus.video);
     nesl_processor_uninitialize(&g_bus.processor);
-    nesl_input_uninitialize(&g_bus.input);
-    nesl_mapper_uninitialize(&g_bus.mapper);*/
+    nesl_input_uninitialize(&g_bus.input);*/
+    nesl_mapper_uninitialize(&g_bus.mapper);
     memset(&g_bus, 0, sizeof(g_bus));
 }
 
@@ -211,7 +210,6 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    /* Fall-through */
                 case 0x4014:
                     //nesl_processor_write(&g_bus.processor, address, data);
                     break;
@@ -222,10 +220,10 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                     //nesl_input_write(&g_bus.input, address, data);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    //nesl_mapper_write(&g_bus.mapper, NESL_RAM_PROGRAM, address, data);
+                    nesl_mapper_write(&g_bus.mapper, NESL_RAM_PROGRAM, address, data);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    //nesl_mapper_write(&g_bus.mapper, NESL_ROM_PROGRAM, address, data);
+                    nesl_mapper_write(&g_bus.mapper, NESL_ROM_PROGRAM, address, data);
                     break;
                 default:
                     break;
@@ -235,7 +233,7 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    //nesl_mapper_write(&g_bus.mapper, NESL_ROM_CHARACTER, address, data);
+                    nesl_mapper_write(&g_bus.mapper, NESL_ROM_CHARACTER, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
                     //nesl_video_write(&g_bus.video, address, data);

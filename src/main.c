@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
     }
 
     if((result = nesl(&input)) == NESL_FAILURE) {
-        fprintf(stderr, "%s: Error -- %s\n", argv[0], nesl_error());
+        fprintf(stderr, "%s: %s\n", argv[0], nesl_error());
         goto exit;
     }
 

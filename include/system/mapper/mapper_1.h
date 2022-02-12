@@ -19,23 +19,71 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../../include/common.h"
+#ifndef NESL_MAPPER_1_H_
+#define NESL_MAPPER_1_H_
 
-static const nesl_version_t g_version = {
-    .major = NESL_MAJOR,
-    .minor = NESL_MINOR,
-    .patch = NESL_PATCH,
+#include "../mapper.h"
+
+typedef union {
+
+    struct {
+        uint8_t bank : 5;
     };
+
+    uint8_t raw;
+} nesl_mapper_1_character_t;
+
+typedef union {
+
+    struct {
+        uint8_t mirror : 2;
+        uint8_t program : 2;
+        uint8_t character : 1;
+    };
+
+    uint8_t raw;
+} nesl_mapper_1_control_t;
+
+typedef union {
+
+    struct {
+        uint8_t bank : 4;
+        uint8_t ram_disable : 1;
+    };
+
+    uint8_t raw;
+} nesl_mapper_1_program_t;
+
+typedef struct {
+
+    struct {
+        uint8_t data;
+        uint8_t position;
+    } shift;
+
+    nesl_mapper_1_control_t control;
+    nesl_mapper_1_character_t character[2];
+    nesl_mapper_1_program_t program;
+} nesl_mapper_1_context_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-const nesl_version_t *nesl_version(void)
-{
-    return &g_version;
-}
+int nesl_mapper_1_initialize(nesl_mapper_t *mapper);
+
+uint8_t nesl_mapper_1_ram_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+void nesl_mapper_1_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+
+uint8_t nesl_mapper_1_rom_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+void nesl_mapper_1_rom_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+
+void nesl_mapper_1_uninitialize(nesl_mapper_t *mapper);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* NESL_MAPPER_1_H_ */

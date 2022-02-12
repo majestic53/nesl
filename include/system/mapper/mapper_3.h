@@ -19,18 +19,42 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef NESL_DEFINE_H_
-#define NESL_DEFINE_H_
+#ifndef NESL_MAPPER_3_H_
+#define NESL_MAPPER_3_H_
 
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "../mapper.h"
 
-#define NESL_MAJOR 0
-#define NESL_MINOR 1
-#define NESL_PATCH 1
+typedef union {
 
-#endif /* NESL_DEFINE_H_ */
+    struct {
+        uint8_t bank : 2;
+    };
+
+    uint8_t raw;
+} nesl_mapper_3_character_t;
+
+typedef struct {
+    nesl_mapper_3_character_t character;
+} nesl_mapper_3_context_t;
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+int nesl_mapper_3_initialize(nesl_mapper_t *mapper);
+
+uint8_t nesl_mapper_3_ram_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+void nesl_mapper_3_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+
+uint8_t nesl_mapper_3_rom_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+void nesl_mapper_3_rom_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+
+void nesl_mapper_3_uninitialize(nesl_mapper_t *mapper);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* NESL_MAPPER_3_H_ */
