@@ -107,6 +107,43 @@ To launch using linear-scaling (1x-4x), run the following command:
 nesl -ls [1-4] file
 ```
 
+### Keybindings
+
+The following buttons are mapped to each controller:
+
+#### Controller 1
+
+|Button |Keyboard|
+|:------|:-------|
+|A      |L       |
+|B      |K       |
+|Select |C       |
+|Start  |Space   |
+|Up     |W       |
+|Down   |S       |
+|Left   |A       |
+|Right  |D       |
+
+#### Controller 2
+
+|Button |Keyboard|
+|:------|:-------|
+|A      |N/A     |
+|B      |N/A     |
+|Select |N/A     |
+|Start  |N/A     |
+|Up     |N/A     |
+|Down   |N/A     |
+|Left   |N/A     |
+|Right  |N/A     |
+
+#### Console
+
+|Button    |Keyboard|
+|:---------|:-------|
+|Fullscreen|F11     |
+|Reset     |R       |
+
 ## License
 
 Copyright (C) 2022 David Jolly
