@@ -20,6 +20,7 @@
  */
 
 #include <SDL2/SDL.h>
+#include "../../include/bus.h"
 #include "../../include/service.h"
 
 static uint32_t PALETTE[] = {
@@ -97,10 +98,10 @@ static int nesl_service_clear(void)
 
 static int nesl_service_fullscreen(void)
 {
-    int result = EXIT_SUCCESS;
+    int result = NESL_SUCCESS;
 
     if(SDL_SetWindowFullscreen(g_service.window, !g_service.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0)) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
@@ -117,15 +118,7 @@ bool nesl_service_button(int controller, int button)
 
 int nesl_service_initialize(const char *title, int fullscreen, int linear, int scale)
 {
-    char buffer[64] = {};
-    int result = EXIT_SUCCESS;
-
-    if(SDL_Init(SDL_INIT_VIDEO)) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
-        goto exit;
-    }
-
-    snprintf(buffer, sizeof(buffer), "%s -- NESL", title);
+    int result = NESL_SUCCESS;
 
     if(scale < 1) {
         scale = 1;
@@ -133,46 +126,56 @@ int nesl_service_initialize(const char *title, int fullscreen, int linear, int s
         scale = 4;
     }
 
-    if(!(g_service.window = SDL_CreateWindow(buffer, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256 * scale, 240 * scale, SDL_WINDOW_RESIZABLE))) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+    if(SDL_Init(SDL_INIT_VIDEO)) {
+        result = NESL_ERROR_SET("%s", SDL_GetError());
+        goto exit;
+    }
+
+    if(!(g_service.window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256 * scale, 240 * scale, SDL_WINDOW_RESIZABLE))) {
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(!(g_service.renderer = SDL_CreateRenderer(g_service.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(SDL_RenderSetLogicalSize(g_service.renderer, 256, 240)) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(SDL_SetRenderDrawColor(g_service.renderer, 0, 0, 0, 0)) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1") == SDL_FALSE) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, linear ? "1" : "0") == SDL_FALSE) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(!(g_service.texture = SDL_CreateTexture(g_service.renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 256, 240))) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(fullscreen) {
-        nesl_service_fullscreen();
+
+        if((result = nesl_service_fullscreen()) == NESL_FAILURE) {
+            goto exit;
+        }
     }
 
-    nesl_service_reset();
+    if((result = nesl_service_reset()) == NESL_FAILURE) {
+        goto exit;
+    }
 
 exit:
     return result;
@@ -195,10 +198,10 @@ void nesl_service_pixel(uint8_t color, bool red, bool green, bool blue, uint8_t 
     }
 }
 
-bool nesl_service_poll(void)
+int nesl_service_poll(void)
 {
     SDL_Event event;
-    bool result = true;
+    int result = NESL_SUCCESS;
 
     while(SDL_PollEvent(&event)) {
 
@@ -209,7 +212,16 @@ bool nesl_service_poll(void)
 
                     switch(event.key.keysym.scancode) {
                         case SDL_SCANCODE_F11:
-                            nesl_service_fullscreen();
+
+                            if((result = nesl_service_fullscreen()) == NESL_FAILURE) {
+                                goto exit;
+                            }
+                            break;
+                        case SDL_SCANCODE_R:
+
+                            if((result = nesl_bus_interrupt(NESL_INTERRUPT_RESET)) == NESL_FAILURE) {
+                                goto exit;
+                            }
                             break;
                         default:
                             break;
@@ -217,39 +229,41 @@ bool nesl_service_poll(void)
                 }
                 break;
             case SDL_QUIT:
-                result = false;
-                break;
+                result = NESL_QUIT;
+                goto exit;
             default:
                 break;
         }
     }
 
+exit:
     return result;
 }
 
-void nesl_service_reset(void)
+int nesl_service_reset(void)
 {
     g_service.tick = 0;
-    nesl_service_clear();
+
+    return nesl_service_clear();
 }
 
 int nesl_service_show(void)
 {
     uint32_t elapsed;
-    int result = EXIT_SUCCESS;
+    int result = NESL_SUCCESS;
 
     if(SDL_UpdateTexture(g_service.texture, NULL, (uint32_t *)g_service.pixel, 256 * sizeof(uint32_t))) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(SDL_RenderClear(g_service.renderer)) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
     if(SDL_RenderCopy(g_service.renderer, g_service.texture, NULL, NULL)) {
-        result = NESL_ERROR_SET("SDL -- %s", SDL_GetError());
+        result = NESL_ERROR_SET("%s", SDL_GetError());
         goto exit;
     }
 
@@ -258,7 +272,6 @@ int nesl_service_show(void)
     }
 
     SDL_RenderPresent(g_service.renderer);
-
     g_service.tick = SDL_GetTicks();
 
 exit:

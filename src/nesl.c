@@ -30,26 +30,26 @@ int nesl(const nesl_t *input)
 {
     int result;
 
-    if((result = nesl_bus_initialize(input->data, input->length)) != EXIT_SUCCESS) {
+    if((result = nesl_service_initialize(input->title, input->fullscreen, input->linear, input->scale)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = nesl_service_initialize(input->title, input->fullscreen, input->linear, input->scale)) != EXIT_SUCCESS) {
+    if((result = nesl_bus_initialize(input->data, input->length)) == NESL_FAILURE) {
         goto exit;
     }
 
-    while(nesl_service_poll()) {
+    while((result = nesl_service_poll()) == NESL_SUCCESS) {
 
         while(!nesl_bus_cycle());
 
-        if((result = nesl_service_show()) != EXIT_SUCCESS) {
+        if((result = nesl_service_show()) == NESL_FAILURE) {
             goto exit;
         }
     }
 
 exit:
-    nesl_service_uninitialize();
     nesl_bus_uninitialize();
+    nesl_service_uninitialize();
 
     return result;
 }

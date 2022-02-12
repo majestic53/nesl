@@ -59,11 +59,11 @@ extern "C" {
 static int nesl_read_file(nesl_t *input, char *base, char *path)
 {
     FILE *file = NULL;
-    int result = EXIT_SUCCESS;
+    int result = NESL_SUCCESS;
 
     if(!(file = fopen(path, "rb"))) {
         fprintf(stderr, "%s: File does not exist -- %s\n", base, path);
-        result = EXIT_FAILURE;
+        result = NESL_FAILURE;
         goto exit;
     }
 
@@ -71,7 +71,7 @@ static int nesl_read_file(nesl_t *input, char *base, char *path)
 
     if((input->length = ftell(file)) <= 0) {
         fprintf(stderr, "%s: File is empty -- %s\n", base, path);
-        result = EXIT_FAILURE;
+        result = NESL_FAILURE;
         goto exit;
     }
 
@@ -79,13 +79,13 @@ static int nesl_read_file(nesl_t *input, char *base, char *path)
 
     if(!(input->data = calloc(input->length, sizeof(uint8_t)))) {
         fprintf(stderr, "%s: Failed to allocate buffer -- %.2f KB (%u bytes)\n", base, input->length / 1024.f, input->length);
-        result = EXIT_FAILURE;
+        result = NESL_FAILURE;
         goto exit;
     }
 
     if(fread(input->data, sizeof(uint8_t), input->length, file) != input->length) {
         fprintf(stderr, "%s: Failed to read file -- %s\n", base, path);
-        result = EXIT_FAILURE;
+        result = NESL_FAILURE;
         goto exit;
     }
 
@@ -138,8 +138,7 @@ static void nesl_show_help(FILE *stream, bool verbose)
 int main(int argc, char *argv[])
 {
     nesl_t input = {};
-    char *path = NULL;
-    int option, result = EXIT_SUCCESS;
+    int option, result = NESL_SUCCESS;
 
     opterr = 1;
 
@@ -163,21 +162,21 @@ int main(int argc, char *argv[])
                 goto exit;
             case '?':
             default:
-                result = EXIT_FAILURE;
+                result = NESL_FAILURE;
                 goto exit;
         }
     }
 
     for(option = optind; option < argc; ++option) {
-        path = argv[option];
+
+        if((result = nesl_read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
+            goto exit;
+        }
+
         break;
     }
 
-    if((result = nesl_read_file(&input, argv[0], path)) != EXIT_SUCCESS) {
-        goto exit;
-    }
-
-    if((result = nesl(&input)) != EXIT_SUCCESS) {
+    if((result = nesl(&input)) == NESL_FAILURE) {
         fprintf(stderr, "%s: Error -- %s\n", argv[0], nesl_error());
         goto exit;
     }

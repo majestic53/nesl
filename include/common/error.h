@@ -25,13 +25,13 @@
 #include "./define.h"
 
 #define NESL_ERROR_SET(_FORMAT_, ...) \
-    nesl_error_set(EXIT_FAILURE, __FILE__, __FUNCTION__, __LINE__, _FORMAT_, __VA_ARGS__)
+    nesl_error_set(__FILE__, __FUNCTION__, __LINE__, _FORMAT_, __VA_ARGS__)
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int nesl_error_set(int error, const char *file, const char *function, int line, const char *format, ...);
+int nesl_error_set(const char *file, const char *function, int line, const char *format, ...);
 
 #ifdef __cplusplus
 }

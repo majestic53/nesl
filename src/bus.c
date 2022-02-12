@@ -20,6 +20,7 @@
  */
 
 #include "../include/bus.h"
+#include "../include/service.h"
 
 typedef struct {
     uint64_t cycle;
@@ -35,13 +36,30 @@ static nesl_bus_t g_bus = {};
 extern "C" {
 #endif /* __cplusplus */
 
-static void nesl_bus_reset(void)
+static int nesl_bus_reset(void)
 {
-    /*nesl_input_reset(&g_bus.input);
-    nesl_processor_reset(&g_bus.processor);
-    nesl_video_reset(&g_bus.video, &g_bus.mapper.mirror);
-    nesl_service_reset();*/
+    int result;
+
+    /*if((result = nesl_input_reset(&g_bus.input)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    if((result = nesl_processor_reset(&g_bus.processor)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    if((result = nesl_video_reset(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
+        goto exit;
+    }*/
+
+    if((result = nesl_service_reset()) == NESL_FAILURE) {
+        goto exit;
+    }
+
     g_bus.cycle = 0;
+
+exit:
+    return result;
 }
 
 bool nesl_bus_cycle(void)
@@ -57,48 +75,63 @@ bool nesl_bus_cycle(void)
 
 int nesl_bus_initialize(const void *data, int length)
 {
-    int result = EXIT_SUCCESS;
+    int result;
 
-    /*if((result = nesl_mapper_initialize(&g_bus.mapper, data, length)) != EXIT_SUCCESS) {
+    /*if((result = nesl_mapper_initialize(&g_bus.mapper, data, length)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = nesl_input_initialize(&g_bus.input)) != EXIT_SUCCESS) {
+    if((result = nesl_input_initialize(&g_bus.input)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = nesl_processor_initialize(&g_bus.processor)) != EXIT_SUCCESS) {
+    if((result = nesl_processor_initialize(&g_bus.processor)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = nesl_video_initialize(&g_bus.video, &g_bus.mapper.mirror)) != EXIT_SUCCESS) {
+    if((result = nesl_video_initialize(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
         goto exit;
     }*/
 
-    nesl_bus_reset();
+    if((result = nesl_bus_reset()) == NESL_FAILURE) {
+        goto exit;
+    }
 
-//exit:
+exit:
     return result;
 }
 
-void nesl_bus_interrupt(int type)
+int nesl_bus_interrupt(int type)
 {
+    int result = NESL_FAILURE;
 
     switch(type) {
         case NESL_INTERRUPT_MASKABLE:
             /* Fall-through */
         case NESL_INTERRUPT_NON_MASKABLE:
-            //nesl_processor_interrupt(&g_bus.processor, type == NESL_INTERRUPT_MASKABLE);
+
+            /*if((result = nesl_processor_interrupt(&g_bus.processor, type == NESL_INTERRUPT_MASKABLE)) == NESL_FAILURE) {
+                goto exit;
+            }*/
             break;
         case NESL_INTERRUPT_RESET:
-            nesl_bus_reset();
+
+            if((result = nesl_bus_reset()) == NESL_FAILURE) {
+                goto exit;
+            }
             break;
         case NESL_INTERRUPT_MAPPER:
-            //nesl_mapper_interrupt(&g_bus.mapper);
+
+            /*if((result = nesl_mapper_interrupt(&g_bus.mapper)) == NESL_FAILURE) {
+                goto exit;
+            }*/
             break;
         default:
             break;
     }
+
+exit:
+    return result;
 }
 
 uint8_t nesl_bus_read(int type, uint16_t address)

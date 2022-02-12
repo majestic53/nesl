@@ -22,7 +22,7 @@
 #include "../../include/common.h"
 
 typedef struct {
-    char buffer[64];
+    char buffer[256];
 } nesl_err_t;
 
 static nesl_err_t g_error = {};
@@ -36,20 +36,16 @@ const char *nesl_error(void)
     return g_error.buffer;
 }
 
-int nesl_error_set(int error, const char *file, const char *function, int line, const char *format, ...)
+int nesl_error_set(const char *file, const char *function, int line, const char *format, ...)
 {
-    memset(&g_error, 0, sizeof(g_error));
+    va_list arguments;
 
-    if(error != EXIT_SUCCESS) {
-        va_list arguments;
+    va_start(arguments, format);
+    vsnprintf(g_error.buffer, sizeof(g_error.buffer), format, arguments);
+    snprintf(g_error.buffer + strlen(g_error.buffer), sizeof(g_error.buffer) - strlen(g_error.buffer), " (%s:%s@%i)", function, file, line);
+    va_end(arguments);
 
-        va_start(arguments, format);
-        vsnprintf(g_error.buffer, sizeof(g_error.buffer), format, arguments);
-        va_end(arguments);
-        snprintf(g_error.buffer + strlen(g_error.buffer), sizeof(g_error.buffer) - strlen(g_error.buffer), " (%s:%s@%i)", function, file, line);
-    }
-
-    return error;
+    return NESL_FAILURE;
 }
 
 #ifdef __cplusplus

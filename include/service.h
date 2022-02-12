@@ -24,6 +24,24 @@
 
 #include "./common.h"
 
+enum {
+    NESL_BUTTON_A = 0,
+    NESL_BUTTON_B,
+    NESL_BUTTON_SELECT,
+    NESL_BUTTON_START,
+    NESL_BUTTON_UP,
+    NESL_BUTTON_DOWN,
+    NESL_BUTTON_LEFT,
+    NESL_BUTTON_RIGHT,
+    NESL_BUTTON_MAX,
+};
+
+enum {
+    NESL_CONTROLLER_1 = 0,
+    NESL_CONTROLLER_2,
+    NESL_CONTROLLER_MAX,
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -34,9 +52,9 @@ int nesl_service_initialize(const char *title, int fullscreen, int linear, int s
 
 void nesl_service_pixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y);
 
-bool nesl_service_poll(void);
+int nesl_service_poll(void);
 
-void nesl_service_reset(void);
+int nesl_service_reset(void);
 
 int nesl_service_show(void);
 

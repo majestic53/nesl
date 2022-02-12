@@ -22,6 +22,12 @@
 #ifndef NESL_H_
 #define NESL_H_
 
+enum {
+    NESL_FAILURE = -1,
+    NESL_SUCCESS,
+    NESL_QUIT,
+};
+
 typedef struct {
     void *data;
     int length;

@@ -24,6 +24,19 @@
 
 #include "./common.h"
 
+enum {
+    NESL_BUS_PROCESSOR = 0,
+    NESL_BUS_VIDEO,
+    NESL_BUS_VIDEO_OAM,
+};
+
+enum {
+    NESL_INTERRUPT_RESET = 0,
+    NESL_INTERRUPT_NON_MASKABLE,
+    NESL_INTERRUPT_MASKABLE,
+    NESL_INTERRUPT_MAPPER,
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -32,7 +45,7 @@ bool nesl_bus_cycle(void);
 
 int nesl_bus_initialize(const void *data, int length);
 
-void nesl_bus_interrupt(int type);
+int nesl_bus_interrupt(int type);
 
 uint8_t nesl_bus_read(int type, uint16_t address);
 
