@@ -163,6 +163,7 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                 default:
                     break;
             }
+
             break;
         case NESL_BUS_VIDEO:
 
@@ -176,6 +177,7 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                 default:
                     break;
             }
+
             break;
         case NESL_BUS_VIDEO_OAM:
 
@@ -186,6 +188,7 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                 default:
                     break;
             }
+
             break;
         default:
             break;
@@ -229,6 +232,7 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                 default:
                     break;
             }
+
             break;
         case NESL_BUS_VIDEO:
 
@@ -242,6 +246,7 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                 default:
                     break;
             }
+
             break;
         case NESL_BUS_VIDEO_OAM:
 
@@ -252,6 +257,7 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                 default:
                     break;
             }
+
             break;
         default:
             break;

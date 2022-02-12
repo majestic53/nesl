@@ -61,6 +61,7 @@ uint8_t nesl_mapper_66_ram_read(nesl_mapper_t *mapper, int type, uint16_t addres
                 default:
                     break;
             }
+
             break;
         default:
             break;
@@ -82,6 +83,7 @@ void nesl_mapper_66_ram_write(nesl_mapper_t *mapper, int type, uint16_t address,
                 default:
                     break;
             }
+
             break;
         default:
             break;
@@ -102,6 +104,7 @@ uint8_t nesl_mapper_66_rom_read(nesl_mapper_t *mapper, int type, uint16_t addres
                 default:
                     break;
             }
+
             break;
         case NESL_ROM_PROGRAM:
 
@@ -112,6 +115,7 @@ uint8_t nesl_mapper_66_rom_read(nesl_mapper_t *mapper, int type, uint16_t addres
                 default:
                     break;
             }
+
             break;
         default:
             break;
@@ -133,6 +137,7 @@ void nesl_mapper_66_rom_write(nesl_mapper_t *mapper, int type, uint16_t address,
                 default:
                     break;
             }
+
             break;
         case NESL_ROM_PROGRAM:
 
@@ -144,6 +149,7 @@ void nesl_mapper_66_rom_write(nesl_mapper_t *mapper, int type, uint16_t address,
                 default:
                     break;
             }
+
             break;
         default:
             break;
