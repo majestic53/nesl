@@ -113,18 +113,21 @@ int nesl_bus_interrupt(int type)
             /*if((result = nesl_processor_interrupt(&g_bus.processor, type == NESL_INTERRUPT_MASKABLE)) == NESL_FAILURE) {
                 goto exit;
             }*/
+
             break;
         case NESL_INTERRUPT_RESET:
 
             if((result = nesl_bus_reset()) == NESL_FAILURE) {
                 goto exit;
             }
+
             break;
         case NESL_INTERRUPT_MAPPER:
 
             /*if((result = nesl_mapper_interrupt(&g_bus.mapper)) == NESL_FAILURE) {
                 goto exit;
             }*/
+
             break;
         default:
             break;
