@@ -29,7 +29,7 @@ static void nesl_mapper_30_set(nesl_mapper_t *mapper)
 {
     mapper->rom.program[0] = ((nesl_mapper_30_context_t *)mapper->context)->bank.program * 16 * 1024;
     mapper->rom.character[0] = ((nesl_mapper_30_context_t *)mapper->context)->bank.character * 8 * 1024;
-    mapper->mirror = NESL_MIRROR_HORIZONTAL;//((nesl_mapper_30_context_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : mapper->cartridge.header->flag_6.mirror;
+    mapper->mirror = ((nesl_mapper_30_context_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : mapper->cartridge.header->flag_6.mirror;
 }
 
 int nesl_mapper_30_initialize(nesl_mapper_t *mapper)
