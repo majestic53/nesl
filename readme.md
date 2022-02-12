@@ -58,10 +58,7 @@ git clone https://github.com/majestic53/nesl
 Run the following commands to compile the project:
 
 ```
-cd nesl
-```
-```
-make
+cd nesl && make
 ```
 
 ## Interface
@@ -92,19 +89,19 @@ To launch with a file, run the following command:
 nesl file
 ```
 
-To launch with a file in fullscreen mode, run the following command:
+To launch in fullscreen mode, run the following command:
 
 ```
 nesl -f file
 ```
 
-To launch with a file and nearest-scaling (1x-4x), run the following command:
+To launch using nearest-scaling (1x-4x), run the following command:
 
 ```
 nesl -s [1-4] file
 ```
 
-To launch with a file and linearly-scaling (1x-4x), run the following command:
+To launch using linear-scaling (1x-4x), run the following command:
 
 ```
 nesl -ls [1-4] file
