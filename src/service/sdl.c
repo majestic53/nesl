@@ -20,7 +20,7 @@
  */
 
 #include <SDL2/SDL.h>
-#include "../../include/bus.h"
+#include "../../include/system/input.h"
 #include "../../include/service.h"
 
 static uint32_t PALETTE[] = {

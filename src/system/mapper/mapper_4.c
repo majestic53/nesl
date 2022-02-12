@@ -130,7 +130,7 @@ int nesl_mapper_4_initialize(nesl_mapper_t *mapper)
     nesl_mapper_4_context_t *context;
 
     if(!(mapper->context = calloc(1, sizeof(nesl_mapper_4_context_t)))) {
-        result = NESL_ERROR_SET("Failed to allocate context -- %u KB (%i bytes)", sizeof(nesl_mapper_4_context_t), sizeof(nesl_mapper_4_context_t));
+        result = NESL_ERROR_SET("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_4_context_t), sizeof(nesl_mapper_4_context_t));
         goto exit;
     }
 

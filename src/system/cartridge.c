@@ -27,8 +27,8 @@ extern "C" {
 
 static int nesl_cartridge_validate(const void *data, int length)
 {
-    int expected = sizeof(nesl_header_t), result = NESL_SUCCESS;
     const nesl_header_t *header = (const nesl_header_t *)data;
+    int expected = sizeof(nesl_header_t), result = NESL_SUCCESS;
 
     if(!data) {
         result = NESL_ERROR_SET("Invalid data -- %p", data);
@@ -97,7 +97,7 @@ int nesl_cartridge_initialize(nesl_cartridge_t *cartridge, const void *data, int
     } else {
 
         if(!(cartridge->ram.character = calloc(32 * 8 * 1024, sizeof(uint8_t)))) {
-            result = NESL_ERROR_SET("Failed to allocate character RAM -- %u KB (%i bytes)", 8, 8 * 1024);
+            result = NESL_ERROR_SET("Failed to allocate buffer -- %u KB (%i bytes)", 8, 8 * 1024);
             goto exit;
         }
 
@@ -105,7 +105,7 @@ int nesl_cartridge_initialize(nesl_cartridge_t *cartridge, const void *data, int
     }
 
     if(!(cartridge->ram.program = calloc((cartridge->header->ram.program ? cartridge->header->ram.program : 1) * 8 * 1024, sizeof(uint8_t)))) {
-        result = NESL_ERROR_SET("Failed to allocate program RAM -- %u KB (%i bytes)", (cartridge->header->ram.program ? cartridge->header->ram.program : 1) * 8,
+        result = NESL_ERROR_SET("Failed to allocate buffer -- %u KB (%i bytes)", (cartridge->header->ram.program ? cartridge->header->ram.program : 1) * 8,
             (cartridge->header->ram.program ? cartridge->header->ram.program : 1) * 8 * 1024);
         goto exit;
     }

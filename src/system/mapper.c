@@ -191,12 +191,16 @@ exit:
 
 int nesl_mapper_interrupt(nesl_mapper_t *mapper)
 {
-    int result = NESL_SUCCESS;
+    int result = NESL_FAILURE;
 
     if(mapper->interrupt) {
-        result = mapper->interrupt(mapper);
+
+        if((result = mapper->interrupt(mapper)) == NESL_FAILURE) {
+            goto exit;
+        }
     }
 
+exit:
     return result;
 }
 
