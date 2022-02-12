@@ -31,7 +31,7 @@ The following libraries are required to build this project:
 
 #### On Debian-based systems
 
-Update apt and install the following packages:
+Install the libraries using apt:
 
 ```
 sudo apt-get install libsdl2-dev
@@ -39,7 +39,7 @@ sudo apt-get install libsdl2-dev
 
 #### On Arch-based systems
 
-Update pacman and install the following packages:
+Install the libraries using pacman:
 
 ```
 sudo pacman -S sdl2
@@ -47,7 +47,7 @@ sudo pacman -S sdl2
 
 ### Cloning the project
 
-Run the following command to clone the project:
+Clone the project from the repo:
 
 ```
 git clone https://github.com/majestic53/nesl
@@ -55,7 +55,7 @@ git clone https://github.com/majestic53/nesl
 
 ### Compiling the project
 
-Run the following commands to compile the project:
+Navigate into the project directory and run the make command:
 
 ```
 cd nesl && make
@@ -63,7 +63,7 @@ cd nesl && make
 
 ## Interface
 
-Launch from the project build directory:
+Launch from the projects `build/` directory:
 
 ```
 nesl [options] file
@@ -95,13 +95,13 @@ To launch in fullscreen mode, run the following command:
 nesl -f file
 ```
 
-To launch using nearest-scaling (1x-4x), run the following command:
+To launch using nearest scaling (1x-4x), run the following command:
 
 ```
 nesl -s [1-4] file
 ```
 
-To launch using linear-scaling (1x-4x), run the following command:
+To launch using linear scaling (1x-4x), run the following command:
 
 ```
 nesl -ls [1-4] file
@@ -109,33 +109,7 @@ nesl -ls [1-4] file
 
 ### Keybindings
 
-The following buttons are mapped to each controller:
-
-#### Controller 1
-
-|Button |Keyboard|
-|:------|:-------|
-|A      |L       |
-|B      |K       |
-|Select |C       |
-|Start  |Space   |
-|Up     |W       |
-|Down   |S       |
-|Left   |A       |
-|Right  |D       |
-
-#### Controller 2
-
-|Button |Keyboard|
-|:------|:-------|
-|A      |N/A     |
-|B      |N/A     |
-|Select |N/A     |
-|Start  |N/A     |
-|Up     |N/A     |
-|Down   |N/A     |
-|Left   |N/A     |
-|Right  |N/A     |
+The following keybindings are available:
 
 #### Console
 
@@ -143,6 +117,19 @@ The following buttons are mapped to each controller:
 |:---------|:-------|
 |Fullscreen|F11     |
 |Reset     |R       |
+
+#### Controllers
+
+|Button |Controller 1|Controller 2|
+|:------|:-----------|:-----------|
+|A      |L           |N/A         |
+|B      |K           |N/A         |
+|Select |C           |N/A         |
+|Start  |Space       |N/A         |
+|Up     |W           |N/A         |
+|Down   |S           |N/A         |
+|Left   |A           |N/A         |
+|Right  |D           |N/A         |
 
 ## License
 
