@@ -17,23 +17,33 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUS=bus/
-DIR_INPUT=input/
+DIR_BUILD=../../build/
+DIR_ROOT=./
+DIR_SRC=../../src/system/
+
+FILE_BIN=$(DIR_BUILD)nesl-test-input
+FILE_OBJ=$(DIR_SRC)input.o
+FILES_OBJ=$(patsubst $(DIR_ROOT)%.c, $(DIR_ROOT)%.o, $(FILES_SRC))
+FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
+
+FLAGS_LIB=-lSDL2 -lSDL2main
 
 .PHONY: all
 all: build
 
 .PHONY: build
-build:
-	@make -C $(DIR_BUS) build
-	@make -C $(DIR_INPUT) build
+build: $(FILE_BIN)
 
 .PHONY: run
 run:
-	@make -C $(DIR_BUS) run
-	@make -C $(DIR_INPUT) run
+	@if ! ./$(FILE_BIN); then exit 1; fi
 
 .PHONY: clean
 clean:
-	@make -C $(DIR_BUS) clean
-	@make -C $(DIR_INPUT) clean
+	rm -rf $(FILES_OBJ)
+
+$(DIR_ROOT)%.o: $(DIR_ROOT)%.c
+	$(CC) $(FLAGS) -c -o $@ $<
+
+$(FILE_BIN): $(FILES_OBJ)
+	$(CC) $(FLAGS) $(FILE_OBJ) $(FILES_OBJ) $(FLAGS_LIB) -o $@
