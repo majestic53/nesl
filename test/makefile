@@ -19,6 +19,7 @@
 
 DIR_BUS=bus/
 DIR_INPUT=input/
+DIR_MAPPER=mapper/
 
 .PHONY: all
 all: build
@@ -27,13 +28,16 @@ all: build
 build:
 	@make -C $(DIR_BUS) build
 	@make -C $(DIR_INPUT) build
+	@make -C $(DIR_MAPPER) build
 
 .PHONY: run
 run:
 	@make -C $(DIR_BUS) run
 	@make -C $(DIR_INPUT) run
+	@make -C $(DIR_MAPPER) run
 
 .PHONY: clean
 clean:
 	@make -C $(DIR_BUS) clean
 	@make -C $(DIR_INPUT) clean
+	@make -C $(DIR_MAPPER) clean

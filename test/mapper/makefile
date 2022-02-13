@@ -17,43 +17,33 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUILD=build/
-DIR_SRC=src/
-DIR_TEST=test/
+DIR_BUILD=../../build/
+DIR_ROOT=./
+DIR_SRC=../../src/system/
 
-FLAGS=-march=native\ -mtune=native\ -std=c99\ -Wall\ -Werror
-FLAGS_DEBUG=FLAGS=$(FLAGS)\ -g
-FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3
+FILE_BIN=$(DIR_BUILD)nesl-test-mapper
+FILE_OBJ=$(DIR_SRC)mapper.o
+FILES_OBJ=$(patsubst $(DIR_ROOT)%.c, $(DIR_ROOT)%.o, $(FILES_SRC))
+FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
+
+FLAGS_LIB=-lSDL2 -lSDL2main
 
 .PHONY: all
-all: release
+all: build
 
-.PHONY: debug
-debug: $(DIR_BUILD)
-	@make -C $(DIR_SRC) build $(FLAGS_DEBUG)
+.PHONY: build
+build: $(FILE_BIN)
 
-.PHONY: release
-release: $(DIR_BUILD)
-	@make -C $(DIR_SRC) build $(FLAGS_RELEASE)
-
-.PHONY: test
-test: test-release
-
-.PHONY: test-debug
-test-debug: debug
-	@make -C $(DIR_TEST) build $(FLAGS_DEBUG)
-	@make -C $(DIR_TEST) run
-
-.PHONY: test-release
-test-release: release
-	@make -C $(DIR_TEST) build $(FLAGS_RELEASE)
-	@make -C $(DIR_TEST) run
+.PHONY: run
+run:
+	@if ! ./$(FILE_BIN); then exit 1; fi
 
 .PHONY: clean
 clean:
-	@make -C $(DIR_TEST) clean
-	@make -C $(DIR_SRC) clean
-	rm -rf $(DIR_BUILD)
+	rm -rf $(FILES_OBJ)
 
-$(DIR_BUILD):
-	mkdir -p $@
+$(DIR_ROOT)%.o: $(DIR_ROOT)%.c
+	$(CC) $(FLAGS) -c -o $@ $<
+
+$(FILE_BIN): $(FILES_OBJ)
+	$(CC) $(FLAGS) $(FILE_OBJ) $(FILES_OBJ) $(FLAGS_LIB) -o $@
