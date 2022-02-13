@@ -208,7 +208,7 @@ static int nesl_test_bus_read(void)
 
                             if(NESL_ASSERT((nesl_bus_read(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address)
-                                    && (g_test.type == NESL_RAM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_RAM_PROGRAM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -217,7 +217,7 @@ static int nesl_test_bus_read(void)
 
                             if(NESL_ASSERT((nesl_bus_read(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address)
-                                    && (g_test.type == NESL_ROM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_ROM_PROGRAM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -243,7 +243,7 @@ static int nesl_test_bus_read(void)
 
                             if(NESL_ASSERT((nesl_bus_read(NESL_BUS_VIDEO, address) == data)
                                     && (g_test.address == (address & 0x3FFF))
-                                    && (g_test.type == NESL_ROM_CHARACTER))) {
+                                    && (g_test.type == NESL_BANK_ROM_CHARACTER))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -321,7 +321,7 @@ static int nesl_test_bus_write(void)
 
                             if(NESL_ASSERT((g_test.address == address)
                                     && (g_test.data == data)
-                                    && (g_test.type == NESL_RAM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_RAM_PROGRAM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -331,7 +331,7 @@ static int nesl_test_bus_write(void)
 
                             if(NESL_ASSERT((g_test.address == address)
                                     && (g_test.data == data)
-                                    && (g_test.type == NESL_ROM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_ROM_PROGRAM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -358,7 +358,7 @@ static int nesl_test_bus_write(void)
                         case 0x0000 ... 0x1FFF:
                             nesl_bus_write(NESL_BUS_VIDEO, address, data);
 
-                            if(NESL_ASSERT((g_test.type == NESL_ROM_CHARACTER)
+                            if(NESL_ASSERT((g_test.type == NESL_BANK_ROM_CHARACTER)
                                     && (g_test.address == (address & 0x3FFF))
                                     && (g_test.data == data))) {
                                 result = NESL_FAILURE;

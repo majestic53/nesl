@@ -159,10 +159,10 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                     result = nesl_input_read(&g_bus.input, address);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    result = nesl_mapper_read(&g_bus.mapper, NESL_RAM_PROGRAM, address);
+                    result = nesl_mapper_read(&g_bus.mapper, NESL_BANK_RAM_PROGRAM, address);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    result = nesl_mapper_read(&g_bus.mapper, NESL_ROM_PROGRAM, address);
+                    result = nesl_mapper_read(&g_bus.mapper, NESL_BANK_ROM_PROGRAM, address);
                     break;
                 default:
                     break;
@@ -173,7 +173,7 @@ uint8_t nesl_bus_read(int type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    result = nesl_mapper_read(&g_bus.mapper, NESL_ROM_CHARACTER, address);
+                    result = nesl_mapper_read(&g_bus.mapper, NESL_BANK_ROM_CHARACTER, address);
                     break;
                 case 0x2000 ... 0x3FFF:
                     //result = nesl_video_read(&g_bus.video, address);
@@ -228,10 +228,10 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                     nesl_input_write(&g_bus.input, address, data);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    nesl_mapper_write(&g_bus.mapper, NESL_RAM_PROGRAM, address, data);
+                    nesl_mapper_write(&g_bus.mapper, NESL_BANK_RAM_PROGRAM, address, data);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    nesl_mapper_write(&g_bus.mapper, NESL_ROM_PROGRAM, address, data);
+                    nesl_mapper_write(&g_bus.mapper, NESL_BANK_ROM_PROGRAM, address, data);
                     break;
                 default:
                     break;
@@ -242,7 +242,7 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    nesl_mapper_write(&g_bus.mapper, NESL_ROM_CHARACTER, address, data);
+                    nesl_mapper_write(&g_bus.mapper, NESL_BANK_ROM_CHARACTER, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
                     //nesl_video_write(&g_bus.video, address, data);

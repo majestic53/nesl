@@ -25,11 +25,11 @@
 #include "../common.h"
 
 enum {
-    NESL_RAM_CHARACTER = 0,
-    NESL_RAM_PROGRAM,
-    NESL_ROM_CHARACTER,
-    NESL_ROM_PROGRAM,
-    NESL_ROM_MAX,
+    NESL_BANK_RAM_CHARACTER = 0,
+    NESL_BANK_RAM_PROGRAM,
+    NESL_BANK_ROM_CHARACTER,
+    NESL_BANK_ROM_PROGRAM,
+    NESL_BANK_MAX,
 };
 
 typedef struct {

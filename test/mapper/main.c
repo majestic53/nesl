@@ -596,7 +596,7 @@ static int nesl_test_mapper_read(void)
 
     for(uint32_t address = 0x0000; address <= 0xFFFF; ++address, ++data) {
 
-        for(int type = 0; type < NESL_ROM_MAX; ++type) {
+        for(int type = 0; type < NESL_BANK_MAX; ++type) {
             nesl_header_t header = {};
 
             nesl_test_initialize(&header);
@@ -846,7 +846,7 @@ static int nesl_test_mapper_write(void)
 
     for(uint32_t address = 0x0000; address <= 0xFFFF; ++address) {
 
-        for(int type = 0; type < NESL_ROM_MAX; ++type, ++data) {
+        for(int type = 0; type < NESL_BANK_MAX; ++type, ++data) {
             nesl_header_t header = {};
 
             nesl_test_initialize(&header);

@@ -219,16 +219,16 @@ uint8_t nesl_mapper_read(nesl_mapper_t *mapper, int type, uint16_t address)
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_RAM_CHARACTER:
-        case NESL_RAM_PROGRAM:
+        case NESL_BANK_RAM_CHARACTER:
+        case NESL_BANK_RAM_PROGRAM:
 
             if(mapper->ram_read) {
                 result = mapper->ram_read(mapper, type, address);
             }
 
             break;
-        case NESL_ROM_CHARACTER:
-        case NESL_ROM_PROGRAM:
+        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_ROM_PROGRAM:
 
             if(mapper->rom_read) {
                 result = mapper->rom_read(mapper, type, address);
@@ -268,16 +268,16 @@ void nesl_mapper_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_
 {
 
     switch(type) {
-        case NESL_RAM_CHARACTER:
-        case NESL_RAM_PROGRAM:
+        case NESL_BANK_RAM_CHARACTER:
+        case NESL_BANK_RAM_PROGRAM:
 
             if(mapper->ram_write) {
                 mapper->ram_write(mapper, type, address, data);
             }
 
             break;
-        case NESL_ROM_CHARACTER:
-        case NESL_ROM_PROGRAM:
+        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_ROM_PROGRAM:
 
             if(mapper->rom_write) {
                 mapper->rom_write(mapper, type, address, data);
