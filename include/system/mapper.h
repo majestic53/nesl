@@ -25,24 +25,6 @@
 #include "../bus.h"
 #include "./cartridge.h"
 
-enum {
-    NESL_MAPPER_0 = 0,
-    NESL_MAPPER_1,
-    NESL_MAPPER_2,
-    NESL_MAPPER_3,
-    NESL_MAPPER_4 = 4,
-    NESL_MAPPER_30 = 30,
-    NESL_MAPPER_66 = 66,
-};
-
-enum {
-    NESL_MIRROR_HORIZONTAL = 0,
-    NESL_MIRROR_VERTICAL,
-    NESL_MIRROR_ONE_LOW,
-    NESL_MIRROR_ONE_HIGH,
-    NESL_MIRROR_MAX,
-};
-
 typedef struct nesl_mapper_s {
     nesl_cartridge_t cartridge;
     int mirror;
