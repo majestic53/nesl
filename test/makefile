@@ -17,27 +17,19 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUILD=../build/
-DIR_ROOT=./
-
-FILE=$(DIR_BUILD)nesl
-FILES_OBJ=$(patsubst $(DIR_ROOT)%.c, $(DIR_ROOT)%.o, $(FILES_SRC))
-FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
-
-FLAGS_LIB=-lSDL2 -lSDL2main
+DIR_BUS=bus/
 
 .PHONY: all
 all: build
 
 .PHONY: build
-build: $(FILE)
+build:
+	@make -C $(DIR_BUS) build
+
+.PHONY: run
+run:
+	@make -C $(DIR_BUS) run
 
 .PHONY: clean
 clean:
-	rm -rf $(FILES_OBJ)
-
-$(DIR_ROOT)%.o: $(DIR_ROOT)%.c
-	$(CC) $(FLAGS) -c -o $@ $<
-
-$(FILE): $(FILES_OBJ)
-	$(CC) $(FLAGS) $(FILES_OBJ) $(FLAGS_LIB) -o $@
+	@make -C $(DIR_BUS) clean

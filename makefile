@@ -19,6 +19,7 @@
 
 DIR_BUILD=build/
 DIR_SRC=src/
+DIR_TEST=test/
 
 FLAGS=-march=native\ -mtune=native\ -std=c99\ -Wall\ -Werror
 FLAGS_DEBUG=FLAGS=$(FLAGS)\ -g
@@ -35,8 +36,22 @@ debug: clean $(DIR_BUILD)
 release: clean $(DIR_BUILD)
 	@make -C $(DIR_SRC) build $(FLAGS_RELEASE)
 
+.PHONY: test
+test: test-release
+
+.PHONY: test-debug
+test-debug: debug
+	@make -C $(DIR_TEST) build $(FLAGS_DEBUG)
+	@make -C $(DIR_TEST) run
+
+.PHONY: test-release
+test-release: release
+	@make -C $(DIR_TEST) build $(FLAGS_RELEASE)
+	@make -C $(DIR_TEST) run
+
 .PHONY: clean
 clean:
+	@make -C $(DIR_TEST) clean
 	@make -C $(DIR_SRC) clean
 	rm -rf $(DIR_BUILD)
 

@@ -19,44 +19,25 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef NESL_BUS_H_
-#define NESL_BUS_H_
+#ifndef NESL_TEST_ASSERT_H_
+#define NESL_TEST_ASSERT_H_
 
-#include "./common.h"
-
-enum {
-    NESL_BUS_PROCESSOR = 0,
-    NESL_BUS_VIDEO,
-    NESL_BUS_VIDEO_OAM,
-    NESL_BUS_MAX,
-};
-
-enum {
-    NESL_INTERRUPT_RESET = 0,
-    NESL_INTERRUPT_NON_MASKABLE,
-    NESL_INTERRUPT_MASKABLE,
-    NESL_INTERRUPT_MAPPER,
-    NESL_INTERRUPT_MAX,
-};
+#define NESL_ASSERT(_CONDITION_) \
+    (_CONDITION_) ? NESL_SUCCESS : nesl_assert(# _CONDITION_, __FILE__, __FUNCTION__, __LINE__)
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-bool nesl_bus_cycle(void);
+int nesl_assert(const char *condition, const char *file, const char *function, size_t line)
+{
+    fprintf(stderr, "Assert failed -- %s (%s:%s@%zu)\n", condition, function, file, line);
 
-int nesl_bus_initialize(const void *data, int length);
-
-int nesl_bus_interrupt(int type);
-
-uint8_t nesl_bus_read(int type, uint16_t address);
-
-void nesl_bus_uninitialize(void);
-
-void nesl_bus_write(int type, uint16_t address, uint8_t data);
+    return NESL_FAILURE;
+}
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* NESL_BUS_H_ */
+#endif /* NESL_TEST_ASSERT_H_ */
