@@ -133,10 +133,9 @@ int nesl_mapper_1_initialize(nesl_mapper_t *mapper)
         goto exit;
     }
 
-    ((nesl_mapper_1_context_t *)mapper->context)->control.raw = 0x0C;
-    nesl_mapper_1_set_mirror(mapper);
-    nesl_mapper_1_set_character(mapper);
-    nesl_mapper_1_set_program(mapper);
+    if((result = nesl_mapper_1_reset(mapper)) == NESL_FAILURE) {
+        goto exit;
+    }
 
 exit:
     return result;
@@ -189,6 +188,16 @@ void nesl_mapper_1_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, 
         default:
             break;
     }
+}
+
+int nesl_mapper_1_reset(nesl_mapper_t *mapper)
+{
+    ((nesl_mapper_1_context_t *)mapper->context)->control.raw = 0x0C;
+    nesl_mapper_1_set_mirror(mapper);
+    nesl_mapper_1_set_character(mapper);
+    nesl_mapper_1_set_program(mapper);
+
+    return NESL_SUCCESS;
 }
 
 uint8_t nesl_mapper_1_rom_read(nesl_mapper_t *mapper, int type, uint16_t address)

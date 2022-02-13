@@ -76,6 +76,8 @@ uint8_t nesl_mapper_1_ram_read(nesl_mapper_t *mapper, int type, uint16_t address
 
 void nesl_mapper_1_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
 
+int nesl_mapper_1_reset(nesl_mapper_t *mapper);
+
 uint8_t nesl_mapper_1_rom_read(nesl_mapper_t *mapper, int type, uint16_t address);
 
 void nesl_mapper_1_rom_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);

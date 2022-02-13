@@ -129,18 +129,15 @@ static void nesl_mapper_4_set( nesl_mapper_t *mapper, uint16_t address, uint8_t 
 int nesl_mapper_4_initialize(nesl_mapper_t *mapper)
 {
     int result = NESL_SUCCESS;
-    nesl_mapper_4_context_t *context;
 
     if(!(mapper->context = calloc(1, sizeof(nesl_mapper_4_context_t)))) {
         result = NESL_ERROR_SET("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_4_context_t), sizeof(nesl_mapper_4_context_t));
         goto exit;
     }
 
-    context = mapper->context;
-    context->protect.ram_enable = true;
-    context->protect.ram_read_only = false;
-    nesl_mapper_4_set_bank(mapper);
-    nesl_mapper_4_set_mirror(mapper);
+    if((result = nesl_mapper_4_reset(mapper)) == NESL_FAILURE) {
+        goto exit;
+    }
 
 exit:
     return result;
@@ -219,6 +216,18 @@ void nesl_mapper_4_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, 
         default:
             break;
     }
+}
+
+int nesl_mapper_4_reset(nesl_mapper_t *mapper)
+{
+    nesl_mapper_4_context_t *context = mapper->context;
+
+    context->protect.ram_enable = true;
+    context->protect.ram_read_only = false;
+    nesl_mapper_4_set_bank(mapper);
+    nesl_mapper_4_set_mirror(mapper);
+
+    return NESL_SUCCESS;
 }
 
 uint8_t nesl_mapper_4_rom_read(nesl_mapper_t *mapper, int type, uint16_t address)

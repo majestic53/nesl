@@ -31,10 +31,11 @@ typedef struct {
     int type;
     int (*initialize)(nesl_mapper_t *mapper);
     int (*interrupt)(nesl_mapper_t *mapper);
-    uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-    void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
-    uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-    void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+    uint8_t (*ram_read)(nesl_mapper_t *mapper, int type, uint16_t address);
+    void (*ram_write)(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+    int (*reset)(nesl_mapper_t *mapper);
+    uint8_t (*rom_read)(nesl_mapper_t *mapper, int type, uint16_t address);
+    void (*rom_write)(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
     void (*uninitialize)(nesl_mapper_t *mapper);
 } nesl_mapper_context_t;
 
@@ -45,6 +46,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         NULL,
         nesl_mapper_0_ram_read,
         nesl_mapper_0_ram_write,
+        NULL,
         nesl_mapper_0_rom_read,
         NULL,
         NULL,
@@ -55,6 +57,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         NULL,
         nesl_mapper_1_ram_read,
         nesl_mapper_1_ram_write,
+        nesl_mapper_1_reset,
         nesl_mapper_1_rom_read,
         nesl_mapper_1_rom_write,
         nesl_mapper_1_uninitialize,
@@ -65,6 +68,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         NULL,
         nesl_mapper_2_ram_read,
         nesl_mapper_2_ram_write,
+        nesl_mapper_2_reset,
         nesl_mapper_2_rom_read,
         nesl_mapper_2_rom_write,
         nesl_mapper_2_uninitialize,
@@ -75,6 +79,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         NULL,
         nesl_mapper_3_ram_read,
         nesl_mapper_3_ram_write,
+        nesl_mapper_3_reset,
         nesl_mapper_3_rom_read,
         nesl_mapper_3_rom_write,
         nesl_mapper_3_uninitialize,
@@ -85,6 +90,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         nesl_mapper_4_interrupt,
         nesl_mapper_4_ram_read,
         nesl_mapper_4_ram_write,
+        nesl_mapper_4_reset,
         nesl_mapper_4_rom_read,
         nesl_mapper_4_rom_write,
         nesl_mapper_4_uninitialize,
@@ -95,6 +101,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         NULL,
         nesl_mapper_30_ram_read,
         nesl_mapper_30_ram_write,
+        nesl_mapper_30_reset,
         nesl_mapper_30_rom_read,
         nesl_mapper_30_rom_write,
         nesl_mapper_30_uninitialize,
@@ -105,6 +112,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
         NULL,
         nesl_mapper_66_ram_read,
         nesl_mapper_66_ram_write,
+        nesl_mapper_66_reset,
         nesl_mapper_66_rom_read,
         nesl_mapper_66_rom_write,
         nesl_mapper_66_uninitialize,
@@ -144,6 +152,7 @@ static int nesl_mapper_context_initialize(nesl_mapper_t *mapper)
     mapper->interrupt = context->interrupt;
     mapper->ram_read = context->ram_read;
     mapper->ram_write = context->ram_write;
+    mapper->reset = context->reset;
     mapper->rom_read = context->rom_read;
     mapper->rom_write = context->rom_write;
 
@@ -166,6 +175,7 @@ static void nesl_mapper_context_uninitialize(nesl_mapper_t *mapper)
     mapper->interrupt = NULL;
     mapper->ram_read = NULL;
     mapper->ram_write = NULL;
+    mapper->reset = NULL;
     mapper->rom_read = NULL;
     mapper->rom_write = NULL;
 }
@@ -229,6 +239,21 @@ uint8_t nesl_mapper_read(nesl_mapper_t *mapper, int type, uint16_t address)
             break;
     }
 
+    return result;
+}
+
+int nesl_mapper_reset(nesl_mapper_t *mapper)
+{
+    int result = NESL_SUCCESS;
+
+    if(mapper->reset) {
+
+        if((result = mapper->reset(mapper)) == NESL_FAILURE) {
+            goto exit;
+        }
+    }
+
+exit:
     return result;
 }
 

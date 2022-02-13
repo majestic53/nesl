@@ -61,6 +61,7 @@ typedef struct nesl_mapper_s {
     int (*interrupt)(struct nesl_mapper_s *mapper);
     uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
     void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+    int (*reset)(struct nesl_mapper_s *mapper);
     uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
     void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
 } nesl_mapper_t;
@@ -74,6 +75,8 @@ int nesl_mapper_initialize(nesl_mapper_t *mapper, const void *data, int length);
 int nesl_mapper_interrupt(nesl_mapper_t *mapper);
 
 uint8_t nesl_mapper_read(nesl_mapper_t *mapper, int type, uint16_t address);
+
+int nesl_mapper_reset(nesl_mapper_t *mapper);
 
 void nesl_mapper_uninitialize(nesl_mapper_t *mapper);
 

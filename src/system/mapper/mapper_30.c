@@ -41,8 +41,9 @@ int nesl_mapper_30_initialize(nesl_mapper_t *mapper)
         goto exit;
     }
 
-    mapper->rom.program[1] = (mapper->cartridge.header->rom.program * 16 * 1024) - (1 * 16 * 1024);
-    nesl_mapper_30_set(mapper);
+    if((result = nesl_mapper_30_reset(mapper)) == NESL_FAILURE) {
+        goto exit;
+    }
 
 exit:
     return result;
@@ -89,6 +90,14 @@ void nesl_mapper_30_ram_write(nesl_mapper_t *mapper, int type, uint16_t address,
         default:
             break;
     }
+}
+
+int nesl_mapper_30_reset(nesl_mapper_t *mapper)
+{
+    mapper->rom.program[1] = (mapper->cartridge.header->rom.program * 16 * 1024) - (1 * 16 * 1024);
+    nesl_mapper_30_set(mapper);
+
+    return NESL_SUCCESS;
 }
 
 uint8_t nesl_mapper_30_rom_read(nesl_mapper_t *mapper, int type, uint16_t address)

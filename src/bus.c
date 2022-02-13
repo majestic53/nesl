@@ -41,6 +41,10 @@ static int nesl_bus_reset(void)
 {
     int result;
 
+    if((result = nesl_mapper_reset(&g_bus.mapper)) == NESL_FAILURE) {
+        goto exit;
+    }
+
     if((result = nesl_input_reset(&g_bus.input)) == NESL_FAILURE) {
         goto exit;
     }
