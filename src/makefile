@@ -20,8 +20,9 @@
 DIR_BUILD=../build/
 DIR_ROOT=./
 
-FILE=$(DIR_BUILD)nesl
-FILES_OBJ=$(patsubst $(DIR_ROOT)%.c, $(DIR_ROOT)%.o, $(FILES_SRC))
+FILE=nesl
+FILE_BIN=$(DIR_BUILD)$(FILE)
+FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
 FLAGS_LIB=-lSDL2 -lSDL2main
@@ -30,14 +31,18 @@ FLAGS_LIB=-lSDL2 -lSDL2main
 all: build
 
 .PHONY: build
-build: $(FILE)
+build: $(FILE_BIN)
 
 .PHONY: clean
 clean:
+	rm -rf $(DIR_BUILD)
 	rm -rf $(FILES_OBJ)
+
+$(DIR_BUILD):
+	mkdir -p $@
 
 $(DIR_ROOT)%.o: $(DIR_ROOT)%.c
 	$(CC) $(FLAGS) -c -o $@ $<
 
-$(FILE): $(FILES_OBJ)
+$(FILE_BIN): $(DIR_BUILD) $(FILES_OBJ)
 	$(CC) $(FLAGS) $(FILES_OBJ) $(FLAGS_LIB) -o $@

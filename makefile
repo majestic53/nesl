@@ -17,7 +17,6 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUILD=build/
 DIR_SRC=src/
 DIR_TEST=test/
 
@@ -29,23 +28,23 @@ FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3
 all: release
 
 .PHONY: debug
-debug: $(DIR_BUILD)
+debug:
 	@make -C $(DIR_SRC) build $(FLAGS_DEBUG)
 
 .PHONY: release
-release: $(DIR_BUILD)
+release:
 	@make -C $(DIR_SRC) build $(FLAGS_RELEASE)
 
-.PHONY: test
-test: test-release
+.PHONY: check
+check: test-release
 
 .PHONY: test-debug
-test-debug: debug
+test-debug:
 	@make -C $(DIR_TEST) build $(FLAGS_DEBUG)
 	@make -C $(DIR_TEST) run
 
 .PHONY: test-release
-test-release: release
+test-release:
 	@make -C $(DIR_TEST) build $(FLAGS_RELEASE)
 	@make -C $(DIR_TEST) run
 
@@ -53,7 +52,3 @@ test-release: release
 clean:
 	@make -C $(DIR_TEST) clean
 	@make -C $(DIR_SRC) clean
-	rm -rf $(DIR_BUILD)
-
-$(DIR_BUILD):
-	mkdir -p $@

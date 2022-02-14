@@ -17,13 +17,12 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUILD=../../build/
 DIR_ROOT=./
 DIR_SRC=../../src/system/mapper/
 
-FILE_BIN=$(DIR_BUILD)nesl-test-mapper-0
-FILE_OBJ=$(DIR_SRC)mapper_0.o
-FILES_OBJ=$(patsubst $(DIR_ROOT)%.c, $(DIR_ROOT)%.o, $(FILES_SRC))
+FILE=mapper_0
+FILE_BIN=$(DIR_ROOT)nesl-$(FILE)
+FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
 FLAGS_LIB=-lSDL2 -lSDL2main
@@ -40,10 +39,14 @@ run:
 
 .PHONY: clean
 clean:
+	rm -rf $(FILE_BIN)
 	rm -rf $(FILES_OBJ)
+
+$(DIR_SRC)$(FILE).o: $(DIR_SRC)$(FILE).c
+	$(CC) $(FLAGS) -c -o $@ $<
 
 $(DIR_ROOT)%.o: $(DIR_ROOT)%.c
 	$(CC) $(FLAGS) -c -o $@ $<
 
-$(FILE_BIN): $(FILES_OBJ)
-	$(CC) $(FLAGS) $(FILE_OBJ) $(FILES_OBJ) $(FLAGS_LIB) -o $@
+$(FILE_BIN): $(DIR_SRC)$(FILE).o $(FILES_OBJ)
+	$(CC) $(FLAGS) $(DIR_SRC)$(FILE).o $(FILES_OBJ) $(FLAGS_LIB) -o $@
