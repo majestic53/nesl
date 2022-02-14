@@ -423,7 +423,7 @@ int main(void)
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
-        if(TEST[index]() != NESL_SUCCESS) {
+        if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;
         }
     }
