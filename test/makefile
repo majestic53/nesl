@@ -17,21 +17,19 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-define FOREACH_TEST
-for TEST in $(filter-out include/, $(wildcard */)); do make -C $$TEST $(1); done
-endef
+TESTS=$(filter-out include/, $(wildcard */))
 
 .PHONY: all
 all: build
 
 .PHONY: build
 build:
-	@$(call FOREACH_TEST, build)
+	@for test in $(TESTS); do make -C $$test build; done
 
 .PHONY: run
 run:
-	@$(call FOREACH_TEST, run)
+	@for test in $(TESTS); do make -C $$test run; done
 
 .PHONY: clean
 clean:
-	@$(call FOREACH_TEST, clean)
+	@for test in $(TESTS); do make -C $$test clean; done
