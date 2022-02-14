@@ -17,27 +17,21 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUS=bus/
-DIR_INPUT=input/
-DIR_MAPPER=mapper/
+define FOREACH_TEST
+for TEST in $(filter-out include/, $(wildcard */)); do make -C $$TEST $(1); done
+endef
 
 .PHONY: all
 all: build
 
 .PHONY: build
 build:
-	@make -C $(DIR_BUS) build
-	@make -C $(DIR_INPUT) build
-	@make -C $(DIR_MAPPER) build
+	@$(call FOREACH_TEST, build)
 
 .PHONY: run
 run:
-	@make -C $(DIR_BUS) run
-	@make -C $(DIR_INPUT) run
-	@make -C $(DIR_MAPPER) run
+	@$(call FOREACH_TEST, run)
 
 .PHONY: clean
 clean:
-	@make -C $(DIR_BUS) clean
-	@make -C $(DIR_INPUT) clean
-	@make -C $(DIR_MAPPER) clean
+	@$(call FOREACH_TEST, clean)
