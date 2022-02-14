@@ -10,11 +10,12 @@ __NOTE__: This project is a currently a work-in-progress. Some features may not 
 
 ### Completed
 
-`TBD`
+* Support for all official processor instructions.
+* Support for common mapper types.
 
 ### Work-in-progress
 
-`TBD`
+* Support for audio playback.
 
 ## Latest release
 
