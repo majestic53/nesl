@@ -179,6 +179,7 @@ exit:
 
     return result;
 }
+
 static int nesl_test_input_uninitialize(void)
 {
     int result = NESL_SUCCESS;
