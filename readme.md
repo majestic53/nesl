@@ -56,15 +56,31 @@ git clone https://github.com/majestic53/nesl
 
 ### Compiling the project
 
-Navigate into the project directory and run the make command:
+Navigate into the project directory and run make to build the binary:
 
 ```
 cd nesl && make
 ```
 
-## Interface
+### Installing the binary
 
-Launch from the projects `build/` directory:
+Install the binary to `/usr/bin`:
+
+```
+sudo make install
+```
+
+### Uninstalling the binary
+
+Uninstall a previously installed binary from `/usr/bin`:
+
+```
+sudo make uninstall
+```
+
+## Using the binary
+
+Launch the binary from `build/` or `/usr/bin`:
 
 ```
 nesl [options] file
@@ -84,25 +100,25 @@ The following options are available:
 
 #### Examples
 
-To launch with a file, run the following command:
+To launch the binary with a file, run the following command:
 
 ```
 nesl file
 ```
 
-To launch in fullscreen mode, run the following command:
+To launch the binary in fullscreen mode, run the following command:
 
 ```
 nesl -f file
 ```
 
-To launch using nearest scaling (1x-4x), run the following command:
+To launch the binary with nearest-scaling (1x-4x), run the following command:
 
 ```
 nesl -s [1-4] file
 ```
 
-To launch using linear scaling (1x-4x), run the following command:
+To launch the binary with linear-scaling (1x-4x), run the following command:
 
 ```
 nesl -ls [1-4] file
