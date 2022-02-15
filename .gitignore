@@ -3,5 +3,6 @@
 *.sublime-workspace
 *.sublime-project
 *.o
-nesl-*
+nesl
+test-*
 build/
