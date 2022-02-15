@@ -25,8 +25,6 @@ FILE_BIN=$(DIR_ROOT)test-$(FILE)
 FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
-FLAGS_LIB=-lSDL2 -lSDL2main
-
 .PHONY: all
 all: build
 
@@ -49,4 +47,4 @@ $(DIR_ROOT)%.o: $(DIR_ROOT)%.c
 	$(CC) $(FLAGS) -c -o $@ $<
 
 $(FILE_BIN): $(DIR_SRC)$(FILE).o $(FILES_OBJ)
-	$(CC) $(FLAGS) $(DIR_SRC)$(FILE).o $(FILES_OBJ) $(FLAGS_LIB) -o $@
+	$(CC) $(FLAGS) $(DIR_SRC)$(FILE).o $(FILES_OBJ) -o $@

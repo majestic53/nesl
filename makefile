@@ -58,5 +58,5 @@ test-release:
 
 .PHONY: clean
 clean:
-	@make -C $(DIR_TEST) clean
 	@make -C $(DIR_SRC) clean
+	@make -C $(DIR_TEST) clean
