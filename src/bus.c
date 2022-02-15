@@ -117,21 +117,18 @@ int nesl_bus_interrupt(int type)
             /*if((result = nesl_processor_interrupt(&g_bus.processor, type == NESL_INTERRUPT_MASKABLE)) == NESL_FAILURE) {
                 goto exit;
             }*/
-
             break;
         case NESL_INTERRUPT_RESET:
 
             if((result = nesl_bus_reset()) == NESL_FAILURE) {
                 goto exit;
             }
-
             break;
         case NESL_INTERRUPT_MAPPER:
 
             if((result = nesl_mapper_interrupt(&g_bus.mapper)) == NESL_FAILURE) {
                 goto exit;
             }
-
             break;
         default:
             break;
@@ -167,7 +164,6 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                 default:
                     break;
             }
-
             break;
         case NESL_BUS_VIDEO:
 
@@ -181,7 +177,6 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                 default:
                     break;
             }
-
             break;
         case NESL_BUS_VIDEO_OAM:
 
@@ -192,7 +187,6 @@ uint8_t nesl_bus_read(int type, uint16_t address)
                 default:
                     break;
             }
-
             break;
         default:
             break;
@@ -236,7 +230,6 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                 default:
                     break;
             }
-
             break;
         case NESL_BUS_VIDEO:
 
@@ -250,7 +243,6 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                 default:
                     break;
             }
-
             break;
         case NESL_BUS_VIDEO_OAM:
 
@@ -261,7 +253,6 @@ void nesl_bus_write(int type, uint16_t address, uint8_t data)
                 default:
                     break;
             }
-
             break;
         default:
             break;

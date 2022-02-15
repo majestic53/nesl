@@ -172,7 +172,6 @@ int main(int argc, char *argv[])
         if((result = read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
             goto exit;
         }
-
         break;
     }
 

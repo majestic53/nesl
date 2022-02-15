@@ -204,20 +204,17 @@ int nesl_service_poll(void)
                             if((result = nesl_service_fullscreen()) == NESL_FAILURE) {
                                 goto exit;
                             }
-
                             break;
                         case SDL_SCANCODE_R:
 
                             if((result = nesl_bus_interrupt(NESL_INTERRUPT_RESET)) == NESL_FAILURE) {
                                 goto exit;
                             }
-
                             break;
                         default:
                             break;
                     }
                 }
-
                 break;
             case SDL_QUIT:
                 result = NESL_QUIT;

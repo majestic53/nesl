@@ -107,7 +107,6 @@ static void nesl_mapper_4_set( nesl_mapper_t *mapper, uint16_t address, uint8_t 
             } else {
                 context->protect.raw = data;
             }
-
             break;
         case 0xC000 ... 0xDFFF:
 
@@ -116,7 +115,6 @@ static void nesl_mapper_4_set( nesl_mapper_t *mapper, uint16_t address, uint8_t 
             } else {
                 context->interrupt.count = 0;
             }
-
             break;
         case 0xE000 ... 0xFFFF:
             context->interrupt.enable = (address % 2) ? true : false;
@@ -179,12 +177,10 @@ uint8_t nesl_mapper_4_ram_read(nesl_mapper_t *mapper, int type, uint16_t address
                     if(((nesl_mapper_4_context_t *)mapper->context)->protect.ram_enable) {
                         result = nesl_cartridge_ram_read(&mapper->cartridge, NESL_BANK_RAM_PROGRAM, mapper->ram.program + (address & 0x1FFF));
                     }
-
                     break;
                 default:
                     break;
             }
-
             break;
         default:
             break;
@@ -206,12 +202,10 @@ void nesl_mapper_4_ram_write(nesl_mapper_t *mapper, int type, uint16_t address, 
                             && !((nesl_mapper_4_context_t *)mapper->context)->protect.ram_read_only) {
                         nesl_cartridge_ram_write(&mapper->cartridge, NESL_BANK_RAM_PROGRAM, mapper->ram.program + (address & 0x1FFF), data);
                     }
-
                     break;
                 default:
                     break;
             }
-
             break;
         default:
             break;
@@ -265,7 +259,6 @@ uint8_t nesl_mapper_4_rom_read(nesl_mapper_t *mapper, int type, uint16_t address
                 default:
                     break;
             }
-
             break;
         case NESL_BANK_ROM_PROGRAM:
 
@@ -285,7 +278,6 @@ uint8_t nesl_mapper_4_rom_read(nesl_mapper_t *mapper, int type, uint16_t address
                 default:
                     break;
             }
-
             break;
         default:
             break;
@@ -307,7 +299,6 @@ void nesl_mapper_4_rom_write(nesl_mapper_t *mapper, int type, uint16_t address, 
                 default:
                     break;
             }
-
             break;
         default:
             break;
