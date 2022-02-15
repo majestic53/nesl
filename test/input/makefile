@@ -21,7 +21,7 @@ DIR_ROOT=./
 DIR_SRC=../../src/system/
 
 FILE=input
-FILE_BIN=$(DIR_ROOT)nesl-$(FILE)
+FILE_BIN=$(DIR_ROOT)test-$(FILE)
 FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
