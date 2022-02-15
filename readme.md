@@ -23,7 +23,7 @@ The latest release can be found here: `TBD`
 
 ## Building from source
 
-__NOTE__: This project is tested under GNU/Linux, using the GCC C compiler. Some modifications will be required to build with a different OS/compiler.
+__NOTE__: This project is tested under GNU/Linux, using the GCC compiler. Some modifications will be required to build with a different OS/compiler.
 
 ### Preparing to build
 
@@ -64,7 +64,7 @@ cd nesl && make
 
 ### Installing the binary
 
-Install the binary to `/usr/bin`:
+Optionally, install the binary to `/usr/bin`:
 
 ```
 sudo make install
