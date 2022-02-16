@@ -405,7 +405,7 @@ static int nesl_test_mapper_66_rom_write(void)
         nesl_header_t header = { .rom.program = 4, .rom.character = 4 };
 
         switch(address) {
-            case 0x8000 ... 0xFFFF: /* Program/Character */
+            case 0x8000 ... 0xFFFF:
 
                 if((result = nesl_test_initialize(&header)) == NESL_FAILURE) {
                     goto exit;
