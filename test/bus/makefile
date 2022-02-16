@@ -33,7 +33,9 @@ build: $(FILE_BIN)
 
 .PHONY: run
 run:
-	@if ! ./$(FILE_BIN); then exit 1; fi
+	@if ! ./$(FILE_BIN); then \
+		exit 1; \
+	fi
 
 .PHONY: clean
 clean:

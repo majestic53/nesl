@@ -24,12 +24,24 @@ all: build
 
 .PHONY: build
 build:
-	@for test in $(TESTS); do make -C $$test build; done
+	@for test in $(TESTS); do \
+		make -C $$test build; \
+	done
 
 .PHONY: run
 run:
-	@for test in $(TESTS); do make -C $$test run; done
+	@result=0; \
+	for test in $(TESTS); do \
+		if ! make -C $$test run; then \
+			result=1; \
+		fi \
+	done; \
+	if [ $$result -ne 0 ]; then \
+		exit 1; \
+	fi
 
 .PHONY: clean
 clean:
-	@for test in $(TESTS); do make -C $$test clean; done
+	@for test in $(TESTS); do \
+		make -C $$test clean; \
+	done

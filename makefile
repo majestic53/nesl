@@ -44,7 +44,10 @@ uninstall:
 	@make -C $(DIR_SRC) uninstall
 
 .PHONY: check
-check: test-release
+check: test
+
+.PHONY: test
+test: test-release
 
 .PHONY: test-debug
 test-debug:
