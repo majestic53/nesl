@@ -33,4 +33,21 @@
 #define NESL_MINOR 1
 #define NESL_PATCH 1
 
+typedef union {
+
+    struct {
+        uint8_t bit_0 : 1;
+        uint8_t unused : 5;
+        uint8_t bit_6 : 1;
+        uint8_t bit_7 : 1;
+    };
+
+    struct {
+        uint8_t low;
+        uint8_t high;
+    };
+
+    uint16_t word;
+} nesl_register_t;
+
 #endif /* NESL_DEFINE_H_ */

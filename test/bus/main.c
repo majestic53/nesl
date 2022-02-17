@@ -21,6 +21,7 @@
 
 #include "../../include/system/input.h"
 #include "../../include/system/mapper.h"
+#include "../../include/system/processor.h"
 #include "../include/common.h"
 
 typedef struct {
@@ -33,11 +34,15 @@ typedef struct {
     } input;
 
     struct {
-        int type;
-        uint64_t data;
         bool interrupt;
         bool reset;
     } mapper;
+
+    struct {
+        bool interrupt;
+        bool interrupt_maskable;
+        bool reset;
+    } processor;
 
     struct {
         bool reset;
@@ -119,6 +124,49 @@ void nesl_mapper_write(nesl_mapper_t *mapper, int type, uint16_t address, uint8_
     g_test.data = data;
 }
 
+void nesl_processor_cycle(nesl_processor_t *processor, uint64_t cycle)
+{
+    return;
+}
+
+int nesl_processor_initialize(nesl_processor_t *processor)
+{
+    return NESL_SUCCESS;
+}
+
+int nesl_processor_interrupt(nesl_processor_t *processor, bool maskable)
+{
+    g_test.processor.interrupt = true;
+    g_test.processor.interrupt_maskable = maskable;
+
+    return NESL_SUCCESS;
+}
+
+uint8_t nesl_processor_read(nesl_processor_t *processor, uint16_t address)
+{
+    g_test.address = address;
+
+    return g_test.data;
+}
+
+int nesl_processor_reset(nesl_processor_t *processor)
+{
+    g_test.processor.reset = true;
+
+    return NESL_SUCCESS;
+}
+
+void nesl_processor_uninitialize(nesl_processor_t *processor)
+{
+    return;
+}
+
+void nesl_processor_write(nesl_processor_t *processor, uint16_t address, uint8_t data)
+{
+    g_test.address = address;
+    g_test.data = data;
+}
+
 int nesl_service_reset(void)
 {
     g_test.service.reset = true;
@@ -143,18 +191,17 @@ static int nesl_test_bus_interrupt(void)
             case NESL_INTERRUPT_MASKABLE:
             case NESL_INTERRUPT_NON_MASKABLE:
 
-                /*if(NESL_ASSERT((g_test.processor.interrupt == true)
+                if(NESL_ASSERT((g_test.processor.interrupt == true)
                         && (g_test.processor.interrupt_maskable == (type == NESL_INTERRUPT_MASKABLE)))) {
                     result = NESL_FAILURE;
                     goto exit;
-                }*/
+                }
                 break;
             case NESL_INTERRUPT_RESET:
 
-                if(NESL_ASSERT(/*(g_test.audio.reset == true)
-                        && */(g_test.input.reset == true)
+                if(NESL_ASSERT((g_test.input.reset == true)
                         && (g_test.mapper.reset == true)
-                        /*&& (g_test.processor.reset == true)*/
+                        && (g_test.processor.reset == true)
                         && (g_test.service.reset == true)
                         /*&& (g_test.video.reset == true)*/)) {
                     result = NESL_FAILURE;
@@ -194,8 +241,8 @@ static int nesl_test_bus_read(void)
                     g_test.data = data;
 
                     switch(address) {
-                        /*case 0x0000 ... 0x3FFF:
-                        case 0x4015 ... 0x4017:*/
+                        case 0x0000 ... 0x1FFF:
+                        //case 0x2000 ... 0x3FFF:
                         case 0x4016 ... 0x4017:
 
                             if(NESL_ASSERT((nesl_bus_read(NESL_BUS_PROCESSOR, address) == data)
@@ -304,9 +351,9 @@ static int nesl_test_bus_write(void)
                     nesl_test_initialize();
 
                     switch(address) {
-                        /*case 0x0000 ... 0x4008:
-                        case 0x400A ... 0x400C:
-                        case 0x400E ... 0x4017:*/
+                        case 0x0000 ... 0x1FFF:
+                        //case 0x2000 ... 0x3FFF:
+                        case 0x4014:
                         case 0x4016:
                             nesl_bus_write(NESL_BUS_PROCESSOR, address, data);
 
