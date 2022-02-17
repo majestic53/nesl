@@ -78,7 +78,7 @@ static int read_file(nesl_t *input, char *base, char *path)
     fseek(file, 0, SEEK_SET);
 
     if(!(input->data = calloc(input->length, sizeof(uint8_t)))) {
-        fprintf(stderr, "%s: Failed to allocate buffer -- %.2f KB (%u bytes)\n", base, input->length / 1024.f, input->length);
+        fprintf(stderr, "%s: Failed to allocate buffer -- %.2f KB (%i bytes)\n", base, input->length / 1024.f, input->length);
         result = NESL_FAILURE;
         goto exit;
     }

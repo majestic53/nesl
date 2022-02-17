@@ -26,7 +26,6 @@ typedef union {
 
     struct {
         uint8_t state : 1;
-        uint8_t unused : 7;
     };
 
     uint8_t raw;
@@ -58,7 +57,7 @@ int nesl_input_initialize(nesl_input_t *input)
 uint8_t nesl_input_read(nesl_input_t *input, uint16_t address)
 {
     int controller = NESL_CONTROLLER_MAX;
-    nesl_button_t result = { .state = 1, .unused = 0x20 };
+    nesl_button_t result = { .raw = 0x41 };
 
     switch(address) {
         case 0x4016:
