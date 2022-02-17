@@ -1,0 +1,23 @@
+name: Analyze
+
+on:
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
+
+jobs:
+    Static:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install Dependencies
+              run: |
+                sudo apt-get update
+                sudo apt-get install cppcheck
+            - name: Dependency Information
+              run: |
+                echo "`cppcheck --version`"
+            - name: Run Analysis
+              run: |
+                cppcheck --enable=all --std=c99 --suppress=missingIncludeSystem .
