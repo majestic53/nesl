@@ -54,7 +54,7 @@ Clone the project from the repo:
 git clone https://github.com/majestic53/nesl
 ```
 
-### Compiling the project
+### Building the project
 
 Navigate into the project directory and run make to build the binary:
 
@@ -62,7 +62,7 @@ Navigate into the project directory and run make to build the binary:
 cd nesl && make
 ```
 
-### Installing the binary
+#### Installing the binary
 
 Optionally, install the binary to `/usr/bin`:
 
@@ -70,7 +70,7 @@ Optionally, install the binary to `/usr/bin`:
 sudo make install
 ```
 
-### Uninstalling the binary
+#### Uninstalling the binary
 
 Uninstall a previously installed binary from `/usr/bin`:
 
