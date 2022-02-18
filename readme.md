@@ -28,7 +28,7 @@ __NOTE__: This project is tested under GNU/Linux, using the GCC compiler. Some m
 ### Preparing to build
 
 The following libraries are required to build this project:
-* [Simple Display Layer](https://www.libsdl.org/)
+* [SDL2 (Simple DirectMedia Layer)](https://github.com/libsdl-org/SDL)
 
 #### On Debian-based systems
 
