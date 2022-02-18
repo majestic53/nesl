@@ -24,21 +24,6 @@
 
 #include "./common.h"
 
-enum {
-    NESL_BUS_PROCESSOR = 0,
-    NESL_BUS_VIDEO,
-    NESL_BUS_VIDEO_OAM,
-    NESL_BUS_MAX,
-};
-
-enum {
-    NESL_INTERRUPT_RESET = 0,
-    NESL_INTERRUPT_NON_MASKABLE,
-    NESL_INTERRUPT_MASKABLE,
-    NESL_INTERRUPT_MAPPER,
-    NESL_INTERRUPT_MAX,
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

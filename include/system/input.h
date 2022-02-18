@@ -24,24 +24,6 @@
 
 #include "../bus.h"
 
-enum {
-    NESL_BUTTON_A = 0,
-    NESL_BUTTON_B,
-    NESL_BUTTON_SELECT,
-    NESL_BUTTON_START,
-    NESL_BUTTON_UP,
-    NESL_BUTTON_DOWN,
-    NESL_BUTTON_LEFT,
-    NESL_BUTTON_RIGHT,
-    NESL_BUTTON_MAX,
-};
-
-enum {
-    NESL_CONTROLLER_1 = 0,
-    NESL_CONTROLLER_2,
-    NESL_CONTROLLER_MAX,
-};
-
 typedef struct {
 
     struct {

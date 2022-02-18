@@ -24,32 +24,6 @@
 
 #include "../common.h"
 
-enum {
-    NESL_BANK_RAM_CHARACTER = 0,
-    NESL_BANK_RAM_PROGRAM,
-    NESL_BANK_ROM_CHARACTER,
-    NESL_BANK_ROM_PROGRAM,
-    NESL_BANK_MAX,
-};
-
-enum {
-    NESL_MAPPER_0 = 0,
-    NESL_MAPPER_1,
-    NESL_MAPPER_2,
-    NESL_MAPPER_3,
-    NESL_MAPPER_4 = 4,
-    NESL_MAPPER_30 = 30,
-    NESL_MAPPER_66 = 66,
-};
-
-enum {
-    NESL_MIRROR_HORIZONTAL = 0,
-    NESL_MIRROR_VERTICAL,
-    NESL_MIRROR_ONE_LOW,
-    NESL_MIRROR_ONE_HIGH,
-    NESL_MIRROR_MAX,
-};
-
 typedef struct {
     char magic[4];
 
