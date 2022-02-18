@@ -2709,8 +2709,6 @@ static int nesl_test_processor_execute_logical(void)
         goto exit;
     }
 
-/* --- */
-
     if((result = nesl_test_initialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
