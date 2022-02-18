@@ -29,16 +29,7 @@ typedef union {
     };
 
     uint8_t raw;
-} nesl_button_t;
-
-typedef union {
-
-    struct {
-        uint8_t state : 1;
-    };
-
-    uint8_t raw;
-} nesl_stobe_t;
+} nesl_state_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +48,7 @@ int nesl_input_initialize(nesl_input_t *input)
 uint8_t nesl_input_read(nesl_input_t *input, uint16_t address)
 {
     int controller = NESL_CONTROLLER_MAX;
-    nesl_button_t result = { .raw = 0x41 };
+    nesl_state_t result = { .raw = 0x41 };
 
     switch(address) {
         case 0x4016:
@@ -105,7 +96,7 @@ void nesl_input_uninitialize(nesl_input_t *input)
 void
 nesl_input_write(nesl_input_t *input, uint16_t address, uint8_t data)
 {
-    nesl_stobe_t strobe = {};
+    nesl_state_t strobe = {};
 
     switch(address) {
         case 0x4016:

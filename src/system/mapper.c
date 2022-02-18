@@ -119,19 +119,16 @@ static const nesl_mapper_context_t CONTEXT[] = {
     },
     };
 
-#define CONTEXT_COUNT \
-    sizeof(CONTEXT) / sizeof(*(CONTEXT))
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 static int nesl_mapper_context_initialize(nesl_mapper_t *mapper)
 {
-    int index, result = NESL_FAILURE;
     const nesl_mapper_context_t *context = NULL;
+    int count = sizeof(CONTEXT) / sizeof(*(CONTEXT)), index, result = NESL_FAILURE;
 
-    for(index = 0; index < CONTEXT_COUNT; ++index) {
+    for(index = 0; index < count; ++index) {
         context = &CONTEXT[index];
 
         if((context->type == mapper->type) && context->initialize) {
@@ -143,7 +140,7 @@ static int nesl_mapper_context_initialize(nesl_mapper_t *mapper)
         }
     }
 
-    if(index == CONTEXT_COUNT) {
+    if(index == count) {
         result = NESL_ERROR_SET("Unsupported mapper type -- %u", mapper->type);
         goto exit;
     }
@@ -162,7 +159,7 @@ exit:
 static void nesl_mapper_context_uninitialize(nesl_mapper_t *mapper)
 {
 
-    for(int index = 0; index < CONTEXT_COUNT; ++index) {
+    for(int index = 0; index < (sizeof(CONTEXT) / sizeof(*(CONTEXT))); ++index) {
         const nesl_mapper_context_t *context = &CONTEXT[index];
 
         if((context->type == mapper->type) && context->uninitialize) {
