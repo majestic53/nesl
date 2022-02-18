@@ -36,19 +36,19 @@ build: $(FILE_BIN)
 
 .PHONY: install
 install:
-	cp $(FILE_BIN) $(DIR_INSTALL)
+	@cp $(FILE_BIN) $(DIR_INSTALL)
 
 .PHONY: uninstall
 uninstall:
-	rm -rf $(DIR_INSTALL)$(FILE)
+	@rm -rf $(DIR_INSTALL)$(FILE)
 
 .PHONY: clean
 clean:
-	rm -rf $(DIR_BUILD)
-	rm -rf $(FILES_OBJ)
+	@rm -rf $(DIR_BUILD)
+	@rm -rf $(FILES_OBJ)
 
 $(DIR_BUILD):
-	mkdir -p $@
+	@mkdir -p $@
 
 $(DIR_ROOT)%.o: $(DIR_ROOT)%.c
 	$(CC) $(FLAGS) -c -o $@ $<

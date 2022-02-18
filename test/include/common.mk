@@ -17,12 +17,28 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_ROOT=./
-DIR_SRC=../../src/system/
+.PHONY: all
+all: build
 
-FILE=mapper
-FILE_BIN=$(DIR_ROOT)test-$(FILE)
-FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
-FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
+.PHONY: build
+build: $(FILE_BIN)
 
-include ../include/common.mk
+.PHONY: run
+run:
+	@if ! ./$(FILE_BIN); then \
+		exit 1; \
+	fi
+
+.PHONY: clean
+clean:
+	@rm -rf $(FILE_BIN)
+	@rm -rf $(FILES_OBJ)
+
+$(DIR_SRC)$(FILE).o: $(DIR_SRC)$(FILE).c
+	$(CC) $(FLAGS) -c -o $@ $<
+
+$(DIR_ROOT)%.o: $(DIR_ROOT)%.c
+	$(CC) $(FLAGS) -c -o $@ $<
+
+$(FILE_BIN): $(DIR_SRC)$(FILE).o $(FILES_OBJ)
+	$(CC) $(FLAGS) $(DIR_SRC)$(FILE).o $(FILES_OBJ) -o $@

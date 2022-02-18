@@ -17,22 +17,24 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-TESTS=$(filter-out include/,$(wildcard */))
+DIR_TESTS=$(filter-out include/,$(wildcard */))
+
+FLAGS_MAKE=--no-print-directory -C
 
 .PHONY: all
 all: build
 
 .PHONY: build
 build:
-	@for test in $(TESTS); do \
-		make -C $$test build; \
+	@for test in $(DIR_TESTS); do \
+		make $(FLAGS_MAKE) $$test build; \
 	done
 
 .PHONY: run
 run:
 	@result=0; \
-	for test in $(TESTS); do \
-		if ! make -C $$test run; then \
+	for test in $(DIR_TESTS); do \
+		if ! make $(FLAGS_MAKE) $$test run; then \
 			result=1; \
 		fi \
 	done; \
@@ -42,6 +44,6 @@ run:
 
 .PHONY: clean
 clean:
-	@for test in $(TESTS); do \
-		make -C $$test clean; \
+	@for test in $(DIR_TESTS); do \
+		make $(FLAGS_MAKE) $$test clean; \
 	done

@@ -23,40 +23,41 @@ DIR_TEST=test/
 FLAGS=-march=native\ -mtune=native\ -std=c99\ -Wall\ -Werror
 FLAGS_DEBUG=FLAGS=$(FLAGS)\ -g
 FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3
+FLAGS_MAKE=--no-print-directory -C
 
 .PHONY: all
 all: release
 
 .PHONY: debug
 debug:
-	@make -C $(DIR_SRC) build $(FLAGS_DEBUG)
+	@make $(FLAGS_MAKE) $(DIR_SRC) build $(FLAGS_DEBUG)
 
 .PHONY: release
 release:
-	@make -C $(DIR_SRC) build $(FLAGS_RELEASE)
+	@make $(FLAGS_MAKE) $(DIR_SRC) build $(FLAGS_RELEASE)
 
 .PHONY: install
 install:
-	@make -C $(DIR_SRC) install
+	@make $(FLAGS_MAKE) $(DIR_SRC) install
 
 .PHONY: uninstall
 uninstall:
-	@make -C $(DIR_SRC) uninstall
+	@make $(FLAGS_MAKE) $(DIR_SRC) uninstall
 
 .PHONY: test
 test: test-release
 
 .PHONY: test-debug
 test-debug:
-	@make -C $(DIR_TEST) build $(FLAGS_DEBUG)
-	@make -C $(DIR_TEST) run
+	@make $(FLAGS_MAKE) $(DIR_TEST) build $(FLAGS_DEBUG)
+	@make $(FLAGS_MAKE) $(DIR_TEST) run
 
 .PHONY: test-release
 test-release:
-	@make -C $(DIR_TEST) build $(FLAGS_RELEASE)
-	@make -C $(DIR_TEST) run
+	@make $(FLAGS_MAKE) $(DIR_TEST) build $(FLAGS_RELEASE)
+	@make $(FLAGS_MAKE) $(DIR_TEST) run
 
 .PHONY: clean
 clean:
-	@make -C $(DIR_SRC) clean
-	@make -C $(DIR_TEST) clean
+	@make $(FLAGS_MAKE) $(DIR_SRC) clean
+	@make $(FLAGS_MAKE) $(DIR_TEST) clean
