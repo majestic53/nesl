@@ -18,7 +18,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 DIR_BUILD=../build/
-DIR_INSTALL=/usr/bin/
 DIR_ROOT=./
 
 FILE=nesl
@@ -33,14 +32,6 @@ all: build
 
 .PHONY: build
 build: $(FILE_BIN)
-
-.PHONY: install
-install:
-	@cp $(FILE_BIN) $(DIR_INSTALL)
-
-.PHONY: uninstall
-uninstall:
-	@rm -rf $(DIR_INSTALL)$(FILE)
 
 .PHONY: clean
 clean:

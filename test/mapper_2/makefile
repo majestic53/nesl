@@ -17,12 +17,8 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_ROOT=./
 DIR_SRC=../../src/system/mapper/
 
 FILE=mapper_2
-FILE_BIN=$(DIR_ROOT)test-$(FILE)
-FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
-FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
 include ../include/common.mk

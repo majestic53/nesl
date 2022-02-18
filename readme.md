@@ -62,22 +62,6 @@ Navigate into the project directory and run make to build the binary:
 cd nesl && make
 ```
 
-#### Installing the binary
-
-Optionally, install the binary to `/usr/bin`:
-
-```
-sudo make install
-```
-
-#### Uninstalling the binary
-
-Uninstall a previously installed binary from `/usr/bin`:
-
-```
-sudo make uninstall
-```
-
 ## Using the binary
 
 Launch the binary from `build/` or `/usr/bin`:

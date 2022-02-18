@@ -36,14 +36,6 @@ debug:
 release:
 	@make $(FLAGS_MAKE) $(DIR_SRC) build $(FLAGS_RELEASE)
 
-.PHONY: install
-install:
-	@make $(FLAGS_MAKE) $(DIR_SRC) install
-
-.PHONY: uninstall
-uninstall:
-	@make $(FLAGS_MAKE) $(DIR_SRC) uninstall
-
 .PHONY: test
 test: test-release
 
