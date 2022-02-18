@@ -22,6 +22,7 @@
 #include "../include/system/input.h"
 #include "../include/system/mapper.h"
 #include "../include/system/processor.h"
+#include "../include/system/video.h"
 #include "../include/service.h"
 
 typedef struct {
