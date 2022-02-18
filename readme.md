@@ -150,4 +150,4 @@ The following keybindings are available:
 
 ## License
 
-MIT License ([`LICENSE`](https://github.com/majestic53/nesl/blob/master/LICENSE), https://opensource.org/licenses/MIT)
+[MIT License](https://opensource.org/licenses/MIT) (See [`LICENSE`](https://github.com/majestic53/nesl/blob/master/LICENSE))
