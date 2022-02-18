@@ -150,4 +150,4 @@ The following keybindings are available:
 
 ## License
 
-[MIT License](https://opensource.org/licenses/MIT) (See [`LICENSE`](https://github.com/majestic53/nesl/blob/master/LICENSE))
+Copyright (C) 2022, David Jolly. Released under the [MIT License](https://opensource.org/licenses/MIT).
