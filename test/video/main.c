@@ -19,8 +19,8 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../../include/system/video.h"
-#include "../include/common.h"
+#include "../../include/system/NESL_video.h"
+#include "../include/NESL_common.h"
 
 /* TODO */
 
@@ -30,7 +30,7 @@ extern "C" {
 
 /* TODO */
 
-static const nesl_test TEST[] = {
+static const NESL_Test TEST[] = {
 
     /* TODO */
 

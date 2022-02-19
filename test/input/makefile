@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/
 
-FILE=input
+FILE=NESL_input
 
-include ../include/common.mk
+include ../include/makefile

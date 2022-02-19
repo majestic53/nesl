@@ -19,8 +19,8 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../../include/system/cartridge.h"
-#include "../include/common.h"
+#include "../../include/system/NESL_cartridge.h"
+#include "../include/NESL_common.h"
 
 typedef struct {
     nesl_cartridge_t cartridge;
@@ -38,22 +38,22 @@ static nesl_test_t g_test = {};
 extern "C" {
 #endif /* __cplusplus */
 
-int nesl_error_set(const char *file, const char *function, int line, const char *format, ...)
+int NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
 {
     return NESL_FAILURE;
 }
 
-static void nesl_test_uninitialize(void)
+static void NESL_TestUninit(void)
 {
-    nesl_cartridge_uninitialize(&g_test.cartridge);
+    NESL_CartridgeUninit(&g_test.cartridge);
     memset(&g_test, 0, sizeof(g_test));
 }
 
-static int nesl_test_initialize(void)
+static int NESL_TestInit(void)
 {
     int bank, result;
 
-    nesl_test_uninitialize();
+    NESL_TestUninit();
     memcpy(g_test.data.header.magic, "NES\x1A", 4);
     g_test.data.header.rom.program = 2;
     g_test.data.header.rom.character = 1;
@@ -74,7 +74,7 @@ static int nesl_test_initialize(void)
         }
     }
 
-    if((result = nesl_cartridge_initialize(&g_test.cartridge, &g_test.data.header, sizeof(g_test.data))) == NESL_FAILURE) {
+    if((result = NESL_CartridgeInit(&g_test.cartridge, &g_test.data.header, sizeof(g_test.data))) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -90,7 +90,7 @@ exit:
     return result;
 }
 
-static int nesl_test_cartridge_read(void)
+static int NESL_TestCartridgeRead(void)
 {
     int bank, result = NESL_SUCCESS;
 
@@ -99,7 +99,7 @@ static int nesl_test_cartridge_read(void)
 
         for(uint16_t address = 0; address < (8 * 1024); ++address) {
 
-            if(NESL_ASSERT(nesl_cartridge_ram_read(&g_test.cartridge, NESL_BANK_RAM_PROGRAM, (bank * 8 * 1024) + address) == data++)) {
+            if(NESL_ASSERT(NESL_CartridgeRamRead(&g_test.cartridge, NESL_BANK_RAM_PROGRAM, (bank * 8 * 1024) + address) == data++)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -111,7 +111,7 @@ static int nesl_test_cartridge_read(void)
 
         for(uint16_t address = 0; address < (8 * 1024); ++address) {
 
-            if(NESL_ASSERT(nesl_cartridge_rom_read(&g_test.cartridge, NESL_BANK_ROM_CHARACTER, (bank * 8 * 1024) + address) == data++)) {
+            if(NESL_ASSERT(NESL_CartridgeRomRead(&g_test.cartridge, NESL_BANK_ROM_CHARACTER, (bank * 8 * 1024) + address) == data++)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -123,7 +123,7 @@ static int nesl_test_cartridge_read(void)
 
         for(uint16_t address = 0; address < (16 * 1024); ++address) {
 
-            if(NESL_ASSERT(nesl_cartridge_rom_read(&g_test.cartridge, NESL_BANK_ROM_PROGRAM, (bank * 16 * 1024) + address) == data++)) {
+            if(NESL_ASSERT(NESL_CartridgeRomRead(&g_test.cartridge, NESL_BANK_ROM_PROGRAM, (bank * 16 * 1024) + address) == data++)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -136,7 +136,7 @@ exit:
     return result;
 }
 
-static int nesl_test_cartridge_write(void)
+static int NESL_TestCartridgeWrite(void)
 {
     uint8_t data = 0xFF;
     int result = NESL_SUCCESS;
@@ -144,7 +144,7 @@ static int nesl_test_cartridge_write(void)
     g_test.cartridge.ram.character = g_test.data.character[0];
 
     for(uint16_t address = 0; address < (8 * 1024); ++address) {
-        nesl_cartridge_ram_write(&g_test.cartridge, NESL_BANK_RAM_CHARACTER, address, data);
+        NESL_CartridgeRamWrite(&g_test.cartridge, NESL_BANK_RAM_CHARACTER, address, data);
 
         if(NESL_ASSERT(g_test.cartridge.ram.character[address] == data--)) {
             result = NESL_FAILURE;
@@ -158,7 +158,7 @@ static int nesl_test_cartridge_write(void)
         data = 0xFF;
 
         for(uint16_t address = 0; address < (8 * 1024); ++address) {
-            nesl_cartridge_ram_write(&g_test.cartridge, NESL_BANK_RAM_PROGRAM, (bank * 8 * 1024) + address, data);
+            NESL_CartridgeRamWrite(&g_test.cartridge, NESL_BANK_RAM_PROGRAM, (bank * 8 * 1024) + address, data);
 
             if(NESL_ASSERT(g_test.cartridge.ram.program[(bank * 8 * 1024) + address] == data--)) {
                 result = NESL_FAILURE;
@@ -173,9 +173,9 @@ exit:
     return result;
 }
 
-static const nesl_test TEST[] = {
-    nesl_test_cartridge_read,
-    nesl_test_cartridge_write,
+static const NESL_Test TEST[] = {
+    NESL_TestCartridgeRead,
+    NESL_TestCartridgeWrite,
     };
 
 int main(void)
@@ -184,7 +184,7 @@ int main(void)
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
-        if(nesl_test_initialize() == NESL_FAILURE) {
+        if(NESL_TestInit() == NESL_FAILURE) {
             result = NESL_FAILURE;
             continue;
         }
@@ -194,7 +194,7 @@ int main(void)
         }
     }
 
-    nesl_test_uninitialize();
+    NESL_TestUninit();
 
     return result;
 }

@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/mapper/
 
-FILE=mapper_3
+FILE=NESL_mapper_3
 
-include ../include/common.mk
+include ../include/makefile

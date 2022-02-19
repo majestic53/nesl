@@ -25,7 +25,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/nesl.h"
+#include "../include/NESL.h"
 
 enum {
     OPTION_FULLSCREEN = 0,
@@ -56,7 +56,7 @@ static const char *DESCRIPTION[] = {
 extern "C" {
 #endif /* __cplusplus */
 
-static int read_file(nesl_t *input, char *base, char *path)
+static int ReadFile(nesl_t *input, char *base, char *path)
 {
     FILE *file = NULL;
     int result = NESL_SUCCESS;
@@ -101,9 +101,9 @@ exit:
     return result;
 }
 
-static void show_version(FILE *stream, bool verbose)
+static void ShowVersion(FILE *stream, bool verbose)
 {
-    const nesl_version_t *version = nesl_version();
+    const nesl_version_t *version = NESL_GetVersion();
 
     if(verbose) {
         fprintf(stream, "NESL ");
@@ -116,11 +116,11 @@ static void show_version(FILE *stream, bool verbose)
     }
 }
 
-static void show_help(FILE *stream, bool verbose)
+static void ShowHelp(FILE *stream, bool verbose)
 {
 
     if(verbose) {
-        show_version(stream, true);
+        ShowVersion(stream, true);
         fprintf(stream, "\n");
     }
 
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
                 input.fullscreen = true;
                 break;
             case 'h':
-                show_help(stdout, true);
+                ShowHelp(stdout, true);
                 goto exit;
             case 'l':
                 input.linear = true;
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
                 input.scale = strtol(optarg, NULL, 10);
                 break;
             case 'v':
-                show_version(stdout, false);
+                ShowVersion(stdout, false);
                 goto exit;
             case '?':
             default:
@@ -169,14 +169,14 @@ int main(int argc, char *argv[])
 
     for(option = optind; option < argc; ++option) {
 
-        if((result = read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
+        if((result = ReadFile(&input, argv[0], argv[option])) == NESL_FAILURE) {
             goto exit;
         }
         break;
     }
 
-    if((result = nesl(&input)) == NESL_FAILURE) {
-        fprintf(stderr, "%s: %s\n", argv[0], nesl_error());
+    if((result = NESL_Run(&input)) == NESL_FAILURE) {
+        fprintf(stderr, "%s: %s\n", argv[0], NESL_GetError());
         goto exit;
     }
 

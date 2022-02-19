@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/
 
-FILE=processor
+FILE=NESL_processor
 
-include ../include/common.mk
+include ../include/makefile

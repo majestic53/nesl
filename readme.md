@@ -64,7 +64,7 @@ cd nesl && make
 
 ## Using the binary
 
-Launch the binary from `build/` or `/usr/bin`:
+Launch the binary from `build/`:
 
 ```
 nesl [options] file
@@ -134,4 +134,4 @@ The following keybindings are available:
 
 ## License
 
-Copyright (C) 2022, David Jolly. Released under the [MIT License](https://opensource.org/licenses/MIT).
+Copyright (C) 2022 David Jolly. Released under the [MIT License](https://opensource.org/licenses/MIT).

@@ -19,8 +19,8 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../../include/system/input.h"
-#include "../include/common.h"
+#include "../../include/system/NESL_input.h"
+#include "../include/NESL_common.h"
 
 static uint32_t KEY[NESL_CONTROLLER_MAX][NESL_BUTTON_MAX] = {
     {
@@ -42,23 +42,23 @@ static nesl_test_t g_test = {};
 extern "C" {
 #endif /* __cplusplus */
 
-bool nesl_service_button(int controller, int button)
+bool NESL_ServiceGetButton(int controller, int button)
 {
     return g_test.state[KEY[controller][button] - 1];
 }
 
-static void nesl_test_initialize(void)
+static void NESL_TestInit(void)
 {
     memset(&g_test, 0, sizeof(g_test));
 }
 
-static int nesl_test_input_initialize(void)
+static int NESL_TestInputInit(void)
 {
     int result = NESL_SUCCESS;
 
-    nesl_test_initialize();
+    NESL_TestInit();
 
-    if(NESL_ASSERT(nesl_input_initialize(&g_test.input) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_InputInit(&g_test.input) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -77,13 +77,13 @@ exit:
     return result;
 }
 
-static int nesl_test_input_read(void)
+static int NESL_TestInputRead(void)
 {
     int result = NESL_SUCCESS;
 
-    nesl_test_initialize();
+    NESL_TestInit();
 
-    if(NESL_ASSERT(nesl_input_initialize(&g_test.input) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_InputInit(&g_test.input) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -92,7 +92,7 @@ static int nesl_test_input_read(void)
 
         for(int button = 0; button < NESL_BUTTON_MAX; ++button) {
 
-            if(NESL_ASSERT((nesl_input_read(&g_test.input, 0x4016 + controller) == 0x41)
+            if(NESL_ASSERT((NESL_InputRead(&g_test.input, 0x4016 + controller) == 0x41)
                     && (g_test.input.button[controller].state[button] == false))) {
                 result = NESL_FAILURE;
                 goto exit;
@@ -109,14 +109,14 @@ static int nesl_test_input_read(void)
         g_test.state[index] = (index & 1) ? true : false;
     }
 
-    nesl_input_write(&g_test.input, 0x4016, 1);
-    nesl_input_write(&g_test.input, 0x4016, 0);
+    NESL_InputWrite(&g_test.input, 0x4016, 1);
+    NESL_InputWrite(&g_test.input, 0x4016, 0);
 
     for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
         for(int button = 0; button < NESL_BUTTON_MAX; ++button) {
 
-            if(NESL_ASSERT((nesl_input_read(&g_test.input, 0x4016 + controller)
+            if(NESL_ASSERT((NESL_InputRead(&g_test.input, 0x4016 + controller)
                     == (0x40 | (g_test.state[(NESL_BUTTON_MAX * controller) + button] ? 1 : 0)))
                             && (g_test.input.button[controller].position == (button + 1)))) {
                 result = NESL_FAILURE;
@@ -136,11 +136,11 @@ exit:
     return result;
 }
 
-static int nesl_test_input_reset(void)
+static int NESL_TestInputReset(void)
 {
     int result = NESL_SUCCESS;
 
-    nesl_test_initialize();
+    NESL_TestInit();
 
     for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
@@ -151,7 +151,7 @@ static int nesl_test_input_reset(void)
         g_test.input.button[controller].position = NESL_BUTTON_A;
     }
 
-    nesl_input_reset(&g_test.input);
+    NESL_InputReset(&g_test.input);
 
     for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
@@ -180,18 +180,18 @@ exit:
     return result;
 }
 
-static int nesl_test_input_uninitialize(void)
+static int NESL_TestInputUninit(void)
 {
     int result = NESL_SUCCESS;
 
-    nesl_test_initialize();
+    NESL_TestInit();
 
-    if(NESL_ASSERT(nesl_input_initialize(&g_test.input) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_InputInit(&g_test.input) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    nesl_input_uninitialize(&g_test.input);
+    NESL_InputUninit(&g_test.input);
 
     for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
@@ -220,18 +220,18 @@ exit:
     return result;
 }
 
-static int nesl_test_input_write(void)
+static int NESL_TestInputWrite(void)
 {
     int result = NESL_SUCCESS;
 
-    nesl_test_initialize();
+    NESL_TestInit();
 
-    if(NESL_ASSERT(nesl_input_initialize(&g_test.input) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_InputInit(&g_test.input) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    nesl_input_write(&g_test.input, 0x4016, 0);
+    NESL_InputWrite(&g_test.input, 0x4016, 0);
 
     for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
@@ -254,7 +254,7 @@ static int nesl_test_input_write(void)
         goto exit;
     }
 
-    nesl_input_write(&g_test.input, 0x4016, 1);
+    NESL_InputWrite(&g_test.input, 0x4016, 1);
 
     for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
@@ -281,7 +281,7 @@ static int nesl_test_input_write(void)
         g_test.state[index] = (index & 1) ? true : false;
     }
 
-    nesl_input_write(&g_test.input, 0x4016, 0);
+    NESL_InputWrite(&g_test.input, 0x4016, 0);
 
     if(NESL_ASSERT(g_test.input.strobe == false)) {
         result = NESL_FAILURE;
@@ -310,12 +310,12 @@ exit:
     return result;
 }
 
-static const nesl_test TEST[] = {
-    nesl_test_input_initialize,
-    nesl_test_input_read,
-    nesl_test_input_reset,
-    nesl_test_input_uninitialize,
-    nesl_test_input_write,
+static const NESL_Test TEST[] = {
+    NESL_TestInputInit,
+    NESL_TestInputRead,
+    NESL_TestInputReset,
+    NESL_TestInputUninit,
+    NESL_TestInputWrite,
     };
 
 int main(void)
