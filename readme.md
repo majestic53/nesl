@@ -4,6 +4,8 @@
 
 A lightweight NES emulator, written in C.
 
+![Demo](https://github.com/majestic53/nesl/blob/master/docs/demo.png)
+
 ## Features
 
 __NOTE__: This project is a currently a work-in-progress. Some features may not be completed or may be buggy.
