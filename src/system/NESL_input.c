@@ -37,12 +37,7 @@ extern "C" {
 
 int NESL_InputInit(nesl_input_t *input)
 {
-
-    for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
-        input->button[controller].position = NESL_BUTTON_MAX;
-    }
-
-    return NESL_SUCCESS;
+    return NESL_InputReset(input);
 }
 
 uint8_t NESL_InputRead(nesl_input_t *input, uint16_t address)

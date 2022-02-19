@@ -35,9 +35,7 @@ typedef struct {
 } nesl_operand_t;
 
 typedef void (*NESL_ProcessorExecute)(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand);
-
 typedef void (*NESL_ProcessorOperand)(nesl_processor_t *processor, nesl_operand_t *operand);
-
 typedef void (*NESL_ProcessorOperation)(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right);
 
 static const nesl_instruction_t INSTRUCTION[] = {
@@ -941,7 +939,7 @@ static void NESL_ProcessorOperandAbsolute(nesl_processor_t *processor, nesl_oper
     operand->page_cross = false;
 }
 
-static void NESL_ProcessorOperandAbsolute_x(nesl_processor_t *processor, nesl_operand_t *operand)
+static void NESL_ProcessorOperandAbsoluteX(nesl_processor_t *processor, nesl_operand_t *operand)
 {
     operand->data.word = NESL_ProcessorFetchWord(processor);
     operand->effective.word = operand->data.word + processor->state.index.x.low;
@@ -949,7 +947,7 @@ static void NESL_ProcessorOperandAbsolute_x(nesl_processor_t *processor, nesl_op
     operand->page_cross = (operand->effective.high != operand->data.high);
 }
 
-static void NESL_ProcessorOperandAbsolute_y(nesl_processor_t *processor, nesl_operand_t *operand)
+static void NESL_ProcessorOperandAbsoluteY(nesl_processor_t *processor, nesl_operand_t *operand)
 {
     operand->data.word = NESL_ProcessorFetchWord(processor);
     operand->effective.word = operand->data.word + processor->state.index.y.low;
@@ -996,7 +994,7 @@ static void NESL_ProcessorOperandIndirect(nesl_processor_t *processor, nesl_oper
     operand->page_cross = false;
 }
 
-static void NESL_ProcessorOperandIndirect_x(nesl_processor_t *processor, nesl_operand_t *operand)
+static void NESL_ProcessorOperandIndirectX(nesl_processor_t *processor, nesl_operand_t *operand)
 {
     operand->data.word = NESL_ProcessorFetch(processor);
     operand->indirect.low = (operand->data.word + processor->state.index.x.low);
@@ -1006,7 +1004,7 @@ static void NESL_ProcessorOperandIndirect_x(nesl_processor_t *processor, nesl_op
     operand->page_cross = false;
 }
 
-static void NESL_ProcessorOperandIndirect_y(nesl_processor_t *processor, nesl_operand_t *operand)
+static void NESL_ProcessorOperandIndirectY(nesl_processor_t *processor, nesl_operand_t *operand)
 {
     operand->data.word = NESL_ProcessorFetch(processor);
     operand->indirect.low = NESL_BusRead(NESL_BUS_PROCESSOR, operand->data.low);
@@ -1037,7 +1035,7 @@ static void NESL_ProcessorOperandZeropage(nesl_processor_t *processor, nesl_oper
     operand->page_cross = false;
 }
 
-static void NESL_ProcessorOperandZeropage_x(nesl_processor_t *processor, nesl_operand_t *operand)
+static void NESL_ProcessorOperandZeropageX(nesl_processor_t *processor, nesl_operand_t *operand)
 {
     operand->data.word = NESL_ProcessorFetch(processor);
     operand->effective.low = operand->data.low + processor->state.index.x.low;
@@ -1046,7 +1044,7 @@ static void NESL_ProcessorOperandZeropage_x(nesl_processor_t *processor, nesl_op
     operand->page_cross = false;
 }
 
-static void NESL_ProcessorOperandZeropage_y(nesl_processor_t *processor, nesl_operand_t *operand)
+static void NESL_ProcessorOperandZeropageY(nesl_processor_t *processor, nesl_operand_t *operand)
 {
     operand->data.word = NESL_ProcessorFetch(processor);
     operand->effective.low = operand->data.low + processor->state.index.y.low;
@@ -1057,18 +1055,18 @@ static void NESL_ProcessorOperandZeropage_y(nesl_processor_t *processor, nesl_op
 
 static const NESL_ProcessorOperand OPERAND[] = {
     NESL_ProcessorOperandAbsolute,
-    NESL_ProcessorOperandAbsolute_x,
-    NESL_ProcessorOperandAbsolute_y,
+    NESL_ProcessorOperandAbsoluteX,
+    NESL_ProcessorOperandAbsoluteY,
     NESL_ProcessorOperandAccumulator,
     NESL_ProcessorOperandImmediate,
     NESL_ProcessorOperandImplied,
     NESL_ProcessorOperandIndirect,
-    NESL_ProcessorOperandIndirect_x,
-    NESL_ProcessorOperandIndirect_y,
+    NESL_ProcessorOperandIndirectX,
+    NESL_ProcessorOperandIndirectY,
     NESL_ProcessorOperandRelative,
     NESL_ProcessorOperandZeropage,
-    NESL_ProcessorOperandZeropage_x,
-    NESL_ProcessorOperandZeropage_y,
+    NESL_ProcessorOperandZeropageX,
+    NESL_ProcessorOperandZeropageY,
     };
 
 static void NESL_ProcessorInstruction(nesl_processor_t *processor)
@@ -1159,9 +1157,7 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
 
 int NESL_ProcessorInit(nesl_processor_t *processor)
 {
-    NESL_ProcessorReset(processor);
-
-    return NESL_SUCCESS;
+    return NESL_ProcessorReset(processor);
 }
 
 int NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)

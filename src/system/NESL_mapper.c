@@ -191,6 +191,10 @@ int NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
         goto exit;
     }
 
+    if((result = NESL_MapperReset(mapper)) == NESL_FAILURE) {
+        goto exit;
+    }
+
 exit:
     return result;
 }

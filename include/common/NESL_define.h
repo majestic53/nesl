@@ -183,6 +183,17 @@ enum {
     NESL_OPERATION_TRANSFER,
 };
 
+enum {
+    NESL_PORT_CONTROL = 0,
+    NESL_PORT_MASK,
+    NESL_PORT_STATUS,
+    NESL_PORT_OAM_ADDRESS,
+    NESL_PORT_OAM_DATA,
+    NESL_PORT_SCROLL,
+    NESL_PORT_ADDRESS,
+    NESL_PORT_DATA,
+};
+
 typedef union {
 
     struct {

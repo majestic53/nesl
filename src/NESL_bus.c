@@ -30,7 +30,7 @@ typedef struct {
     nesl_input_t input;
     nesl_mapper_t mapper;
     nesl_processor_t processor;
-    //nesl_video_t video;
+    nesl_video_t video;
 } nesl_bus_t;
 
 static nesl_bus_t g_bus = {};
@@ -55,9 +55,9 @@ static int NESL_BusReset(void)
         goto exit;
     }
 
-    /*if((result = NESL_VideoReset(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
+    if((result = NESL_VideoReset(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
         goto exit;
-    }*/
+    }
 
     if((result = NESL_ServiceReset()) == NESL_FAILURE) {
         goto exit;
@@ -71,7 +71,7 @@ exit:
 
 bool NESL_BusCycle(void)
 {
-    bool result = true;//NESL_VideoCycle(&g_bus.video);
+    bool result = NESL_VideoCycle(&g_bus.video);
 
     NESL_ProcessorCycle(&g_bus.processor, g_bus.cycle);
     ++g_bus.cycle;
@@ -95,9 +95,9 @@ int NESL_BusInit(const void *data, int length)
         goto exit;
     }
 
-    /*if((result = NESL_VideoInit(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
+    if((result = NESL_VideoInit(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
         goto exit;
-    }*/
+    }
 
     if((result = NESL_BusReset()) == NESL_FAILURE) {
         goto exit;
@@ -151,7 +151,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
                     result = NESL_ProcessorRead(&g_bus.processor, address);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    //result = NESL_VideoPortRead(&g_bus.video, address);
+                    result = NESL_VideoPortRead(&g_bus.video, address);
                     break;
                 case 0x4016 ... 0x4017:
                     result = NESL_InputRead(&g_bus.input, address);
@@ -173,7 +173,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
                     result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_ROM_CHARACTER, address);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    //result = NESL_VideoRead(&g_bus.video, address);
+                    result = NESL_VideoRead(&g_bus.video, address);
                     break;
                 default:
                     break;
@@ -183,7 +183,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x00FF:
-                    //result = NESL_VideoOamRead(&g_bus.video, address);
+                    result = NESL_VideoOamRead(&g_bus.video, address);
                     break;
                 default:
                     break;
@@ -198,7 +198,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
 
 void NESL_BusUninit(void)
 {
-    //NESL_VideoUninit(&g_bus.video);
+    NESL_VideoUninit(&g_bus.video);
     NESL_ProcessorUninit(&g_bus.processor);
     NESL_InputUninit(&g_bus.input);
     NESL_MapperUninit(&g_bus.mapper);
@@ -217,7 +217,7 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
                     NESL_ProcessorWrite(&g_bus.processor, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    //NESL_VideoPortWrite(&g_bus.video, address, data);
+                    NESL_VideoPortWrite(&g_bus.video, address, data);
                     break;
                 case 0x4016:
                     NESL_InputWrite(&g_bus.input, address, data);
@@ -239,7 +239,7 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
                     NESL_MapperWrite(&g_bus.mapper, NESL_BANK_ROM_CHARACTER, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    //NESL_VideoWrite(&g_bus.video, address, data);
+                    NESL_VideoWrite(&g_bus.video, address, data);
                     break;
                 default:
                     break;
@@ -249,7 +249,7 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x00FF:
-                    //NESL_VideoOamWrite(&g_bus.video, address, data);
+                    NESL_VideoOamWrite(&g_bus.video, address, data);
                     break;
                 default:
                     break;
