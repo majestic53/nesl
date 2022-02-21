@@ -44,6 +44,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 int NESL_Mapper30Init(nesl_mapper_t *mapper);
+int NESL_Mapper30Interrupt(nesl_mapper_t *mapper);
 uint8_t NESL_Mapper30RamRead(nesl_mapper_t *mapper, int type, uint16_t address);
 void NESL_Mapper30RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
 int NESL_Mapper30Reset(nesl_mapper_t *mapper);

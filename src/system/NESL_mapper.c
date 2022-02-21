@@ -43,18 +43,18 @@ static const nesl_mapper_context_t CONTEXT[] = {
     {
         NESL_MAPPER_0,
         NESL_Mapper0Init,
-        NULL,
+        NESL_Mapper0Interrupt,
         NESL_Mapper0RamRead,
         NESL_Mapper0RamWrite,
-        NULL,
+        NESL_Mapper0Reset,
         NESL_Mapper0RomRead,
-        NULL,
-        NULL,
+        NESL_Mapper0RomWrite,
+        NESL_Mapper0Uninit,
     },
     {
         NESL_MAPPER_1,
         NESL_Mapper1Init,
-        NULL,
+        NESL_Mapper1Interrupt,
         NESL_Mapper1RamRead,
         NESL_Mapper1RamWrite,
         NESL_Mapper1Reset,
@@ -65,7 +65,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
     {
         NESL_MAPPER_2,
         NESL_Mapper2Init,
-        NULL,
+        NESL_Mapper2Interrupt,
         NESL_Mapper2RamRead,
         NESL_Mapper2RamWrite,
         NESL_Mapper2Reset,
@@ -76,7 +76,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
     {
         NESL_MAPPER_3,
         NESL_Mapper3Init,
-        NULL,
+        NESL_Mapper3Interrupt,
         NESL_Mapper3RamRead,
         NESL_Mapper3RamWrite,
         NESL_Mapper3Reset,
@@ -98,7 +98,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
     {
         NESL_MAPPER_30,
         NESL_Mapper30Init,
-        NULL,
+        NESL_Mapper30Interrupt,
         NESL_Mapper30RamRead,
         NESL_Mapper30RamWrite,
         NESL_Mapper30Reset,
@@ -109,7 +109,7 @@ static const nesl_mapper_context_t CONTEXT[] = {
     {
         NESL_MAPPER_66,
         NESL_Mapper66Init,
-        NULL,
+        NESL_Mapper66Interrupt,
         NESL_Mapper66RamRead,
         NESL_Mapper66RamWrite,
         NESL_Mapper66Reset,
@@ -145,12 +145,12 @@ static int NESL_MapperContextInit(nesl_mapper_t *mapper)
         goto exit;
     }
 
-    mapper->interrupt = context->interrupt;
-    mapper->ram_read = context->ram_read;
-    mapper->ram_write = context->ram_write;
-    mapper->reset = context->reset;
-    mapper->rom_read = context->rom_read;
-    mapper->rom_write = context->rom_write;
+    mapper->callback.interrupt = context->interrupt;
+    mapper->callback.ram_read = context->ram_read;
+    mapper->callback.ram_write = context->ram_write;
+    mapper->callback.reset = context->reset;
+    mapper->callback.rom_read = context->rom_read;
+    mapper->callback.rom_write = context->rom_write;
 
 exit:
     return result;
@@ -168,12 +168,7 @@ static void NESL_MapperContextUninit(nesl_mapper_t *mapper)
         }
     }
 
-    mapper->interrupt = NULL;
-    mapper->ram_read = NULL;
-    mapper->ram_write = NULL;
-    mapper->reset = NULL;
-    mapper->rom_read = NULL;
-    mapper->rom_write = NULL;
+    memset(&mapper->callback, 0, sizeof(mapper->callback));
 }
 
 int NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
@@ -201,17 +196,7 @@ exit:
 
 int NESL_MapperInterrupt(nesl_mapper_t *mapper)
 {
-    int result = NESL_SUCCESS;
-
-    if(mapper->interrupt) {
-
-        if((result = mapper->interrupt(mapper)) == NESL_FAILURE) {
-            goto exit;
-        }
-    }
-
-exit:
-    return result;
+    return mapper->callback.interrupt(mapper);
 }
 
 uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
@@ -221,17 +206,11 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
     switch(type) {
         case NESL_BANK_RAM_CHARACTER:
         case NESL_BANK_RAM_PROGRAM:
-
-            if(mapper->ram_read) {
-                result = mapper->ram_read(mapper, type, address);
-            }
+            result = mapper->callback.ram_read(mapper, type, address);
             break;
         case NESL_BANK_ROM_CHARACTER:
         case NESL_BANK_ROM_PROGRAM:
-
-            if(mapper->rom_read) {
-                result = mapper->rom_read(mapper, type, address);
-            }
+            result = mapper->callback.rom_read(mapper, type, address);
             break;
         default:
             break;
@@ -242,17 +221,7 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
 
 int NESL_MapperReset(nesl_mapper_t *mapper)
 {
-    int result = NESL_SUCCESS;
-
-    if(mapper->reset) {
-
-        if((result = mapper->reset(mapper)) == NESL_FAILURE) {
-            goto exit;
-        }
-    }
-
-exit:
-    return result;
+    return mapper->callback.reset(mapper);
 }
 
 void NESL_MapperUninit(nesl_mapper_t *mapper)
@@ -268,17 +237,11 @@ void NESL_MapperWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t
     switch(type) {
         case NESL_BANK_RAM_CHARACTER:
         case NESL_BANK_RAM_PROGRAM:
-
-            if(mapper->ram_write) {
-                mapper->ram_write(mapper, type, address, data);
-            }
+            mapper->callback.ram_write(mapper, type, address, data);
             break;
         case NESL_BANK_ROM_CHARACTER:
         case NESL_BANK_ROM_PROGRAM:
-
-            if(mapper->rom_write) {
-                mapper->rom_write(mapper, type, address, data);
-            }
+            mapper->callback.rom_write(mapper, type, address, data);
             break;
         default:
             break;

@@ -32,6 +32,15 @@ typedef struct nesl_mapper_s {
     void *context;
 
     struct {
+        int (*interrupt)(struct nesl_mapper_s *mapper);
+        uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
+        void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+        int (*reset)(struct nesl_mapper_s *mapper);
+        uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
+        void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+    } callback;
+
+    struct {
         uint32_t program;
     } ram;
 
@@ -39,13 +48,6 @@ typedef struct nesl_mapper_s {
         uint32_t character[8];
         uint32_t program[4];
     } rom;
-
-    int (*interrupt)(struct nesl_mapper_s *mapper);
-    uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-    void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
-    int (*reset)(struct nesl_mapper_s *mapper);
-    uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-    void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
 } nesl_mapper_t;
 
 #ifdef __cplusplus

@@ -114,12 +114,12 @@ int NESL_SetError(const char *file, const char *function, int line, const char *
 static void NESL_TestUninit(void)
 {
     NESL_Mapper4Uninit(&g_test.mapper);
-    g_test.mapper.interrupt = NULL;
-    g_test.mapper.ram_read = NULL;
-    g_test.mapper.ram_write = NULL;
-    g_test.mapper.reset = NULL;
-    g_test.mapper.rom_read = NULL;
-    g_test.mapper.rom_write = NULL;
+    g_test.mapper.callback.interrupt = NULL;
+    g_test.mapper.callback.ram_read = NULL;
+    g_test.mapper.callback.ram_write = NULL;
+    g_test.mapper.callback.reset = NULL;
+    g_test.mapper.callback.rom_read = NULL;
+    g_test.mapper.callback.rom_write = NULL;
 }
 
 static int NESL_TestInit(const nesl_header_t *header)
@@ -127,12 +127,12 @@ static int NESL_TestInit(const nesl_header_t *header)
     NESL_TestUninit();
     memset(&g_test, 0, sizeof(g_test));
     g_test.mapper.cartridge.header = header;
-    g_test.mapper.interrupt = &NESL_Mapper4Interrupt;
-    g_test.mapper.ram_read = &NESL_Mapper4RamRead;
-    g_test.mapper.ram_write = &NESL_Mapper4RamWrite;
-    g_test.mapper.reset = &NESL_Mapper4Reset;
-    g_test.mapper.rom_read = &NESL_Mapper4RomRead;
-    g_test.mapper.rom_write = &NESL_Mapper4RomWrite;
+    g_test.mapper.callback.interrupt = &NESL_Mapper4Interrupt;
+    g_test.mapper.callback.ram_read = &NESL_Mapper4RamRead;
+    g_test.mapper.callback.ram_write = &NESL_Mapper4RamWrite;
+    g_test.mapper.callback.reset = &NESL_Mapper4Reset;
+    g_test.mapper.callback.rom_read = &NESL_Mapper4RomRead;
+    g_test.mapper.callback.rom_write = &NESL_Mapper4RomWrite;
 
     return NESL_Mapper4Init(&g_test.mapper);
 }
@@ -162,14 +162,14 @@ static int NESL_TestMapper4Init(void)
             && (g_test.mapper.rom.program[1] == 0)
             && (g_test.mapper.rom.program[2] == (header.rom.program * 16 * 1024) - (2 * 8 * 1024))
             && (g_test.mapper.rom.program[3] == (header.rom.program * 16 * 1024) - (1 * 8 * 1024))
-            && (g_test.mapper.interrupt == &NESL_Mapper4Interrupt)
-            && (g_test.mapper.ram_read == &NESL_Mapper4RamRead)
-            && (g_test.mapper.ram_write == &NESL_Mapper4RamWrite)
-            && (g_test.mapper.reset == &NESL_Mapper4Reset)
-            && (g_test.mapper.rom_read == &NESL_Mapper4RomRead)
-            && (g_test.mapper.rom_write == &NESL_Mapper4RomWrite)
             && (g_test.mapper.mirror == NESL_MIRROR_VERTICAL)
-            && (g_test.mapper.context != NULL))) {
+            && (g_test.mapper.context != NULL)
+            && (g_test.mapper.callback.interrupt == &NESL_Mapper4Interrupt)
+            && (g_test.mapper.callback.ram_read == &NESL_Mapper4RamRead)
+            && (g_test.mapper.callback.ram_write == &NESL_Mapper4RamWrite)
+            && (g_test.mapper.callback.reset == &NESL_Mapper4Reset)
+            && (g_test.mapper.callback.rom_read == &NESL_Mapper4RomRead)
+            && (g_test.mapper.callback.rom_write == &NESL_Mapper4RomWrite))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -194,14 +194,14 @@ static int NESL_TestMapper4Init(void)
             && (g_test.mapper.rom.program[1] == 0)
             && (g_test.mapper.rom.program[2] == (header.rom.program * 16 * 1024) - (2 * 8 * 1024))
             && (g_test.mapper.rom.program[3] == (header.rom.program * 16 * 1024) - (1 * 8 * 1024))
-            && (g_test.mapper.interrupt == &NESL_Mapper4Interrupt)
-            && (g_test.mapper.ram_read == &NESL_Mapper4RamRead)
-            && (g_test.mapper.ram_write == &NESL_Mapper4RamWrite)
-            && (g_test.mapper.reset == &NESL_Mapper4Reset)
-            && (g_test.mapper.rom_read == &NESL_Mapper4RomRead)
-            && (g_test.mapper.rom_write == &NESL_Mapper4RomWrite)
             && (g_test.mapper.mirror == NESL_MIRROR_VERTICAL)
-            && (g_test.mapper.context != NULL))) {
+            && (g_test.mapper.context != NULL)
+            && (g_test.mapper.callback.interrupt == &NESL_Mapper4Interrupt)
+            && (g_test.mapper.callback.ram_read == &NESL_Mapper4RamRead)
+            && (g_test.mapper.callback.ram_write == &NESL_Mapper4RamWrite)
+            && (g_test.mapper.callback.reset == &NESL_Mapper4Reset)
+            && (g_test.mapper.callback.rom_read == &NESL_Mapper4RomRead)
+            && (g_test.mapper.callback.rom_write == &NESL_Mapper4RomWrite))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -226,7 +226,11 @@ static int NESL_TestMapper4Interrupt(void)
     context->interrupt.count = 0;
     context->interrupt.enable = false;
     context->interrupt.latch = 10;
-    NESL_Mapper4Interrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(NESL_Mapper4Interrupt(&g_test.mapper) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
 
     if(NESL_ASSERT(context->interrupt.count == context->interrupt.latch)) {
         result = NESL_FAILURE;
@@ -235,14 +239,21 @@ static int NESL_TestMapper4Interrupt(void)
 
     context->interrupt.count = 1;
     context->interrupt.enable = false;
-    NESL_Mapper4Interrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(NESL_Mapper4Interrupt(&g_test.mapper) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
 
     if(NESL_ASSERT(context->interrupt.count == 0)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    NESL_Mapper4Interrupt(&g_test.mapper);
+    if(NESL_ASSERT(NESL_Mapper4Interrupt(&g_test.mapper) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
 
     if(NESL_ASSERT((context->interrupt.count == context->interrupt.latch)
             && (g_test.int_type == 0))) {
@@ -252,8 +263,16 @@ static int NESL_TestMapper4Interrupt(void)
 
     context->interrupt.count = 1;
     context->interrupt.enable = true;
-    NESL_Mapper4Interrupt(&g_test.mapper);
-    NESL_Mapper4Interrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(NESL_Mapper4Interrupt(&g_test.mapper) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    if(NESL_ASSERT(NESL_Mapper4Interrupt(&g_test.mapper) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
 
     if(NESL_ASSERT((context->interrupt.count == context->interrupt.latch)
             && (g_test.int_type == NESL_INTERRUPT_MASKABLE))) {

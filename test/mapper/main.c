@@ -40,23 +40,28 @@ typedef struct {
 
     struct {
         bool initialized;
+        bool interrupt;
+        bool reset;
         int status;
     } mapper_0;
 
     struct {
         bool initialized;
+        bool interrupt;
         bool reset;
         int status;
     } mapper_1;
 
     struct {
         bool initialized;
+        bool interrupt;
         bool reset;
         int status;
     } mapper_2;
 
     struct {
         bool initialized;
+        bool interrupt;
         bool reset;
         int status;
     } mapper_3;
@@ -70,12 +75,14 @@ typedef struct {
 
     struct {
         bool initialized;
+        bool interrupt;
         bool reset;
         int status;
     } mapper_30;
 
     struct {
         bool initialized;
+        bool interrupt;
         bool reset;
         int status;
     } mapper_66;
@@ -108,6 +115,13 @@ int NESL_Mapper0Init(nesl_mapper_t *mapper)
     return g_test.mapper_0.status;
 }
 
+int NESL_Mapper0Interrupt(nesl_mapper_t *mapper)
+{
+    g_test.mapper_0.interrupt = true;
+
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper0RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     return 0;
@@ -118,9 +132,26 @@ void NESL_Mapper0RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, uin
     return;
 }
 
+int NESL_Mapper0Reset(nesl_mapper_t *mapper)
+{
+    g_test.mapper_0.reset = true;
+
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper0RomRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     return 0;
+}
+
+void NESL_Mapper0RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+{
+    return;
+}
+
+void NESL_Mapper0Uninit(nesl_mapper_t *mapper)
+{
+    g_test.mapper_0.initialized = false;
 }
 
 int NESL_Mapper1Init(nesl_mapper_t *mapper)
@@ -128,6 +159,13 @@ int NESL_Mapper1Init(nesl_mapper_t *mapper)
     g_test.mapper_1.initialized = (g_test.mapper_1.status == NESL_SUCCESS);
 
     return g_test.mapper_0.status;
+}
+
+int NESL_Mapper1Interrupt(nesl_mapper_t *mapper)
+{
+    g_test.mapper_1.interrupt = true;
+
+    return NESL_SUCCESS;
 }
 
 uint8_t NESL_Mapper1RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
@@ -169,6 +207,13 @@ int NESL_Mapper2Init(nesl_mapper_t *mapper)
     return g_test.mapper_2.status;
 }
 
+int NESL_Mapper2Interrupt(nesl_mapper_t *mapper)
+{
+    g_test.mapper_2.interrupt = true;
+
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper2RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     return 0;
@@ -208,6 +253,13 @@ int NESL_Mapper3Init(nesl_mapper_t *mapper)
     return g_test.mapper_3.status;
 }
 
+int NESL_Mapper3Interrupt(nesl_mapper_t *mapper)
+{
+    g_test.mapper_3.interrupt = true;
+
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper3RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     return 0;
@@ -245,6 +297,13 @@ int NESL_Mapper30Init(nesl_mapper_t *mapper)
     g_test.mapper_30.initialized = (g_test.mapper_30.status == NESL_SUCCESS);
 
     return g_test.mapper_30.status;
+}
+
+int NESL_Mapper30Interrupt(nesl_mapper_t *mapper)
+{
+    g_test.mapper_30.interrupt = true;
+
+    return NESL_SUCCESS;
 }
 
 uint8_t NESL_Mapper30RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
@@ -332,6 +391,13 @@ int NESL_Mapper66Init(nesl_mapper_t *mapper)
     return g_test.mapper_66.status;
 }
 
+int NESL_Mapper66Interrupt(nesl_mapper_t *mapper)
+{
+    g_test.mapper_66.interrupt = true;
+
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper66RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     return 0;
@@ -398,17 +464,19 @@ static void NESL_TestWriteHandler(nesl_mapper_t *mapper, int type, uint16_t addr
     g_test.data = data;
 }
 
-static void NESL_TestInit(const nesl_header_t *header)
+static void NESL_TestInit(nesl_header_t *header, int type)
 {
     memset(&g_test, 0, sizeof(g_test));
+    header->flag_6.type_low = type & 0x0F;
+    header->flag_7.type_high = (type & 0xF0) >> 4;
     g_test.cartridge.header = header;
     g_test.mapper.cartridge.header = g_test.cartridge.header;
-    g_test.mapper.interrupt = &NESL_TestInterruptHandler;
-    g_test.mapper.ram_read = &NESL_TestReadHandler;
-    g_test.mapper.ram_write = &NESL_TestWriteHandler;
-    g_test.mapper.reset = &NESL_TestResetHandler;
-    g_test.mapper.rom_read = &NESL_TestReadHandler;
-    g_test.mapper.rom_write = &NESL_TestWriteHandler;
+    g_test.mapper.callback.interrupt = &NESL_TestInterruptHandler;
+    g_test.mapper.callback.ram_read = &NESL_TestReadHandler;
+    g_test.mapper.callback.ram_write = &NESL_TestWriteHandler;
+    g_test.mapper.callback.reset = &NESL_TestResetHandler;
+    g_test.mapper.callback.rom_read = &NESL_TestReadHandler;
+    g_test.mapper.callback.rom_write = &NESL_TestWriteHandler;
 }
 
 static int NESL_TestMapperInit(void)
@@ -416,7 +484,7 @@ static int NESL_TestMapperInit(void)
     int result = NESL_SUCCESS;
     nesl_header_t header = {};
 
-    NESL_TestInit(&header);
+    NESL_TestInit(&header, 0);
     g_test.cartridge.status = NESL_FAILURE;
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_FAILURE)) {
@@ -424,7 +492,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
+    NESL_TestInit(&header, 0);
     g_test.mapper_0.status = NESL_FAILURE;
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_FAILURE)) {
@@ -432,9 +500,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = 0xF;
-    header.flag_7.type_high = 0xF;
+    NESL_TestInit(&header, 0xFF);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_FAILURE)) {
         result = NESL_FAILURE;
@@ -443,9 +509,7 @@ static int NESL_TestMapperInit(void)
 
     memset(&header, 0, sizeof(header));
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_0;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_0);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -458,9 +522,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_1;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_1);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -473,9 +535,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_2;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_2);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -488,9 +548,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_3;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_3);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -503,9 +561,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_30 & 0x0F;
-    header.flag_7.type_high = (NESL_MAPPER_30 & 0xF0) >> 4;
+    NESL_TestInit(&header, NESL_MAPPER_30);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -518,9 +574,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_4;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_4);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -533,9 +587,7 @@ static int NESL_TestMapperInit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_66 & 0x0F;
-    header.flag_7.type_high = (NESL_MAPPER_66 & 0xF0) >> 4;
+    NESL_TestInit(&header, NESL_MAPPER_66);
 
     if(NESL_ASSERT((NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)
             && (g_test.cartridge.data == &header)
@@ -559,7 +611,7 @@ static int NESL_TestMapperInterrupt(void)
     int result = NESL_SUCCESS;
     nesl_header_t header = {};
 
-    NESL_TestInit(&header);
+    NESL_TestInit(&header, 0);
     NESL_MapperInterrupt(&g_test.mapper);
 
     if(NESL_ASSERT(g_test.interrupt == true)) {
@@ -567,9 +619,77 @@ static int NESL_TestMapperInterrupt(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_4;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_0);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperInterrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_0.interrupt == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_1);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperInterrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_1.interrupt == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_2);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperInterrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_2.interrupt == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_3);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperInterrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_3.interrupt == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_30);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperInterrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_30.interrupt == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_4);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -579,6 +699,20 @@ static int NESL_TestMapperInterrupt(void)
     NESL_MapperInterrupt(&g_test.mapper);
 
     if(NESL_ASSERT(g_test.mapper_4.interrupt == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_66);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperInterrupt(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_66.interrupt == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -599,7 +733,7 @@ static int NESL_TestMapperRead(void)
         for(int type = 0; type < NESL_BANK_MAX; ++type) {
             nesl_header_t header = {};
 
-            NESL_TestInit(&header);
+            NESL_TestInit(&header, 0);
             g_test.data = data;
 
             if(NESL_ASSERT((NESL_MapperRead(&g_test.mapper, type, address) == data)
@@ -622,7 +756,7 @@ static int NESL_TestMapperReset(void)
     int result = NESL_SUCCESS;
     nesl_header_t header = {};
 
-    NESL_TestInit(&header);
+    NESL_TestInit(&header, 0);
     NESL_MapperReset(&g_test.mapper);
 
     if(NESL_ASSERT(g_test.reset == true)) {
@@ -630,9 +764,21 @@ static int NESL_TestMapperReset(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_1;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_0);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperReset(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_0.reset == true)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_1);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -646,9 +792,7 @@ static int NESL_TestMapperReset(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_2;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_2);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -662,9 +806,7 @@ static int NESL_TestMapperReset(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_3;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_3);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -678,9 +820,7 @@ static int NESL_TestMapperReset(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_30 & 0x0F;
-    header.flag_7.type_high = (NESL_MAPPER_30 & 0xF0) >> 4;
+    NESL_TestInit(&header, NESL_MAPPER_30);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -694,9 +834,7 @@ static int NESL_TestMapperReset(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_4;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_4);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -710,9 +848,7 @@ static int NESL_TestMapperReset(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_66 & 0x0F;
-    header.flag_7.type_high = (NESL_MAPPER_66 & 0xF0) >> 4;
+    NESL_TestInit(&header, NESL_MAPPER_66);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -737,9 +873,21 @@ static int NESL_TestMapperUninit(void)
     nesl_header_t header = {};
     int result = NESL_SUCCESS;
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_1;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_0);
+
+    if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_MapperUninit(&g_test.mapper);
+
+    if(NESL_ASSERT(g_test.mapper_0.initialized == false)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    NESL_TestInit(&header, NESL_MAPPER_1);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -753,9 +901,7 @@ static int NESL_TestMapperUninit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_2;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_2);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -769,9 +915,7 @@ static int NESL_TestMapperUninit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_3;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_3);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -785,9 +929,7 @@ static int NESL_TestMapperUninit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_30 & 0x0F;
-    header.flag_7.type_high = (NESL_MAPPER_30 & 0xF0) >> 4;
+    NESL_TestInit(&header, NESL_MAPPER_30);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -801,9 +943,7 @@ static int NESL_TestMapperUninit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_4;
-    header.flag_7.type_high = 0;
+    NESL_TestInit(&header, NESL_MAPPER_4);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -817,9 +957,7 @@ static int NESL_TestMapperUninit(void)
         goto exit;
     }
 
-    NESL_TestInit(&header);
-    header.flag_6.type_low = NESL_MAPPER_66 & 0x0F;
-    header.flag_7.type_high = (NESL_MAPPER_66 & 0xF0) >> 4;
+    NESL_TestInit(&header, NESL_MAPPER_66);
 
     if(NESL_ASSERT(NESL_MapperInit(&g_test.mapper, &header, sizeof(header)) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -849,7 +987,7 @@ static int NESL_TestMapperWrite(void)
         for(int type = 0; type < NESL_BANK_MAX; ++type, ++data) {
             nesl_header_t header = {};
 
-            NESL_TestInit(&header);
+            NESL_TestInit(&header, 0);
             NESL_MapperWrite(&g_test.mapper, type, address, data);
 
             if(NESL_ASSERT((g_test.data == data)

@@ -35,6 +35,11 @@ int NESL_Mapper0Init(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
+int NESL_Mapper0Interrupt(nesl_mapper_t *mapper)
+{
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper0RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     uint8_t result = 0;
@@ -76,6 +81,11 @@ void NESL_Mapper0RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, uin
     }
 }
 
+int NESL_Mapper0Reset(nesl_mapper_t *mapper)
+{
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper0RomRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     uint8_t result = 0;
@@ -109,6 +119,16 @@ uint8_t NESL_Mapper0RomRead(nesl_mapper_t *mapper, int type, uint16_t address)
     }
 
     return result;
+}
+
+void NESL_Mapper0RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+{
+    return;
+}
+
+void NESL_Mapper0Uninit(nesl_mapper_t *mapper)
+{
+    return;
 }
 
 #ifdef __cplusplus

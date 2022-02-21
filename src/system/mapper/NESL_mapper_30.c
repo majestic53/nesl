@@ -49,6 +49,11 @@ exit:
     return result;
 }
 
+int NESL_Mapper30Interrupt(nesl_mapper_t *mapper)
+{
+    return NESL_SUCCESS;
+}
+
 uint8_t NESL_Mapper30RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     uint8_t result = 0;
