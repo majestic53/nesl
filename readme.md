@@ -134,6 +134,20 @@ The following keybindings are available:
 |Left   |A           |N/A         |
 |Right  |D           |N/A         |
 
+### Mapper Support
+
+The following mappers are supported:
+
+|# |Mapper                                                            |Description        |
+|:-|:-----------------------------------------------------------------|:------------------|
+|0 |[NROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_000) |No mapper          |
+|1 |[MMC1](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_001) |Nintendo MMC1 ASIC |
+|2 |[UxROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_002)|Nintendo UxROM ASIC|
+|3 |[CNROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_003)|Nintendo CNROM ASIC|
+|4 |[MMC3](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_000) |Nintendo MMC3 ASIC |
+|30|[UNROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_030)|Homebrew ASIC      |
+|66|[GxROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_066)|Nintendo GxROM ASIC|
+
 ## License
 
 Copyright (C) 2022 David Jolly. Released under the [MIT License](https://opensource.org/licenses/MIT).
