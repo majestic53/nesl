@@ -52,6 +52,10 @@ static const char *DESCRIPTION[] = {
     "Show version information",
     };
 
+#define TRACE(_RESULT_, _FORMAT_, ...) \
+    fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "%s" _FORMAT_ "\x1b[0m", \
+        ((_RESULT_) != NESL_SUCCESS) ? "\x1b[91m" : "\x1b[0m", __VA_ARGS__)
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -62,7 +66,7 @@ static int ReadFile(nesl_t *input, char *base, char *path)
     int result = NESL_SUCCESS;
 
     if(!(file = fopen(path, "rb"))) {
-        fprintf(stderr, "%s: File does not exist -- %s\n", base, path);
+        TRACE(NESL_FAILURE, "%s: File does not exist -- %s\n", base, path);
         result = NESL_FAILURE;
         goto exit;
     }
@@ -70,7 +74,7 @@ static int ReadFile(nesl_t *input, char *base, char *path)
     fseek(file, 0, SEEK_END);
 
     if((input->length = ftell(file)) <= 0) {
-        fprintf(stderr, "%s: File is empty -- %s\n", base, path);
+        TRACE(NESL_FAILURE, "%s: File is empty -- %s\n", base, path);
         result = NESL_FAILURE;
         goto exit;
     }
@@ -78,13 +82,13 @@ static int ReadFile(nesl_t *input, char *base, char *path)
     fseek(file, 0, SEEK_SET);
 
     if(!(input->data = calloc(input->length, sizeof(uint8_t)))) {
-        fprintf(stderr, "%s: Failed to allocate buffer -- %.2f KB (%i bytes)\n", base, input->length / 1024.f, input->length);
+        TRACE(NESL_FAILURE, "%s: Failed to allocate buffer -- %.2f KB (%i bytes)\n", base, input->length / 1024.f, input->length);
         result = NESL_FAILURE;
         goto exit;
     }
 
     if(fread(input->data, sizeof(uint8_t), input->length, file) != input->length) {
-        fprintf(stderr, "%s: Failed to read file -- %s\n", base, path);
+        TRACE(NESL_FAILURE, "%s: Failed to read file -- %s\n", base, path);
         result = NESL_FAILURE;
         goto exit;
     }
@@ -106,13 +110,13 @@ static void ShowVersion(FILE *stream, bool verbose)
     const nesl_version_t *version = NESL_GetVersion();
 
     if(verbose) {
-        fprintf(stream, "NESL ");
+        TRACE(NESL_SUCCESS, "%s", "NESL ");
     }
 
-    fprintf(stream, "%i.%i.%i\n", version->major, version->minor, version->patch);
+    TRACE(NESL_SUCCESS, "%i.%i.%i\n", version->major, version->minor, version->patch);
 
     if(verbose) {
-        fprintf(stream, "Copyright (C) 2022 David Jolly\n");
+        TRACE(NESL_SUCCESS, "%s", "Copyright (C) 2022 David Jolly\n");
     }
 }
 
@@ -121,16 +125,16 @@ static void ShowHelp(FILE *stream, bool verbose)
 
     if(verbose) {
         ShowVersion(stream, true);
-        fprintf(stream, "\n");
+        TRACE(NESL_SUCCESS, "%s", "\n");
     }
 
-    fprintf(stream, "nesl [options] file\n");
+    TRACE(NESL_SUCCESS, "%s", "nesl [options] file\n");
 
     if(verbose) {
-        fprintf(stream, "\n");
+        TRACE(NESL_SUCCESS, "%s", "\n");
 
         for(int flag = 0; flag < OPTION_MAX; ++flag) {
-            fprintf(stream, "%s\t%s\n", OPTION[flag], DESCRIPTION[flag]);
+            TRACE(NESL_SUCCESS, "%s\t%s\n", OPTION[flag], DESCRIPTION[flag]);
         }
     }
 }
@@ -176,7 +180,7 @@ int main(int argc, char *argv[])
     }
 
     if((result = NESL_Run(&input)) == NESL_FAILURE) {
-        fprintf(stderr, "%s: %s\n", argv[0], NESL_GetError());
+        TRACE(NESL_FAILURE, "%s: %s\n", argv[0], NESL_GetError());
         goto exit;
     }
 

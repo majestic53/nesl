@@ -19,6 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include "../include/system/NESL_audio.h"
 #include "../include/system/NESL_input.h"
 #include "../include/system/NESL_mapper.h"
 #include "../include/system/NESL_processor.h"
@@ -27,6 +28,7 @@
 
 typedef struct {
     uint64_t cycle;
+    nesl_audio_t audio;
     nesl_input_t input;
     nesl_mapper_t mapper;
     nesl_processor_t processor;
@@ -44,6 +46,10 @@ static int NESL_BusReset(void)
     int result;
 
     if((result = NESL_MapperReset(&g_bus.mapper)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    if((result = NESL_AudioReset(&g_bus.audio)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -84,6 +90,10 @@ int NESL_BusInit(const void *data, int length)
     int result;
 
     if((result = NESL_MapperInit(&g_bus.mapper, data, length)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    if((result = NESL_AudioInit(&g_bus.audio)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -153,6 +163,9 @@ uint8_t NESL_BusRead(int type, uint16_t address)
                 case 0x2000 ... 0x3FFF:
                     result = NESL_VideoPortRead(&g_bus.video, address);
                     break;
+                case 0x4015:
+                    result = NESL_AudioRead(&g_bus.audio, address);
+                    break;
                 case 0x4016 ... 0x4017:
                     result = NESL_InputRead(&g_bus.input, address);
                     break;
@@ -201,6 +214,7 @@ void NESL_BusUninit(void)
     NESL_VideoUninit(&g_bus.video);
     NESL_ProcessorUninit(&g_bus.processor);
     NESL_InputUninit(&g_bus.input);
+    NESL_AudioUninit(&g_bus.audio);
     NESL_MapperUninit(&g_bus.mapper);
     memset(&g_bus, 0, sizeof(g_bus));
 }
@@ -218,6 +232,11 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
                     break;
                 case 0x2000 ... 0x3FFF:
                     NESL_VideoPortWrite(&g_bus.video, address, data);
+                    break;
+                case 0x4000 ... 0x4013:
+                case 0x4015:
+                case 0x4017:
+                    NESL_AudioWrite(&g_bus.audio, address, data);
                     break;
                 case 0x4016:
                     NESL_InputWrite(&g_bus.input, address, data);

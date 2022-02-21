@@ -19,6 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include "../../include/system/NESL_audio.h"
 #include "../../include/system/NESL_input.h"
 #include "../../include/system/NESL_mapper.h"
 #include "../../include/system/NESL_processor.h"
@@ -29,6 +30,10 @@ typedef struct {
     int type;
     uint16_t address;
     uint8_t data;
+
+    struct {
+        bool reset;
+    } audio;
 
     struct {
         bool reset;
@@ -59,6 +64,36 @@ static nesl_test_t g_test = {};
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+int NESL_AudioInit(nesl_audio_t *audio)
+{
+    return NESL_SUCCESS;
+}
+
+uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address)
+{
+    g_test.address = address;
+
+    return g_test.data;
+}
+
+int NESL_AudioReset(nesl_audio_t *audio)
+{
+    g_test.audio.reset = true;
+
+    return NESL_SUCCESS;
+}
+
+void NESL_AudioUninit(nesl_audio_t *audio)
+{
+    return;
+}
+
+void NESL_AudioWrite(nesl_audio_t *audio, uint16_t address, uint8_t data)
+{
+    g_test.address = address;
+    g_test.data = data;
+}
 
 int NESL_InputInit(nesl_input_t *input)
 {
@@ -265,7 +300,8 @@ static int NESL_TestBusInterrupt(void)
                 break;
             case NESL_INTERRUPT_RESET:
 
-                if(NESL_ASSERT((g_test.input.reset == true)
+                if(NESL_ASSERT((g_test.audio.reset == true)
+                        && (g_test.input.reset == true)
                         && (g_test.mapper.reset == true)
                         && (g_test.processor.reset == true)
                         && (g_test.service.reset == true)
@@ -307,9 +343,8 @@ static int NESL_TestBusRead(void)
                     g_test.data = data;
 
                     switch(address) {
-                        case 0x0000 ... 0x1FFF:
-                        case 0x2000 ... 0x3FFF:
-                        case 0x4016 ... 0x4017:
+                        case 0x0000 ... 0x3FFF:
+                        case 0x4015 ... 0x4017:
 
                             if(NESL_ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address))) {
@@ -417,10 +452,7 @@ static int NESL_TestBusWrite(void)
                     NESL_TestInit();
 
                     switch(address) {
-                        case 0x0000 ... 0x1FFF:
-                        case 0x2000 ... 0x3FFF:
-                        case 0x4014:
-                        case 0x4016:
+                        case 0x0000 ... 0x4017:
                             NESL_BusWrite(NESL_BUS_PROCESSOR, address, data);
 
                             if(NESL_ASSERT((g_test.address == address)

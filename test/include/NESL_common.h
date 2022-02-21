@@ -29,8 +29,10 @@
     sizeof(_TESTS_) / sizeof(*(_TESTS_))
 
 #define NESL_TEST_RESULT(_RESULT_) \
-    fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "[%s] %s\n", \
-        ((_RESULT_) != NESL_SUCCESS) ? "FAIL" : "PASS", __FUNCTION__)
+    fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "[%s%s%s] %s\n", \
+        ((_RESULT_) != NESL_SUCCESS) ? "\x1b[91m" : "\x1b[94m", \
+        ((_RESULT_) != NESL_SUCCESS) ? "FAIL" : "PASS", \
+        "\x1b[0m", __FUNCTION__)
 
 typedef int (*NESL_Test)(void);
 
