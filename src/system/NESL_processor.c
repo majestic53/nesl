@@ -445,21 +445,6 @@ static void NESL_ProcessorOperationTransfer(nesl_processor_t *processor, nesl_re
     left->low = right->low;
 }
 
-static const NESL_ProcessorOperation OPERATION[] = {
-    NESL_ProcessorOperationAddCarry,
-    NESL_ProcessorOperationCompare,
-    NESL_ProcessorOperationDecrement,
-    NESL_ProcessorOperationIncrement,
-    NESL_ProcessorOperationLogicalAnd,
-    NESL_ProcessorOperationLogicalExclusiveOr,
-    NESL_ProcessorOperationLogicalOr,
-    NESL_ProcessorOperationRotateLeft,
-    NESL_ProcessorOperationRotateRight,
-    NESL_ProcessorOperationShiftLeft,
-    NESL_ProcessorOperationShiftRight,
-    NESL_ProcessorOperationTransfer,
-    };
-
 static void NESL_ProcessorExecuteArithmetic(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
     nesl_register_t data = { .low = operand->data.low };
@@ -472,7 +457,7 @@ static void NESL_ProcessorExecuteArithmetic(nesl_processor_t *processor, const n
         data.low = ~data.low;
     }
 
-    OPERATION[NESL_OPERATION_ADD_CARRY](processor, &processor->state.accumulator, &data);
+    NESL_ProcessorOperationAddCarry(processor, &processor->state.accumulator, &data);
 
     if(operand->page_cross) {
         ++processor->cycle;
@@ -572,13 +557,13 @@ static void NESL_ProcessorExecuteCompare(nesl_processor_t *processor, const nesl
 
     switch(instruction->type) {
         case NESL_INSTRUCTION_CMP:
-            OPERATION[NESL_OPERATION_COMPARE](processor, &data, &processor->state.accumulator);
+            NESL_ProcessorOperationCompare(processor, &data, &processor->state.accumulator);
             break;
         case NESL_INSTRUCTION_CPX:
-            OPERATION[NESL_OPERATION_COMPARE](processor, &data, &processor->state.index.x);
+            NESL_ProcessorOperationCompare(processor, &data, &processor->state.index.x);
             break;
         case NESL_INSTRUCTION_CPY:
-            OPERATION[NESL_OPERATION_COMPARE](processor, &data, &processor->state.index.y);
+            NESL_ProcessorOperationCompare(processor, &data, &processor->state.index.y);
             break;
         default:
             break;
@@ -596,14 +581,14 @@ static void NESL_ProcessorExecuteDecrement(nesl_processor_t *processor, const ne
     switch(instruction->type) {
         case NESL_INSTRUCTION_DEC:
             data.low = NESL_BusRead(NESL_BUS_PROCESSOR, operand->effective.word);
-            OPERATION[NESL_OPERATION_DECREMENT](processor, &data, NULL);
+            NESL_ProcessorOperationDecrement(processor, &data, NULL);
             NESL_BusWrite(NESL_BUS_PROCESSOR, operand->effective.word, data.low);
             break;
         case NESL_INSTRUCTION_DEX:
-            OPERATION[NESL_OPERATION_DECREMENT](processor, &processor->state.index.x, NULL);
+            NESL_ProcessorOperationDecrement(processor, &processor->state.index.x, NULL);
             break;
         case NESL_INSTRUCTION_DEY:
-            OPERATION[NESL_OPERATION_DECREMENT](processor, &processor->state.index.y, NULL);
+            NESL_ProcessorOperationDecrement(processor, &processor->state.index.y, NULL);
             break;
         default:
             break;
@@ -617,14 +602,14 @@ static void NESL_ProcessorExecuteIncrement(nesl_processor_t *processor, const ne
     switch(instruction->type) {
         case NESL_INSTRUCTION_INC:
             data.low = NESL_BusRead(NESL_BUS_PROCESSOR, operand->effective.word);
-            OPERATION[NESL_OPERATION_INCREMENT](processor, &data, NULL);
+            NESL_ProcessorOperationIncrement(processor, &data, NULL);
             NESL_BusWrite(NESL_BUS_PROCESSOR, operand->effective.word, data.low);
             break;
         case NESL_INSTRUCTION_INX:
-            OPERATION[NESL_OPERATION_INCREMENT](processor, &processor->state.index.x, NULL);
+            NESL_ProcessorOperationIncrement(processor, &processor->state.index.x, NULL);
             break;
         case NESL_INSTRUCTION_INY:
-            OPERATION[NESL_OPERATION_INCREMENT](processor, &processor->state.index.y, NULL);
+            NESL_ProcessorOperationIncrement(processor, &processor->state.index.y, NULL);
             break;
         default:
             break;
@@ -681,13 +666,13 @@ static void NESL_ProcessorExecuteLogical(nesl_processor_t *processor, const nesl
 
     switch(instruction->type) {
         case NESL_INSTRUCTION_AND:
-            OPERATION[NESL_OPERATION_LOGICAL_AND](processor, &processor->state.accumulator, &data);
+            NESL_ProcessorOperationLogicalAnd(processor, &processor->state.accumulator, &data);
             break;
         case NESL_INSTRUCTION_EOR:
-            OPERATION[NESL_OPERATION_LOGICAL_EXCLUSIVE_OR](processor, &processor->state.accumulator, &data);
+            NESL_ProcessorOperationLogicalExclusiveOr(processor, &processor->state.accumulator, &data);
             break;
         case NESL_INSTRUCTION_ORA:
-            OPERATION[NESL_OPERATION_LOGICAL_OR](processor, &processor->state.accumulator, &data);
+            NESL_ProcessorOperationLogicalOr(processor, &processor->state.accumulator, &data);
             break;
         default:
             break;
@@ -763,10 +748,10 @@ static void NESL_ProcessorExecuteRotate(nesl_processor_t *processor, const nesl_
 
     switch(instruction->type) {
         case NESL_INSTRUCTION_ROL:
-            OPERATION[NESL_OPERATION_ROTATE_LEFT](processor, &data, NULL);
+            NESL_ProcessorOperationRotateLeft(processor, &data, NULL);
             break;
         case NESL_INSTRUCTION_ROR:
-            OPERATION[NESL_OPERATION_ROTATE_RIGHT](processor, &data, NULL);
+            NESL_ProcessorOperationRotateRight(processor, &data, NULL);
             break;
         default:
             break;
@@ -807,10 +792,10 @@ static void NESL_ProcessorExecuteShift(nesl_processor_t *processor, const nesl_i
 
     switch(instruction->type) {
         case NESL_INSTRUCTION_ASL:
-            OPERATION[NESL_OPERATION_SHIFT_LEFT](processor, &data, NULL);
+            NESL_ProcessorOperationShiftLeft(processor, &data, NULL);
             break;
         case NESL_INSTRUCTION_LSR:
-            OPERATION[NESL_OPERATION_SHIFT_RIGHT](processor, &data, NULL);
+            NESL_ProcessorOperationShiftRight(processor, &data, NULL);
             break;
         default:
             break;
@@ -849,22 +834,22 @@ static void NESL_ProcessorExecuteTransfer(nesl_processor_t *processor, const nes
 
     switch(instruction->type) {
         case NESL_INSTRUCTION_TAX:
-            OPERATION[NESL_OPERATION_TRANSFER](processor, &processor->state.index.x, &processor->state.accumulator);
+            NESL_ProcessorOperationTransfer(processor, &processor->state.index.x, &processor->state.accumulator);
             break;
         case NESL_INSTRUCTION_TAY:
-            OPERATION[NESL_OPERATION_TRANSFER](processor, &processor->state.index.y, &processor->state.accumulator);
+            NESL_ProcessorOperationTransfer(processor, &processor->state.index.y, &processor->state.accumulator);
             break;
         case NESL_INSTRUCTION_TSX:
-            OPERATION[NESL_OPERATION_TRANSFER](processor, &processor->state.index.x, &processor->state.stack_pointer);
+            NESL_ProcessorOperationTransfer(processor, &processor->state.index.x, &processor->state.stack_pointer);
             break;
         case NESL_INSTRUCTION_TXA:
-            OPERATION[NESL_OPERATION_TRANSFER](processor, &processor->state.accumulator, &processor->state.index.x);
+            NESL_ProcessorOperationTransfer(processor, &processor->state.accumulator, &processor->state.index.x);
             break;
         case NESL_INSTRUCTION_TXS:
-            OPERATION[NESL_OPERATION_TRANSFER](processor, &processor->state.stack_pointer, &processor->state.index.x);
+            NESL_ProcessorOperationTransfer(processor, &processor->state.stack_pointer, &processor->state.index.x);
             break;
         case NESL_INSTRUCTION_TYA:
-            OPERATION[NESL_OPERATION_TRANSFER](processor, &processor->state.accumulator, &processor->state.index.y);
+            NESL_ProcessorOperationTransfer(processor, &processor->state.accumulator, &processor->state.index.y);
             break;
         default:
             break;
