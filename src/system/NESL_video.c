@@ -488,25 +488,6 @@ int NESL_VideoInit(nesl_video_t *video, const int *mirror)
         goto exit;
     }
 
-    uint8_t tile_x = 0, tile_y = 0;
-
-    for(uint8_t color = 0; color < 64; ++color) {
-
-        for(uint8_t y = 0; y < 8; ++y) {
-
-            for(uint8_t x = 0; x < 8; ++x) {
-                NESL_ServiceSetPixel(color, false, false, false, tile_x + x, tile_y + y);
-            }
-        }
-
-        tile_x += 8;
-
-        if(!((color + 1) % 16)) {
-            tile_x = 0;
-            tile_y += 8;
-        }
-    }
-
 exit:
     return result;
 }
