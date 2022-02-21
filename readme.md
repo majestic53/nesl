@@ -138,15 +138,15 @@ The following keybindings are available:
 
 The following mappers are supported:
 
-|# |Mapper                                                            |Description        |
-|:-|:-----------------------------------------------------------------|:------------------|
-|0 |[NROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_000) |No mapper          |
-|1 |[MMC1](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_001) |Nintendo MMC1 ASIC |
-|2 |[UxROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_002)|Nintendo UxROM ASIC|
-|3 |[CNROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_003)|Nintendo CNROM ASIC|
-|4 |[MMC3](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_004) |Nintendo MMC3 ASIC |
-|30|[UNROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_030)|Homebrew ASIC      |
-|66|[GxROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_066)|Nintendo GxROM ASIC|
+|# |Mapper                                                            |Description   |
+|:-|:-----------------------------------------------------------------|:-------------|
+|0 |[NROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_000) |No mapper     |
+|1 |[MMC1](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_001) |Nintendo ASIC |
+|2 |[UxROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_002)|Nintendo board|
+|3 |[CNROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_003)|Nintendo board|
+|4 |[MMC3](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_004) |Nintendo ASIC |
+|30|[UNROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_030)|Homebrew board|
+|66|[GxROM](https://wiki.nesdev.org/w/index.php?title=INES_Mapper_066)|Nintendo board|
 
 ## License
 
