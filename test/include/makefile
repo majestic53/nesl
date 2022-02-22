@@ -19,7 +19,7 @@
 
 DIR_ROOT=./
 
-FILE_BIN=$(DIR_ROOT)$(FILE)
+FILE_BIN=$(DIR_ROOT)TEST-$(FILE)
 FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
