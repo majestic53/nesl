@@ -48,6 +48,11 @@ static nesl_test_t g_test = {};
 extern "C" {
 #endif /* __cplusplus */
 
+uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
+{
+    return g_test.mapper.cartridge.header->rom.program;
+}
+
 uint8_t NESL_CartridgeRamRead(nesl_cartridge_t *cartridge, int type, uint32_t address)
 {
     g_test.address = address;

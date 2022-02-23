@@ -79,7 +79,7 @@ static void NESL_Mapper1SetProgram(nesl_mapper_t *mapper)
             break;
         case 3:
             mapper->rom.program[0] = context->program.bank * 16 * 1024;
-            mapper->rom.program[1] = (mapper->cartridge.header->rom.program - 1) * 16 * 1024;
+            mapper->rom.program[1] = (NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_ROM_PROGRAM) - 1) * 16 * 1024;
             break;
         default:
             break;

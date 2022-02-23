@@ -70,6 +70,39 @@ exit:
     return result;
 }
 
+uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
+{
+    uint8_t result = 0;
+
+    switch(type) {
+        case NESL_BANK_RAM_CHARACTER:
+            break;
+        case NESL_BANK_RAM_PROGRAM:
+            result = cartridge->header->ram.program;
+            break;
+        case NESL_BANK_ROM_CHARACTER:
+            result = cartridge->header->rom.character;
+            break;
+        case NESL_BANK_ROM_PROGRAM:
+            result = cartridge->header->rom.program;
+            break;
+        default:
+            break;
+    }
+
+    return result;
+}
+
+uint8_t NESL_CartridgeGetMapper(nesl_cartridge_t *cartridge)
+{
+    return (cartridge->header->flag_7.type_high << 4) | cartridge->header->flag_6.type_low;
+}
+
+uint8_t NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge)
+{
+    return cartridge->header->flag_6.mirror;
+}
+
 int NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length)
 {
     int result;

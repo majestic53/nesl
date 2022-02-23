@@ -29,7 +29,7 @@ static void NESL_Mapper30Set(nesl_mapper_t *mapper)
 {
     mapper->rom.program[0] = ((nesl_mapper_30_context_t *)mapper->context)->bank.program * 16 * 1024;
     mapper->rom.character[0] = ((nesl_mapper_30_context_t *)mapper->context)->bank.character * 8 * 1024;
-    mapper->mirror = ((nesl_mapper_30_context_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : mapper->cartridge.header->flag_6.mirror;
+    mapper->mirror = ((nesl_mapper_30_context_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : NESL_CartridgeGetMirror(&mapper->cartridge);
 }
 
 int NESL_Mapper30Init(nesl_mapper_t *mapper)
@@ -97,7 +97,7 @@ void NESL_Mapper30RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, ui
 
 int NESL_Mapper30Reset(nesl_mapper_t *mapper)
 {
-    mapper->rom.program[1] = (mapper->cartridge.header->rom.program * 16 * 1024) - (1 * 16 * 1024);
+    mapper->rom.program[1] = (NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_ROM_PROGRAM) * 16 * 1024) - (1 * 16 * 1024);
     NESL_Mapper30Set(mapper);
 
     return NESL_SUCCESS;

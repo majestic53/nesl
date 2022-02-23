@@ -90,6 +90,106 @@ exit:
     return result;
 }
 
+static int NESL_TestCartridgeGetBankCount(void)
+{
+    int result = NESL_FAILURE;
+
+    for(uint8_t type = 0; type < NESL_BANK_MAX; ++type) {
+        uint8_t data = 0;
+
+        if((result = NESL_TestInit()) == NESL_FAILURE) {
+            goto exit;
+        }
+
+        switch(type) {
+            case NESL_BANK_RAM_CHARACTER:
+                break;
+            case NESL_BANK_RAM_PROGRAM:
+                g_test.data.header.ram.program = 11;
+                data = g_test.data.header.ram.program;
+                break;
+            case NESL_BANK_ROM_CHARACTER:
+                g_test.data.header.rom.character = 22;
+                data = g_test.data.header.rom.character;
+                break;
+            case NESL_BANK_ROM_PROGRAM:
+                g_test.data.header.rom.program = 33;
+                data = g_test.data.header.rom.program;
+                break;
+            default:
+                break;
+        }
+
+        if(NESL_ASSERT(NESL_CartridgeGetBankCount(&g_test.cartridge, type) == data)) {
+            result = NESL_FAILURE;
+            goto exit;
+        }
+    }
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+static int NESL_TestCartridgeGetMapper(void)
+{
+    int result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    g_test.data.header.flag_6.type_low = NESL_MAPPER_4 & 0x0F;
+    g_test.data.header.flag_7.type_high = (NESL_MAPPER_4 & 0xF0) >> 4;
+
+    if(NESL_ASSERT(NESL_CartridgeGetMapper(&g_test.cartridge) == NESL_MAPPER_4)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    g_test.data.header.flag_6.type_low = NESL_MAPPER_66 & 0x0F;
+    g_test.data.header.flag_7.type_high = (NESL_MAPPER_66 & 0xF0) >> 4;
+
+    if(NESL_ASSERT(NESL_CartridgeGetMapper(&g_test.cartridge) == NESL_MAPPER_66)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+static int NESL_TestCartridgeGetMirror(void)
+{
+    int result = NESL_FAILURE;
+
+    for(uint8_t type = 0; type < NESL_MIRROR_ONE_LOW; ++type) {
+
+        if((result = NESL_TestInit()) == NESL_FAILURE) {
+            goto exit;
+        }
+
+        g_test.data.header.flag_6.mirror = type;
+
+        if(NESL_ASSERT(NESL_CartridgeGetMirror(&g_test.cartridge) == type)) {
+            result = NESL_FAILURE;
+            goto exit;
+        }
+    }
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
 static int NESL_TestCartridgeRead(void)
 {
     int bank, result = NESL_SUCCESS;
@@ -174,6 +274,9 @@ exit:
 }
 
 static const NESL_Test TEST[] = {
+    NESL_TestCartridgeGetBankCount,
+    NESL_TestCartridgeGetMapper,
+    NESL_TestCartridgeGetMirror,
     NESL_TestCartridgeRead,
     NESL_TestCartridgeWrite,
     };

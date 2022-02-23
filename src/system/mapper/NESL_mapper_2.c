@@ -97,7 +97,7 @@ int NESL_Mapper2Reset(nesl_mapper_t *mapper)
 {
     mapper->ram.program = 0;
     mapper->rom.character[0] = 0;
-    mapper->rom.program[1] = (mapper->cartridge.header->rom.program * 16 * 1024) - (1 * 16 * 1024);
+    mapper->rom.program[1] = (NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_ROM_PROGRAM) * 16 * 1024) - (1 * 16 * 1024);
     NESL_Mapper2Set(mapper);
 
     return NESL_SUCCESS;

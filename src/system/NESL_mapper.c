@@ -179,8 +179,8 @@ int NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
         goto exit;
     }
 
-    mapper->mirror = mapper->cartridge.header->flag_6.mirror;
-    mapper->type = (mapper->cartridge.header->flag_7.type_high << 4) | mapper->cartridge.header->flag_6.type_low;
+    mapper->mirror = NESL_CartridgeGetMirror(&mapper->cartridge);
+    mapper->type = NESL_CartridgeGetMapper(&mapper->cartridge);
 
     if((result = NESL_MapperContextInit(mapper)) == NESL_FAILURE) {
         goto exit;

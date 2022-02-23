@@ -28,6 +28,7 @@ extern "C" {
 static void NESL_Mapper4SetBank(nesl_mapper_t *mapper)
 {
     nesl_mapper_4_context_t *context = mapper->context;
+    uint8_t banks = NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_ROM_PROGRAM);
 
     context->bank.index[context->select.bank] = context->bank.data;
 
@@ -52,15 +53,15 @@ static void NESL_Mapper4SetBank(nesl_mapper_t *mapper)
     }
 
     if(context->select.program) {
-        mapper->rom.program[0] = (mapper->cartridge.header->rom.program * 16 * 1024) - (2 * 8 * 1024);
+        mapper->rom.program[0] = (banks * 16 * 1024) - (2 * 8 * 1024);
         mapper->rom.program[2] = context->bank.index[6] * 8 * 1024;
     } else {
         mapper->rom.program[0] = context->bank.index[6] * 8 * 1024;
-        mapper->rom.program[2] = (mapper->cartridge.header->rom.program * 16 * 1024) - (2 * 8 * 1024);
+        mapper->rom.program[2] = (banks * 16 * 1024) - (2 * 8 * 1024);
     }
 
     mapper->rom.program[1] = context->bank.index[7] * 8 * 1024;
-    mapper->rom.program[3] = (mapper->cartridge.header->rom.program * 16 * 1024) - (1 * 8 * 1024);
+    mapper->rom.program[3] = (banks * 16 * 1024) - (1 * 8 * 1024);
 }
 
 static void NESL_Mapper4SetMirror(nesl_mapper_t *mapper)

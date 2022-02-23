@@ -94,6 +94,16 @@ static nesl_test_t g_test = {};
 extern "C" {
 #endif /* __cplusplus */
 
+uint8_t NESL_CartridgeGetMapper(nesl_cartridge_t *cartridge)
+{
+    return (cartridge->header->flag_7.type_high << 4) | cartridge->header->flag_6.type_low;
+}
+
+uint8_t NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge)
+{
+    return cartridge->header->flag_6.mirror;
+}
+
 int NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length)
 {
     g_test.cartridge.data = data;

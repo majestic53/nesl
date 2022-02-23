@@ -82,6 +82,9 @@ typedef struct {
 extern "C" {
 #endif /* __cplusplus */
 
+uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type);
+uint8_t NESL_CartridgeGetMapper(nesl_cartridge_t *cartridge);
+uint8_t NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge);
 int NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length);
 uint8_t NESL_CartridgeRamRead(nesl_cartridge_t *cartridge, int type, uint32_t address);
 void NESL_CartridgeRamWrite(nesl_cartridge_t *cartridge, int type, uint32_t address, uint8_t data);
