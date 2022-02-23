@@ -4,7 +4,7 @@
 
 __NOTE__: This project is tested under GNU/Linux, using the GCC compiler. Some modifications will be required to build with a different OS/compiler.
 
-### How to Setup Your Environment
+### How to setup your environment
 
 The following libraries are required to build this project:
 * [SDL2 (Simple DirectMedia Layer)](https://github.com/libsdl-org/SDL)
@@ -55,12 +55,12 @@ This project is built around a common bus, allowing the various subsystems to co
 
 ![Architecture](https://github.com/majestic53/nesl/blob/master/docs/arch.png "Architecture")
 
-### Adding New Files
+### Adding new files
 
 * All subsystems should conform to the model above, and avoid calling each other directly. Instead, they should communicate through the common bus.
 * Any subsystem specific source files should be placed into a subdirectory, under `src/system`.
 
-### File Layout
+### File layout
 
 |Directory                                                                            |Description                          |
 |:------------------------------------------------------------------------------------|:------------------------------------|
@@ -70,9 +70,9 @@ This project is built around a common bus, allowing the various subsystems to co
 |[src/system/audio](https://github.com/majestic53/nesl/tree/master/src/system/audio)  |Audio-specific source files          |
 |[src/system/mapper](https://github.com/majestic53/nesl/tree/master/src/system/mapper)|Mapper-specific source files         |
 
-### Coding Style
+### Coding style
 
-Functions should be in the format:
+Code should be in the format:
 
 ```c
 #ifdef __cplusplus
@@ -105,26 +105,26 @@ exit:
 
 ## Places to Contribute
 
-### Bug Fixes to Existing Code
+### Bug-fixes to existing code
 
 This project is a currently a work-in-progress. Some features may not be completed or may be buggy. Any bug fixes in existing code would be greatly appreciated.
 
-### Adding Additional Mapper Support
+### Adding additional mapper support
 
-This project only implements a few of the avaliable mappers the original NES supported. Adding more mappers will increase the number of games supported.
-* For a full list of mappers, see the [NESDEV wiki](https://wiki.nesdev.org/w/index.php?title=Mapper).
+This project only implements a few of the common mappers the original NES supported. Adding more mappers will increase the number of games supported.
+* For a full list of possible mappers, see the [NESDEV wiki](https://wiki.nesdev.org/w/index.php?title=Mapper).
 
-### Adding Undocumented Instruction Support
+### Adding undocumented instruction support
 
 This project only implements the official documented instructions in the processor. A few games take advantage of undocumented instructions, and are not currently supported.
 
 ## Issues
 
-If you encounter any issues while using this project, please report it via [Issues](https://github.com/majestic53/nesl/issues).
+If you encounter any issues while using this project, please report them via [Issues](https://github.com/majestic53/nesl/issues).
 
 ## Pull Requests
 
-If you have a change ready to be submitted, please create a PR request via [Pulls](https://github.com/majestic53/nesl/pulls)
+If you have a change ready to be submitted, please create a pull request via [Pulls](https://github.com/majestic53/nesl/pulls)
 
 ## Contributors
 
