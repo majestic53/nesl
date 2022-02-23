@@ -39,6 +39,7 @@ run:
 clean:
 	@rm -rf $(FILE_BIN)
 	@rm -rf $(FILES_OBJ)
+	@rm -rf $(DIR_SRC)$(FILE).o
 
 $(DIR_SRC)$(FILE).o: $(DIR_SRC)$(FILE).c
 	$(CC) $(FLAGS) -c -o $@ $<
