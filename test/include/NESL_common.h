@@ -22,7 +22,6 @@
 #ifndef NESL_TEST_COMMON_H_
 #define NESL_TEST_COMMON_H_
 
-#include "../../include/NESL_common.h"
 #include "./common/NESL_assert.h"
 
 #define NESL_TEST_COUNT(_TESTS_) \

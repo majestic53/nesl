@@ -27,9 +27,9 @@
 
 typedef struct nesl_mapper_s {
     nesl_cartridge_t cartridge;
+    void *context;
     int mirror;
     int type;
-    void *context;
 
     struct {
         int (*interrupt)(struct nesl_mapper_s *mapper);
