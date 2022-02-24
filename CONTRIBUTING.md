@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-See the build steps in `[README.md](https://github.com/majestic53/nesl/blob/master/README.md)`
+See the build steps in [`README.md`](https://github.com/majestic53/nesl/blob/master/README.md)
 
 ## Project Architecture
 
@@ -17,13 +17,13 @@ This project is built around a common bus, allowing the various subsystems to co
 
 ### File layout
 
-|Directory                                                                            |Description                          |
-|:------------------------------------------------------------------------------------|:------------------------------------|
-|[src/common](https://github.com/majestic53/nesl/tree/master/src/common)              |Common source files                  |
-|[src/service](https://github.com/majestic53/nesl/tree/master/src/service)            |Service source files (SDL by default)|
-|[src/system](https://github.com/majestic53/nesl/tree/master/src/system)              |Subsystem source files               |
-|[src/system/audio](https://github.com/majestic53/nesl/tree/master/src/system/audio)  |Audio-specific source files          |
-|[src/system/mapper](https://github.com/majestic53/nesl/tree/master/src/system/mapper)|Mapper-specific source files         |
+|Directory                                                                              |Description                          |
+|:--------------------------------------------------------------------------------------|:------------------------------------|
+|[`src/common`](https://github.com/majestic53/nesl/tree/master/src/common)              |Common source files                  |
+|[`src/service`](https://github.com/majestic53/nesl/tree/master/src/service)            |Service source files (SDL by default)|
+|[`src/system`](https://github.com/majestic53/nesl/tree/master/src/system)              |Subsystem source files               |
+|[`src/system/audio`](https://github.com/majestic53/nesl/tree/master/src/system/audio)  |Audio-specific source files          |
+|[`src/system/mapper`](https://github.com/majestic53/nesl/tree/master/src/system/mapper)|Mapper-specific source files         |
 
 ### Coding style
 
@@ -60,7 +60,7 @@ exit:
 
 ## Places to Contribute
 
-### Bug-fixes to existing code
+### Bug-fixes in existing code
 
 This project is a currently a work-in-progress. Some features may not be completed or may be buggy. Any bug fixes in existing code would be greatly appreciated.
 
