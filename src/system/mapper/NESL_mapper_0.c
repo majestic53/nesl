@@ -27,16 +27,16 @@ extern "C" {
 
 int NESL_Mapper0Init(nesl_mapper_t *mapper)
 {
-    mapper->ram.program = 0;
-    mapper->rom.character[0] = 0;
-    mapper->rom.program[0] = 0;
-    mapper->rom.program[1] = (NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_ROM_PROGRAM) > 1) ? (16 * 1024) : 0;
     mapper->action.interrupt = &NESL_Mapper0Interrupt;
     mapper->action.ram_read = &NESL_Mapper0RamRead;
     mapper->action.ram_write = &NESL_Mapper0RamWrite;
     mapper->action.reset = &NESL_Mapper0Reset;
     mapper->action.rom_read = &NESL_Mapper0RomRead;
     mapper->action.rom_write = &NESL_Mapper0RomWrite;
+    mapper->ram.program = 0;
+    mapper->rom.character[0] = 0;
+    mapper->rom.program[0] = 0;
+    mapper->rom.program[1] = (NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_ROM_PROGRAM) > 1) ? (16 * 1024) : 0;
 
     return NESL_SUCCESS;
 }
