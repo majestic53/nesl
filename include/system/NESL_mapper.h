@@ -25,20 +25,29 @@
 #include "../NESL_bus.h"
 #include "./NESL_cartridge.h"
 
+struct nesl_mapper_s;
+
+typedef struct {
+    int (*interrupt)(struct nesl_mapper_s *mapper);
+    uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
+    void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+    int (*reset)(struct nesl_mapper_s *mapper);
+    uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
+    void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+} nesl_mapper_action_t;
+
+typedef struct {
+    int (*initialize)(struct nesl_mapper_s *mapper);
+    void (*uninitialize)(struct nesl_mapper_s *mapper);
+} nesl_mapper_setup_t;
+
 typedef struct nesl_mapper_s {
     nesl_cartridge_t cartridge;
+    nesl_mapper_action_t action;
+    nesl_mapper_setup_t setup;
     void *context;
     int mirror;
     int type;
-
-    struct {
-        int (*interrupt)(struct nesl_mapper_s *mapper);
-        uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-        void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
-        int (*reset)(struct nesl_mapper_s *mapper);
-        uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-        void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
-    } callback;
 
     struct {
         uint32_t program;

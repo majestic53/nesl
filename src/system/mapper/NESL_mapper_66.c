@@ -40,6 +40,13 @@ int NESL_Mapper66Init(nesl_mapper_t *mapper)
         goto exit;
     }
 
+    mapper->action.interrupt = &NESL_Mapper66Interrupt;
+    mapper->action.ram_read = &NESL_Mapper66RamRead;
+    mapper->action.ram_write = &NESL_Mapper66RamWrite;
+    mapper->action.reset = &NESL_Mapper66Reset;
+    mapper->action.rom_read = &NESL_Mapper66RomRead;
+    mapper->action.rom_write = &NESL_Mapper66RomWrite;
+
     if((result = NESL_Mapper66Reset(mapper)) == NESL_FAILURE) {
         goto exit;
     }
@@ -166,6 +173,7 @@ void NESL_Mapper66RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, ui
 
 void NESL_Mapper66Uninit(nesl_mapper_t *mapper)
 {
+    memset(&mapper->action, 0, sizeof(mapper->action));
 
     if(mapper->context) {
         free(mapper->context);
