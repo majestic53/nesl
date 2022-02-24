@@ -27,8 +27,8 @@ extern "C" {
 
 static int NESL_CartridgeValidate(const void *data, int length)
 {
-    const nesl_header_t *header = (const nesl_header_t *)data;
-    int expected = sizeof(nesl_header_t), result = NESL_SUCCESS;
+    int expected = sizeof(nesl_cartridge_header_t), result = NESL_SUCCESS;
+    const nesl_cartridge_header_t *header = (const nesl_cartridge_header_t *)data;
 
     if(!data) {
         result = NESL_SET_ERROR("Invalid data -- %p", data);
@@ -75,8 +75,6 @@ uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_RAM_CHARACTER:
-            break;
         case NESL_BANK_RAM_PROGRAM:
             result = cartridge->header->ram.program;
             break;
@@ -112,7 +110,7 @@ int NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length
         goto exit;
     }
 
-    cartridge->header = (const nesl_header_t *)ptr;
+    cartridge->header = (const nesl_cartridge_header_t *)ptr;
     ptr += sizeof(*cartridge->header);
 
     if(cartridge->header->flag_6.trainer) {

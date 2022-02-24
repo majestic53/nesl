@@ -62,10 +62,10 @@ typedef struct {
     } ram;
 
     uint8_t unused[7];
-} nesl_header_t;
+} nesl_cartridge_header_t;
 
 typedef struct {
-    const nesl_header_t *header;
+    const nesl_cartridge_header_t *header;
 
     struct {
         uint8_t *character;

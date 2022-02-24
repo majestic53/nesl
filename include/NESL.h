@@ -47,9 +47,9 @@ typedef struct {
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_Run(const nesl_t *);
 const char *NESL_GetError(void);
 const nesl_version_t *NESL_GetVersion(void);
+int NESL_Run(const nesl_t *);
 
 #ifdef __cplusplus
 }

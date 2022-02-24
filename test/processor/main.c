@@ -4036,7 +4036,7 @@ static int NESL_TestProcessorInterrupt(void)
 
     NESL_ProcessorInterrupt(&g_test.processor, false);
 
-    if(NESL_ASSERT(g_test.processor.event.non_maskable)) {
+    if(NESL_ASSERT(g_test.processor.interrupt.non_maskable)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -4047,7 +4047,7 @@ static int NESL_TestProcessorInterrupt(void)
 
     NESL_ProcessorInterrupt(&g_test.processor, true);
 
-    if(NESL_ASSERT(g_test.processor.event.maskable)) {
+    if(NESL_ASSERT(g_test.processor.interrupt.maskable)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -4064,7 +4064,7 @@ static int NESL_TestProcessorInterrupt(void)
     NESL_ProcessorCycle(&g_test.processor, 0);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
-            && (g_test.processor.event.non_maskable == false)
+            && (g_test.processor.interrupt.non_maskable == false)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == g_test.processor.state.status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0xCD)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 3) == 0xAB))) {
@@ -4079,7 +4079,7 @@ static int NESL_TestProcessorInterrupt(void)
     NESL_ProcessorCycle(&g_test.processor, 0);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xF7, 0x34, 6) == true)
-            && (g_test.processor.event.non_maskable == false)
+            && (g_test.processor.interrupt.non_maskable == false)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0x34)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 3) == 0x12))) {
@@ -4100,7 +4100,7 @@ static int NESL_TestProcessorInterrupt(void)
     NESL_ProcessorCycle(&g_test.processor, 0);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)
-            && (g_test.processor.event.maskable == true))) {
+            && (g_test.processor.interrupt.maskable == true))) {
         result = NESL_SUCCESS;
         goto exit;
     }
@@ -4112,7 +4112,7 @@ static int NESL_TestProcessorInterrupt(void)
     NESL_ProcessorCycle(&g_test.processor, 0);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
-            && (g_test.processor.event.maskable == false)
+            && (g_test.processor.interrupt.maskable == false)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0xCE)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 3) == 0xAB))) {
@@ -4164,7 +4164,7 @@ static int NESL_TestProcessorReset(void)
     NESL_ProcessorReset(&g_test.processor);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFD, 0x34, 7) == true)
-            && (g_test.processor.event.raw == 0)
+            && (g_test.processor.interrupt.raw == 0)
             && (g_test.processor.transfer.destination.word == 0)
             && (g_test.processor.transfer.source.word == 0))) {
         result = NESL_SUCCESS;
@@ -4196,8 +4196,8 @@ static int NESL_TestProcessorTransfer(void)
     g_test.processor.cycle = 0;
     NESL_ProcessorWrite(&g_test.processor, 0x4014, page);
 
-    if(NESL_ASSERT((g_test.processor.event.transfer == true)
-            && (g_test.processor.event.transfer_sync == true)
+    if(NESL_ASSERT((g_test.processor.interrupt.transfer == true)
+            && (g_test.processor.interrupt.transfer_sync == true)
             && (g_test.processor.transfer.source.word == (page << 8))
             && (g_test.processor.transfer.destination.word == 0))) {
         result = NESL_FAILURE;
@@ -4216,8 +4216,8 @@ static int NESL_TestProcessorTransfer(void)
         NESL_ProcessorCycle(&g_test.processor, cycle);
         cycle += 3;
 
-        if(NESL_ASSERT((g_test.processor.event.transfer == (address < 0xFF))
-                && (g_test.processor.event.transfer_sync == false)
+        if(NESL_ASSERT((g_test.processor.interrupt.transfer == (address < 0xFF))
+                && (g_test.processor.interrupt.transfer_sync == false)
                 && (g_test.processor.transfer.source.word == ((address < 0xFF) ? ((page << 8) + address + 1) : 0))
                 && (g_test.processor.transfer.destination.word == ((address < 0xFF) ? address + 1 : 0))
                 && (NESL_BusRead(NESL_BUS_VIDEO_OAM, address) == NESL_BusRead(NESL_BUS_PROCESSOR, (page << 8) + address)))) {
@@ -4239,8 +4239,8 @@ static int NESL_TestProcessorTransfer(void)
     g_test.processor.cycle = 0;
     NESL_ProcessorWrite(&g_test.processor, 0x4014, page);
 
-    if(NESL_ASSERT((g_test.processor.event.transfer == true)
-            && (g_test.processor.event.transfer_sync == true)
+    if(NESL_ASSERT((g_test.processor.interrupt.transfer == true)
+            && (g_test.processor.interrupt.transfer_sync == true)
             && (g_test.processor.transfer.source.word == (page << 8))
             && (g_test.processor.transfer.destination.word == 0))) {
         result = NESL_FAILURE;
@@ -4257,8 +4257,8 @@ static int NESL_TestProcessorTransfer(void)
         NESL_ProcessorCycle(&g_test.processor, cycle);
         cycle += 3;
 
-        if(NESL_ASSERT((g_test.processor.event.transfer == (address < 0xFF))
-                && (g_test.processor.event.transfer_sync == false)
+        if(NESL_ASSERT((g_test.processor.interrupt.transfer == (address < 0xFF))
+                && (g_test.processor.interrupt.transfer_sync == false)
                 && (g_test.processor.transfer.source.word == ((address < 0xFF) ? ((page << 8) + address + 1) : 0))
                 && (g_test.processor.transfer.destination.word == ((address < 0xFF) ? address + 1 : 0))
                 && (NESL_BusRead(NESL_BUS_VIDEO_OAM, address) == NESL_BusRead(NESL_BUS_PROCESSOR, (page << 8) + address)))) {
@@ -4284,7 +4284,7 @@ static int NESL_TestProcessorUninit(void)
     NESL_ProcessorUninit(&g_test.processor);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0x0000, 0x00, 0x00, 0) == true)
-            && (g_test.processor.event.raw == 0)
+            && (g_test.processor.interrupt.raw == 0)
             && (g_test.processor.transfer.destination.word == 0)
             && (g_test.processor.transfer.source.word == 0))) {
         result = NESL_SUCCESS;
@@ -4318,8 +4318,8 @@ static int NESL_TestProcessorWrite(void)
     data = 0xAB;
     NESL_ProcessorWrite(&g_test.processor, 0x4014, data);
 
-    if(NESL_ASSERT((g_test.processor.event.transfer == true)
-            && (g_test.processor.event.transfer_sync == true)
+    if(NESL_ASSERT((g_test.processor.interrupt.transfer == true)
+            && (g_test.processor.interrupt.transfer_sync == true)
             && (g_test.processor.transfer.source.word == (data << 8))
             && (g_test.processor.transfer.destination.word == 0))) {
         result = NESL_FAILURE;

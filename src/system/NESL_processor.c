@@ -1067,7 +1067,7 @@ static void NESL_ProcessorInstruction(nesl_processor_t *processor)
 
 static void NESL_ProcessorInterruptMaskable(nesl_processor_t *processor)
 {
-    processor->event.maskable = false;
+    processor->interrupt.maskable = false;
     NESL_ProcessorPushWord(processor, processor->state.program_counter.word);
     NESL_ProcessorPush(processor, processor->state.status.raw);
     processor->state.program_counter.word = NESL_ProcessorReadWord(processor, 0xFFFE);
@@ -1077,7 +1077,7 @@ static void NESL_ProcessorInterruptMaskable(nesl_processor_t *processor)
 
 static void NESL_ProcessorInterruptNonMaskable(nesl_processor_t *processor)
 {
-    processor->event.non_maskable = false;
+    processor->interrupt.non_maskable = false;
     NESL_ProcessorPushWord(processor, processor->state.program_counter.word);
     NESL_ProcessorPush(processor, processor->state.status.raw);
     processor->state.program_counter.word = NESL_ProcessorReadWord(processor, 0xFFFA);
@@ -1088,10 +1088,10 @@ static void NESL_ProcessorInterruptNonMaskable(nesl_processor_t *processor)
 static void NESL_ProcessorTransfer(nesl_processor_t *processor, uint64_t cycle)
 {
 
-    if(processor->event.transfer_sync) {
+    if(processor->interrupt.transfer_sync) {
 
         if(cycle % 2) {
-            processor->event.transfer_sync = false;
+            processor->interrupt.transfer_sync = false;
         }
 
         ++processor->cycle;
@@ -1105,7 +1105,7 @@ static void NESL_ProcessorTransfer(nesl_processor_t *processor, uint64_t cycle)
             ++processor->cycle;
 
             if(processor->transfer.destination.low == 0x00) {
-                processor->event.transfer = false;
+                processor->interrupt.transfer = false;
                 processor->transfer.destination.word = 0;
                 processor->transfer.source.word = 0;
             }
@@ -1119,15 +1119,15 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
 
         if(!processor->cycle) {
 
-            if(processor->event.transfer) {
+            if(processor->interrupt.transfer) {
                 NESL_ProcessorTransfer(processor, cycle);
             }
 
-            if(!processor->event.transfer) {
+            if(!processor->interrupt.transfer) {
 
-                if(processor->event.non_maskable) {
+                if(processor->interrupt.non_maskable) {
                     NESL_ProcessorInterruptNonMaskable(processor);
-                } else if(processor->event.maskable
+                } else if(processor->interrupt.maskable
                         && !processor->state.status.interrupt_disable) {
                     NESL_ProcessorInterruptMaskable(processor);
                 } else {
@@ -1149,9 +1149,9 @@ int NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)
 {
 
     if(maskable) {
-        processor->event.maskable = true;
+        processor->interrupt.maskable = true;
     } else {
-        processor->event.non_maskable = true;
+        processor->interrupt.non_maskable = true;
     }
 
     return NESL_SUCCESS;
@@ -1199,8 +1199,8 @@ void NESL_ProcessorWrite(nesl_processor_t *processor, uint16_t address, uint8_t 
             processor->ram[address & 0x07FF] = data;
             break;
         case 0x4014:
-            processor->event.transfer = true;
-            processor->event.transfer_sync = true;
+            processor->interrupt.transfer = true;
+            processor->interrupt.transfer_sync = true;
             processor->transfer.source.word = data << 8;
             processor->transfer.destination.word = 0;
             break;

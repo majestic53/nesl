@@ -77,12 +77,9 @@ exit:
 
 bool NESL_BusCycle(void)
 {
-    bool result = NESL_VideoCycle(&g_bus.video);
+    NESL_ProcessorCycle(&g_bus.processor, g_bus.cycle++);
 
-    NESL_ProcessorCycle(&g_bus.processor, g_bus.cycle);
-    ++g_bus.cycle;
-
-    return result;
+    return NESL_VideoCycle(&g_bus.video);
 }
 
 int NESL_BusInit(const void *data, int length)

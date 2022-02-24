@@ -26,7 +26,7 @@ typedef struct {
     nesl_cartridge_t cartridge;
 
     struct {
-        nesl_header_t header;
+        nesl_cartridge_header_t header;
         uint8_t program[2][16 * 1024];
         uint8_t character[1][8 * 1024];
     } data;

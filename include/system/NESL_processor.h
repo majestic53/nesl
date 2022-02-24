@@ -54,7 +54,7 @@ typedef struct {
         };
 
         uint8_t raw;
-    } event;
+    } interrupt;
 
     struct {
         nesl_register_t accumulator;
