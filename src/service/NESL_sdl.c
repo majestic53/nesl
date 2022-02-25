@@ -72,6 +72,7 @@ typedef struct {
     uint32_t tick;
     bool fullscreen;
     nesl_color_t pixel[240][256];
+    SDL_AudioDeviceID audio;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     SDL_Window *window;
@@ -82,6 +83,13 @@ static nesl_service_t g_service = {};
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+static void NESL_ServiceCloseAudio(void)
+{
+    SDL_PauseAudioDevice(g_service.audio, 1);
+    SDL_CloseAudioDevice(g_service.audio);
+    g_service.audio = 0;
+}
 
 static int NESL_ServiceClear(void)
 {
@@ -126,7 +134,7 @@ int NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale)
         scale = 4;
     }
 
-    if(SDL_Init(SDL_INIT_VIDEO)) {
+    if(SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -225,9 +233,40 @@ exit:
 
 int NESL_ServiceReset(void)
 {
+    int result;
+
+    if((result = NESL_ServiceClear()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    NESL_ServiceCloseAudio();
     g_service.tick = 0;
 
-    return NESL_ServiceClear();
+exit:
+    return result;
+}
+
+int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
+{
+    int result = NESL_SUCCESS;
+    SDL_AudioSpec desired = {}, obtained = {};
+
+    desired.callback = callback;
+    desired.channels = 1;
+    desired.format = AUDIO_S8;
+    desired.freq = 44100;
+    desired.samples = 512;
+    desired.userdata = context;
+
+    if(!(g_service.audio = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, 0))) {
+        result = NESL_SET_ERROR("%s", SDL_GetError());
+        goto exit;
+    }
+
+    SDL_PauseAudioDevice(g_service.audio, 0);
+
+exit:
+    return result;
 }
 
 void NESL_ServiceSetPixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y)
@@ -280,6 +319,7 @@ exit:
 
 void NESL_ServiceUninit(void)
 {
+    NESL_ServiceCloseAudio();
 
     if(g_service.texture) {
         SDL_DestroyTexture(g_service.texture);

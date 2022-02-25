@@ -20,65 +20,88 @@
  */
 
 #include "../../include/system/NESL_audio.h"
+#include "../../include/NESL_service.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+static void NESL_AudioGetData(void *context, uint8_t *data, int length)
+{
+    int read = NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, data, length);
+
+    if(read < length) {
+        memset(&data[read], 0, length - read);
+    }
+}
+
 static uint8_t NESL_AudioGetStatus(nesl_audio_t *audio)
 {
     nesl_audio_status_t result = {};
 
-    /* TODO */
+    /* TODO: GET STATUS */
 
     return result.raw;
 }
 
 static void NESL_AudioSetDmc(nesl_audio_t *audio, uint16_t address, uint8_t data)
 {
-    audio->channel.dmc.byte[address] = data;
+    audio->synthesizer.dmc.byte[address] = data;
 
-    /* TODO */
+    /* TODO: SET DMC SYNTHESIZER */
 }
 
 static void NESL_AudioSetFrame(nesl_audio_t *audio, uint8_t data)
 {
     audio->frame.raw = data;
 
-    /* TODO */
+    /* TODO: SET FRAME */
 }
 
 static void NESL_AudioSetNoise(nesl_audio_t *audio, uint16_t address, uint8_t data)
 {
-    audio->channel.noise.byte[address] = data;
+    audio->synthesizer.noise.byte[address] = data;
 
-    /* TODO */
+    /* TODO: SET NOISE SYNTHESIZER */
 }
 
 static void NESL_AudioSetSquare(nesl_audio_t *audio, uint16_t address, uint8_t data)
 {
-    audio->channel.square[(address > 3) ? 1 : 0].byte[(address > 3) ? (address - 4) : address] = data;
+    audio->synthesizer.square[(address > 3) ? 1 : 0].byte[(address > 3) ? (address - 4) : address] = data;
 
-    /* TODO */
+    /* TODO: SET SQUARE SYNTHESIZER */
 }
 
 static void NESL_AudioSetTriangle(nesl_audio_t *audio, uint16_t address, uint8_t data)
 {
-    audio->channel.triangle.byte[address] = data;
+    audio->synthesizer.triangle.byte[address] = data;
 
-    /* TODO */
+    /* TODO: SET TRIANGLE SYNTHESIZER */
 }
 
 static void NESL_AudioSetStatus(nesl_audio_t *audio, uint8_t data)
 {
     audio->status.raw = data;
 
-    /* TODO */
+    /* TODO: SET STATUS */
 }
 
 int NESL_AudioInit(nesl_audio_t *audio)
 {
-    return NESL_AudioReset(audio);
+    int result;
+
+    if((result = NESL_AudioBufferInit(&audio->buffer)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO: INIT SYNTHESIZERS */
+
+    if((result = NESL_AudioReset(audio)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+exit:
+    return result;
 }
 
 uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address)
@@ -98,13 +121,31 @@ uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address)
 
 int NESL_AudioReset(nesl_audio_t *audio)
 {
-    memset(audio, 0, sizeof(*audio));
+    int result;
 
-    return NESL_SUCCESS;
+    audio->frame.raw = 0;
+    audio->status.raw = 0;
+
+    /* TODO: RESET SYNTHESIZERS */
+
+    if((result = NESL_AudioBufferReset(&audio->buffer)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    if((result = NESL_ServiceSetAudio(NESL_AudioGetData, audio)) == NESL_FAILURE) {
+        goto exit;
+    }
+
+exit:
+    return result;
 }
 
 void NESL_AudioUninit(nesl_audio_t *audio)
 {
+
+    /* TODO: UNINIT SYNTHESIZERS */
+
+    NESL_AudioBufferUninit(&audio->buffer);
     memset(audio, 0, sizeof(*audio));
 }
 

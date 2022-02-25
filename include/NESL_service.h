@@ -24,6 +24,8 @@
 
 #include "./NESL_common.h"
 
+typedef void (*NESL_ServiceGetAudio)(void *context, uint8_t *data, int length);
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -32,6 +34,7 @@ bool NESL_ServiceGetButton(int controller, int button);
 int NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale);
 int NESL_ServicePoll(void);
 int NESL_ServiceReset(void);
+int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context);
 void NESL_ServiceSetPixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y);
 int NESL_ServiceShow(void);
 void NESL_ServiceUninit(void);

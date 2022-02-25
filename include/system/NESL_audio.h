@@ -22,6 +22,7 @@
 #ifndef NESL_AUDIO_H_
 #define NESL_AUDIO_H_
 
+#include "./audio/NESL_audio_buffer.h"
 #include "../NESL_bus.h"
 
 typedef union {
@@ -201,15 +202,16 @@ typedef union {
 } nesl_audio_triangle_t;
 
 typedef struct {
-    nesl_audio_status_t status;
+    nesl_audio_buffer_t buffer;
     nesl_audio_frame_t frame;
+    nesl_audio_status_t status;
 
     struct {
         nesl_audio_square_t square[2];
         nesl_audio_triangle_t triangle;
         nesl_audio_noise_t noise;
         nesl_audio_dmc_t dmc;
-    } channel;
+    } synthesizer;
 } nesl_audio_t;
 
 #ifdef __cplusplus
