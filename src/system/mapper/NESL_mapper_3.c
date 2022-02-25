@@ -39,12 +39,12 @@ int NESL_Mapper3Init(nesl_mapper_t *mapper)
         goto exit;
     }
 
-    mapper->action.interrupt = &NESL_Mapper3Interrupt;
-    mapper->action.ram_read = &NESL_Mapper3RamRead;
-    mapper->action.ram_write = &NESL_Mapper3RamWrite;
-    mapper->action.reset = &NESL_Mapper3Reset;
-    mapper->action.rom_read = &NESL_Mapper3RomRead;
-    mapper->action.rom_write = &NESL_Mapper3RomWrite;
+    mapper->callback.interrupt = &NESL_Mapper3Interrupt;
+    mapper->callback.ram_read = &NESL_Mapper3RamRead;
+    mapper->callback.ram_write = &NESL_Mapper3RamWrite;
+    mapper->callback.reset = &NESL_Mapper3Reset;
+    mapper->callback.rom_read = &NESL_Mapper3RomRead;
+    mapper->callback.rom_write = &NESL_Mapper3RomWrite;
 
     if((result = NESL_Mapper3Reset(mapper)) == NESL_FAILURE) {
         goto exit;
@@ -167,7 +167,7 @@ void NESL_Mapper3RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, uin
 
 void NESL_Mapper3Uninit(nesl_mapper_t *mapper)
 {
-    memset(&mapper->action, 0, sizeof(mapper->action));
+    memset(&mapper->callback, 0, sizeof(mapper->callback));
 
     if(mapper->context) {
         free(mapper->context);

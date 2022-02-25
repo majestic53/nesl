@@ -46,38 +46,6 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t nametable_x : 1;
-        uint8_t nametable_y : 1;
-        uint8_t increment : 1;
-        uint8_t sprite_pattern : 1;
-        uint8_t background_pattern : 1;
-        uint8_t sprite_size : 1;
-        uint8_t select : 1;
-        uint8_t interrupt : 1;
-    };
-
-    uint8_t raw;
-} nesl_video_control_t;
-
-typedef union {
-
-    struct {
-        uint8_t greyscale : 1;
-        uint8_t background_left_show : 1;
-        uint8_t sprite_left_show : 1;
-        uint8_t background_show : 1;
-        uint8_t sprite_show : 1;
-        uint8_t red_emphasis : 1;
-        uint8_t green_emphasis : 1;
-        uint8_t blue_emphasis : 1;
-    };
-
-    uint8_t raw;
-} nesl_video_mask_t;
-
-typedef union {
-
-    struct {
         uint8_t y;
 
         union {
@@ -151,8 +119,39 @@ typedef struct {
 
     struct {
         bool latch;
-        nesl_video_control_t control;
-        nesl_video_mask_t mask;
+
+        union {
+
+            struct {
+                uint8_t nametable_x : 1;
+                uint8_t nametable_y : 1;
+                uint8_t increment : 1;
+                uint8_t sprite_pattern : 1;
+                uint8_t background_pattern : 1;
+                uint8_t sprite_size : 1;
+                uint8_t select : 1;
+                uint8_t interrupt : 1;
+            };
+
+            uint8_t raw;
+        } control;
+
+        union {
+
+            struct {
+                uint8_t greyscale : 1;
+                uint8_t background_left_show : 1;
+                uint8_t sprite_left_show : 1;
+                uint8_t background_show : 1;
+                uint8_t sprite_show : 1;
+                uint8_t red_emphasis : 1;
+                uint8_t green_emphasis : 1;
+                uint8_t blue_emphasis : 1;
+            };
+
+            uint8_t raw;
+        } mask;
+
         nesl_video_status_t status;
         nesl_register_t oam_address;
         nesl_register_t data;

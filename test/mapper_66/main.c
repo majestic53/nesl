@@ -106,12 +106,12 @@ int NESL_SetError(const char *file, const char *function, int line, const char *
 static void NESL_TestUninit(void)
 {
     NESL_Mapper66Uninit(&g_test.mapper);
-    g_test.mapper.action.interrupt = NULL;
-    g_test.mapper.action.ram_read = NULL;
-    g_test.mapper.action.ram_write = NULL;
-    g_test.mapper.action.reset = NULL;
-    g_test.mapper.action.rom_read = NULL;
-    g_test.mapper.action.rom_write = NULL;
+    g_test.mapper.callback.interrupt = NULL;
+    g_test.mapper.callback.ram_read = NULL;
+    g_test.mapper.callback.ram_write = NULL;
+    g_test.mapper.callback.reset = NULL;
+    g_test.mapper.callback.rom_read = NULL;
+    g_test.mapper.callback.rom_write = NULL;
 }
 
 static int NESL_TestInit(const nesl_cartridge_header_t *header)
@@ -119,12 +119,12 @@ static int NESL_TestInit(const nesl_cartridge_header_t *header)
     NESL_TestUninit();
     memset(&g_test, 0, sizeof(g_test));
     g_test.mapper.cartridge.header = header;
-    g_test.mapper.action.interrupt = &NESL_Mapper66Interrupt;
-    g_test.mapper.action.ram_read = &NESL_Mapper66RamRead;
-    g_test.mapper.action.ram_write = &NESL_Mapper66RamWrite;
-    g_test.mapper.action.reset = &NESL_Mapper66Reset;
-    g_test.mapper.action.rom_read = &NESL_Mapper66RomRead;
-    g_test.mapper.action.rom_write = &NESL_Mapper66RomWrite;
+    g_test.mapper.callback.interrupt = &NESL_Mapper66Interrupt;
+    g_test.mapper.callback.ram_read = &NESL_Mapper66RamRead;
+    g_test.mapper.callback.ram_write = &NESL_Mapper66RamWrite;
+    g_test.mapper.callback.reset = &NESL_Mapper66Reset;
+    g_test.mapper.callback.rom_read = &NESL_Mapper66RomRead;
+    g_test.mapper.callback.rom_write = &NESL_Mapper66RomWrite;
 
     return NESL_Mapper66Init(&g_test.mapper);
 }
@@ -146,12 +146,12 @@ static int NESL_TestMapper66Init(void)
             && (g_test.mapper.rom.program[0] == 0)
             && (g_test.mapper.mirror == NESL_MIRROR_HORIZONTAL)
             && (g_test.mapper.context != NULL)
-            && (g_test.mapper.action.interrupt == &NESL_Mapper66Interrupt)
-            && (g_test.mapper.action.ram_read == &NESL_Mapper66RamRead)
-            && (g_test.mapper.action.ram_write == &NESL_Mapper66RamWrite)
-            && (g_test.mapper.action.reset == &NESL_Mapper66Reset)
-            && (g_test.mapper.action.rom_read == &NESL_Mapper66RomRead)
-            && (g_test.mapper.action.rom_write == &NESL_Mapper66RomWrite))) {
+            && (g_test.mapper.callback.interrupt == &NESL_Mapper66Interrupt)
+            && (g_test.mapper.callback.ram_read == &NESL_Mapper66RamRead)
+            && (g_test.mapper.callback.ram_write == &NESL_Mapper66RamWrite)
+            && (g_test.mapper.callback.reset == &NESL_Mapper66Reset)
+            && (g_test.mapper.callback.rom_read == &NESL_Mapper66RomRead)
+            && (g_test.mapper.callback.rom_write == &NESL_Mapper66RomWrite))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -168,12 +168,12 @@ static int NESL_TestMapper66Init(void)
             && (g_test.mapper.rom.program[0] == 0)
             && (g_test.mapper.mirror == NESL_MIRROR_HORIZONTAL)
             && (g_test.mapper.context != NULL)
-            && (g_test.mapper.action.interrupt == &NESL_Mapper66Interrupt)
-            && (g_test.mapper.action.ram_read == &NESL_Mapper66RamRead)
-            && (g_test.mapper.action.ram_write == &NESL_Mapper66RamWrite)
-            && (g_test.mapper.action.reset == &NESL_Mapper66Reset)
-            && (g_test.mapper.action.rom_read == &NESL_Mapper66RomRead)
-            && (g_test.mapper.action.rom_write == &NESL_Mapper66RomWrite))) {
+            && (g_test.mapper.callback.interrupt == &NESL_Mapper66Interrupt)
+            && (g_test.mapper.callback.ram_read == &NESL_Mapper66RamRead)
+            && (g_test.mapper.callback.ram_write == &NESL_Mapper66RamWrite)
+            && (g_test.mapper.callback.reset == &NESL_Mapper66Reset)
+            && (g_test.mapper.callback.rom_read == &NESL_Mapper66RomRead)
+            && (g_test.mapper.callback.rom_write == &NESL_Mapper66RomWrite))) {
         result = NESL_FAILURE;
         goto exit;
     }

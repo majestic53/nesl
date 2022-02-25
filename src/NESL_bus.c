@@ -45,6 +45,10 @@ static int NESL_BusReset(void)
 {
     int result;
 
+    if((result = NESL_ServiceReset()) == NESL_FAILURE) {
+        goto exit;
+    }
+
     if((result = NESL_MapperReset(&g_bus.mapper)) == NESL_FAILURE) {
         goto exit;
     }
@@ -62,10 +66,6 @@ static int NESL_BusReset(void)
     }
 
     if((result = NESL_VideoReset(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
-        goto exit;
-    }
-
-    if((result = NESL_ServiceReset()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -103,10 +103,6 @@ int NESL_BusInit(const void *data, int length)
     }
 
     if((result = NESL_VideoInit(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
-        goto exit;
-    }
-
-    if((result = NESL_BusReset()) == NESL_FAILURE) {
         goto exit;
     }
 

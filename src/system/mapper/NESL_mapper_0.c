@@ -27,12 +27,12 @@ extern "C" {
 
 int NESL_Mapper0Init(nesl_mapper_t *mapper)
 {
-    mapper->action.interrupt = &NESL_Mapper0Interrupt;
-    mapper->action.ram_read = &NESL_Mapper0RamRead;
-    mapper->action.ram_write = &NESL_Mapper0RamWrite;
-    mapper->action.reset = &NESL_Mapper0Reset;
-    mapper->action.rom_read = &NESL_Mapper0RomRead;
-    mapper->action.rom_write = &NESL_Mapper0RomWrite;
+    mapper->callback.interrupt = &NESL_Mapper0Interrupt;
+    mapper->callback.ram_read = &NESL_Mapper0RamRead;
+    mapper->callback.ram_write = &NESL_Mapper0RamWrite;
+    mapper->callback.reset = &NESL_Mapper0Reset;
+    mapper->callback.rom_read = &NESL_Mapper0RomRead;
+    mapper->callback.rom_write = &NESL_Mapper0RomWrite;
     mapper->ram.program = 0;
     mapper->rom.character[0] = 0;
     mapper->rom.program[0] = 0;
@@ -134,7 +134,7 @@ void NESL_Mapper0RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, uin
 
 void NESL_Mapper0Uninit(nesl_mapper_t *mapper)
 {
-    memset(&mapper->action, 0, sizeof(mapper->action));
+    memset(&mapper->callback, 0, sizeof(mapper->callback));
 }
 
 #ifdef __cplusplus
