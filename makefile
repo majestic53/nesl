@@ -20,9 +20,9 @@
 DIR_SRC=src/
 DIR_TEST=test/
 
-FLAGS=-march=native\ -mtune=native\ -std=c99\ -Wall\ -Werror\ -flto
+FLAGS=-march=native\ -mtune=native\ -std=c99\ -Wall\ -Werror
 FLAGS_DEBUG=FLAGS=$(FLAGS)\ -g
-FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3
+FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3\ -flto
 FLAGS_MAKE=--no-print-directory -C
 
 .PHONY: all
