@@ -38,7 +38,7 @@ static nesl_test_t g_test = {};
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer)
+int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
 {
     return NESL_SUCCESS;
 }

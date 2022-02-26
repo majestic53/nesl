@@ -90,7 +90,7 @@ int NESL_AudioInit(nesl_audio_t *audio)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&audio->buffer)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInit(&audio->buffer, 1024)) == NESL_FAILURE) {
         goto exit;
     }
 
