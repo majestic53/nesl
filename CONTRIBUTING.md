@@ -13,7 +13,7 @@ This project is built around a common bus, allowing the various subsystems to co
 ### Adding new files
 
 * All subsystems should conform to the model above, and avoid calling each other directly. Instead, they should communicate through the common bus.
-* Any subsystem specific source files should be placed into a subdirectory, under `src/system`.
+* Any subsystem specific source files should be placed into a subdirectory, under [`src/system`](https://github.com/majestic53/nesl/tree/master/src/system).
 
 ### File layout
 
@@ -30,17 +30,25 @@ This project is built around a common bus, allowing the various subsystems to co
 Code should be in the format:
 
 ```c
+typedef struct {
+    int val_0;
+    int val_1;
+    ...
+} nesl_xxx_t;
+
+...
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 ...
 
-int NESL_SubsystemXxx(int arg0, int arg1, ...)
+int NESL_XxxYyy(nesl_xxx_t *arg_0, int arg_1, ...)
 {
     int result = NESL_SUCCESS;
 
-    if(arg0 == 0) {
+    if(arg_0 == NULL) {
         result = NESL_FAILURE;
         goto exit;
     }

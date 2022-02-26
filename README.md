@@ -36,7 +36,7 @@ The following libraries are required to build this project:
 
 Install the libraries using apt:
 
-```
+```bash
 sudo apt-get install libsdl2-dev
 ```
 
@@ -44,7 +44,7 @@ sudo apt-get install libsdl2-dev
 
 Install the libraries using pacman:
 
-```
+```bash
 sudo pacman -S sdl2
 ```
 
@@ -52,7 +52,7 @@ sudo pacman -S sdl2
 
 Clone the project from the repo:
 
-```
+```bash
 git clone https://github.com/majestic53/nesl
 ```
 
@@ -60,7 +60,7 @@ git clone https://github.com/majestic53/nesl
 
 Navigate into the project directory and run make to build the binary:
 
-```
+```bash
 cd nesl && make
 ```
 
@@ -88,25 +88,25 @@ The following options are available:
 
 To launch the binary with a file, run the following command:
 
-```
+```bash
 nesl file
 ```
 
 To launch the binary in fullscreen mode, run the following command:
 
-```
+```bash
 nesl -f file
 ```
 
 To launch the binary with nearest-scaling (1x-4x), run the following command:
 
-```
+```bash
 nesl -s [1-4] file
 ```
 
 To launch the binary with linear-scaling (1x-4x), run the following command:
 
-```
+```bash
 nesl -ls [1-4] file
 ```
 
