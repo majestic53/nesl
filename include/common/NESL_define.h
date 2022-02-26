@@ -31,7 +31,7 @@
 
 #define NESL_MAJOR 0
 #define NESL_MINOR 1
-#define NESL_PATCH 38
+#define NESL_PATCH 39
 
 enum {
     NESL_BANK_RAM_CHARACTER = 0,
