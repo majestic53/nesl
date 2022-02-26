@@ -20,4 +20,4 @@ jobs:
                 echo "`cppcheck --version`"
             - name: Run Analysis
               run: |
-                cppcheck --enable=all --std=c99 --suppress=missingIncludeSystem .
+                cppcheck --enable=all --std=c11 --suppress=missingIncludeSystem .
