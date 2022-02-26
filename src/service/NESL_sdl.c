@@ -86,9 +86,12 @@ extern "C" {
 
 static void NESL_ServiceCloseAudio(void)
 {
-    SDL_PauseAudioDevice(g_service.audio, 1);
-    SDL_CloseAudioDevice(g_service.audio);
-    g_service.audio = 0;
+
+    if(g_service.audio) {
+        SDL_PauseAudioDevice(g_service.audio, 1);
+        SDL_CloseAudioDevice(g_service.audio);
+        g_service.audio = 0;
+    }
 }
 
 static int NESL_ServiceClear(void)
@@ -257,8 +260,9 @@ int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
     desired.freq = 44100;
     desired.samples = 512;
     desired.userdata = context;
+    NESL_ServiceCloseAudio();
 
-    if(!(g_service.audio = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, 0))) {
+    if((g_service.audio = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, 0)) <= 0) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
