@@ -25,7 +25,7 @@
 #include "../../NESL_common.h"
 
 typedef struct {
-    uint8_t *data;
+    int8_t *data;
     int length;
     int read;
     int write;
@@ -37,10 +37,10 @@ extern "C" {
 #endif /* __cplusplus */
 
 int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length);
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, uint8_t *data, int length);
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int8_t *data, int length);
 int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer);
 void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer);
-int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, uint8_t *data, int length);
+int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int8_t *data, int length);
 
 #ifdef __cplusplus
 }

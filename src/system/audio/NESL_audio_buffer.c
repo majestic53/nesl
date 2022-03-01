@@ -25,7 +25,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, uint8_t *data, int length)
+static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, int8_t *data, int length)
 {
 
     if((buffer->write + length) >= buffer->length) {
@@ -42,7 +42,7 @@ static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, uint8_t *data, i
     buffer->full = (buffer->write == buffer->read);
 }
 
-static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, uint8_t *data, int length)
+static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, int8_t *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
@@ -91,7 +91,7 @@ int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
 {
     int result = NESL_SUCCESS;
 
-    if(!(buffer->data = calloc(length, sizeof(uint8_t)))) {
+    if(!(buffer->data = calloc(length, sizeof(int8_t)))) {
         result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", length / 1024.f, length);
         goto exit;
     }
@@ -106,13 +106,13 @@ exit:
     return result;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, uint8_t *data, int length)
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int8_t *data, int length)
 {
     int result = 0;
 
     if(!NESL_AudioBufferEmpty(buffer)) {
 
-        if((result = NESL_AudioBufferMinimum(NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write), length))) {
+        if((result = NESL_AudioBufferMinimum(NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write), length)) > 0) {
             NESL_AudioBufferCopyOut(buffer, data, result);
         }
     }
@@ -141,13 +141,13 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
     memset(buffer, 0, sizeof(*buffer));
 }
 
-int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, uint8_t *data, int length)
+int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int8_t *data, int length)
 {
     int result = 0;
 
     if(!NESL_AudioBufferFull(buffer)) {
 
-        if((result = NESL_AudioBufferMinimum(NESL_AudioBufferDistance(buffer->length, buffer->write, buffer->read), length))) {
+        if((result = NESL_AudioBufferMinimum(NESL_AudioBufferDistance(buffer->length, buffer->write, buffer->read), length)) > 0) {
             NESL_AudioBufferCopyIn(buffer, data, result);
         }
     }

@@ -28,7 +28,7 @@ extern "C" {
 
 static void NESL_AudioGetData(void *context, uint8_t *data, int length)
 {
-    int read = NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, data, length);
+    int read = NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (int8_t *)data, length);
 
     if(read < length) {
         memset(&data[read], 0, length - read);
