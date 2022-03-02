@@ -77,7 +77,9 @@ exit:
 
 bool NESL_BusCycle(void)
 {
-    NESL_ProcessorCycle(&g_bus.processor, g_bus.cycle++);
+    NESL_ProcessorCycle(&g_bus.processor, g_bus.cycle);
+    NESL_AudioCycle(&g_bus.audio, g_bus.cycle);
+    ++g_bus.cycle;
 
     return NESL_VideoCycle(&g_bus.video);
 }
