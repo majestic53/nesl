@@ -25,36 +25,36 @@
 extern "C" {
 #endif /* __cplusplus */
 
-static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, int8_t *data, int length)
+static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
     if((buffer->write + length) >= buffer->length) {
         int offset = buffer->length - buffer->write;
 
-        memcpy(&buffer->data[buffer->write], data, offset);
+        memcpy(&buffer->data[buffer->write], data, offset * sizeof(float));
         length -= offset;
         data += offset;
         buffer->write = 0;
     }
 
-    memcpy(&buffer->data[buffer->write], data, length);
+    memcpy(&buffer->data[buffer->write], data, length * sizeof(float));
     buffer->write += length;
     buffer->full = (buffer->write == buffer->read);
 }
 
-static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, int8_t *data, int length)
+static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
         int offset = buffer->length - buffer->read;
 
-        memcpy(data, &buffer->data[buffer->read], offset);
+        memcpy(data, &buffer->data[buffer->read], offset * sizeof(float));
         length -= offset;
         data += offset;
         buffer->read = 0;
     }
 
-    memcpy(data, &buffer->data[buffer->read], length);
+    memcpy(data, &buffer->data[buffer->read], length * sizeof(float));
     buffer->read += length;
     buffer->full = false;
 }
@@ -91,7 +91,12 @@ int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
 {
     int result = NESL_SUCCESS;
 
-    if(!(buffer->data = calloc(length, sizeof(int8_t)))) {
+    if(pthread_mutex_init(&buffer->lock, NULL) == -1) {
+        result = NESL_SET_ERROR("Failed to initialize lock -- %i: %s", errno, strerror(errno));
+        goto exit;
+    }
+
+    if(!(buffer->data = calloc(length, sizeof(float)))) {
         result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", length / 1024.f, length);
         goto exit;
     }
@@ -106,9 +111,11 @@ exit:
     return result;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int8_t *data, int length)
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
 {
     int result = 0;
+
+    pthread_mutex_lock(&buffer->lock);
 
     if(!NESL_AudioBufferEmpty(buffer)) {
 
@@ -117,15 +124,19 @@ int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int8_t *data, int length)
         }
     }
 
+    pthread_mutex_unlock(&buffer->lock);
+
     return result;
 }
 
 int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 {
+    pthread_mutex_lock(&buffer->lock);
     memset(buffer->data, 0, buffer->length);
     buffer->read = 0;
     buffer->write = 0;
     buffer->full = false;
+    pthread_mutex_unlock(&buffer->lock);
 
     return NESL_SUCCESS;
 }
@@ -138,12 +149,17 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
         buffer->data = NULL;
     }
 
+    pthread_mutex_lock(&buffer->lock);
+    pthread_mutex_unlock(&buffer->lock);
+    pthread_mutex_destroy(&buffer->lock);
     memset(buffer, 0, sizeof(*buffer));
 }
 
-int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int8_t *data, int length)
+int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, float *data, int length)
 {
     int result = 0;
+
+    pthread_mutex_lock(&buffer->lock);
 
     if(!NESL_AudioBufferFull(buffer)) {
 
@@ -151,6 +167,8 @@ int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int8_t *data, int length)
             NESL_AudioBufferCopyIn(buffer, data, result);
         }
     }
+
+    pthread_mutex_unlock(&buffer->lock);
 
     return result;
 }

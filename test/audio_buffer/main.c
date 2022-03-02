@@ -93,24 +93,25 @@ exit:
 
 static int NESL_TestAudioBufferRead(void)
 {
-    int8_t buffer[10] = {};
     int result = NESL_SUCCESS;
+    float buffer[10] = {}, data = 1024.f;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_AudioBufferRead(&g_test.buffer, buffer, sizeof(buffer)) == 0)) {
+    if(NESL_ASSERT(NESL_AudioBufferRead(&g_test.buffer, buffer, sizeof(buffer) / sizeof(*buffer)) == 0)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    for(int data = 0, index = 0; index < g_test.buffer.length; ++index) {
-        g_test.buffer.data[index] = ++data;
+    for(int index = 0; index < g_test.buffer.length; ++index) {
+        g_test.buffer.data[index] = data;
+        data *= 2.f;
     }
 
-    for(int length = 0; length <= sizeof(buffer); ++length) {
+    for(int length = 0; length <= (sizeof(buffer) / sizeof(*buffer)); ++length) {
 
         for(int write = 0; write < g_test.buffer.length; ++write) {
 
@@ -150,7 +151,7 @@ static int NESL_TestAudioBufferRead(void)
                         goto exit;
                     }
 
-                    for(int index = 0; index < sizeof(buffer); ++index) {
+                    for(int index = 0; index < sizeof(buffer) / sizeof(*buffer); ++index) {
 
                         if(NESL_ASSERT(buffer[index] == 0)) {
                             result = NESL_FAILURE;
@@ -220,19 +221,20 @@ exit:
 
 static int NESL_TestAudioBufferWrite(void)
 {
-    int8_t buffer[10] = {};
     int result = NESL_SUCCESS;
+    float buffer[10] = {}, data = 1024.f;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    for(int data = 0, index = 0; index < g_test.buffer.length; ++index) {
-        buffer[index] = ++data;
+    for(int index = 0; index < g_test.buffer.length; ++index) {
+        buffer[index] = data;
+        data *= 2.f;
     }
 
-    for(int length = 0; length <= sizeof(buffer); ++length) {
+    for(int length = 0; length <= (sizeof(buffer) / sizeof(*buffer)); ++length) {
 
         for(int write = 0; write < g_test.buffer.length; ++write) {
 
@@ -244,7 +246,7 @@ static int NESL_TestAudioBufferWrite(void)
                     g_test.buffer.read = read;
                     g_test.buffer.write = write;
                     g_test.buffer.full = false;
-                    memset(g_test.buffer.data, 0, g_test.buffer.length);
+                    memset(g_test.buffer.data, 0, g_test.buffer.length * sizeof(*buffer));
                     copied = NESL_AudioBufferWrite(&g_test.buffer, buffer, length);
                     distance = NESL_TestMinimum(NESL_TestDistance(g_test.buffer.length, write, read), length);
 
@@ -268,7 +270,7 @@ static int NESL_TestAudioBufferWrite(void)
                         g_test.buffer.read = read;
                         g_test.buffer.write = write;
                         g_test.buffer.full = true;
-                        memset(g_test.buffer.data, 0, g_test.buffer.length);
+                        memset(g_test.buffer.data, 0, g_test.buffer.length * sizeof(*buffer));
                         copied = NESL_AudioBufferWrite(&g_test.buffer, buffer, length);
 
                         if(NESL_ASSERT((copied == 0)

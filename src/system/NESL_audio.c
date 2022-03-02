@@ -28,11 +28,8 @@ extern "C" {
 
 static void NESL_AudioGetData(void *context, uint8_t *data, int length)
 {
-    int read = NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (int8_t *)data, length);
-
-    if(read < length) {
-        memset(&data[read], 0, length - read);
-    }
+    memset(data, 0, length);
+    NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (float *)data, length / sizeof(float));
 }
 
 static uint8_t NESL_AudioGetStatus(nesl_audio_t *audio)
@@ -86,11 +83,20 @@ static void NESL_AudioSetStatus(nesl_audio_t *audio, uint8_t data)
     /* TODO: SET STATUS */
 }
 
+void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
+{
+
+    if(!(cycle % 6)) {
+
+        /* TODO: CYCLE SYNTHESIZERS */
+    }
+}
+
 int NESL_AudioInit(nesl_audio_t *audio)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&audio->buffer, 1024)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInit(&audio->buffer, 2048)) == NESL_FAILURE) {
         goto exit;
     }
 

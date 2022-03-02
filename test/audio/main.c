@@ -43,7 +43,7 @@ int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
     return NESL_SUCCESS;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int8_t *data, int length)
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
 {
     return 0;
 }

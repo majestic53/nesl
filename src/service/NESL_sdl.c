@@ -256,9 +256,9 @@ int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
 
     desired.callback = callback;
     desired.channels = 1;
-    desired.format = AUDIO_S8;
+    desired.format = AUDIO_F32SYS;
     desired.freq = 44100;
-    desired.samples = 512;
+    desired.samples = 1024;
     desired.userdata = context;
     NESL_ServiceCloseAudio();
 

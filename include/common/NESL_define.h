@@ -22,6 +22,8 @@
 #ifndef NESL_DEFINE_H_
 #define NESL_DEFINE_H_
 
+#include <errno.h>
+#include <pthread.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>

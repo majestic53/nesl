@@ -218,6 +218,7 @@ typedef struct {
 extern "C" {
 #endif /* __cplusplus */
 
+void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle);
 int NESL_AudioInit(nesl_audio_t *audio);
 uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address);
 int NESL_AudioReset(nesl_audio_t *audio);
