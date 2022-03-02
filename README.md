@@ -30,7 +30,8 @@ __NOTE__: This project is tested under GNU/Linux, using the GCC compiler. Some m
 ### Preparing to build
 
 The following libraries are required to build this project:
-* [SDL2 (Simple DirectMedia Layer)](https://github.com/libsdl-org/SDL)
+* [SDL2 (Simple DirectMedia Layer)](https://wikipedia.org/wiki/Simple_DirectMedia_Layer)
+* [pthreads (POSIX threads)](https://wikipedia.org/wiki/Pthreads)
 
 #### On Debian-based systems
 
