@@ -25,7 +25,7 @@ FILE_BIN=$(DIR_BUILD)$(FILE)
 FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
-FLAGS_LIB=-lSDL2 -lSDL2main
+FLAGS_LIB=-lpthread -lSDL2 -lSDL2main
 
 .PHONY: all
 all: build
