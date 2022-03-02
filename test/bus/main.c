@@ -65,6 +65,11 @@ static nesl_test_t g_test = {};
 extern "C" {
 #endif /* __cplusplus */
 
+void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
+{
+    return;
+}
+
 int NESL_AudioInit(nesl_audio_t *audio)
 {
     return NESL_SUCCESS;
