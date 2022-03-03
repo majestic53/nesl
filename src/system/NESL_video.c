@@ -93,19 +93,11 @@ static void NESL_VideoBackgroundShift(nesl_video_t *video)
 
 static uint8_t NESL_VideoFlip(uint8_t data)
 {
-    uint8_t result = 0;
+    data = ((data & 0x0F) << 4) | ((data & 0xF0) >> 4);
+    data = ((data & 0x33) << 2) | ((data & 0xCC) >> 2);
+    data = ((data & 0x55) << 1) | ((data & 0xAA) >> 1);
 
-    for(uint8_t index = 0; index < 8; ++index) {
-        result >>= 1;
-
-        if(data & 0x80) {
-            result |= 0x80;
-        }
-
-        data <<= 1;
-    }
-
-    return result;
+    return data;
 }
 
 static void NESL_VideoHorizontalSet(nesl_video_t *video)
