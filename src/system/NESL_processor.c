@@ -1115,6 +1115,7 @@ static void NESL_ProcessorTransfer(nesl_processor_t *processor, uint64_t cycle)
 
 void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
 {
+
     if(!(cycle % 3)) {
 
         if(!processor->cycle) {
