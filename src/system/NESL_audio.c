@@ -41,39 +41,11 @@ static uint8_t NESL_AudioGetStatus(nesl_audio_t *audio)
     return result.raw;
 }
 
-static void NESL_AudioSetDmc(nesl_audio_t *audio, uint16_t address, uint8_t data)
-{
-    audio->synthesizer.dmc.byte[address] = data;
-
-    /* TODO: SET DMC SYNTHESIZER */
-}
-
 static void NESL_AudioSetFrame(nesl_audio_t *audio, uint8_t data)
 {
     audio->frame.raw = data;
 
     /* TODO: SET FRAME */
-}
-
-static void NESL_AudioSetNoise(nesl_audio_t *audio, uint16_t address, uint8_t data)
-{
-    audio->synthesizer.noise.byte[address] = data;
-
-    /* TODO: SET NOISE SYNTHESIZER */
-}
-
-static void NESL_AudioSetSquare(nesl_audio_t *audio, uint16_t address, uint8_t data)
-{
-    audio->synthesizer.square[(address > 3) ? 1 : 0].byte[(address > 3) ? (address - 4) : address] = data;
-
-    /* TODO: SET SQUARE SYNTHESIZER */
-}
-
-static void NESL_AudioSetTriangle(nesl_audio_t *audio, uint16_t address, uint8_t data)
-{
-    audio->synthesizer.triangle.byte[address] = data;
-
-    /* TODO: SET TRIANGLE SYNTHESIZER */
 }
 
 static void NESL_AudioSetStatus(nesl_audio_t *audio, uint8_t data)
@@ -88,7 +60,12 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
 
     if(!(cycle % 6)) {
 
+        for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+            NESL_AudioSquareCycle(&audio->synthesizer.square[channel]);
+        }
+
         /* TODO: CYCLE SYNTHESIZERS */
+        /* TODO: IF ENOUGH SAMPLES HAVE BEEN GENERATED, MIX TOGETHER AND ENQUEUE IN BUFFER */
     }
 }
 
@@ -98,6 +75,13 @@ int NESL_AudioInit(nesl_audio_t *audio)
 
     if((result = NESL_AudioBufferInit(&audio->buffer, 2048)) == NESL_FAILURE) {
         goto exit;
+    }
+
+    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+
+        if((result = NESL_AudioSquareInit(&audio->synthesizer.square[channel])) == NESL_FAILURE) {
+            goto exit;
+        }
     }
 
     /* TODO: INIT SYNTHESIZERS */
@@ -132,6 +116,13 @@ int NESL_AudioReset(nesl_audio_t *audio)
     audio->frame.raw = 0;
     audio->status.raw = 0;
 
+    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+
+        if((result = NESL_AudioSquareReset(&audio->synthesizer.square[channel])) == NESL_FAILURE) {
+            goto exit;
+        }
+    }
+
     /* TODO: RESET SYNTHESIZERS */
 
     if((result = NESL_AudioBufferReset(&audio->buffer)) == NESL_FAILURE) {
@@ -151,25 +142,41 @@ void NESL_AudioUninit(nesl_audio_t *audio)
 
     /* TODO: UNINIT SYNTHESIZERS */
 
+    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+        NESL_AudioSquareUninit(&audio->synthesizer.square[channel]);
+    }
+
     NESL_AudioBufferUninit(&audio->buffer);
     memset(audio, 0, sizeof(*audio));
 }
 
 void NESL_AudioWrite(nesl_audio_t *audio, uint16_t address, uint8_t data)
 {
+    int channel;
 
     switch(address) {
         case 0x4000 ... 0x4007:
-            NESL_AudioSetSquare(audio, address - 0x4000, data);
+
+            if((channel = (address > 0x4003) ? NESL_CHANNEL_1 : NESL_CHANNEL_0) == NESL_CHANNEL_1) {
+                address -= 4;
+            }
+
+            NESL_AudioSquareWrite(&audio->synthesizer.square[channel], address, data);
             break;
         case 0x4008 ... 0x400B:
-            NESL_AudioSetTriangle(audio, address - 0x4008, data);
+
+            /* TODO: WRITE TO TRIANGLE SYNTHESIZER */
+
             break;
         case 0x400C ... 0x400F:
-            NESL_AudioSetNoise(audio, address - 0x400C, data);
+
+            /* TODO: WRITE TO NOISE SYNTHESIZER */
+
             break;
         case 0x4010 ... 0x4013:
-            NESL_AudioSetDmc(audio, address - 0x4010, data);
+
+            /* TODO: WRITE TO DMC SYNTHESIZER */
+
             break;
         case 0x4015:
             NESL_AudioSetStatus(audio, data);

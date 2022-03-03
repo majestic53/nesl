@@ -63,6 +63,12 @@ enum {
 };
 
 enum {
+    NESL_CHANNEL_0 = 0,
+    NESL_CHANNEL_1,
+    NESL_CHANNEL_MAX,
+};
+
+enum {
     NESL_CONTROLLER_1 = 0,
     NESL_CONTROLLER_2,
     NESL_CONTROLLER_MAX,
