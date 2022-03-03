@@ -63,7 +63,7 @@ static int NESL_AudioBufferDistance(int max, int left, int right)
 {
     int result = 0;
 
-    if(left < right) {
+    if(left <= right) {
         result = right - left;
     } else {
         result = (max - left) + right;
@@ -129,6 +129,17 @@ int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
     return result;
 }
 
+int NESL_AudioBufferReadable(nesl_audio_buffer_t *buffer)
+{
+    int result;
+
+    pthread_mutex_lock(&buffer->lock);
+    result = NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write);
+    pthread_mutex_unlock(&buffer->lock);
+
+    return result;
+}
+
 int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 {
     pthread_mutex_lock(&buffer->lock);
@@ -168,6 +179,17 @@ int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, float *data, int length)
         }
     }
 
+    pthread_mutex_unlock(&buffer->lock);
+
+    return result;
+}
+
+int NESL_AudioBufferWritable(nesl_audio_buffer_t *buffer)
+{
+    int result;
+
+    pthread_mutex_lock(&buffer->lock);
+    result = NESL_AudioBufferDistance(buffer->length, buffer->write, buffer->read);
     pthread_mutex_unlock(&buffer->lock);
 
     return result;

@@ -41,7 +41,7 @@ static int NESL_TestDistance(int max, int left, int right)
 {
     int result = 0;
 
-    if(left < right) {
+    if(left <= right) {
         result = right - left;
     } else {
         result = (max - left) + right;
@@ -169,6 +169,43 @@ exit:
     return result;
 }
 
+static int NESL_TestAudioBufferReadable(void)
+{
+    int result = NESL_SUCCESS;
+
+    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    for(int write = 0; write < g_test.buffer.length; ++write) {
+
+        for(int read = 0; read < g_test.buffer.length; ++read) {
+            int length;
+
+            g_test.buffer.read = read;
+            g_test.buffer.write = write;
+            length = NESL_AudioBufferReadable(&g_test.buffer);
+
+            if(read != write) {
+
+                if(NESL_ASSERT(length == NESL_TestDistance(g_test.buffer.length, read, write))) {
+                    result = NESL_FAILURE;
+                    goto exit;
+                }
+            } else if(NESL_ASSERT(length == 0)) {
+                result = NESL_FAILURE;
+                goto exit;
+            }
+        }
+    }
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
 static int NESL_TestAudioBufferReset(void)
 {
     int result = NESL_SUCCESS;
@@ -253,7 +290,7 @@ static int NESL_TestAudioBufferWrite(void)
                     if(NESL_ASSERT((copied == distance)
                             && (g_test.buffer.read == read)
                             && (g_test.buffer.write == ((write + distance) % g_test.buffer.length))
-                            && (g_test.buffer.full == (g_test.buffer.write == g_test.buffer.read)))) {
+                            && (g_test.buffer.full == (copied && (g_test.buffer.write == g_test.buffer.read))))) {
                         result = NESL_FAILURE;
                         goto exit;
                     }
@@ -301,12 +338,51 @@ exit:
     return result;
 }
 
+static int NESL_TestAudioBufferWritable(void)
+{
+    int result = NESL_SUCCESS;
+
+    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    for(int write = 0; write < g_test.buffer.length; ++write) {
+
+        for(int read = 0; read < g_test.buffer.length; ++read) {
+            int length;
+
+            g_test.buffer.read = read;
+            g_test.buffer.write = write;
+            length = NESL_AudioBufferWritable(&g_test.buffer);
+
+            if(read != write) {
+
+                if(NESL_ASSERT(length == NESL_TestDistance(g_test.buffer.length, write, read))) {
+                    result = NESL_FAILURE;
+                    goto exit;
+                }
+            } else if(NESL_ASSERT(length == 0)) {
+                result = NESL_FAILURE;
+                goto exit;
+            }
+        }
+    }
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
 static const NESL_Test TEST[] = {
     NESL_TestAudioBufferInit,
     NESL_TestAudioBufferRead,
+    NESL_TestAudioBufferReadable,
     NESL_TestAudioBufferReset,
     NESL_TestAudioBufferUninit,
     NESL_TestAudioBufferWrite,
+    NESL_TestAudioBufferWritable,
     };
 
 int main(void)

@@ -39,9 +39,11 @@ extern "C" {
 
 int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length);
 int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length);
+int NESL_AudioBufferReadable(nesl_audio_buffer_t *buffer);
 int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer);
 void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer);
 int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, float *data, int length);
+int NESL_AudioBufferWritable(nesl_audio_buffer_t *buffer);
 
 #ifdef __cplusplus
 }
