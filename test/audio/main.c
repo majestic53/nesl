@@ -36,6 +36,7 @@ typedef struct {
         struct {
             uint16_t address;
             uint8_t data;
+            bool cycle;
             bool initialized;
             bool reset;
         } square[NESL_CHANNEL_MAX];
@@ -66,6 +67,18 @@ int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 {
     return;
+}
+
+void NESL_AudioSquareCycle(nesl_audio_square_t *square)
+{
+
+    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+
+        if(square == &g_test.audio.synthesizer.square[channel]) {
+            g_test.synthesizer.square[channel].cycle = true;
+            break;
+        }
+    }
 }
 
 int NESL_AudioSquareInit(nesl_audio_square_t *square)
