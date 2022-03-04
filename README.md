@@ -6,7 +6,7 @@
 
 This projects main goal is to emulate the original NES hardware with enough accuracy to run most common software for that platform. Being written in C and using the SDL library for input/output, the project attempts to be performant and be natively compilable on Linux, MacOS and Windows.
 
-__NOTE__: This project is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file issues [here](https://github.com/majestic53/nesl/blob/master/CONTRIBUTING.md).
+__NOTE__: This project is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file issues [here](https://github.com/majestic53/nesl/blob/master/CONTRIBUTING.md#places-to-contribute).
 
 ![Demo](https://github.com/majestic53/nesl/blob/master/docs/demo.png)
 
