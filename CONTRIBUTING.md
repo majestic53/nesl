@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-See the build steps in [`README.md`](https://github.com/majestic53/nesl/blob/master/README.md#building-from-source)
+See the build steps in the readme [here](https://github.com/majestic53/nesl/blob/master/README.md#building-from-source).
 
 ## Project Architecture
 

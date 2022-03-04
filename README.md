@@ -4,13 +4,13 @@
 
 ### A lightweight NES emulator, written in C.
 
-The NESL project is designed to emulate the original NES hardware with enough accuracy to run most common software for that platform, while still be performant. Additionally, being written in C and using the SDL library for controller input and audio/video output, the project can be built natively for Linux, MacOS and Windows.
+This projects main goal is to emulate the original NES hardware with enough accuracy to run most common software for that platform. Being written in C and using the SDL library for input/output, the project attempts to be performant and be natively compilable on Linux, MacOS and Windows.
+
+__NOTE__: This project is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file bugs [here](https://github.com/majestic53/nesl/blob/master/CONTRIBUTING.md).
 
 ![Demo](https://github.com/majestic53/nesl/blob/master/docs/demo.png)
 
 ## Features
-
-__NOTE__: This project is a currently a work-in-progress. Some features may not be completed or may be buggy.
 
 ### Completed
 
@@ -27,7 +27,7 @@ The latest release can be found here: `TBD`
 
 ## Building from source
 
-__NOTE__: This project is tested under GNU/Linux, using the GCC compiler. Some modifications will be required to build with a different OS/compiler.
+__NOTE__: This project has been tested under Linux, using the GCC compiler. Some modifications may be required to build with a different OS/compiler.
 
 ### Preparing to build
 
