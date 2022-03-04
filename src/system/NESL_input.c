@@ -29,7 +29,7 @@ typedef union {
     };
 
     uint8_t raw;
-} nesl_state_t;
+} nesl_strobe_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,7 +43,7 @@ int NESL_InputInit(nesl_input_t *input)
 uint8_t NESL_InputRead(nesl_input_t *input, uint16_t address)
 {
     int controller = NESL_CONTROLLER_MAX;
-    nesl_state_t result = { .raw = 0x41 };
+    nesl_strobe_t result = { .raw = 0x41 };
 
     switch(address) {
         case 0x4016:
@@ -91,7 +91,7 @@ void NESL_InputUninit(nesl_input_t *input)
 void
 NESL_InputWrite(nesl_input_t *input, uint16_t address, uint8_t data)
 {
-    nesl_state_t strobe = {};
+    nesl_strobe_t strobe = {};
 
     switch(address) {
         case 0x4016:
