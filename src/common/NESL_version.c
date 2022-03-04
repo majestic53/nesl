@@ -21,18 +21,14 @@
 
 #include "../../include/NESL_common.h"
 
-static const nesl_version_t g_version = {
-    .major = NESL_MAJOR,
-    .minor = NESL_MINOR,
-    .patch = NESL_PATCH,
-    };
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 const nesl_version_t *NESL_GetVersion(void)
 {
+    static const nesl_version_t g_version = { .major = NESL_MAJOR, .minor = NESL_MINOR, .patch = NESL_PATCH, };
+
     return &g_version;
 }
 

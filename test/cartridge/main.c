@@ -102,17 +102,17 @@ static int NESL_TestCartridgeGetBankCount(void)
         }
 
         switch(type) {
-            case NESL_BANK_RAM_CHARACTER:
+            case NESL_BANK_CHARACTER_RAM:
                 break;
-            case NESL_BANK_RAM_PROGRAM:
+            case NESL_BANK_PROGRAM_RAM:
                 g_test.data.header.ram.program = 11;
                 data = g_test.data.header.ram.program;
                 break;
-            case NESL_BANK_ROM_CHARACTER:
+            case NESL_BANK_CHARACTER_ROM:
                 g_test.data.header.rom.character = 22;
                 data = g_test.data.header.rom.character;
                 break;
-            case NESL_BANK_ROM_PROGRAM:
+            case NESL_BANK_PROGRAM_ROM:
                 g_test.data.header.rom.program = 33;
                 data = g_test.data.header.rom.program;
                 break;
@@ -199,7 +199,7 @@ static int NESL_TestCartridgeRead(void)
 
         for(uint16_t address = 0; address < (8 * 1024); ++address) {
 
-            if(NESL_ASSERT(NESL_CartridgeRamRead(&g_test.cartridge, NESL_BANK_RAM_PROGRAM, (bank * 8 * 1024) + address) == data++)) {
+            if(NESL_ASSERT(NESL_CartridgeReadRam(&g_test.cartridge, NESL_BANK_PROGRAM_RAM, (bank * 8 * 1024) + address) == data++)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -211,7 +211,7 @@ static int NESL_TestCartridgeRead(void)
 
         for(uint16_t address = 0; address < (8 * 1024); ++address) {
 
-            if(NESL_ASSERT(NESL_CartridgeRomRead(&g_test.cartridge, NESL_BANK_ROM_CHARACTER, (bank * 8 * 1024) + address) == data++)) {
+            if(NESL_ASSERT(NESL_CartridgeReadRom(&g_test.cartridge, NESL_BANK_CHARACTER_ROM, (bank * 8 * 1024) + address) == data++)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -223,7 +223,7 @@ static int NESL_TestCartridgeRead(void)
 
         for(uint16_t address = 0; address < (16 * 1024); ++address) {
 
-            if(NESL_ASSERT(NESL_CartridgeRomRead(&g_test.cartridge, NESL_BANK_ROM_PROGRAM, (bank * 16 * 1024) + address) == data++)) {
+            if(NESL_ASSERT(NESL_CartridgeReadRom(&g_test.cartridge, NESL_BANK_PROGRAM_ROM, (bank * 16 * 1024) + address) == data++)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -244,7 +244,7 @@ static int NESL_TestCartridgeWrite(void)
     g_test.cartridge.ram.character = g_test.data.character[0];
 
     for(uint16_t address = 0; address < (8 * 1024); ++address) {
-        NESL_CartridgeRamWrite(&g_test.cartridge, NESL_BANK_RAM_CHARACTER, address, data);
+        NESL_CartridgeWriteRam(&g_test.cartridge, NESL_BANK_CHARACTER_RAM, address, data);
 
         if(NESL_ASSERT(g_test.cartridge.ram.character[address] == data--)) {
             result = NESL_FAILURE;
@@ -258,7 +258,7 @@ static int NESL_TestCartridgeWrite(void)
         data = 0xFF;
 
         for(uint16_t address = 0; address < (8 * 1024); ++address) {
-            NESL_CartridgeRamWrite(&g_test.cartridge, NESL_BANK_RAM_PROGRAM, (bank * 8 * 1024) + address, data);
+            NESL_CartridgeWriteRam(&g_test.cartridge, NESL_BANK_PROGRAM_RAM, (bank * 8 * 1024) + address, data);
 
             if(NESL_ASSERT(g_test.cartridge.ram.program[(bank * 8 * 1024) + address] == data--)) {
                 result = NESL_FAILURE;
@@ -273,16 +273,13 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestCartridgeGetBankCount,
-    NESL_TestCartridgeGetMapper,
-    NESL_TestCartridgeGetMirror,
-    NESL_TestCartridgeRead,
-    NESL_TestCartridgeWrite,
-    };
-
 int main(void)
 {
+    static const NESL_Test TEST[] = {
+        NESL_TestCartridgeGetBankCount, NESL_TestCartridgeGetMapper, NESL_TestCartridgeGetMirror, NESL_TestCartridgeRead,
+        NESL_TestCartridgeWrite,
+        };
+
     int result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {

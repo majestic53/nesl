@@ -229,33 +229,21 @@ int NESL_VideoInit(nesl_video_t *video, const int *mirror)
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_VideoOamRead(nesl_video_t *video, uint8_t address)
-{
-    g_test.address = address;
-
-    return g_test.data;
-}
-
-void NESL_VideoOamWrite(nesl_video_t *video, uint8_t address, uint8_t data)
-{
-    g_test.address = address;
-    g_test.data = data;
-}
-
-uint8_t NESL_VideoPortRead(nesl_video_t *video, uint16_t address)
-{
-    g_test.address = address;
-
-    return g_test.data;
-}
-
-void NESL_VideoPortWrite(nesl_video_t *video, uint16_t address, uint8_t data)
-{
-    g_test.address = address;
-    g_test.data = data;
-}
-
 uint8_t NESL_VideoRead(nesl_video_t *video, uint16_t address)
+{
+    g_test.address = address;
+
+    return g_test.data;
+}
+
+uint8_t NESL_VideoReadOam(nesl_video_t *video, uint8_t address)
+{
+    g_test.address = address;
+
+    return g_test.data;
+}
+
+uint8_t NESL_VideoReadPort(nesl_video_t *video, uint16_t address)
 {
     g_test.address = address;
 
@@ -275,6 +263,18 @@ void NESL_VideoUninit(nesl_video_t *video)
 }
 
 void NESL_VideoWrite(nesl_video_t *video, uint16_t address, uint8_t data)
+{
+    g_test.address = address;
+    g_test.data = data;
+}
+
+void NESL_VideoWriteOam(nesl_video_t *video, uint8_t address, uint8_t data)
+{
+    g_test.address = address;
+    g_test.data = data;
+}
+
+void NESL_VideoWritePort(nesl_video_t *video, uint16_t address, uint8_t data)
 {
     g_test.address = address;
     g_test.data = data;
@@ -361,7 +361,7 @@ static int NESL_TestBusRead(void)
 
                             if(NESL_ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address)
-                                    && (g_test.type == NESL_BANK_RAM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_PROGRAM_RAM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -370,7 +370,7 @@ static int NESL_TestBusRead(void)
 
                             if(NESL_ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address)
-                                    && (g_test.type == NESL_BANK_ROM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_PROGRAM_ROM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -396,7 +396,7 @@ static int NESL_TestBusRead(void)
 
                             if(NESL_ASSERT((NESL_BusRead(NESL_BUS_VIDEO, address) == data)
                                     && (g_test.address == (address & 0x3FFF))
-                                    && (g_test.type == NESL_BANK_ROM_CHARACTER))) {
+                                    && (g_test.type == NESL_BANK_CHARACTER_ROM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -471,7 +471,7 @@ static int NESL_TestBusWrite(void)
 
                             if(NESL_ASSERT((g_test.address == address)
                                     && (g_test.data == data)
-                                    && (g_test.type == NESL_BANK_RAM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_PROGRAM_RAM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -481,7 +481,7 @@ static int NESL_TestBusWrite(void)
 
                             if(NESL_ASSERT((g_test.address == address)
                                     && (g_test.data == data)
-                                    && (g_test.type == NESL_BANK_ROM_PROGRAM))) {
+                                    && (g_test.type == NESL_BANK_PROGRAM_ROM))) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -508,7 +508,7 @@ static int NESL_TestBusWrite(void)
                         case 0x0000 ... 0x1FFF:
                             NESL_BusWrite(NESL_BUS_VIDEO, address, data);
 
-                            if(NESL_ASSERT((g_test.type == NESL_BANK_ROM_CHARACTER)
+                            if(NESL_ASSERT((g_test.type == NESL_BANK_CHARACTER_ROM)
                                     && (g_test.address == (address & 0x3FFF))
                                     && (g_test.data == data))) {
                                 result = NESL_FAILURE;
@@ -561,14 +561,12 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestBusInterrupt,
-    NESL_TestBusRead,
-    NESL_TestBusWrite,
-    };
-
 int main(void)
 {
+    static const NESL_Test TEST[] = {
+        NESL_TestBusInterrupt, NESL_TestBusRead, NESL_TestBusWrite,
+        };
+
     int result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {

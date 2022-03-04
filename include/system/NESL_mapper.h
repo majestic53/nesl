@@ -33,11 +33,11 @@ typedef struct nesl_mapper_s {
 
     struct {
         int (*interrupt)(struct nesl_mapper_s *mapper);
-        uint8_t (*ram_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-        void (*ram_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+        uint8_t (*read_ram)(struct nesl_mapper_s *mapper, int type, uint16_t address);
+        uint8_t (*read_rom)(struct nesl_mapper_s *mapper, int type, uint16_t address);
         int (*reset)(struct nesl_mapper_s *mapper);
-        uint8_t (*rom_read)(struct nesl_mapper_s *mapper, int type, uint16_t address);
-        void (*rom_write)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+        void (*write_ram)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
+        void (*write_rom)(struct nesl_mapper_s *mapper, int type, uint16_t address, uint8_t data);
     } callback;
 
     struct {

@@ -22,15 +22,6 @@
 #include "../../include/system/NESL_input.h"
 #include "../include/NESL_common.h"
 
-static uint32_t KEY[NESL_CONTROLLER_MAX][NESL_BUTTON_MAX] = {
-    {
-        1, 2, 3, 4, 5, 6, 7, 8,
-    },
-    {
-        9, 10, 11, 12, 13, 14, 15, 16,
-    },
-};
-
 typedef struct {
     nesl_input_t input;
     bool state[NESL_CONTROLLER_MAX * NESL_BUTTON_MAX];
@@ -44,6 +35,11 @@ extern "C" {
 
 bool NESL_ServiceGetButton(int controller, int button)
 {
+    static const uint32_t KEY[NESL_CONTROLLER_MAX][NESL_BUTTON_MAX] = {
+        { 1, 2, 3, 4, 5, 6, 7, 8, },
+        { 9, 10, 11, 12, 13, 14, 15, 16, },
+        };
+
     return g_test.state[KEY[controller][button] - 1];
 }
 
@@ -310,16 +306,13 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestInputInit,
-    NESL_TestInputRead,
-    NESL_TestInputReset,
-    NESL_TestInputUninit,
-    NESL_TestInputWrite,
-    };
-
 int main(void)
 {
+    static const NESL_Test TEST[] = {
+        NESL_TestInputInit, NESL_TestInputRead, NESL_TestInputReset, NESL_TestInputUninit,
+        NESL_TestInputWrite,
+        };
+
     int result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {

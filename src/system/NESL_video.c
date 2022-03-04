@@ -23,8 +23,8 @@
 #include "../../include/system/NESL_video.h"
 #include "../../include/NESL_service.h"
 
-typedef uint8_t (*NESL_VideoPortGet)(nesl_video_t *video);
-typedef void (*NESL_VideoPortSet)(nesl_video_t *video, uint8_t data);
+typedef uint8_t (*NESL_VideoGetPort)(nesl_video_t *video);
+typedef void (*NESL_VideoSetPort)(nesl_video_t *video, uint8_t data);
 
 #ifdef __cplusplus
 extern "C" {
@@ -98,6 +98,45 @@ static uint8_t NESL_VideoFlip(uint8_t data)
     data = ((data & 0x55) << 1) | ((data & 0xAA) >> 1);
 
     return data;
+}
+
+static uint8_t NESL_VideoGetPortData(nesl_video_t *video)
+{
+    uint8_t result = video->port.data.low;
+
+    video->port.data.low = NESL_BusRead(NESL_BUS_VIDEO, video->address.v.word);
+
+    if(video->address.v.word >= 0x3F00) {
+        result = video->port.data.low;
+    }
+
+    video->address.v.word += (video->port.control.increment ? 32 : 1);
+
+    return result;
+}
+
+static uint8_t NESL_VideoGetPortOamData(nesl_video_t *video)
+{
+    return ((uint8_t *)video->ram.oam)[video->port.oam_address.low];
+}
+
+static uint8_t NESL_VideoGetPortStatus(nesl_video_t *video)
+{
+    uint8_t result;
+    nesl_video_status_t status = {};
+
+    status.raw = video->port.status.raw;
+    status.unused = video->port.data.low;
+    result = status.raw;
+    video->port.status.vertical_blank = false;
+    video->port.latch = false;
+
+    return result;
+}
+
+static uint8_t NESL_VideoGetPortUnused(nesl_video_t *video)
+{
+    return video->port.data.low;
 }
 
 static void NESL_VideoHorizontalSet(nesl_video_t *video)
@@ -252,6 +291,70 @@ static void NESL_VideoRender(nesl_video_t *video)
             video->port.mask.red_emphasis, video->port.mask.green_emphasis, video->port.mask.blue_emphasis,
             video->cycle - 1, video->scanline);
     }
+}
+
+static void NESL_VideoSetPortAddress(nesl_video_t *video, uint8_t data)
+{
+
+    if(video->port.latch) {
+        video->address.t.low = data;
+        video->address.v.word = video->address.t.word;
+        video->port.latch = false;
+    } else {
+        video->address.t.high = (data & 0x3F);
+        video->port.latch = true;
+    }
+}
+
+static void NESL_VideoSetPortControl(nesl_video_t *video, uint8_t data)
+{
+    video->port.control.raw = data;
+    video->address.t.nametable_x = video->port.control.nametable_x;
+    video->address.t.nametable_y = video->port.control.nametable_y;
+}
+
+static void NESL_VideoSetPortData(nesl_video_t *video, uint8_t data)
+{
+    NESL_BusWrite(NESL_BUS_VIDEO, video->address.v.word, data);
+    video->address.v.word += (video->port.control.increment ? 32 : 1);
+}
+
+static void NESL_VideoSetPortMask(nesl_video_t *video, uint8_t data)
+{
+    video->port.mask.raw = data;
+}
+
+static void NESL_VideoSetPortOamAddress(nesl_video_t *video, uint8_t data)
+{
+    video->port.oam_address.low = data;
+}
+
+static void NESL_VideoSetPortOamData(nesl_video_t *video, uint8_t data)
+{
+    ((uint8_t *)video->ram.oam)[video->port.oam_address.low] = data;
+
+    if(!video->port.status.vertical_blank) {
+        ++video->port.oam_address.low;
+    }
+}
+
+static void NESL_VideoSetPortScroll(nesl_video_t *video, uint8_t data)
+{
+
+    if(video->port.latch) {
+        video->address.t.coarse_y = data >> 3;
+        video->address.t.fine_y = data & 7;
+        video->port.latch = false;
+    } else {
+        video->address.t.coarse_x = data >> 3;
+        video->address.fine_x = data & 7;
+        video->port.latch = true;
+    }
+}
+
+static void NESL_VideoSetPortUnused(nesl_video_t *video, uint8_t data)
+{
+    video->port.data.low = data;
 }
 
 static void NESL_VideoSpriteEvaluate(nesl_video_t *video)
@@ -484,151 +587,6 @@ exit:
     return result;
 }
 
-uint8_t NESL_VideoOamRead(nesl_video_t *video, uint8_t address)
-{
-    return ((uint8_t *)video->ram.oam)[address];
-}
-
-void NESL_VideoOamWrite(nesl_video_t *video, uint8_t address, uint8_t data)
-{
-    ((uint8_t *)video->ram.oam)[address] = data;
-}
-
-static uint8_t NESL_VideoPortGetData(nesl_video_t *video)
-{
-    uint8_t result = video->port.data.low;
-
-    video->port.data.low = NESL_BusRead(NESL_BUS_VIDEO, video->address.v.word);
-
-    if(video->address.v.word >= 0x3F00) {
-        result = video->port.data.low;
-    }
-
-    video->address.v.word += (video->port.control.increment ? 32 : 1);
-
-    return result;
-}
-
-static uint8_t NESL_VideoPortGetOamData(nesl_video_t *video)
-{
-    return ((uint8_t *)video->ram.oam)[video->port.oam_address.low];
-}
-
-static uint8_t NESL_VideoPortGetStatus(nesl_video_t *video)
-{
-    uint8_t result;
-    nesl_video_status_t status = {};
-
-    status.raw = video->port.status.raw;
-    status.unused = video->port.data.low;
-    result = status.raw;
-    video->port.status.vertical_blank = false;
-    video->port.latch = false;
-
-    return result;
-}
-
-static uint8_t NESL_VideoPortGetUnused(nesl_video_t *video)
-{
-    return video->port.data.low;
-}
-
-static const NESL_VideoPortGet PORT_GET[] = {
-    NESL_VideoPortGetUnused,
-    NESL_VideoPortGetUnused,
-    NESL_VideoPortGetStatus,
-    NESL_VideoPortGetUnused,
-    NESL_VideoPortGetOamData,
-    NESL_VideoPortGetUnused,
-    NESL_VideoPortGetUnused,
-    NESL_VideoPortGetData,
-    };
-
-uint8_t NESL_VideoPortRead(nesl_video_t *video, uint16_t address)
-{
-    return PORT_GET[address & 7](video);
-}
-
-static void NESL_VideoPortSetAddress(nesl_video_t *video, uint8_t data)
-{
-
-    if(video->port.latch) {
-        video->address.t.low = data;
-        video->address.v.word = video->address.t.word;
-        video->port.latch = false;
-    } else {
-        video->address.t.high = (data & 0x3F);
-        video->port.latch = true;
-    }
-}
-
-static void NESL_VideoPortSetControl(nesl_video_t *video, uint8_t data)
-{
-    video->port.control.raw = data;
-    video->address.t.nametable_x = video->port.control.nametable_x;
-    video->address.t.nametable_y = video->port.control.nametable_y;
-}
-
-static void NESL_VideoPortSetData(nesl_video_t *video, uint8_t data)
-{
-    NESL_BusWrite(NESL_BUS_VIDEO, video->address.v.word, data);
-    video->address.v.word += (video->port.control.increment ? 32 : 1);
-}
-
-static void NESL_VideoPortSetMask(nesl_video_t *video, uint8_t data)
-{
-    video->port.mask.raw = data;
-}
-
-static void NESL_VideoPortSetOamAddress(nesl_video_t *video, uint8_t data)
-{
-    video->port.oam_address.low = data;
-}
-
-static void NESL_VideoPortSetOamData(nesl_video_t *video, uint8_t data)
-{
-    ((uint8_t *)video->ram.oam)[video->port.oam_address.low] = data;
-
-    if(!video->port.status.vertical_blank) {
-        ++video->port.oam_address.low;
-    }
-}
-
-static void NESL_VideoPortSetScroll(nesl_video_t *video, uint8_t data)
-{
-
-    if(video->port.latch) {
-        video->address.t.coarse_y = data >> 3;
-        video->address.t.fine_y = data & 7;
-        video->port.latch = false;
-    } else {
-        video->address.t.coarse_x = data >> 3;
-        video->address.fine_x = data & 7;
-        video->port.latch = true;
-    }
-}
-
-static void NESL_VideoPortSetUnused(nesl_video_t *video, uint8_t data)
-{
-    video->port.data.low = data;
-}
-
-static const NESL_VideoPortSet PORT_SET[] = {
-    NESL_VideoPortSetControl,
-    NESL_VideoPortSetMask,
-    NESL_VideoPortSetUnused,
-    NESL_VideoPortSetOamAddress,
-    NESL_VideoPortSetOamData,
-    NESL_VideoPortSetScroll,
-    NESL_VideoPortSetAddress,
-    NESL_VideoPortSetData,
-    };
-
-void NESL_VideoPortWrite(nesl_video_t *video, uint16_t address, uint8_t data)
-{
-    PORT_SET[address & 7](video, data);
-}
-
 uint8_t NESL_VideoRead(nesl_video_t *video, uint16_t address)
 {
     int bank = 0;
@@ -649,6 +607,21 @@ uint8_t NESL_VideoRead(nesl_video_t *video, uint16_t address)
     }
 
     return result;
+}
+
+uint8_t NESL_VideoReadOam(nesl_video_t *video, uint8_t address)
+{
+    return ((uint8_t *)video->ram.oam)[address];
+}
+
+uint8_t NESL_VideoReadPort(nesl_video_t *video, uint16_t address)
+{
+    static const NESL_VideoGetPort PORT[] = {
+        NESL_VideoGetPortUnused, NESL_VideoGetPortUnused, NESL_VideoGetPortStatus, NESL_VideoGetPortUnused,
+        NESL_VideoGetPortOamData, NESL_VideoGetPortUnused, NESL_VideoGetPortUnused, NESL_VideoGetPortData,
+        };
+
+    return PORT[address & 7](video);
 }
 
 int NESL_VideoReset(nesl_video_t *video, const int *mirror)
@@ -682,6 +655,21 @@ void NESL_VideoWrite(nesl_video_t *video, uint16_t address, uint8_t data)
         default:
             break;
     }
+}
+
+void NESL_VideoWriteOam(nesl_video_t *video, uint8_t address, uint8_t data)
+{
+    ((uint8_t *)video->ram.oam)[address] = data;
+}
+
+void NESL_VideoWritePort(nesl_video_t *video, uint16_t address, uint8_t data)
+{
+    static const NESL_VideoSetPort PORT[] = {
+        NESL_VideoSetPortControl, NESL_VideoSetPortMask, NESL_VideoSetPortUnused, NESL_VideoSetPortOamAddress,
+        NESL_VideoSetPortOamData, NESL_VideoSetPortScroll, NESL_VideoSetPortAddress, NESL_VideoSetPortData,
+        };
+
+    PORT[address & 7](video, data);
 }
 
 #ifdef __cplusplus

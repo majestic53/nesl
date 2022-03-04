@@ -72,11 +72,11 @@ extern "C" {
 
 int NESL_Mapper1Init(nesl_mapper_t *mapper);
 int NESL_Mapper1Interrupt(nesl_mapper_t *mapper);
-uint8_t NESL_Mapper1RamRead(nesl_mapper_t *mapper, int type, uint16_t address);
-void NESL_Mapper1RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+uint8_t NESL_Mapper1ReadRam(nesl_mapper_t *mapper, int type, uint16_t address);
+uint8_t NESL_Mapper1ReadRom(nesl_mapper_t *mapper, int type, uint16_t address);
 int NESL_Mapper1Reset(nesl_mapper_t *mapper);
-uint8_t NESL_Mapper1RomRead(nesl_mapper_t *mapper, int type, uint16_t address);
-void NESL_Mapper1RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+void NESL_Mapper1WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+void NESL_Mapper1WriteRom(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
 void NESL_Mapper1Uninit(nesl_mapper_t *mapper);
 
 #ifdef __cplusplus

@@ -202,11 +202,11 @@ static void NESL_TestInit(nesl_cartridge_header_t *header, int type)
     g_test.cartridge.header = header;
     g_test.mapper.cartridge.header = g_test.cartridge.header;
     g_test.mapper.callback.interrupt = &NESL_TestInterruptHandler;
-    g_test.mapper.callback.ram_read = &NESL_TestReadHandler;
-    g_test.mapper.callback.ram_write = &NESL_TestWriteHandler;
+    g_test.mapper.callback.read_ram = &NESL_TestReadHandler;
+    g_test.mapper.callback.read_rom = &NESL_TestReadHandler;
     g_test.mapper.callback.reset = &NESL_TestResetHandler;
-    g_test.mapper.callback.rom_read = &NESL_TestReadHandler;
-    g_test.mapper.callback.rom_write = &NESL_TestWriteHandler;
+    g_test.mapper.callback.write_ram = &NESL_TestWriteHandler;
+    g_test.mapper.callback.write_rom = &NESL_TestWriteHandler;
 }
 
 static int NESL_TestMapperInit(void)
@@ -386,17 +386,13 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestMapperInit,
-    NESL_TestMapperInterrupt,
-    NESL_TestMapperRead,
-    NESL_TestMapperReset,
-    NESL_TestMapperUninit,
-    NESL_TestMapperWrite,
-    };
-
 int main(void)
 {
+    static const NESL_Test TEST[] = {
+        NESL_TestMapperInit, NESL_TestMapperInterrupt, NESL_TestMapperRead, NESL_TestMapperReset,
+        NESL_TestMapperUninit, NESL_TestMapperWrite,
+        };
+
     int result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {

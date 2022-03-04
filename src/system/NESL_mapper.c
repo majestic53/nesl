@@ -34,41 +34,13 @@ typedef struct {
 } nesl_mapper_context_t;
 
 static const nesl_mapper_context_t CONTEXT[] = {
-    {
-        NESL_MAPPER_0,
-        NESL_Mapper0Init,
-        NESL_Mapper0Uninit,
-    },
-    {
-        NESL_MAPPER_1,
-        NESL_Mapper1Init,
-        NESL_Mapper1Uninit,
-    },
-    {
-        NESL_MAPPER_2,
-        NESL_Mapper2Init,
-        NESL_Mapper2Uninit,
-    },
-    {
-        NESL_MAPPER_3,
-        NESL_Mapper3Init,
-        NESL_Mapper3Uninit,
-    },
-    {
-        NESL_MAPPER_4,
-        NESL_Mapper4Init,
-        NESL_Mapper4Uninit,
-    },
-    {
-        NESL_MAPPER_30,
-        NESL_Mapper30Init,
-        NESL_Mapper30Uninit,
-    },
-    {
-        NESL_MAPPER_66,
-        NESL_Mapper66Init,
-        NESL_Mapper66Uninit,
-    },
+    { NESL_MAPPER_0, NESL_Mapper0Init, NESL_Mapper0Uninit, },
+    { NESL_MAPPER_1, NESL_Mapper1Init, NESL_Mapper1Uninit, },
+    { NESL_MAPPER_2, NESL_Mapper2Init, NESL_Mapper2Uninit, },
+    { NESL_MAPPER_3, NESL_Mapper3Init, NESL_Mapper3Uninit, },
+    { NESL_MAPPER_4, NESL_Mapper4Init, NESL_Mapper4Uninit, },
+    { NESL_MAPPER_30, NESL_Mapper30Init, NESL_Mapper30Uninit, },
+    { NESL_MAPPER_66, NESL_Mapper66Init, NESL_Mapper66Uninit, },
     };
 
 #ifdef __cplusplus
@@ -147,13 +119,13 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_RAM_CHARACTER:
-        case NESL_BANK_RAM_PROGRAM:
-            result = mapper->callback.ram_read(mapper, type, address);
+        case NESL_BANK_CHARACTER_RAM:
+        case NESL_BANK_PROGRAM_RAM:
+            result = mapper->callback.read_ram(mapper, type, address);
             break;
-        case NESL_BANK_ROM_CHARACTER:
-        case NESL_BANK_ROM_PROGRAM:
-            result = mapper->callback.rom_read(mapper, type, address);
+        case NESL_BANK_CHARACTER_ROM:
+        case NESL_BANK_PROGRAM_ROM:
+            result = mapper->callback.read_rom(mapper, type, address);
             break;
         default:
             break;
@@ -178,13 +150,13 @@ void NESL_MapperWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t
 {
 
     switch(type) {
-        case NESL_BANK_RAM_CHARACTER:
-        case NESL_BANK_RAM_PROGRAM:
-            mapper->callback.ram_write(mapper, type, address, data);
+        case NESL_BANK_CHARACTER_RAM:
+        case NESL_BANK_PROGRAM_RAM:
+            mapper->callback.write_ram(mapper, type, address, data);
             break;
-        case NESL_BANK_ROM_CHARACTER:
-        case NESL_BANK_ROM_PROGRAM:
-            mapper->callback.rom_write(mapper, type, address, data);
+        case NESL_BANK_CHARACTER_ROM:
+        case NESL_BANK_PROGRAM_ROM:
+            mapper->callback.write_rom(mapper, type, address, data);
             break;
         default:
             break;

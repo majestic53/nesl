@@ -182,14 +182,14 @@ extern "C" {
 
 bool NESL_VideoCycle(nesl_video_t *video);
 int NESL_VideoInit(nesl_video_t *video, const int *mirror);
-uint8_t NESL_VideoOamRead(nesl_video_t *video, uint8_t address);
-void NESL_VideoOamWrite(nesl_video_t *video, uint8_t address, uint8_t data);
-uint8_t NESL_VideoPortRead(nesl_video_t *video, uint16_t address);
-void NESL_VideoPortWrite(nesl_video_t *video, uint16_t address, uint8_t data);
 uint8_t NESL_VideoRead(nesl_video_t *video, uint16_t address);
+uint8_t NESL_VideoReadOam(nesl_video_t *video, uint8_t address);
+uint8_t NESL_VideoReadPort(nesl_video_t *video, uint16_t address);
 int NESL_VideoReset(nesl_video_t *video, const int *mirror);
 void NESL_VideoUninit(nesl_video_t *video);
 void NESL_VideoWrite(nesl_video_t *video, uint16_t address, uint8_t data);
+void NESL_VideoWriteOam(nesl_video_t *video, uint8_t address, uint8_t data);
+void NESL_VideoWritePort(nesl_video_t *video, uint16_t address, uint8_t data);
 
 #ifdef __cplusplus
 }

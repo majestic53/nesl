@@ -36,22 +36,6 @@ enum {
     OPTION_MAX,
 };
 
-static const char *OPTION[] = {
-    "-f",
-    "-h",
-    "-l",
-    "-s",
-    "-v",
-    };
-
-static const char *DESCRIPTION[] = {
-    "Set window fullscreen",
-    "Show help information",
-    "Set linear scaling",
-    "Set window scaling",
-    "Show version information",
-    };
-
 #define TRACE(_RESULT_, _FORMAT_, ...) \
     fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "%s" _FORMAT_ "\x1b[0m", \
         ((_RESULT_) != NESL_SUCCESS) ? "\x1b[91m" : "\x1b[0m", __VA_ARGS__)
@@ -131,9 +115,13 @@ static void ShowHelp(FILE *stream, bool verbose)
     TRACE(NESL_SUCCESS, "%s", "nesl [options] file\n");
 
     if(verbose) {
+        static const char *OPTION[] = { "-f", "-h", "-l", "-s", "-v", },
+            *DESCRIPTION[] = { "Set window fullscreen", "Show help information", "Set linear scaling", "Set window scaling", "Show version information", };
+
         TRACE(NESL_SUCCESS, "%s", "\n");
 
         for(int flag = 0; flag < OPTION_MAX; ++flag) {
+
             TRACE(NESL_SUCCESS, "%s\t%s\n", OPTION[flag], DESCRIPTION[flag]);
         }
     }

@@ -41,11 +41,11 @@ int NESL_Mapper66Init(nesl_mapper_t *mapper)
     }
 
     mapper->callback.interrupt = &NESL_Mapper66Interrupt;
-    mapper->callback.ram_read = &NESL_Mapper66RamRead;
-    mapper->callback.ram_write = &NESL_Mapper66RamWrite;
+    mapper->callback.read_ram = &NESL_Mapper66ReadRam;
+    mapper->callback.read_rom = &NESL_Mapper66ReadRom;
     mapper->callback.reset = &NESL_Mapper66Reset;
-    mapper->callback.rom_read = &NESL_Mapper66RomRead;
-    mapper->callback.rom_write = &NESL_Mapper66RomWrite;
+    mapper->callback.write_ram = &NESL_Mapper66WriteRam;
+    mapper->callback.write_rom = &NESL_Mapper66WriteRom;
 
     if((result = NESL_Mapper66Reset(mapper)) == NESL_FAILURE) {
         goto exit;
@@ -60,16 +60,16 @@ int NESL_Mapper66Interrupt(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_Mapper66RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_Mapper66ReadRam(nesl_mapper_t *mapper, int type, uint16_t address)
 {
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_RAM_PROGRAM:
+        case NESL_BANK_PROGRAM_RAM:
 
             switch(address) {
                 case 0x6000 ... 0x7FFF:
-                    result = NESL_CartridgeRamRead(&mapper->cartridge, NESL_BANK_RAM_PROGRAM, mapper->ram.program + (address & 0x1FFF));
+                    result = NESL_CartridgeReadRam(&mapper->cartridge, NESL_BANK_PROGRAM_RAM, mapper->ram.program + (address & 0x1FFF));
                     break;
                 default:
                     break;
@@ -82,15 +82,26 @@ uint8_t NESL_Mapper66RamRead(nesl_mapper_t *mapper, int type, uint16_t address)
     return result;
 }
 
-void NESL_Mapper66RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+uint8_t NESL_Mapper66ReadRom(nesl_mapper_t *mapper, int type, uint16_t address)
 {
+    uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_RAM_PROGRAM:
+        case NESL_BANK_CHARACTER_ROM:
 
             switch(address) {
-                case 0x6000 ... 0x7FFF:
-                    NESL_CartridgeRamWrite(&mapper->cartridge, NESL_BANK_RAM_PROGRAM, mapper->ram.program + (address & 0x1FFF), data);
+                case 0x0000 ... 0x1FFF:
+                    result = NESL_CartridgeReadRom(&mapper->cartridge, NESL_BANK_CHARACTER_ROM, mapper->rom.character[0] + (address & 0x1FFF));
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case NESL_BANK_PROGRAM_ROM:
+
+            switch(address) {
+                case 0x8000 ... 0xFFFF:
+                    result = NESL_CartridgeReadRom(&mapper->cartridge, NESL_BANK_PROGRAM_ROM, mapper->rom.program[0] + (address & 0x7FFF));
                     break;
                 default:
                     break;
@@ -99,6 +110,8 @@ void NESL_Mapper66RamWrite(nesl_mapper_t *mapper, int type, uint16_t address, ui
         default:
             break;
     }
+
+    return result;
 }
 
 int NESL_Mapper66Reset(nesl_mapper_t *mapper)
@@ -109,26 +122,15 @@ int NESL_Mapper66Reset(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_Mapper66RomRead(nesl_mapper_t *mapper, int type, uint16_t address)
+void NESL_Mapper66WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
 {
-    uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_PROGRAM_RAM:
 
             switch(address) {
-                case 0x0000 ... 0x1FFF:
-                    result = NESL_CartridgeRomRead(&mapper->cartridge, NESL_BANK_ROM_CHARACTER, mapper->rom.character[0] + (address & 0x1FFF));
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case NESL_BANK_ROM_PROGRAM:
-
-            switch(address) {
-                case 0x8000 ... 0xFFFF:
-                    result = NESL_CartridgeRomRead(&mapper->cartridge, NESL_BANK_ROM_PROGRAM, mapper->rom.program[0] + (address & 0x7FFF));
+                case 0x6000 ... 0x7FFF:
+                    NESL_CartridgeWriteRam(&mapper->cartridge, NESL_BANK_PROGRAM_RAM, mapper->ram.program + (address & 0x1FFF), data);
                     break;
                 default:
                     break;
@@ -137,25 +139,23 @@ uint8_t NESL_Mapper66RomRead(nesl_mapper_t *mapper, int type, uint16_t address)
         default:
             break;
     }
-
-    return result;
 }
 
-void NESL_Mapper66RomWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_Mapper66WriteRom(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
 {
 
     switch(type) {
-        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_CHARACTER_ROM:
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    NESL_CartridgeRamWrite(&mapper->cartridge, NESL_BANK_RAM_CHARACTER, mapper->rom.character[0] + (address & 0x1FFF), data);
+                    NESL_CartridgeWriteRam(&mapper->cartridge, NESL_BANK_CHARACTER_RAM, mapper->rom.character[0] + (address & 0x1FFF), data);
                     break;
                 default:
                     break;
             }
             break;
-        case NESL_BANK_ROM_PROGRAM:
+        case NESL_BANK_PROGRAM_ROM:
 
             switch(address) {
                 case 0x8000 ... 0xFFFF:

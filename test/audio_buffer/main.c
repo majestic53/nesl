@@ -375,18 +375,13 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestAudioBufferInit,
-    NESL_TestAudioBufferRead,
-    NESL_TestAudioBufferReadable,
-    NESL_TestAudioBufferReset,
-    NESL_TestAudioBufferUninit,
-    NESL_TestAudioBufferWrite,
-    NESL_TestAudioBufferWritable,
-    };
-
 int main(void)
 {
+    static const NESL_Test TEST[] = {
+        NESL_TestAudioBufferInit, NESL_TestAudioBufferRead, NESL_TestAudioBufferReadable, NESL_TestAudioBufferReset,
+        NESL_TestAudioBufferUninit, NESL_TestAudioBufferWrite, NESL_TestAudioBufferWritable,
+        };
+
     int result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {

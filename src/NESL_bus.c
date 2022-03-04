@@ -156,7 +156,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
                     result = NESL_ProcessorRead(&g_bus.processor, address);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    result = NESL_VideoPortRead(&g_bus.video, address);
+                    result = NESL_VideoReadPort(&g_bus.video, address);
                     break;
                 case 0x4015:
                     result = NESL_AudioRead(&g_bus.audio, address);
@@ -165,10 +165,10 @@ uint8_t NESL_BusRead(int type, uint16_t address)
                     result = NESL_InputRead(&g_bus.input, address);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_RAM_PROGRAM, address);
+                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_PROGRAM_RAM, address);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_ROM_PROGRAM, address);
+                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_PROGRAM_ROM, address);
                     break;
                 default:
                     break;
@@ -178,7 +178,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_ROM_CHARACTER, address);
+                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_CHARACTER_ROM, address);
                     break;
                 case 0x2000 ... 0x3FFF:
                     result = NESL_VideoRead(&g_bus.video, address);
@@ -191,7 +191,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x00FF:
-                    result = NESL_VideoOamRead(&g_bus.video, address);
+                    result = NESL_VideoReadOam(&g_bus.video, address);
                     break;
                 default:
                     break;
@@ -226,7 +226,7 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
                     NESL_ProcessorWrite(&g_bus.processor, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    NESL_VideoPortWrite(&g_bus.video, address, data);
+                    NESL_VideoWritePort(&g_bus.video, address, data);
                     break;
                 case 0x4000 ... 0x4013:
                 case 0x4015:
@@ -237,10 +237,10 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
                     NESL_InputWrite(&g_bus.input, address, data);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_RAM_PROGRAM, address, data);
+                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_PROGRAM_RAM, address, data);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_ROM_PROGRAM, address, data);
+                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_PROGRAM_ROM, address, data);
                     break;
                 default:
                     break;
@@ -250,7 +250,7 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_ROM_CHARACTER, address, data);
+                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_CHARACTER_ROM, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
                     NESL_VideoWrite(&g_bus.video, address, data);
@@ -263,7 +263,7 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x00FF:
-                    NESL_VideoOamWrite(&g_bus.video, address, data);
+                    NESL_VideoWriteOam(&g_bus.video, address, data);
                     break;
                 default:
                     break;

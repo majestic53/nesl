@@ -75,13 +75,13 @@ uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_RAM_PROGRAM:
+        case NESL_BANK_PROGRAM_RAM:
             result = cartridge->header->ram.program;
             break;
-        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_CHARACTER_ROM:
             result = cartridge->header->rom.character;
             break;
-        case NESL_BANK_ROM_PROGRAM:
+        case NESL_BANK_PROGRAM_ROM:
             result = cartridge->header->rom.program;
             break;
         default:
@@ -147,12 +147,12 @@ exit:
     return result;
 }
 
-uint8_t NESL_CartridgeRamRead(nesl_cartridge_t *cartridge, int type, uint32_t address)
+uint8_t NESL_CartridgeReadRam(nesl_cartridge_t *cartridge, int type, uint32_t address)
 {
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_RAM_PROGRAM:
+        case NESL_BANK_PROGRAM_RAM:
             result = cartridge->ram.program[address];
             break;
         default:
@@ -162,30 +162,15 @@ uint8_t NESL_CartridgeRamRead(nesl_cartridge_t *cartridge, int type, uint32_t ad
     return result;
 }
 
-void NESL_CartridgeRamWrite(nesl_cartridge_t *cartridge, int type, uint32_t address, uint8_t data)
-{
-
-    switch(type) {
-        case NESL_BANK_RAM_CHARACTER:
-            cartridge->ram.character[address] = data;
-            break;
-        case NESL_BANK_RAM_PROGRAM:
-            cartridge->ram.program[address] = data;
-            break;
-        default:
-            break;
-    }
-}
-
-uint8_t NESL_CartridgeRomRead(nesl_cartridge_t *cartridge, int type, uint32_t address)
+uint8_t NESL_CartridgeReadRom(nesl_cartridge_t *cartridge, int type, uint32_t address)
 {
     uint8_t result = 0;
 
     switch(type) {
-        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_CHARACTER_ROM:
             result = cartridge->rom.character[address];
             break;
-        case NESL_BANK_ROM_PROGRAM:
+        case NESL_BANK_PROGRAM_ROM:
             result = cartridge->rom.program[address];
             break;
         default:
@@ -209,6 +194,21 @@ void NESL_CartridgeUninit(nesl_cartridge_t *cartridge)
     }
 
     memset(cartridge, 0, sizeof(*cartridge));
+}
+
+void NESL_CartridgeWriteRam(nesl_cartridge_t *cartridge, int type, uint32_t address, uint8_t data)
+{
+
+    switch(type) {
+        case NESL_BANK_CHARACTER_RAM:
+            cartridge->ram.character[address] = data;
+            break;
+        case NESL_BANK_PROGRAM_RAM:
+            cartridge->ram.program[address] = data;
+            break;
+        default:
+            break;
+    }
 }
 
 #ifdef __cplusplus

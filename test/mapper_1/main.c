@@ -53,12 +53,12 @@ uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
     return g_test.mapper.cartridge.header->rom.program;
 }
 
-uint8_t NESL_CartridgeRamRead(nesl_cartridge_t *cartridge, int type, uint32_t address)
+uint8_t NESL_CartridgeReadRam(nesl_cartridge_t *cartridge, int type, uint32_t address)
 {
     g_test.address = address;
 
     switch((g_test.type = type)) {
-        case NESL_BANK_RAM_PROGRAM:
+        case NESL_BANK_PROGRAM_RAM:
             g_test.data = g_test.cartridge.ram.program[g_test.address & 0xFFFF];
             break;
         default:
@@ -68,32 +68,15 @@ uint8_t NESL_CartridgeRamRead(nesl_cartridge_t *cartridge, int type, uint32_t ad
     return g_test.data;
 }
 
-void NESL_CartridgeRamWrite(nesl_cartridge_t *cartridge, int type, uint32_t address, uint8_t data)
-{
-    g_test.address = address;
-    g_test.data = data;
-
-    switch((g_test.type = type)) {
-        case NESL_BANK_RAM_CHARACTER:
-            g_test.cartridge.ram.character[g_test.address & 0xFFFF] = g_test.data;
-            break;
-        case NESL_BANK_RAM_PROGRAM:
-            g_test.cartridge.ram.program[g_test.address & 0xFFFF] = g_test.data;
-            break;
-        default:
-            break;
-    }
-}
-
-uint8_t NESL_CartridgeRomRead(nesl_cartridge_t *cartridge, int type, uint32_t address)
+uint8_t NESL_CartridgeReadRom(nesl_cartridge_t *cartridge, int type, uint32_t address)
 {
     g_test.address = address;
 
     switch((g_test.type = type)) {
-        case NESL_BANK_ROM_CHARACTER:
+        case NESL_BANK_CHARACTER_ROM:
             g_test.data = g_test.cartridge.rom.character[g_test.address & 0xFFFF];
             break;
-        case NESL_BANK_ROM_PROGRAM:
+        case NESL_BANK_PROGRAM_ROM:
             g_test.data = g_test.cartridge.rom.program[g_test.address & 0xFFFF];
             break;
         default:
@@ -101,6 +84,23 @@ uint8_t NESL_CartridgeRomRead(nesl_cartridge_t *cartridge, int type, uint32_t ad
     }
 
     return g_test.data;
+}
+
+void NESL_CartridgeWriteRam(nesl_cartridge_t *cartridge, int type, uint32_t address, uint8_t data)
+{
+    g_test.address = address;
+    g_test.data = data;
+
+    switch((g_test.type = type)) {
+        case NESL_BANK_CHARACTER_RAM:
+            g_test.cartridge.ram.character[g_test.address & 0xFFFF] = g_test.data;
+            break;
+        case NESL_BANK_PROGRAM_RAM:
+            g_test.cartridge.ram.program[g_test.address & 0xFFFF] = g_test.data;
+            break;
+        default:
+            break;
+    }
 }
 
 int NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
@@ -112,11 +112,11 @@ static void NESL_TestUninit(void)
 {
     NESL_Mapper1Uninit(&g_test.mapper);
     g_test.mapper.callback.interrupt = NULL;
-    g_test.mapper.callback.ram_read = NULL;
-    g_test.mapper.callback.ram_write = NULL;
+    g_test.mapper.callback.read_ram = NULL;
+    g_test.mapper.callback.read_rom = NULL;
     g_test.mapper.callback.reset = NULL;
-    g_test.mapper.callback.rom_read = NULL;
-    g_test.mapper.callback.rom_write = NULL;
+    g_test.mapper.callback.write_ram = NULL;
+    g_test.mapper.callback.write_rom = NULL;
 }
 
 static int NESL_TestInit(const nesl_cartridge_header_t *header)
@@ -124,12 +124,12 @@ static int NESL_TestInit(const nesl_cartridge_header_t *header)
     NESL_TestUninit();
     memset(&g_test, 0, sizeof(g_test));
     g_test.mapper.cartridge.header = header;
-    g_test.mapper.callback.interrupt = NULL;
-    g_test.mapper.callback.ram_read = &NESL_Mapper1RamRead;
-    g_test.mapper.callback.ram_write = &NESL_Mapper1RamWrite;
+    g_test.mapper.callback.interrupt = &NESL_Mapper1Interrupt;
+    g_test.mapper.callback.read_ram = &NESL_Mapper1ReadRam;
+    g_test.mapper.callback.read_rom = &NESL_Mapper1ReadRom;
     g_test.mapper.callback.reset = &NESL_Mapper1Reset;
-    g_test.mapper.callback.rom_read = &NESL_Mapper1RomRead;
-    g_test.mapper.callback.rom_write = &NESL_Mapper1RomWrite;
+    g_test.mapper.callback.write_ram = &NESL_Mapper1WriteRam;
+    g_test.mapper.callback.write_rom = &NESL_Mapper1WriteRom;
 
     return NESL_Mapper1Init(&g_test.mapper);
 }
@@ -154,11 +154,11 @@ static int NESL_TestMapper1Init(void)
             && (g_test.mapper.mirror == NESL_MIRROR_ONE_LOW)
             && (g_test.mapper.context != NULL)
             && (g_test.mapper.callback.interrupt == &NESL_Mapper1Interrupt)
-            && (g_test.mapper.callback.ram_read == &NESL_Mapper1RamRead)
-            && (g_test.mapper.callback.ram_write == &NESL_Mapper1RamWrite)
+            && (g_test.mapper.callback.read_ram == &NESL_Mapper1ReadRam)
+            && (g_test.mapper.callback.read_rom == &NESL_Mapper1ReadRom)
             && (g_test.mapper.callback.reset == &NESL_Mapper1Reset)
-            && (g_test.mapper.callback.rom_read == &NESL_Mapper1RomRead)
-            && (g_test.mapper.callback.rom_write == &NESL_Mapper1RomWrite))) {
+            && (g_test.mapper.callback.write_ram == &NESL_Mapper1WriteRam)
+            && (g_test.mapper.callback.write_rom == &NESL_Mapper1WriteRom))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -178,11 +178,11 @@ static int NESL_TestMapper1Init(void)
             && (g_test.mapper.mirror == NESL_MIRROR_ONE_LOW)
             && (g_test.mapper.context != NULL)
             && (g_test.mapper.callback.interrupt == &NESL_Mapper1Interrupt)
-            && (g_test.mapper.callback.ram_read == &NESL_Mapper1RamRead)
-            && (g_test.mapper.callback.ram_write == &NESL_Mapper1RamWrite)
+            && (g_test.mapper.callback.read_ram == &NESL_Mapper1ReadRam)
+            && (g_test.mapper.callback.read_rom == &NESL_Mapper1ReadRom)
             && (g_test.mapper.callback.reset == &NESL_Mapper1Reset)
-            && (g_test.mapper.callback.rom_read == &NESL_Mapper1RomRead)
-            && (g_test.mapper.callback.rom_write == &NESL_Mapper1RomWrite))) {
+            && (g_test.mapper.callback.write_ram == &NESL_Mapper1WriteRam)
+            && (g_test.mapper.callback.write_rom == &NESL_Mapper1WriteRom))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -213,7 +213,7 @@ exit:
     return result;
 }
 
-static int NESL_TestMapper1RamRead(void)
+static int NESL_TestMapper1ReadRam(void)
 {
     uint8_t data = 0;
     int result = NESL_SUCCESS;
@@ -230,10 +230,10 @@ static int NESL_TestMapper1RamRead(void)
                         goto exit;
                     }
 
-                    if(type == NESL_BANK_RAM_PROGRAM) {
+                    if(type == NESL_BANK_PROGRAM_RAM) {
                         g_test.cartridge.ram.program[address & 0x1FFF] = data;
 
-                        if(NESL_ASSERT((NESL_Mapper1RamRead(&g_test.mapper, type, address) == data)
+                        if(NESL_ASSERT((NESL_Mapper1ReadRam(&g_test.mapper, type, address) == data)
                                 && (g_test.type == type)
                                 && (g_test.address == (address & 0x1FFF)))) {
                             result = NESL_FAILURE;
@@ -242,7 +242,7 @@ static int NESL_TestMapper1RamRead(void)
 
                         ((nesl_mapper_1_context_t *)g_test.mapper.context)->program.ram_disable = true;
 
-                        if(NESL_ASSERT((NESL_Mapper1RamRead(&g_test.mapper, type, address) == 0)
+                        if(NESL_ASSERT((NESL_Mapper1ReadRam(&g_test.mapper, type, address) == 0)
                                 && (g_test.type == type)
                                 && (g_test.address == (address & 0x1FFF)))) {
                             result = NESL_FAILURE;
@@ -276,7 +276,7 @@ exit:
     return result;
 }
 
-static int NESL_TestMapper1RamWrite(void)
+static int NESL_TestMapper1ReadRom(void)
 {
     uint8_t data = 0;
     int result = NESL_SUCCESS;
@@ -284,7 +284,7 @@ static int NESL_TestMapper1RamWrite(void)
     for(uint32_t address = 0x0000; address <= 0xFFFF; ++address, ++data) {
 
         switch(address) {
-            case 0x6000 ... 0x7FFF:
+            case 0x0000 ... 0x1FFF:
 
                 for(int type = 0; type < NESL_BANK_MAX; ++type) {
                     nesl_cartridge_header_t header = { .rom.program = 2, .rom.character = 2 };
@@ -293,29 +293,40 @@ static int NESL_TestMapper1RamWrite(void)
                         goto exit;
                     }
 
-                    NESL_Mapper1RamWrite(&g_test.mapper, type, address, data);
+                    if(type == NESL_BANK_CHARACTER_ROM) {
+                        g_test.cartridge.rom.character[address & 0x1FFF] = data;
 
-                    if(type == NESL_BANK_RAM_PROGRAM) {
-
-                        if(NESL_ASSERT((g_test.data == data)
+                        if(NESL_ASSERT((NESL_Mapper1ReadRom(&g_test.mapper, type, address) == data)
                                 && (g_test.type == type)
                                 && (g_test.address == (address & 0x1FFF)))) {
                             result = NESL_FAILURE;
                             goto exit;
                         }
+                    } else if(NESL_ASSERT((g_test.data == 0)
+                            && (g_test.type == 0)
+                            && (g_test.address == 0))) {
+                        result = NESL_FAILURE;
+                        goto exit;
+                    }
+                }
+                break;
+            case 0x8000 ... 0xFFFF:
+                for(int type = 0; type < NESL_BANK_MAX; ++type) {
+                    nesl_cartridge_header_t header = { .rom.program = 2, .rom.character = 2 };
 
-                        ((nesl_mapper_1_context_t *)g_test.mapper.context)->program.ram_disable = true;
+                    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+                        goto exit;
+                    }
 
-                        NESL_Mapper1RamWrite(&g_test.mapper, type, address, data + 1);
+                    if(type == NESL_BANK_PROGRAM_ROM) {
+                        g_test.cartridge.rom.program[address & 0x7FFF] = data;
 
-                        if(NESL_ASSERT((g_test.data == data)
+                        if(NESL_ASSERT((NESL_Mapper1ReadRom(&g_test.mapper, type, address) == data)
                                 && (g_test.type == type)
-                                && (g_test.address == (address & 0x1FFF)))) {
+                                && (g_test.address == (address & 0x7FFF)))) {
                             result = NESL_FAILURE;
                             goto exit;
                         }
-
-                        ((nesl_mapper_1_context_t *)g_test.mapper.context)->program.ram_disable = false;
                     } else if(NESL_ASSERT((g_test.data == 0)
                             && (g_test.type == 0)
                             && (g_test.address == 0))) {
@@ -375,7 +386,7 @@ exit:
     return result;
 }
 
-static int NESL_TestMapper1RomRead(void)
+static int NESL_TestMapper1WriteRam(void)
 {
     uint8_t data = 0;
     int result = NESL_SUCCESS;
@@ -383,7 +394,7 @@ static int NESL_TestMapper1RomRead(void)
     for(uint32_t address = 0x0000; address <= 0xFFFF; ++address, ++data) {
 
         switch(address) {
-            case 0x0000 ... 0x1FFF:
+            case 0x6000 ... 0x7FFF:
 
                 for(int type = 0; type < NESL_BANK_MAX; ++type) {
                     nesl_cartridge_header_t header = { .rom.program = 2, .rom.character = 2 };
@@ -392,40 +403,29 @@ static int NESL_TestMapper1RomRead(void)
                         goto exit;
                     }
 
-                    if(type == NESL_BANK_ROM_CHARACTER) {
-                        g_test.cartridge.rom.character[address & 0x1FFF] = data;
+                    NESL_Mapper1WriteRam(&g_test.mapper, type, address, data);
 
-                        if(NESL_ASSERT((NESL_Mapper1RomRead(&g_test.mapper, type, address) == data)
+                    if(type == NESL_BANK_PROGRAM_RAM) {
+
+                        if(NESL_ASSERT((g_test.data == data)
                                 && (g_test.type == type)
                                 && (g_test.address == (address & 0x1FFF)))) {
                             result = NESL_FAILURE;
                             goto exit;
                         }
-                    } else if(NESL_ASSERT((g_test.data == 0)
-                            && (g_test.type == 0)
-                            && (g_test.address == 0))) {
-                        result = NESL_FAILURE;
-                        goto exit;
-                    }
-                }
-                break;
-            case 0x8000 ... 0xFFFF:
-                for(int type = 0; type < NESL_BANK_MAX; ++type) {
-                    nesl_cartridge_header_t header = { .rom.program = 2, .rom.character = 2 };
 
-                    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
-                        goto exit;
-                    }
+                        ((nesl_mapper_1_context_t *)g_test.mapper.context)->program.ram_disable = true;
 
-                    if(type == NESL_BANK_ROM_PROGRAM) {
-                        g_test.cartridge.rom.program[address & 0x7FFF] = data;
+                        NESL_Mapper1WriteRam(&g_test.mapper, type, address, data + 1);
 
-                        if(NESL_ASSERT((NESL_Mapper1RomRead(&g_test.mapper, type, address) == data)
+                        if(NESL_ASSERT((g_test.data == data)
                                 && (g_test.type == type)
-                                && (g_test.address == (address & 0x7FFF)))) {
+                                && (g_test.address == (address & 0x1FFF)))) {
                             result = NESL_FAILURE;
                             goto exit;
                         }
+
+                        ((nesl_mapper_1_context_t *)g_test.mapper.context)->program.ram_disable = false;
                     } else if(NESL_ASSERT((g_test.data == 0)
                             && (g_test.type == 0)
                             && (g_test.address == 0))) {
@@ -452,7 +452,7 @@ exit:
     return result;
 }
 
-static int NESL_TestMapper1RomWrite(void)
+static int NESL_TestMapper1WriteRom(void)
 {
     uint8_t data = 0;
     int result = NESL_SUCCESS;
@@ -474,12 +474,12 @@ static int NESL_TestMapper1RomWrite(void)
                     }
 
                     g_test.mapper.cartridge.rom.character = g_test.cartridge.ram.character;
-                    NESL_Mapper1RomWrite(&g_test.mapper, type, address, data);
+                    NESL_Mapper1WriteRom(&g_test.mapper, type, address, data);
 
-                    if(type == NESL_BANK_ROM_CHARACTER) {
+                    if(type == NESL_BANK_CHARACTER_ROM) {
 
                         if(NESL_ASSERT((g_test.data == data)
-                                && (g_test.type == NESL_BANK_RAM_CHARACTER)
+                                && (g_test.type == NESL_BANK_CHARACTER_RAM)
                                 && (g_test.address == (address & 0x1FFF)))) {
                             result = NESL_FAILURE;
                             goto exit;
@@ -504,7 +504,7 @@ static int NESL_TestMapper1RomWrite(void)
                 context->shift.data = 0xFF;
                 context->shift.position = 3;
 
-                NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, 0x80);
+                NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, 0x80);
 
                 if(NESL_ASSERT((context->shift.data == 0)
                         && (context->shift.position == 0))) {
@@ -518,7 +518,7 @@ static int NESL_TestMapper1RomWrite(void)
                 data = control.raw;
 
                 for(uint8_t index = 1; index < 5; ++index) {
-                    NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, data & 1);
+                    NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, data & 1);
 
                     if(NESL_ASSERT(context->shift.position == index)) {
                         result = NESL_FAILURE;
@@ -531,7 +531,7 @@ static int NESL_TestMapper1RomWrite(void)
                 context->character[0].bank = 1;
                 context->character[1].bank = 2;
                 context->program.bank = 1;
-                NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, data & 1);
+                NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, data & 1);
 
                 if(NESL_ASSERT((context->control.raw == control.raw)
                         && (context->shift.data == 0)
@@ -555,12 +555,12 @@ static int NESL_TestMapper1RomWrite(void)
                 context->shift.data = 0xFF;
                 context->shift.position = 3;
 
-                NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, 0x80);
+                NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, 0x80);
                 character.bank = (address >= 0xC000) ? 4 : 6;
                 data = character.raw;
 
                 for(uint8_t index = 1; index < 5; ++index) {
-                    NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, data & 1);
+                    NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, data & 1);
 
                     if(NESL_ASSERT(context->shift.position == index)) {
                         result = NESL_FAILURE;
@@ -570,7 +570,7 @@ static int NESL_TestMapper1RomWrite(void)
                     data >>= 1;
                 }
 
-                NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, data & 1);
+                NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, data & 1);
 
                 if(NESL_ASSERT(context->character[(address >= 0xC000) ? 1 : 0].raw == character.raw)) {
                     result = NESL_FAILURE;
@@ -587,12 +587,12 @@ static int NESL_TestMapper1RomWrite(void)
                 context->shift.data = 0xFF;
                 context->shift.position = 3;
 
-                NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, 0x80);
+                NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, 0x80);
                 program.bank = 8;
                 data = program.raw;
 
                 for(uint8_t index = 1; index < 5; ++index) {
-                    NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, data & 1);
+                    NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, data & 1);
 
                     if(NESL_ASSERT(context->shift.position == index)) {
                         result = NESL_FAILURE;
@@ -602,7 +602,7 @@ static int NESL_TestMapper1RomWrite(void)
                     data >>= 1;
                 }
 
-                NESL_Mapper1RomWrite(&g_test.mapper, NESL_BANK_ROM_PROGRAM, address, data & 1);
+                NESL_Mapper1WriteRom(&g_test.mapper, NESL_BANK_PROGRAM_ROM, address, data & 1);
 
                 if(NESL_ASSERT(context->program.raw == program.raw)) {
                     result = NESL_FAILURE;
@@ -649,19 +649,13 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestMapper1Init,
-    NESL_TestMapper1Interrupt,
-    NESL_TestMapper1RamRead,
-    NESL_TestMapper1RamWrite,
-    NESL_TestMapper1Reset,
-    NESL_TestMapper1RomRead,
-    NESL_TestMapper1RomWrite,
-    NESL_TestMapper1Uninit,
-    };
-
 int main(void)
 {
+    static const NESL_Test TEST[] = {
+        NESL_TestMapper1Init, NESL_TestMapper1Interrupt, NESL_TestMapper1ReadRam, NESL_TestMapper1ReadRom,
+        NESL_TestMapper1Reset, NESL_TestMapper1WriteRam, NESL_TestMapper1WriteRom, NESL_TestMapper1Uninit,
+        };
+
     int result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
