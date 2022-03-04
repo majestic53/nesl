@@ -1,8 +1,10 @@
-# NESL
+# NESL (NES-Lite)
 
 [![License: MIT](https://shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/majestic53/nesl/blob/master/LICENSE) [![Build Status](https://github.com/majestic53/nesl/workflows/Build/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/build.yml) [![Test Status](https://github.com/majestic53/nesl/workflows/Test/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/test.yml)
 
-A lightweight NES emulator, written in C.
+### A lightweight NES emulator, written in C.
+
+The NESL project is designed to emulate the original NES hardware with enough accuracy to run most common software for that platform, while still be performant. Additionally, being written in C and using the SDL library for controller input and audio/video output, the project can be built natively for Linux, MacOS and Windows.
 
 ![Demo](https://github.com/majestic53/nesl/blob/master/docs/demo.png)
 
