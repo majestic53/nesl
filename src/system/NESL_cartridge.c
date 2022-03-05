@@ -104,27 +104,27 @@ uint8_t NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge)
 int NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length)
 {
     int result;
-    const uint8_t *ptr = data;
+    const uint8_t *offset = data;
 
     if((result = NESL_CartridgeValidate(data, length)) == NESL_FAILURE) {
         goto exit;
     }
 
-    cartridge->header = (const nesl_cartridge_header_t *)ptr;
-    ptr += sizeof(*cartridge->header);
+    cartridge->header = (const nesl_cartridge_header_t *)offset;
+    offset += sizeof(*cartridge->header);
 
     if(cartridge->header->flag_6.trainer) {
-        ptr += 512;
+        offset += 512;
     }
 
     if(cartridge->header->rom.program) {
-        cartridge->rom.program = ptr;
-        ptr += (cartridge->header->rom.program * 16 * 1024);
+        cartridge->rom.program = offset;
+        offset += (cartridge->header->rom.program * 16 * 1024);
     }
 
     if(cartridge->header->rom.character) {
-        cartridge->rom.character = ptr;
-        ptr += (cartridge->header->rom.character * 8 * 1024 );
+        cartridge->rom.character = offset;
+        offset += (cartridge->header->rom.character * 8 * 1024 );
     } else {
 
         if(!(cartridge->ram.character = calloc(32 * 8 * 1024, sizeof(uint8_t)))) {
