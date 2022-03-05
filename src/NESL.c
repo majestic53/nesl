@@ -26,15 +26,15 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_Run(const nesl_t *input)
+int NESL_Run(const nesl_t *context)
 {
     int result;
 
-    if((result = NESL_ServiceInit(input->title, input->fullscreen, input->linear, input->scale)) == NESL_FAILURE) {
+    if((result = NESL_ServiceInit(context->title, context->fullscreen, context->linear, context->scale)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_BusInit(input->data, input->length)) == NESL_FAILURE) {
+    if((result = NESL_BusInit(context->data, context->length)) == NESL_FAILURE) {
         goto exit;
     }
 
