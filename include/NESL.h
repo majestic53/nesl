@@ -19,37 +19,75 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL.h
+ * @brief NESL API.
+ */
+
 #ifndef NESL_H_
 #define NESL_H_
 
-enum {
-    NESL_FAILURE = -1,
-    NESL_SUCCESS,
-    NESL_QUIT,
-};
+/**
+ * NESL API version
+ */
+#define NESL_API_VERSION_1 1
+#define NESL_API_VERSION NESL_API_VERSION_1
 
+/**
+ * @enum nesl_error_e
+ * @brief NESL Error codes.
+ */
+typedef enum {
+    NESL_FAILURE = -1,  /*< Operation failed, call NESL_GetError */
+    NESL_SUCCESS,       /*< Operation succeeded */
+    NESL_QUIT,          /*< Internal event, assume operation succeeded*/
+} nesl_error_e;
+
+/**
+ * @struct nes_t
+ * @brief NESL context struct, allocated by the caller and passed into NESL_Run.
+ */
 typedef struct {
-    void *data;
-    int length;
-    char *title;
-    int fullscreen;
-    int linear;
-    int scale;
+    void *data;     /*< Data */
+    int length;     /*< Data length in bytes */
+    char *title;    /*< Window title (can be NULL) */
+    int fullscreen; /*< Window fullscreen (default:false) */
+    int linear;     /*< Window linear scaling (default:false) */
+    int scale;      /*< Window scaling [1-4] (default:1) */
 } nesl_t;
 
+/**
+ * @struct nesl_version_t
+ * @brief NESL version struct, returned from NESL_GetVersion.
+ */
 typedef struct {
-    int major;
-    int minor;
-    int patch;
+    int major;  /*< Major version */
+    int minor;  /*< Minor version */
+    int patch;  /*< Patch version */
 } nesl_version_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Run NESL with a caller defined context.
+ * @param context Constant pointer to caller defined context struct
+ * @return NESL_FAILURE on failure
+ */
+int NESL_Run(const nesl_t *context);
+
+/**
+ * @brief Retrieve NESL error string.
+ * @return Constant pointer to NESL error string
+ */
 const char *NESL_GetError(void);
+
+/**
+ * @brief Retrieve NESL version struct.
+ * @return Constant pointer to NESL version struct
+ */
 const nesl_version_t *NESL_GetVersion(void);
-int NESL_Run(const nesl_t *);
 
 #ifdef __cplusplus
 }
