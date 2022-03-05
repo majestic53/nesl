@@ -199,8 +199,8 @@ static int NESL_TestAudioInit(void)
             && (g_test.audio.frame.raw == 0)
             && (g_test.setup.callback != NULL)
             && (g_test.setup.context == &g_test.audio)
-            && g_test.synthesizer.square[NESL_CHANNEL_0].initialized
-            && g_test.synthesizer.square[NESL_CHANNEL_1].initialized)) {
+            && g_test.synthesizer.square[NESL_CHANNEL_1].initialized
+            && g_test.synthesizer.square[NESL_CHANNEL_2].initialized)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -262,8 +262,8 @@ static int NESL_TestAudioReset(void)
 
     if(NESL_ASSERT((g_test.audio.status.raw == 0)
             && (g_test.audio.frame.raw == 0)
-            && g_test.synthesizer.square[NESL_CHANNEL_0].reset
-            && g_test.synthesizer.square[NESL_CHANNEL_1].reset)) {
+            && g_test.synthesizer.square[NESL_CHANNEL_1].reset
+            && g_test.synthesizer.square[NESL_CHANNEL_2].reset)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -287,8 +287,8 @@ static int NESL_TestAudioUninit(void)
 
     if(NESL_ASSERT((g_test.audio.status.raw == 0)
             && (g_test.audio.frame.raw == 0)
-            && !g_test.synthesizer.square[NESL_CHANNEL_0].initialized
-            && !g_test.synthesizer.square[NESL_CHANNEL_1].initialized)) {
+            && !g_test.synthesizer.square[NESL_CHANNEL_1].initialized
+            && !g_test.synthesizer.square[NESL_CHANNEL_2].initialized)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -314,16 +314,16 @@ static int NESL_TestAudioWrite(void)
         switch(address) {
             case 0x4000 ... 0x4003:
 
-                if(NESL_ASSERT((g_test.synthesizer.square[NESL_CHANNEL_0].address == address)
-                        && (g_test.synthesizer.square[NESL_CHANNEL_0].data == data))) {
+                if(NESL_ASSERT((g_test.synthesizer.square[NESL_CHANNEL_1].address == address)
+                        && (g_test.synthesizer.square[NESL_CHANNEL_1].data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             case 0x4004 ... 0x4007:
 
-                if(NESL_ASSERT((g_test.synthesizer.square[NESL_CHANNEL_1].address == (address - 4))
-                        && (g_test.synthesizer.square[NESL_CHANNEL_1].data == data))) {
+                if(NESL_ASSERT((g_test.synthesizer.square[NESL_CHANNEL_2].address == (address - 4))
+                        && (g_test.synthesizer.square[NESL_CHANNEL_2].data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }

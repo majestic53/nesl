@@ -157,7 +157,7 @@ void NESL_AudioWrite(nesl_audio_t *audio, uint16_t address, uint8_t data)
     switch(address) {
         case 0x4000 ... 0x4007:
 
-            if((channel = (address > 0x4003) ? NESL_CHANNEL_1 : NESL_CHANNEL_0) == NESL_CHANNEL_1) {
+            if((channel = (address > 0x4003) ? NESL_CHANNEL_2 : NESL_CHANNEL_1) == NESL_CHANNEL_2) {
                 address -= 4;
             }
 
