@@ -2,8 +2,8 @@
 
 ## Getting Started
 
-See the build steps in the readme [here](https://github.com/majestic53/nesl/blob/master/README.md#building-from-source).
-See the architectural notes in the readme [here](https://github.com/majestic53/nesl/blob/master/src/README.md).
+* See the build steps in the readme [here](https://github.com/majestic53/nesl/blob/master/README.md#building-from-source).
+* See the architectural notes in the readme [here](https://github.com/majestic53/nesl/blob/master/src/README.md).
 
 ## Places to Contribute
 
