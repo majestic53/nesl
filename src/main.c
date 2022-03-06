@@ -42,7 +42,7 @@ typedef enum {
     OPTION_LINEAR,          /*< Set linear scaling */
     OPTION_SCALE,           /*< Set window scaling */
     OPTION_VERSION,         /*< Show version information */
-    OPTION_MAX,
+    OPTION_MAX,             /*< Maximum option */
 } nesl_option_e;
 
 /**
