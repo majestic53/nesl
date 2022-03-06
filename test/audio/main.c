@@ -33,7 +33,7 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_audio_t audio; /*< Audio context */
+    nesl_audio_t audio;                 /*< Audio context */
 
     struct {
         NESL_ServiceGetAudio callback;  /*< Audio callback */
@@ -43,16 +43,16 @@ typedef struct {
     struct {
 
         struct {
-            uint16_t address;   /*< Read/write address */
-            uint8_t data;       /*< Read/write data */
-            bool cycle;         /*< Cycle state */
-            bool initialized;   /*< Initialized state */
-            bool reset;         /*< Reset state */
+            uint16_t address;           /*< Read/write address */
+            uint8_t data;               /*< Read/write data */
+            bool cycle;                 /*< Cycle state */
+            bool initialized;           /*< Initialized state */
+            bool reset;                 /*< Reset state */
         } square[NESL_CHANNEL_MAX];
     } synthesizer;
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};         /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

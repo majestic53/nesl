@@ -36,13 +36,13 @@
 typedef union {
 
     struct {
-        uint8_t volume : 4;         /*< Volume */
-        uint8_t volume_const : 1;   /*< Constant volume */
-        uint8_t loop : 1;           /*< Loop flag */
-        uint8_t duty : 2;           /*< Duty-cycle */
+        uint8_t volume : 4;                         /*< Volume */
+        uint8_t volume_const : 1;                   /*< Constant volume */
+        uint8_t loop : 1;                           /*< Loop flag */
+        uint8_t duty : 2;                           /*< Duty-cycle */
     };
 
-    uint8_t raw;
+    uint8_t raw;                                    /*< Raw byte */
 } nesl_audio_square_envelope_t;
 
 /**
@@ -52,11 +52,11 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t period_high : 3;    /*< High period */
-        uint8_t counter : 5;        /*< Counter */
+        uint8_t period_high : 3;                    /*< High period */
+        uint8_t counter : 5;                        /*< Counter */
     };
 
-    uint8_t raw;
+    uint8_t raw;                                    /*< Raw byte */
 } nesl_audio_square_length_t;
 
 /**
@@ -66,13 +66,13 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t shift : 3;      /*< Shift */
-        uint8_t negative : 1;   /*< Negative flag */
-        uint8_t period : 3;     /*< Period */
-        uint8_t enable : 1;     /*< Enable flag */
+        uint8_t shift : 3;                          /*< Shift */
+        uint8_t negative : 1;                       /*< Negative flag */
+        uint8_t period : 3;                         /*< Period */
+        uint8_t enable : 1;                         /*< Enable flag */
     };
 
-    uint8_t raw;
+    uint8_t raw;                                    /*< Raw byte */
 } nesl_audio_square_sweep_t;
 
 /**
@@ -80,7 +80,7 @@ typedef union {
  * @brief Audio square-wave synthesizer context.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer; /*< Audio buffer context */
+    nesl_audio_buffer_t buffer;                     /*< Audio buffer context */
 
     union {
 
@@ -91,7 +91,7 @@ typedef struct {
             nesl_audio_square_length_t length;      /*< Length register */
         };
 
-        uint8_t byte[4];    /*< Raw bytes */
+        uint8_t byte[4];                            /*< Raw bytes */
     } state;
 } nesl_audio_square_t;
 

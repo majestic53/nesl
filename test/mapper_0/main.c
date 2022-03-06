@@ -32,10 +32,10 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_mapper_t mapper;   /*< Mapper type */
-    nesl_bank_e type;       /*< Bank type */
-    uint32_t address;       /*< Bank address */
-    uint8_t data;           /*< Bank data */
+    nesl_mapper_t mapper;                   /*< Mapper type */
+    nesl_bank_e type;                       /*< Bank type */
+    uint32_t address;                       /*< Bank address */
+    uint8_t data;                           /*< Bank data */
 
     struct {
 
@@ -51,7 +51,7 @@ typedef struct {
     } cartridge;
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};             /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

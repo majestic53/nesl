@@ -31,7 +31,7 @@
  * @brief Contains the error context.
  */
 typedef struct {
-    char buffer[256];   /*< Error string */
+    char buffer[256];               /*< Error string */
 } nesl_error_t;
 
 static nesl_error_t g_error = {};   /*< Error context */

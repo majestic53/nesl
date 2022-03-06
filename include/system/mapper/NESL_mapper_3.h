@@ -36,10 +36,10 @@
 typedef union {
 
     struct {
-        uint8_t bank : 2;   /*< Character bank */
+        uint8_t bank : 2;                   /*< Character bank */
     };
 
-    uint8_t raw;
+    uint8_t raw;                            /*< Raw byte */
 } nesl_mapper_3_character_t;
 
 /**

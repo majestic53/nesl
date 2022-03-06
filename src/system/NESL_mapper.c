@@ -37,9 +37,9 @@
  * @brief Mapper extension context.
  */
 typedef struct {
-    nesl_mapper_e type;                                         /*< Mapper type */
-    nesl_error_e (*initialize)(struct nesl_mapper_s *mapper);   /*< Mapper initialization callback */
-    void (*uninitialize)(struct nesl_mapper_s *mapper);         /*< Mapper uninitialization callback */
+    nesl_mapper_e type;                                             /*< Mapper type */
+    nesl_error_e (*initialize)(struct nesl_mapper_s *mapper);       /*< Mapper initialization callback */
+    void (*uninitialize)(struct nesl_mapper_s *mapper);             /*< Mapper uninitialization callback */
 } nesl_mapper_context_t;
 
 /**

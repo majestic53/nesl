@@ -36,10 +36,10 @@
 typedef union {
 
     struct {
-        uint8_t bank : 5;   /*< Character ROM bank */
+        uint8_t bank : 5;                   /*< Character ROM bank */
     };
 
-    uint8_t raw;
+    uint8_t raw;                            /*< Raw byte */
 } nesl_mapper_1_character_t;
 
 /**
@@ -49,12 +49,12 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t mirror : 2;     /*< Mirror type */
-        uint8_t program : 2;    /*< Program bank mode */
-        uint8_t character : 1;  /*< Character bank mode */
+        uint8_t mirror : 2;                 /*< Mirror type */
+        uint8_t program : 2;                /*< Program bank mode */
+        uint8_t character : 1;              /*< Character bank mode */
     };
 
-    uint8_t raw;
+    uint8_t raw;                            /*< Raw byte */
 } nesl_mapper_1_control_t;
 
 /**
@@ -64,11 +64,11 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t bank : 4;           /*< Program ROM bank */
-        uint8_t ram_disable : 1;    /*< Program RAM disable */
+        uint8_t bank : 4;                   /*< Program ROM bank */
+        uint8_t ram_disable : 1;            /*< Program RAM disable */
     };
 
-    uint8_t raw;
+    uint8_t raw;                            /*< Raw byte */
 } nesl_mapper_1_program_t;
 
 /**
@@ -78,8 +78,8 @@ typedef union {
 typedef struct {
 
     struct {
-        uint8_t data;       /*< Serial data */
-        uint8_t position;   /*< Serial position */
+        uint8_t data;                       /*< Serial data */
+        uint8_t position;                   /*< Serial position */
     } shift;
 
     nesl_mapper_1_control_t control;        /*< Control register */

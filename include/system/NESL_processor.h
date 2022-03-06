@@ -36,17 +36,17 @@
 typedef union {
 
     struct {
-        uint8_t carry : 1;              /*< Carry flag */
-        uint8_t zero : 1;               /*< Zero flag */
-        uint8_t interrupt_disable : 1;  /*< Interrupt disable flag */
-        uint8_t decimal : 1;            /*< Decimal flag */
-        uint8_t breakpoint : 1;         /*< Breakpoint flag */
-        uint8_t unused : 1;
-        uint8_t overflow : 1;           /*< Overflow flag */
-        uint8_t negative : 1;           /*< Negative flag */
+        uint8_t carry : 1;                  /*< Carry flag */
+        uint8_t zero : 1;                   /*< Zero flag */
+        uint8_t interrupt_disable : 1;      /*< Interrupt disable flag */
+        uint8_t decimal : 1;                /*< Decimal flag */
+        uint8_t breakpoint : 1;             /*< Breakpoint flag */
+        uint8_t unused : 1;                 /*< Unused */
+        uint8_t overflow : 1;               /*< Overflow flag */
+        uint8_t negative : 1;               /*< Negative flag */
     };
 
-    uint8_t raw;
+    uint8_t raw;                            /*< Raw byte */
 } nesl_processor_status_t;
 
 /**
@@ -54,19 +54,19 @@ typedef union {
  * @brief Processor subsystem context.
  */
 typedef struct {
-    uint8_t ram[2 * 1024];  /*< Program RAM buffer */
-    uint8_t cycle;          /*< Remaining cycles */
+    uint8_t ram[2 * 1024];                  /*< Program RAM buffer */
+    uint8_t cycle;                          /*< Remaining cycles */
 
     union {
 
         struct {
-            uint8_t transfer : 1;       /*< Transger start flag */
-            uint8_t transfer_sync : 1;  /*< Transger sync flag */
-            uint8_t non_maskable : 1;   /*< Non-maskable interrupt flag */
-            uint8_t maskable : 1;       /*< Maskable interrupt flag */
+            uint8_t transfer : 1;           /*< Transger start flag */
+            uint8_t transfer_sync : 1;      /*< Transger sync flag */
+            uint8_t non_maskable : 1;       /*< Non-maskable interrupt flag */
+            uint8_t maskable : 1;           /*< Maskable interrupt flag */
         };
 
-        uint8_t raw;
+        uint8_t raw;                        /*< Raw byte */
     } interrupt;
 
     struct {
@@ -76,15 +76,15 @@ typedef struct {
         nesl_processor_status_t status;     /*< Status register */
 
         struct {
-            nesl_register_t x;  /*< Index-x register */
-            nesl_register_t y;  /*< Index-y register */
+            nesl_register_t x;              /*< Index-x register */
+            nesl_register_t y;              /*< Index-y register */
         } index;
     } state;
 
     struct {
-        uint8_t data;                   /*< Data */
-        nesl_register_t destination;    /*< Destination address */
-        nesl_register_t source;         /*< Source address */
+        uint8_t data;                       /*< Data */
+        nesl_register_t destination;        /*< Destination address */
+        nesl_register_t source;             /*< Source address */
     } transfer;
 } nesl_processor_t;
 

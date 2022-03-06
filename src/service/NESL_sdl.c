@@ -35,12 +35,12 @@
 typedef union {
 
     struct {
-        uint8_t blue;   /*< Blue channel */
-        uint8_t green;  /*< Green channel */
-        uint8_t red;    /*< Red channel */
+        uint8_t blue;                   /*< Blue channel */
+        uint8_t green;                  /*< Green channel */
+        uint8_t red;                    /*< Red channel */
     };
 
-    uint32_t raw;
+    uint32_t raw;                       /*< Raw word */
 } nesl_color_t;
 
 /**
@@ -48,13 +48,13 @@ typedef union {
  * @brief Contains the service contexts.
  */
 typedef struct {
-    uint32_t tick;                  /*< Tick since last redraw */
-    bool fullscreen;                /*< Fullscreen state */
-    nesl_color_t pixel[240][256];   /*< Pixel buffer */
-    SDL_AudioDeviceID audio;        /*< Open audio device id */
-    SDL_Renderer *renderer;         /*< Renderer handle */
-    SDL_Texture *texture;           /*< Texture handle */
-    SDL_Window *window;             /*< Window handle */
+    uint32_t tick;                      /*< Tick since last redraw */
+    bool fullscreen;                    /*< Fullscreen state */
+    nesl_color_t pixel[240][256];       /*< Pixel buffer */
+    SDL_AudioDeviceID audio;            /*< Open audio device id */
+    SDL_Renderer *renderer;             /*< Renderer handle */
+    SDL_Texture *texture;               /*< Texture handle */
+    SDL_Window *window;                 /*< Window handle */
 } nesl_service_t;
 
 static nesl_service_t g_service = {};   /*< Service context */

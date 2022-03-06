@@ -32,12 +32,12 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_mapper_t mapper;   /*< Mapper context */
-    nesl_bank_e type;       /*< Bank type */
-    uint16_t address;       /*< Bank address */
-    uint8_t data;           /*< Bank data */
-    bool interrupt;         /*< Interrupt state */
-    bool reset;             /*< Reset state */
+    nesl_mapper_t mapper;                       /*< Mapper context */
+    nesl_bank_e type;                           /*< Bank type */
+    uint16_t address;                           /*< Bank address */
+    uint8_t data;                               /*< Bank data */
+    bool interrupt;                             /*< Interrupt state */
+    bool reset;                                 /*< Reset state */
 
     struct {
         const nesl_cartridge_header_t *header;  /*< Cartridge header */
@@ -48,12 +48,12 @@ typedef struct {
     } cartridge;
 
     struct {
-        bool initialized;       /*< Mapper extension initialized state */
-        nesl_error_e status;    /*< Mapper extension error state */
+        bool initialized;                       /*< Mapper extension initialized state */
+        nesl_error_e status;                    /*< Mapper extension error state */
     } state;
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};                 /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

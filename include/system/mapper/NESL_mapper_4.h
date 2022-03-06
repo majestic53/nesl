@@ -36,10 +36,10 @@
 typedef union {
 
     struct {
-        uint8_t mode : 1;   /*< Mirror mode (0:Vertical, 1:Horizontal) */
+        uint8_t mode : 1;               /*< Mirror mode (0:Vertical, 1:Horizontal) */
     };
 
-    uint8_t raw;
+    uint8_t raw;                        /*< Raw byte */
 } nesl_mapper_4_mirror_t;
 
 /**
@@ -49,12 +49,12 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t unused : 6;
-        uint8_t ram_read_only : 1;  /*< Program RAM read-only */
-        uint8_t ram_enable : 1;     /*< Program RAM enable */
+        uint8_t unused : 6;             /*< Unused */
+        uint8_t ram_read_only : 1;      /*< Program RAM read-only */
+        uint8_t ram_enable : 1;         /*< Program RAM enable */
     };
 
-    uint8_t raw;
+    uint8_t raw;                        /*< Raw byte */
 } nesl_mapper_4_protect_t;
 
 /**
@@ -64,13 +64,13 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t bank : 3;       /*< Bank mode select */
-        uint8_t unused : 3;
-        uint8_t program : 1;    /*< Program bank */
-        uint8_t character : 1;  /*< Character bank */
+        uint8_t bank : 3;               /*< Bank mode select */
+        uint8_t unused : 3;             /*< Unused */
+        uint8_t program : 1;            /*< Program bank */
+        uint8_t character : 1;          /*< Character bank */
     };
 
-    uint8_t raw;
+    uint8_t raw;                        /*< Raw byte */
 } nesl_mapper_4_select_t;
 
 /**
@@ -80,14 +80,14 @@ typedef union {
 typedef struct {
 
     struct {
-        uint8_t index[8];   /*< Bank indicies */
-        uint8_t data;       /*< Bank data */
+        uint8_t index[8];               /*< Bank indicies */
+        uint8_t data;                   /*< Bank data */
     } bank;
 
     struct {
-        bool enable;    /*< Enable A12 interrupt */
-        uint8_t count;  /*< Interrupt counter */
-        uint8_t latch;  /*< Interrupt latch */
+        bool enable;                    /*< Enable A12 interrupt */
+        uint8_t count;                  /*< Interrupt counter */
+        uint8_t latch;                  /*< Interrupt latch */
     } interrupt;
 
     nesl_mapper_4_select_t select;      /*< Select register */

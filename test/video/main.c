@@ -32,7 +32,7 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_video_t video; /*< Video context */
+    nesl_video_t video;             /*< Video context */
 
     struct {
         nesl_bus_e type;            /*< Bus type */
@@ -50,7 +50,7 @@ typedef struct {
  */
 typedef nesl_error_e (*NESL_TestPort)(uint16_t address);
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};     /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

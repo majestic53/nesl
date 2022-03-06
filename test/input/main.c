@@ -36,7 +36,7 @@ typedef struct {
     bool state[NESL_CONTROLLER_MAX * NESL_BUTTON_MAX];  /*< Controller/button state */
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};                         /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

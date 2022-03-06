@@ -37,7 +37,7 @@ typedef union {
         uint8_t state : 1;  /*< Strobe state */
     };
 
-    uint8_t raw;
+    uint8_t raw;            /*< Raw byte */
 } nesl_strobe_t;
 
 #ifdef __cplusplus

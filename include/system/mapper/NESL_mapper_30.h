@@ -36,12 +36,12 @@
 typedef union {
 
     struct {
-        uint8_t program : 5;    /*< Program bank */
-        uint8_t character : 2;  /*< Character bank */
-        uint8_t one_screen : 1; /*< One-screen mirror mode */
+        uint8_t program : 5;        /*< Program bank */
+        uint8_t character : 2;      /*< Character bank */
+        uint8_t one_screen : 1;     /*< One-screen mirror mode */
     };
 
-    uint8_t raw;
+    uint8_t raw;                    /*< Raw byte */
 } nesl_mapper_30_bank_t;
 
 /**
@@ -49,7 +49,7 @@ typedef union {
  * @brief Mapper-30 extension context.
  */
 typedef struct {
-    nesl_mapper_30_bank_t bank; /*< Bank register */
+    nesl_mapper_30_bank_t bank;     /*< Bank register */
 } nesl_mapper_30_context_t;
 
 #ifdef __cplusplus

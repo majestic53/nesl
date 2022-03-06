@@ -142,12 +142,12 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t unused : 6;
-        uint8_t interrupt_disable : 1;  /*< Interrupt disable flag */
-        uint8_t mode : 1;               /*< 4/5-step mode */
+        uint8_t unused : 6;                             /*< Unused */
+        uint8_t interrupt_disable : 1;                  /*< Interrupt disable flag */
+        uint8_t mode : 1;                               /*< 4/5-step mode */
     };
 
-    uint8_t raw;
+    uint8_t raw;                                        /*< Raw byte */
 } nesl_audio_frame_t;
 
 /**
@@ -157,17 +157,17 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t square_0 : 1;           /*< Square-wave flag (channel 1) */
-        uint8_t square_1 : 1;           /*< Square-wave flag (channel 2) */
-        uint8_t triangle : 1;           /*< Triangle-wave flag */
-        uint8_t noise : 1;              /*< Noise-wave flag */
-        uint8_t dmc : 1;                /*< DMC flag */
-        uint8_t unused : 1;
-        uint8_t frame_interrupt : 1;    /*< Flag interrupt flag */
-        uint8_t dmc_interrupt : 1;      /*< DMC interrupt flag */
+        uint8_t square_0 : 1;                           /*< Square-wave flag (channel 1) */
+        uint8_t square_1 : 1;                           /*< Square-wave flag (channel 2) */
+        uint8_t triangle : 1;                           /*< Triangle-wave flag */
+        uint8_t noise : 1;                              /*< Noise-wave flag */
+        uint8_t dmc : 1;                                /*< DMC flag */
+        uint8_t unused : 1;                             /*< Unused */
+        uint8_t frame_interrupt : 1;                    /*< Flag interrupt flag */
+        uint8_t dmc_interrupt : 1;                      /*< DMC interrupt flag */
     };
 
-    uint8_t raw;
+    uint8_t raw;                                        /*< Raw byte */
 } nesl_audio_status_t;
 
 /**
@@ -175,9 +175,9 @@ typedef union {
  * @brief Audio subsystem context.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer; /*< Audio buffer context */
-    nesl_audio_frame_t frame;   /*< Frame register */
-    nesl_audio_status_t status; /*< Status register */
+    nesl_audio_buffer_t buffer;                         /*< Audio buffer context */
+    nesl_audio_frame_t frame;                           /*< Frame register */
+    nesl_audio_status_t status;                         /*< Status register */
 
     struct {
         nesl_audio_square_t square[NESL_CHANNEL_MAX];   /*< Square-wave synthesizer contexts */

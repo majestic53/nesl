@@ -37,11 +37,11 @@ typedef union {
 
     struct {
         uint8_t character : 2;  /*< Character bank */
-        uint8_t unused : 2;
+        uint8_t unused : 2;     /*< Unused */
         uint8_t program : 2;    /*< Program bank */
     };
 
-    uint8_t raw;
+    uint8_t raw;                /*< Raw byte */
 } nesl_mapper_66_bank_t;
 
 /**

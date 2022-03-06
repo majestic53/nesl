@@ -36,21 +36,21 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_bank_e type;   /*< Bank type */
-    uint16_t address;   /*< Bank address */
-    uint8_t data;       /*< Bank data */
+    nesl_bank_e type;               /*< Bank type */
+    uint16_t address;               /*< Bank address */
+    uint8_t data;                   /*< Bank data */
 
     struct {
-        bool reset; /*< Reset state */
+        bool reset;                 /*< Reset state */
     } audio;
 
     struct {
-        bool reset; /*< Reset state */
+        bool reset;                 /*< Reset state */
     } input;
 
     struct {
-        bool interrupt; /*< Interrupt state */
-        bool reset;     /*< Reset state */
+        bool interrupt;             /*< Interrupt state */
+        bool reset;                 /*< Reset state */
     } mapper;
 
     struct {
@@ -60,15 +60,15 @@ typedef struct {
     } processor;
 
     struct {
-        bool reset; /*< Reset state */
+        bool reset;                 /*< Reset state */
     } service;
 
     struct {
-        bool reset; /*< Reset state */
+        bool reset;                 /*< Reset state */
     } video;
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};     /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

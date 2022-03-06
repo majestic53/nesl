@@ -40,7 +40,7 @@ typedef struct {
         bool state[NESL_BUTTON_MAX];    /*< Button state (true:pressed, false:released) */
     } button[NESL_CONTROLLER_MAX];
 
-    bool strobe;    /*< Strobe state */
+    bool strobe;                        /*< Strobe state */
 } nesl_input_t;
 
 #ifdef __cplusplus

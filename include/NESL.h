@@ -48,12 +48,12 @@ typedef enum {
  * @brief NESL context struct, allocated by the caller and passed into NESL_Run.
  */
 typedef struct {
-    void *data;     /*< Data */
-    int length;     /*< Data length in bytes */
-    char *title;    /*< Window title (can be NULL) */
-    int fullscreen; /*< Window fullscreen (default:false) */
-    int linear;     /*< Window linear scaling (default:false) */
-    int scale;      /*< Window scaling [1-4] (default:1) */
+    void *data;         /*< Data */
+    int length;         /*< Data length in bytes */
+    char *title;        /*< Window title (can be NULL) */
+    int fullscreen;     /*< Window fullscreen (default:false) */
+    int linear;         /*< Window linear scaling (default:false) */
+    int scale;          /*< Window scaling [1-4] (default:1) */
 } nesl_t;
 
 /**
@@ -61,9 +61,9 @@ typedef struct {
  * @brief NESL version struct, returned from NESL_GetVersion.
  */
 typedef struct {
-    int major;  /*< Major version */
-    int minor;  /*< Minor version */
-    int patch;  /*< Patch version */
+    int major;          /*< Major version */
+    int minor;          /*< Minor version */
+    int patch;          /*< Patch version */
 } nesl_version_t;
 
 #ifdef __cplusplus

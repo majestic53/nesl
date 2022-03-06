@@ -32,7 +32,7 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_cartridge_t cartridge; /*< Cartridge context */
+    nesl_cartridge_t cartridge;         /*< Cartridge context */
 
     struct {
         nesl_cartridge_header_t header; /*< Cartridge header */
@@ -41,7 +41,7 @@ typedef struct {
     } data;
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {};         /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {

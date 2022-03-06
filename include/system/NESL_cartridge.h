@@ -34,43 +34,43 @@
  * @brief Cartridge header context.
  */
 typedef struct {
-    char magic[4];  /*< Magic number */
+    char magic[4];                          /*< Magic number */
 
     struct {
-        uint8_t program;    /*< Program ROM bank count */
-        uint8_t character;  /*< Character ROM bank count */
+        uint8_t program;                    /*< Program ROM bank count */
+        uint8_t character;                  /*< Character ROM bank count */
     } rom;
 
     union {
 
         struct {
-            uint8_t mirror : 1;         /*< Mirror type (0:Horizontal, 1:Vertical) */
-            uint8_t ram : 1;            /*< Program RAM present */
-            uint8_t trainer : 1;        /*< Trainer present */
-            uint8_t four_screen : 1;    /*< Four-screen flag */
-            uint8_t type_low : 4;       /*< Mapper type (low-nibble) */
+            uint8_t mirror : 1;             /*< Mirror type (0:Horizontal, 1:Vertical) */
+            uint8_t ram : 1;                /*< Program RAM present */
+            uint8_t trainer : 1;            /*< Trainer present */
+            uint8_t four_screen : 1;        /*< Four-screen flag */
+            uint8_t type_low : 4;           /*< Mapper type (low-nibble) */
         };
 
-        uint8_t raw;
+        uint8_t raw;                        /*< Raw byte */
     } flag_6;
 
     union {
 
         struct {
-            uint8_t vs_unisystem : 1;   /*< VS-Unisystem flag */
-            uint8_t playchoice_10 : 1;  /*< PlayChoice10 flag */
-            uint8_t version : 2;        /*< Version (0:iNES1, >=2:iNES2) */
-            uint8_t type_high : 4;      /*< Mapper type (high-nibble) */
+            uint8_t vs_unisystem : 1;       /*< VS-Unisystem flag */
+            uint8_t playchoice_10 : 1;      /*< PlayChoice10 flag */
+            uint8_t version : 2;            /*< Version (0:iNES1, >=2:iNES2) */
+            uint8_t type_high : 4;          /*< Mapper type (high-nibble) */
         };
 
-        uint8_t raw;
+        uint8_t raw;                        /*< Raw byte */
     } flag_7;
 
     struct {
-        uint8_t program;    /*< Program RAM bank count */
+        uint8_t program;                    /*< Program RAM bank count */
     } ram;
 
-    uint8_t unused[7];
+    uint8_t unused[7];                      /*< Unused bytes */
 } nesl_cartridge_header_t;
 
 /**
@@ -81,13 +81,13 @@ typedef struct {
     const nesl_cartridge_header_t *header;  /*< Constant pointer to cartridge header */
 
     struct {
-        uint8_t *character; /*< Pointer to character RAM banks */
-        uint8_t *program;   /*< Pointer to program RAM banks */
+        uint8_t *character;                 /*< Pointer to character RAM banks */
+        uint8_t *program;                   /*< Pointer to program RAM banks */
     } ram;
 
     struct {
-        const uint8_t *character;   /*< Pointer to character ROM banks */
-        const uint8_t *program;     /*< Pointer to program ROM banks */
+        const uint8_t *character;           /*< Pointer to character ROM banks */
+        const uint8_t *program;             /*< Pointer to program ROM banks */
     } rom;
 } nesl_cartridge_t;
 

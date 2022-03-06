@@ -35,10 +35,10 @@
  * @brief Mapper context.
  */
 typedef struct nesl_mapper_s {
-    nesl_cartridge_t cartridge; /*< Cartridge context */
-    void *context;              /*< Pointer to extension context */
-    nesl_mirror_e mirror;       /*< Mirror type */
-    nesl_mapper_e type;         /*< Mapper type */
+    nesl_cartridge_t cartridge;                                                                             /*< Cartridge context */
+    void *context;                                                                                          /*< Pointer to extension context */
+    nesl_mirror_e mirror;                                                                                   /*< Mirror type */
+    nesl_mapper_e type;                                                                                     /*< Mapper type */
 
     struct {
         nesl_error_e (*interrupt)(struct nesl_mapper_s *mapper);                                            /*< Interrupt callback */
@@ -50,12 +50,12 @@ typedef struct nesl_mapper_s {
     } callback;
 
     struct {
-        uint32_t program;   /*< Program RAM index */
+        uint32_t program;                                                                                   /*< Program RAM index */
     } ram;
 
     struct {
-        uint32_t character[8];  /*< Character ROM indicies */
-        uint32_t program[4];    /*< Program ROM indicies */
+        uint32_t character[8];                                                                              /*< Character ROM indicies */
+        uint32_t program[4];                                                                                /*< Program ROM indicies */
     } rom;
 } nesl_mapper_t;
 
