@@ -41,7 +41,7 @@ typedef union {
         uint8_t interrupt_disable : 1;      /*< Interrupt disable flag */
         uint8_t decimal : 1;                /*< Decimal flag */
         uint8_t breakpoint : 1;             /*< Breakpoint flag */
-        uint8_t unused : 1;                 /*< Unused */
+        uint8_t unused : 1;                 /*< Unused flag */
         uint8_t overflow : 1;               /*< Overflow flag */
         uint8_t negative : 1;               /*< Negative flag */
     };

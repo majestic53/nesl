@@ -41,7 +41,7 @@ typedef union {
         uint16_t nametable_x : 1;                   /*< Nametable x-coordinate */
         uint16_t nametable_y : 1;                   /*< Nametable y-coordinate */
         uint16_t fine_y : 3;                        /*< Fine y-coordinate */
-        uint16_t unused : 1;                        /*< Unused */
+        uint16_t unused : 1;                        /*< Unused bit */
     };
 
     struct {
@@ -75,7 +75,7 @@ typedef union {
 
             struct {
                 uint8_t palette : 2;                /*< Palette [0-3]+4 */
-                uint8_t unused : 3;                 /*< Unused */
+                uint8_t unused : 3;                 /*< Unused bits */
                 uint8_t priority : 1;               /*< Priority above background */
                 uint8_t flip_horizontal: 1;         /*< Flip horizontally */
                 uint8_t flip_vertical: 1;           /*< Flip vertically */
@@ -98,7 +98,7 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t unused : 5;                         /*< Unused */
+        uint8_t unused : 5;                         /*< Unused bits */
         uint8_t sprite_overflow : 1;                /*< Sprite overflow flag */
         uint8_t sprite_0_hit : 1;                   /*< Sprite zero-hit flag */
         uint8_t vertical_blank : 1;                 /*< Vertical blank flag */
@@ -150,7 +150,7 @@ typedef struct {
                 uint8_t sprite_pattern : 1;         /*< Sprite pattern */
                 uint8_t background_pattern : 1;     /*< Background pattern */
                 uint8_t sprite_size : 1;            /*< Sprite size */
-                uint8_t unused : 1;                 /*< Unused */
+                uint8_t unused : 1;                 /*< Unused bit */
                 uint8_t interrupt : 1;              /*< Interrupt enable flag */
             };
 

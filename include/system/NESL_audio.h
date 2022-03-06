@@ -142,7 +142,7 @@ typedef union {
 typedef union {
 
     struct {
-        uint8_t unused : 6;                             /*< Unused */
+        uint8_t unused : 6;                             /*< Unused bits */
         uint8_t interrupt_disable : 1;                  /*< Interrupt disable flag */
         uint8_t mode : 1;                               /*< 4/5-step mode */
     };
@@ -162,7 +162,7 @@ typedef union {
         uint8_t triangle : 1;                           /*< Triangle-wave flag */
         uint8_t noise : 1;                              /*< Noise-wave flag */
         uint8_t dmc : 1;                                /*< DMC flag */
-        uint8_t unused : 1;                             /*< Unused */
+        uint8_t unused : 1;                             /*< Unused flag */
         uint8_t frame_interrupt : 1;                    /*< Flag interrupt flag */
         uint8_t dmc_interrupt : 1;                      /*< DMC interrupt flag */
     };

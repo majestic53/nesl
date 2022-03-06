@@ -247,7 +247,7 @@ typedef union {
 
     struct {
         uint8_t bit_0 : 1;          /*< Bit-0 */
-        uint8_t unused : 5;         /*< Unused */
+        uint8_t unused : 5;         /*< Unused bit */
         uint8_t bit_6 : 1;          /*< Bit-6 */
         uint8_t bit_7 : 1;          /*< Bit-7 */
     };
