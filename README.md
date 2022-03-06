@@ -138,7 +138,7 @@ The following keybindings are available:
 |Left   |A           |N/A         |
 |Right  |D           |N/A         |
 
-### Mapper Support
+### Mapper support
 
 The following mappers are supported:
 

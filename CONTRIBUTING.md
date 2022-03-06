@@ -4,68 +4,6 @@
 
 See the build steps in the readme [here](https://github.com/majestic53/nesl/blob/master/README.md#building-from-source).
 
-## Project Architecture
-
-This project is built around a common bus, allowing the various subsystems to communicate with each other:
-
-![Architecture](https://github.com/majestic53/nesl/blob/master/docs/arch.png "Architecture")
-
-### Adding new files
-
-* All subsystems should conform to the model above, and avoid calling each other directly. Instead, they should communicate through the common bus.
-* Any subsystem specific source files should be placed into a subdirectory, under [`src/system`](https://github.com/majestic53/nesl/tree/master/src/system).
-
-### File layout
-
-|Directory                                                                              |Description                          |
-|:--------------------------------------------------------------------------------------|:------------------------------------|
-|[`src/common`](https://github.com/majestic53/nesl/tree/master/src/common)              |Common source files                  |
-|[`src/service`](https://github.com/majestic53/nesl/tree/master/src/service)            |Service source files (SDL by default)|
-|[`src/system`](https://github.com/majestic53/nesl/tree/master/src/system)              |Subsystem source files               |
-|[`src/system/audio`](https://github.com/majestic53/nesl/tree/master/src/system/audio)  |Audio-specific source files          |
-|[`src/system/mapper`](https://github.com/majestic53/nesl/tree/master/src/system/mapper)|Mapper-specific source files         |
-
-### Coding style
-
-Code should be in the format:
-
-```c
-typedef struct {
-    int val_0;
-    int val_1;
-    ...
-} nesl_xxx_t;
-
-...
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-...
-
-int NESL_XxxYyy(nesl_xxx_t *arg_0, int arg_1, ...)
-{
-    int result = NESL_SUCCESS;
-
-    if(arg_0 == NULL) {
-        result = NESL_FAILURE;
-        goto exit;
-    }
-
-    ...
-
-exit:
-    return result;
-}
-
-...
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-```
-
 ## Places to Contribute
 
 ### Bug-fixes in existing code
