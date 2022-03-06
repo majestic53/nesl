@@ -51,10 +51,13 @@ typedef struct {
     uint32_t tick;                      /*< Tick since last redraw */
     bool fullscreen;                    /*< Fullscreen state */
     nesl_color_t pixel[240][256];       /*< Pixel buffer */
-    SDL_AudioDeviceID audio;            /*< Open audio device id */
-    SDL_Renderer *renderer;             /*< Renderer handle */
-    SDL_Texture *texture;               /*< Texture handle */
-    SDL_Window *window;                 /*< Window handle */
+
+    struct {
+        SDL_AudioDeviceID audio;        /*< Audio handle */
+        SDL_Renderer *renderer;         /*< Renderer handle */
+        SDL_Texture *texture;           /*< Texture handle */
+        SDL_Window *window;             /*< Window handle */
+    } handle;
 } nesl_service_t;
 
 static nesl_service_t g_service = {};   /*< Service context */
@@ -66,10 +69,10 @@ extern "C" {
 static void NESL_ServiceCloseAudio(void)
 {
 
-    if(g_service.audio) {
-        SDL_PauseAudioDevice(g_service.audio, 1);
-        SDL_CloseAudioDevice(g_service.audio);
-        g_service.audio = 0;
+    if(g_service.handle.audio) {
+        SDL_PauseAudioDevice(g_service.handle.audio, 1);
+        SDL_CloseAudioDevice(g_service.handle.audio);
+        g_service.handle.audio = 0;
     }
 }
 
@@ -90,7 +93,7 @@ static nesl_error_e NESL_ServiceSetFullscreen(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(SDL_SetWindowFullscreen(g_service.window, !g_service.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0)) {
+    if(SDL_SetWindowFullscreen(g_service.handle.window, !g_service.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -132,22 +135,22 @@ nesl_error_e NESL_ServiceInit(const char *title, int fullscreen, int linear, int
         goto exit;
     }
 
-    if(!(g_service.window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256 * scale, 240 * scale, SDL_WINDOW_RESIZABLE))) {
+    if(!(g_service.handle.window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256 * scale, 240 * scale, SDL_WINDOW_RESIZABLE))) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
 
-    if(!(g_service.renderer = SDL_CreateRenderer(g_service.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))) {
+    if(!(g_service.handle.renderer = SDL_CreateRenderer(g_service.handle.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
 
-    if(SDL_RenderSetLogicalSize(g_service.renderer, 256, 240)) {
+    if(SDL_RenderSetLogicalSize(g_service.handle.renderer, 256, 240)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
 
-    if(SDL_SetRenderDrawColor(g_service.renderer, 0, 0, 0, 0)) {
+    if(SDL_SetRenderDrawColor(g_service.handle.renderer, 0, 0, 0, 0)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -162,7 +165,7 @@ nesl_error_e NESL_ServiceInit(const char *title, int fullscreen, int linear, int
         goto exit;
     }
 
-    if(!(g_service.texture = SDL_CreateTexture(g_service.renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 256, 240))) {
+    if(!(g_service.handle.texture = SDL_CreateTexture(g_service.handle.renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 256, 240))) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -229,17 +232,17 @@ nesl_error_e NESL_ServiceRedraw(void)
     uint32_t elapsed;
     nesl_error_e result = NESL_SUCCESS;
 
-    if(SDL_UpdateTexture(g_service.texture, NULL, (uint32_t *)g_service.pixel, 256 * sizeof(uint32_t))) {
+    if(SDL_UpdateTexture(g_service.handle.texture, NULL, (uint32_t *)g_service.pixel, 256 * sizeof(uint32_t))) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
 
-    if(SDL_RenderClear(g_service.renderer)) {
+    if(SDL_RenderClear(g_service.handle.renderer)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
 
-    if(SDL_RenderCopy(g_service.renderer, g_service.texture, NULL, NULL)) {
+    if(SDL_RenderCopy(g_service.handle.renderer, g_service.handle.texture, NULL, NULL)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -248,7 +251,7 @@ nesl_error_e NESL_ServiceRedraw(void)
         SDL_Delay((1000 / (float)60) - elapsed);
     }
 
-    SDL_RenderPresent(g_service.renderer);
+    SDL_RenderPresent(g_service.handle.renderer);
     g_service.tick = SDL_GetTicks();
 
 exit:
@@ -283,12 +286,12 @@ nesl_error_e NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
     desired.userdata = context;
     NESL_ServiceCloseAudio();
 
-    if((g_service.audio = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, 0)) <= 0) {
+    if((g_service.handle.audio = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, 0)) <= 0) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
 
-    SDL_PauseAudioDevice(g_service.audio, 0);
+    SDL_PauseAudioDevice(g_service.handle.audio, 0);
 
 exit:
     return result;
@@ -326,16 +329,16 @@ void NESL_ServiceUninit(void)
 {
     NESL_ServiceCloseAudio();
 
-    if(g_service.texture) {
-        SDL_DestroyTexture(g_service.texture);
+    if(g_service.handle.texture) {
+        SDL_DestroyTexture(g_service.handle.texture);
     }
 
-    if(g_service.renderer) {
-        SDL_DestroyRenderer(g_service.renderer);
+    if(g_service.handle.renderer) {
+        SDL_DestroyRenderer(g_service.handle.renderer);
     }
 
-    if(g_service.window) {
-        SDL_DestroyWindow(g_service.window);
+    if(g_service.handle.window) {
+        SDL_DestroyWindow(g_service.handle.window);
     }
 
     SDL_Quit();

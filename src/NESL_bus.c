@@ -36,15 +36,18 @@
  * @brief Bus and subsystem contexts.
  */
 typedef struct {
-    uint64_t cycle;             /*< Cycle-count since start of emulation */
-    nesl_audio_t audio;         /*< Audio subsystem context */
-    nesl_input_t input;         /*< Input subsystem context */
-    nesl_mapper_t mapper;       /*< Mapper subsystem context */
-    nesl_processor_t processor; /*< Processor subsystem context */
-    nesl_video_t video;         /*< Video subsystem context */
+    uint64_t cycle;                 /*< Cycle-count since start of emulation */
+
+    struct {
+        nesl_audio_t audio;         /*< Audio subsystem context */
+        nesl_input_t input;         /*< Input subsystem context */
+        nesl_mapper_t mapper;       /*< Mapper subsystem context */
+        nesl_processor_t processor; /*< Processor subsystem context */
+        nesl_video_t video;         /*< Video subsystem context */
+    } subsystem;
 } nesl_bus_t;
 
-static nesl_bus_t g_bus = {};   /*< Bus context */
+static nesl_bus_t g_bus = {};       /*< Bus context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,23 +61,23 @@ static nesl_error_e NESL_BusReset(void)
         goto exit;
     }
 
-    if((result = NESL_MapperReset(&g_bus.mapper)) == NESL_FAILURE) {
+    if((result = NESL_MapperReset(&g_bus.subsystem.mapper)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_AudioReset(&g_bus.audio)) == NESL_FAILURE) {
+    if((result = NESL_AudioReset(&g_bus.subsystem.audio)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_InputReset(&g_bus.input)) == NESL_FAILURE) {
+    if((result = NESL_InputReset(&g_bus.subsystem.input)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_ProcessorReset(&g_bus.processor)) == NESL_FAILURE) {
+    if((result = NESL_ProcessorReset(&g_bus.subsystem.processor)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_VideoReset(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
+    if((result = NESL_VideoReset(&g_bus.subsystem.video, &g_bus.subsystem.mapper.mirror)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -86,34 +89,34 @@ exit:
 
 bool NESL_BusCycle(void)
 {
-    NESL_ProcessorCycle(&g_bus.processor, g_bus.cycle);
-    NESL_AudioCycle(&g_bus.audio, g_bus.cycle);
+    NESL_ProcessorCycle(&g_bus.subsystem.processor, g_bus.cycle);
+    NESL_AudioCycle(&g_bus.subsystem.audio, g_bus.cycle);
     ++g_bus.cycle;
 
-    return NESL_VideoCycle(&g_bus.video);
+    return NESL_VideoCycle(&g_bus.subsystem.video);
 }
 
 nesl_error_e NESL_BusInit(const void *data, int length)
 {
     nesl_error_e result;
 
-    if((result = NESL_MapperInit(&g_bus.mapper, data, length)) == NESL_FAILURE) {
+    if((result = NESL_MapperInit(&g_bus.subsystem.mapper, data, length)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_AudioInit(&g_bus.audio)) == NESL_FAILURE) {
+    if((result = NESL_AudioInit(&g_bus.subsystem.audio)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_InputInit(&g_bus.input)) == NESL_FAILURE) {
+    if((result = NESL_InputInit(&g_bus.subsystem.input)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_ProcessorInit(&g_bus.processor)) == NESL_FAILURE) {
+    if((result = NESL_ProcessorInit(&g_bus.subsystem.processor)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_VideoInit(&g_bus.video, &g_bus.mapper.mirror)) == NESL_FAILURE) {
+    if((result = NESL_VideoInit(&g_bus.subsystem.video, &g_bus.subsystem.mapper.mirror)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -129,7 +132,7 @@ nesl_error_e NESL_BusInterrupt(nesl_interrupt_e type)
         case NESL_INTERRUPT_MASKABLE:
         case NESL_INTERRUPT_NON_MASKABLE:
 
-            if((result = NESL_ProcessorInterrupt(&g_bus.processor, type == NESL_INTERRUPT_MASKABLE)) == NESL_FAILURE) {
+            if((result = NESL_ProcessorInterrupt(&g_bus.subsystem.processor, type == NESL_INTERRUPT_MASKABLE)) == NESL_FAILURE) {
                 goto exit;
             }
             break;
@@ -141,7 +144,7 @@ nesl_error_e NESL_BusInterrupt(nesl_interrupt_e type)
             break;
         case NESL_INTERRUPT_MAPPER:
 
-            if((result = NESL_MapperInterrupt(&g_bus.mapper)) == NESL_FAILURE) {
+            if((result = NESL_MapperInterrupt(&g_bus.subsystem.mapper)) == NESL_FAILURE) {
                 goto exit;
             }
             break;
@@ -162,22 +165,22 @@ uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    result = NESL_ProcessorRead(&g_bus.processor, address);
+                    result = NESL_ProcessorRead(&g_bus.subsystem.processor, address);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    result = NESL_VideoReadPort(&g_bus.video, address);
+                    result = NESL_VideoReadPort(&g_bus.subsystem.video, address);
                     break;
                 case 0x4015:
-                    result = NESL_AudioRead(&g_bus.audio, address);
+                    result = NESL_AudioRead(&g_bus.subsystem.audio, address);
                     break;
                 case 0x4016 ... 0x4017:
-                    result = NESL_InputRead(&g_bus.input, address);
+                    result = NESL_InputRead(&g_bus.subsystem.input, address);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_PROGRAM_RAM, address);
+                    result = NESL_MapperRead(&g_bus.subsystem.mapper, NESL_BANK_PROGRAM_RAM, address);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_PROGRAM_ROM, address);
+                    result = NESL_MapperRead(&g_bus.subsystem.mapper, NESL_BANK_PROGRAM_ROM, address);
                     break;
                 default:
                     break;
@@ -187,10 +190,10 @@ uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    result = NESL_MapperRead(&g_bus.mapper, NESL_BANK_CHARACTER_ROM, address);
+                    result = NESL_MapperRead(&g_bus.subsystem.mapper, NESL_BANK_CHARACTER_ROM, address);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    result = NESL_VideoRead(&g_bus.video, address);
+                    result = NESL_VideoRead(&g_bus.subsystem.video, address);
                     break;
                 default:
                     break;
@@ -200,7 +203,7 @@ uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 
             switch(address) {
                 case 0x0000 ... 0x00FF:
-                    result = NESL_VideoReadOam(&g_bus.video, address);
+                    result = NESL_VideoReadOam(&g_bus.subsystem.video, address);
                     break;
                 default:
                     break;
@@ -215,11 +218,11 @@ uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 
 void NESL_BusUninit(void)
 {
-    NESL_VideoUninit(&g_bus.video);
-    NESL_ProcessorUninit(&g_bus.processor);
-    NESL_InputUninit(&g_bus.input);
-    NESL_AudioUninit(&g_bus.audio);
-    NESL_MapperUninit(&g_bus.mapper);
+    NESL_VideoUninit(&g_bus.subsystem.video);
+    NESL_ProcessorUninit(&g_bus.subsystem.processor);
+    NESL_InputUninit(&g_bus.subsystem.input);
+    NESL_AudioUninit(&g_bus.subsystem.audio);
+    NESL_MapperUninit(&g_bus.subsystem.mapper);
     memset(&g_bus, 0, sizeof(g_bus));
 }
 
@@ -232,24 +235,24 @@ void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
             switch(address) {
                 case 0x0000 ... 0x1FFF:
                 case 0x4014:
-                    NESL_ProcessorWrite(&g_bus.processor, address, data);
+                    NESL_ProcessorWrite(&g_bus.subsystem.processor, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    NESL_VideoWritePort(&g_bus.video, address, data);
+                    NESL_VideoWritePort(&g_bus.subsystem.video, address, data);
                     break;
                 case 0x4000 ... 0x4013:
                 case 0x4015:
                 case 0x4017:
-                    NESL_AudioWrite(&g_bus.audio, address, data);
+                    NESL_AudioWrite(&g_bus.subsystem.audio, address, data);
                     break;
                 case 0x4016:
-                    NESL_InputWrite(&g_bus.input, address, data);
+                    NESL_InputWrite(&g_bus.subsystem.input, address, data);
                     break;
                 case 0x6000 ... 0x7FFF:
-                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_PROGRAM_RAM, address, data);
+                    NESL_MapperWrite(&g_bus.subsystem.mapper, NESL_BANK_PROGRAM_RAM, address, data);
                     break;
                 case 0x8000 ... 0xFFFF:
-                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_PROGRAM_ROM, address, data);
+                    NESL_MapperWrite(&g_bus.subsystem.mapper, NESL_BANK_PROGRAM_ROM, address, data);
                     break;
                 default:
                     break;
@@ -259,10 +262,10 @@ void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x1FFF:
-                    NESL_MapperWrite(&g_bus.mapper, NESL_BANK_CHARACTER_ROM, address, data);
+                    NESL_MapperWrite(&g_bus.subsystem.mapper, NESL_BANK_CHARACTER_ROM, address, data);
                     break;
                 case 0x2000 ... 0x3FFF:
-                    NESL_VideoWrite(&g_bus.video, address, data);
+                    NESL_VideoWrite(&g_bus.subsystem.video, address, data);
                     break;
                 default:
                     break;
@@ -272,7 +275,7 @@ void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
 
             switch(address) {
                 case 0x0000 ... 0x00FF:
-                    NESL_VideoWriteOam(&g_bus.video, address, data);
+                    NESL_VideoWriteOam(&g_bus.subsystem.video, address, data);
                     break;
                 default:
                     break;

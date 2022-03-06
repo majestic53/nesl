@@ -34,21 +34,6 @@
 #include "../NESL_bus.h"
 
 /**
- * @union nesl_audio_frame_t
- * @brief Audio frame register.
- */
-typedef union {
-
-    struct {
-        uint8_t unused : 6;                             /*< Unused bits */
-        uint8_t interrupt_disable : 1;                  /*< Interrupt disable flag */
-        uint8_t mode : 1;                               /*< 4/5-step mode */
-    };
-
-    uint8_t raw;                                        /*< Raw byte */
-} nesl_audio_frame_t;
-
-/**
  * @union nesl_audio_status_t
  * @brief Audio status register.
  */
@@ -74,8 +59,18 @@ typedef union {
  */
 typedef struct {
     nesl_audio_buffer_t buffer;                         /*< Audio buffer context */
-    nesl_audio_frame_t frame;                           /*< Frame register */
     nesl_audio_status_t status;                         /*< Status register */
+
+    union {
+
+        struct {
+            uint8_t unused : 6;                         /*< Unused bits */
+            uint8_t interrupt_disable : 1;              /*< Interrupt disable flag */
+            uint8_t mode : 1;                           /*< 4/5-step mode */
+        };
+
+        uint8_t raw;                                    /*< Raw byte */
+    } frame;
 
     struct {
         nesl_audio_square_t square[NESL_CHANNEL_MAX];   /*< Square-wave synthesizer contexts */

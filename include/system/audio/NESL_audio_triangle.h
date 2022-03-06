@@ -30,47 +30,38 @@
 #include "./NESL_audio_buffer.h"
 
 /**
- * @union nesl_audio_triangle_control_t
- * @brief Audio triangle-wave synthesizer control register.
- */
-typedef union {
-
-    struct {
-        uint8_t counter : 7;                        /*< Counter */
-        uint8_t control : 1;                        /*< Control flag */
-    };
-
-    uint8_t raw;                                    /*< Raw byte */
-} nesl_audio_triangle_control_t;
-
-/**
- * @union nesl_audio_triangle_length_t
- * @brief Audio triangle-wave synthesizer length register.
- */
-typedef union {
-
-    struct {
-        uint8_t period_high : 3;                    /*< High period */
-        uint8_t counter : 5;                        /*< Counter */
-    };
-
-    uint8_t raw;                                    /*< Raw byte */
-} nesl_audio_triangle_length_t;
-
-/**
  * @struct nesl_audio_triangle_t
  * @brief Audio triangle-wave synthesizer context.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer;                     /*< Audio buffer context */
+    nesl_audio_buffer_t buffer;                 /*< Audio buffer context */
 
     union {
 
         struct {
-            nesl_audio_triangle_control_t control;  /*< Control register */
-            uint8_t unused;                         /*< Unused register */
-            uint8_t period_low;                     /*< Low period register */
-            nesl_audio_triangle_control_t length;   /*< Length register */
+
+            union {
+
+                struct {
+                    uint8_t counter : 7;        /*< Counter */
+                    uint8_t control : 1;        /*< Control flag */
+                };
+
+                uint8_t raw;                    /*< Raw byte */
+            } control;
+
+            uint8_t unused;                     /*< Unused register */
+            uint8_t period_low;                 /*< Low period register */
+
+            union {
+
+                struct {
+                    uint8_t period_high : 3;    /*< High period */
+                    uint8_t counter : 5;        /*< Counter */
+                };
+
+                uint8_t raw;                    /*< Raw byte */
+            } length;
         };
 
         uint8_t byte[4];                            /*< Raw bytes */

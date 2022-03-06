@@ -42,30 +42,33 @@ typedef struct {
 
     struct {
         bool reset;                 /*< Reset state */
-    } audio;
-
-    struct {
-        bool reset;                 /*< Reset state */
-    } input;
-
-    struct {
-        bool interrupt;             /*< Interrupt state */
-        bool reset;                 /*< Reset state */
-    } mapper;
-
-    struct {
-        bool interrupt;             /*< Interrupt state */
-        bool interrupt_maskable;    /*< Maskable interrupt state */
-        bool reset;                 /*< Reset state */
-    } processor;
-
-    struct {
-        bool reset;                 /*< Reset state */
     } service;
 
     struct {
-        bool reset;                 /*< Reset state */
-    } video;
+
+        struct {
+            bool reset;                 /*< Reset state */
+        } audio;
+
+        struct {
+            bool reset;                 /*< Reset state */
+        } input;
+
+        struct {
+            bool interrupt;             /*< Interrupt state */
+            bool reset;                 /*< Reset state */
+        } mapper;
+
+        struct {
+            bool interrupt;             /*< Interrupt state */
+            bool interrupt_maskable;    /*< Maskable interrupt state */
+            bool reset;                 /*< Reset state */
+        } processor;
+
+        struct {
+            bool reset;                 /*< Reset state */
+        } video;
+    } subsystem;
 } nesl_test_t;
 
 static nesl_test_t g_test = {};     /*< Test context */
@@ -93,7 +96,7 @@ uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address)
 
 nesl_error_e NESL_AudioReset(nesl_audio_t *audio)
 {
-    g_test.audio.reset = true;
+    g_test.subsystem.audio.reset = true;
 
     return NESL_SUCCESS;
 }
@@ -123,7 +126,7 @@ uint8_t NESL_InputRead(nesl_input_t *input, uint16_t address)
 
 nesl_error_e NESL_InputReset(nesl_input_t *input)
 {
-    g_test.input.reset = true;
+    g_test.subsystem.input.reset = true;
 
     return NESL_SUCCESS;
 }
@@ -146,7 +149,7 @@ nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length
 
 nesl_error_e NESL_MapperInterrupt(nesl_mapper_t *mapper)
 {
-    g_test.mapper.interrupt = true;
+    g_test.subsystem.mapper.interrupt = true;
 
     return NESL_SUCCESS;
 }
@@ -161,7 +164,7 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addres
 
 nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
 {
-    g_test.mapper.reset = true;
+    g_test.subsystem.mapper.reset = true;
 
     return NESL_SUCCESS;
 }
@@ -190,8 +193,8 @@ nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor)
 
 nesl_error_e NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)
 {
-    g_test.processor.interrupt = true;
-    g_test.processor.interrupt_maskable = maskable;
+    g_test.subsystem.processor.interrupt = true;
+    g_test.subsystem.processor.interrupt_maskable = maskable;
 
     return NESL_SUCCESS;
 }
@@ -205,7 +208,7 @@ uint8_t NESL_ProcessorRead(nesl_processor_t *processor, uint16_t address)
 
 nesl_error_e NESL_ProcessorReset(nesl_processor_t *processor)
 {
-    g_test.processor.reset = true;
+    g_test.subsystem.processor.reset = true;
 
     return NESL_SUCCESS;
 }
@@ -261,7 +264,7 @@ uint8_t NESL_VideoReadPort(nesl_video_t *video, uint16_t address)
 
 nesl_error_e NESL_VideoReset(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
-    g_test.video.reset = true;
+    g_test.subsystem.video.reset = true;
 
     return NESL_SUCCESS;
 }
@@ -306,27 +309,27 @@ static nesl_error_e NESL_TestBusInterrupt(void)
             case NESL_INTERRUPT_MASKABLE:
             case NESL_INTERRUPT_NON_MASKABLE:
 
-                if(NESL_ASSERT((g_test.processor.interrupt == true)
-                        && (g_test.processor.interrupt_maskable == (type == NESL_INTERRUPT_MASKABLE)))) {
+                if(NESL_ASSERT((g_test.subsystem.processor.interrupt == true)
+                        && (g_test.subsystem.processor.interrupt_maskable == (type == NESL_INTERRUPT_MASKABLE)))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             case NESL_INTERRUPT_RESET:
 
-                if(NESL_ASSERT((g_test.audio.reset == true)
-                        && (g_test.input.reset == true)
-                        && (g_test.mapper.reset == true)
-                        && (g_test.processor.reset == true)
-                        && (g_test.service.reset == true)
-                        && (g_test.video.reset == true))) {
+                if(NESL_ASSERT((g_test.service.reset == true)
+                        && (g_test.subsystem.audio.reset == true)
+                        && (g_test.subsystem.input.reset == true)
+                        && (g_test.subsystem.mapper.reset == true)
+                        && (g_test.subsystem.processor.reset == true)
+                        && (g_test.subsystem.video.reset == true))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             case NESL_INTERRUPT_MAPPER:
 
-                if(NESL_ASSERT(g_test.mapper.interrupt == true)) {
+                if(NESL_ASSERT(g_test.subsystem.mapper.interrupt == true)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }

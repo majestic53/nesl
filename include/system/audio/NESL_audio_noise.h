@@ -30,66 +30,52 @@
 #include "./NESL_audio_buffer.h"
 
 /**
- * @union nesl_audio_noise_envelope_t
- * @brief Audio noise synthesizer envelope register.
- */
-typedef union {
-
-    struct {
-        uint8_t volume : 4;                         /*< Volume */
-        uint8_t volume_const : 1;                   /*< Constant volume */
-        uint8_t loop : 1;                           /*< Loop flag */
-    };
-
-    uint8_t raw;                                    /*< Raw byte */
-} nesl_audio_noise_envelope_t;
-
-/**
- * @union nesl_audio_noise_length_t
- * @brief Audio noise synthesizer length register.
- */
-typedef union {
-
-    struct {
-        uint8_t unused : 3;                         /*< Unused bits */
-        uint8_t index : 5;                          /*< Index */
-    };
-
-    uint8_t raw;                                    /*< Raw byte */
-} nesl_audio_noise_length_t;
-
-/**
- * @union nesl_audio_noise_period_t
- * @brief Audio noise synthesizer period register.
- */
-typedef union {
-
-    struct {
-        uint8_t index : 4;                          /*< Index */
-        uint8_t unused : 3;                         /*< Unused bits */
-        uint8_t loop : 1;                           /*< Loop flag */
-    };
-
-    uint8_t raw;                                    /*< Raw byte */
-} nesl_audio_noise_period_t;
-
-/**
  * @struct nesl_audio_noise_t
  * @brief Audio noise synthesizer context.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer;                     /*< Audio buffer context */
+    nesl_audio_buffer_t buffer;                 /*< Audio buffer context */
 
     union {
 
         struct {
-            nesl_audio_noise_envelope_t envelope;   /*< Envelope register */
-            uint8_t unused;                         /*< Unused register */
-            nesl_audio_noise_period_t period;       /*< Period register */
-            nesl_audio_noise_length_t length;       /*< Length register */
+
+            union {
+
+                struct {
+                    uint8_t volume : 4;         /*< Volume */
+                    uint8_t volume_const : 1;   /*< Constant volume */
+                    uint8_t loop : 1;           /*< Loop flag */
+                };
+
+                uint8_t raw;                    /*< Raw byte */
+            } envelope;
+
+            uint8_t unused;                     /*< Unused register */
+
+            union {
+
+                struct {
+                    uint8_t index : 4;          /*< Index */
+                    uint8_t unused : 3;         /*< Unused bits */
+                    uint8_t loop : 1;           /*< Loop flag */
+                };
+
+                uint8_t raw;                    /*< Raw byte */
+            } period;
+
+            union {
+
+                struct {
+                    uint8_t unused : 3;         /*< Unused bits */
+                    uint8_t index : 5;          /*< Index */
+                };
+
+                uint8_t raw;                    /*< Raw byte */
+            } length;
         };
 
-        uint8_t byte[4];                            /*< Raw bytes */
+        uint8_t byte[4];                        /*< Raw bytes */
     } state;
 } nesl_audio_noise_t;
 

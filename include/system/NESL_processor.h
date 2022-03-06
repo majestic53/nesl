@@ -54,8 +54,8 @@ typedef union {
  * @brief Processor subsystem context.
  */
 typedef struct {
-    uint8_t ram[2 * 1024];                  /*< Program RAM buffer */
     uint8_t cycle;                          /*< Remaining cycles */
+    uint8_t ram[2 * 1024];                  /*< Program RAM buffer */
 
     union {
 

@@ -30,51 +30,42 @@
 #include "./NESL_audio_buffer.h"
 
 /**
- * @union nesl_audio_dmc_control_t
- * @brief Audio DMC synthesizer control register.
- */
-typedef union {
-
-    struct {
-        uint8_t index : 4;                      /*< Index */
-        uint8_t unused : 2;                     /*< Unused bits */
-        uint8_t loop : 1;                       /*< Loop flag */
-        uint8_t interrupt_enable : 1;           /*< Interrupt enable flag */
-    };
-
-    uint8_t raw;                                /*< Raw byte */
-} nesl_audio_dmc_control_t;
-
-/**
- * @union nesl_audio_dmc_load_t
- * @brief Audio DMC synthesizer load register.
- */
-typedef union {
-
-    struct {
-        uint8_t counter : 7;                    /*< Counter */
-    };
-
-    uint8_t raw;                                /*< Raw byte */
-} nesl_audio_dmc_load_t;
-
-/**
  * @struct nesl_audio_dmc_t
  * @brief Audio DMC synthesizer context.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer;                 /*< Audio buffer context */
+    nesl_audio_buffer_t buffer;                     /*< Audio buffer context */
 
     union {
 
         struct {
-            nesl_audio_dmc_control_t control;   /*< Control register */
-            nesl_audio_dmc_load_t load;         /*< Load register */
-            uint8_t address;                    /*< Address register */
-            uint8_t length;                     /*< Length register */
+
+            union {
+
+                struct {
+                    uint8_t index : 4;              /*< Index */
+                    uint8_t unused : 2;             /*< Unused bits */
+                    uint8_t loop : 1;               /*< Loop flag */
+                    uint8_t interrupt_enable : 1;   /*< Interrupt enable flag */
+                };
+
+                uint8_t raw;                        /*< Raw byte */
+            } control;
+
+            union {
+
+                struct {
+                    uint8_t counter : 7;            /*< Counter */
+                };
+
+                uint8_t raw;                        /*< Raw byte */
+            } load;
+
+            uint8_t address;                        /*< Address register */
+            uint8_t length;                         /*< Length register */
         };
 
-        uint8_t byte[4];                        /*< Raw bytes */
+        uint8_t byte[4];                            /*< Raw bytes */
     } state;
 } nesl_audio_dmc_t;
 
