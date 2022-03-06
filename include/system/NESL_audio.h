@@ -27,113 +27,11 @@
 #ifndef NESL_AUDIO_H_
 #define NESL_AUDIO_H_
 
+#include "./audio/NESL_audio_dmc.h"
+#include "./audio/NESL_audio_noise.h"
 #include "./audio/NESL_audio_square.h"
+#include "./audio/NESL_audio_triangle.h"
 #include "../NESL_bus.h"
-
-/*typedef union {
-
-    struct {
-
-        union {
-
-            struct {
-                uint8_t index : 4;
-                uint8_t unused : 2;
-                uint8_t loop : 1;
-                uint8_t interrupt_enable : 1;
-            };
-
-            uint8_t raw;
-        } control;
-
-        union {
-
-            struct {
-                uint8_t counter : 7;
-            };
-
-            uint8_t raw;
-        } load;
-
-        uint8_t address;
-        uint8_t length;
-    };
-
-    uint8_t byte[4];
-} nesl_audio_dmc_t;
-
-typedef union {
-
-    struct {
-
-        union {
-
-            struct {
-                uint8_t volume : 4;
-                uint8_t volume_const : 1;
-                uint8_t loop : 1;
-            };
-
-            uint8_t raw;
-        } envelope;
-
-        uint8_t unused;
-
-        union {
-
-            struct {
-                uint8_t index : 4;
-                uint8_t unused : 3;
-                uint8_t loop : 1;
-            };
-
-            uint8_t raw;
-        } period;
-
-        union {
-
-            struct {
-                uint8_t unused : 3;
-                uint8_t index : 5;
-            };
-
-            uint8_t raw;
-        } length;
-    };
-
-    uint8_t byte[4];
-} nesl_audio_noise_t;
-
-typedef union {
-
-    struct {
-
-        union {
-
-            struct {
-                uint8_t counter : 7;
-                uint8_t control : 1;
-            };
-
-            uint8_t raw;
-        } control;
-
-        uint8_t unused;
-        uint8_t period_low;
-
-        union {
-
-            struct {
-                uint8_t period_high : 3;
-                uint8_t counter : 5;
-            };
-
-            uint8_t raw;
-        } length;
-    };
-
-    uint8_t byte[4];
-} nesl_audio_triangle_t;*/
 
 /**
  * @union nesl_audio_frame_t
@@ -181,9 +79,9 @@ typedef struct {
 
     struct {
         nesl_audio_square_t square[NESL_CHANNEL_MAX];   /*< Square-wave synthesizer contexts */
-        /*nesl_audio_triangle_t triangle;
-        nesl_audio_noise_t noise;
-        nesl_audio_dmc_t dmc;*/
+        nesl_audio_triangle_t triangle;                 /*< Triangle synthesizer context */
+        nesl_audio_noise_t noise;                       /*< Noise synthesizer context */
+        nesl_audio_dmc_t dmc;                           /*< DMC synthesizer contexts */
     } synthesizer;
 } nesl_audio_t;
 

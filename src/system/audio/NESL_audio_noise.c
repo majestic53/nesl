@@ -20,26 +20,26 @@
  */
 
 /**
- * @file NESL_audio_square.c
- * @brief Audio square-wave synthesizer.
+ * @file NESL_audio_noise.c
+ * @brief Audio noise synthesizer.
  */
 
-#include "../../../include/system/audio/NESL_audio_square.h"
+#include "../../../include/system/audio/NESL_audio_noise.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-void NESL_AudioSquareCycle(nesl_audio_square_t *square)
+void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise)
 {
     /* TODO: CYCLE SYNTHESIZER */
 }
 
-nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioNoiseInit(nesl_audio_noise_t *noise)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&square->buffer, 256)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInit(&noise->buffer, 256)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -47,57 +47,57 @@ exit:
     return result;
 }
 
-int NESL_AudioSquareRead(nesl_audio_square_t *square, float *data, int length)
+int NESL_AudioNoiseRead(nesl_audio_noise_t *noise, float *data, int length)
 {
-    return NESL_AudioBufferRead(&square->buffer, data, length);
+    return NESL_AudioBufferRead(&noise->buffer, data, length);
 }
 
-int NESL_AudioSquareReadable(nesl_audio_square_t *square)
+int NESL_AudioNoiseReadable(nesl_audio_noise_t *noise)
 {
-    return NESL_AudioBufferReadable(&square->buffer);
+    return NESL_AudioBufferReadable(&noise->buffer);
 }
 
-nesl_error_e NESL_AudioSquareReset(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioNoiseReset(nesl_audio_noise_t *noise)
 {
     int result;
 
-    if((result = NESL_AudioBufferReset(&square->buffer)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferReset(&noise->buffer)) == NESL_FAILURE) {
         goto exit;
     }
 
-    memset(&square->state, 0, sizeof(square->state));
+    memset(&noise->state, 0, sizeof(noise->state));
 
 exit:
     return result;
 }
 
-void NESL_AudioSquareUninit(nesl_audio_square_t *square)
+void NESL_AudioNoiseUninit(nesl_audio_noise_t *noise)
 {
-    NESL_AudioBufferUninit(&square->buffer);
-    memset(square, 0, sizeof(*square));
+    NESL_AudioBufferUninit(&noise->buffer);
+    memset(noise, 0, sizeof(*noise));
 }
 
-void NESL_AudioSquareWrite(nesl_audio_square_t *square, uint16_t address, uint8_t data)
+void NESL_AudioNoiseWrite(nesl_audio_noise_t *noise, uint16_t address, uint8_t data)
 {
-    square->state.byte[address - 0x4000] = data;
+    noise->state.byte[address - 0x400C] = data;
 
     switch(address) {
-        case 0x4000:
+        case 0x400C:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
             break;
-        case 0x4001:
+        case 0x400D:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
             break;
-        case 0x4002:
+        case 0x400E:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
             break;
-        case 0x4003:
+        case 0x400F:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 

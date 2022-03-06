@@ -20,26 +20,26 @@
  */
 
 /**
- * @file NESL_audio_square.c
- * @brief Audio square-wave synthesizer.
+ * @file NESL_audio_triangle.c
+ * @brief Audio triangle-wave synthesizer.
  */
 
-#include "../../../include/system/audio/NESL_audio_square.h"
+#include "../../../include/system/audio/NESL_audio_triangle.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-void NESL_AudioSquareCycle(nesl_audio_square_t *square)
+void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle)
 {
     /* TODO: CYCLE SYNTHESIZER */
 }
 
-nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioTriangleInit(nesl_audio_triangle_t *triangle)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&square->buffer, 256)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInit(&triangle->buffer, 256)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -47,57 +47,57 @@ exit:
     return result;
 }
 
-int NESL_AudioSquareRead(nesl_audio_square_t *square, float *data, int length)
+int NESL_AudioTriangleRead(nesl_audio_triangle_t *triangle, float *data, int length)
 {
-    return NESL_AudioBufferRead(&square->buffer, data, length);
+    return NESL_AudioBufferRead(&triangle->buffer, data, length);
 }
 
-int NESL_AudioSquareReadable(nesl_audio_square_t *square)
+int NESL_AudioTriangleReadable(nesl_audio_triangle_t *triangle)
 {
-    return NESL_AudioBufferReadable(&square->buffer);
+    return NESL_AudioBufferReadable(&triangle->buffer);
 }
 
-nesl_error_e NESL_AudioSquareReset(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioTriangleReset(nesl_audio_triangle_t *triangle)
 {
     int result;
 
-    if((result = NESL_AudioBufferReset(&square->buffer)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferReset(&triangle->buffer)) == NESL_FAILURE) {
         goto exit;
     }
 
-    memset(&square->state, 0, sizeof(square->state));
+    memset(&triangle->state, 0, sizeof(triangle->state));
 
 exit:
     return result;
 }
 
-void NESL_AudioSquareUninit(nesl_audio_square_t *square)
+void NESL_AudioTriangleUninit(nesl_audio_triangle_t *triangle)
 {
-    NESL_AudioBufferUninit(&square->buffer);
-    memset(square, 0, sizeof(*square));
+    NESL_AudioBufferUninit(&triangle->buffer);
+    memset(triangle, 0, sizeof(*triangle));
 }
 
-void NESL_AudioSquareWrite(nesl_audio_square_t *square, uint16_t address, uint8_t data)
+void NESL_AudioTriangleWrite(nesl_audio_triangle_t *triangle, uint16_t address, uint8_t data)
 {
-    square->state.byte[address - 0x4000] = data;
+    triangle->state.byte[address - 0x4008] = data;
 
     switch(address) {
-        case 0x4000:
+        case 0x4008:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
             break;
-        case 0x4001:
+        case 0x4009:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
             break;
-        case 0x4002:
+        case 0x400A:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
             break;
-        case 0x4003:
+        case 0x400B:
 
             /* TODO: PERFORM ANY NEEDED STATE-CHANGE OPERATIONS */
 
