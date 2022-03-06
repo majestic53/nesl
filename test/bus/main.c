@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Test application for bus.
+ */
+
 #include "../../include/system/NESL_audio.h"
 #include "../../include/system/NESL_input.h"
 #include "../../include/system/NESL_mapper.h"
@@ -26,40 +31,44 @@
 #include "../../include/system/NESL_video.h"
 #include "../include/NESL_common.h"
 
+/**
+ * @struct nesl_test_t
+ * @brief Contains the test contexts.
+ */
 typedef struct {
-    int type;
-    uint16_t address;
-    uint8_t data;
+    nesl_bank_e type;   /*< Bank type */
+    uint16_t address;   /*< Bank address */
+    uint8_t data;       /*< Bank data */
 
     struct {
-        bool reset;
+        bool reset; /*< Reset state */
     } audio;
 
     struct {
-        bool reset;
+        bool reset; /*< Reset state */
     } input;
 
     struct {
-        bool interrupt;
-        bool reset;
+        bool interrupt; /*< Interrupt state */
+        bool reset;     /*< Reset state */
     } mapper;
 
     struct {
-        bool interrupt;
-        bool interrupt_maskable;
-        bool reset;
+        bool interrupt;             /*< Interrupt state */
+        bool interrupt_maskable;    /*< Maskable interrupt state */
+        bool reset;                 /*< Reset state */
     } processor;
 
     struct {
-        bool reset;
+        bool reset; /*< Reset state */
     } service;
 
     struct {
-        bool reset;
+        bool reset; /*< Reset state */
     } video;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,7 +79,7 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
     return;
 }
 
-int NESL_AudioInit(nesl_audio_t *audio)
+nesl_error_e NESL_AudioInit(nesl_audio_t *audio)
 {
     return NESL_SUCCESS;
 }
@@ -82,7 +91,7 @@ uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address)
     return g_test.data;
 }
 
-int NESL_AudioReset(nesl_audio_t *audio)
+nesl_error_e NESL_AudioReset(nesl_audio_t *audio)
 {
     g_test.audio.reset = true;
 
@@ -100,7 +109,7 @@ void NESL_AudioWrite(nesl_audio_t *audio, uint16_t address, uint8_t data)
     g_test.data = data;
 }
 
-int NESL_InputInit(nesl_input_t *input)
+nesl_error_e NESL_InputInit(nesl_input_t *input)
 {
     return NESL_SUCCESS;
 }
@@ -112,7 +121,7 @@ uint8_t NESL_InputRead(nesl_input_t *input, uint16_t address)
     return g_test.data;
 }
 
-int NESL_InputReset(nesl_input_t *input)
+nesl_error_e NESL_InputReset(nesl_input_t *input)
 {
     g_test.input.reset = true;
 
@@ -130,19 +139,19 @@ void NESL_InputWrite(nesl_input_t *input, uint16_t address, uint8_t data)
     g_test.data = data;
 }
 
-int NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
+nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
 {
     return NESL_SUCCESS;
 }
 
-int NESL_MapperInterrupt(nesl_mapper_t *mapper)
+nesl_error_e NESL_MapperInterrupt(nesl_mapper_t *mapper)
 {
     g_test.mapper.interrupt = true;
 
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_MapperRead(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     g_test.type = type;
     g_test.address = address;
@@ -150,7 +159,7 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
     return g_test.data;
 }
 
-int NESL_MapperReset(nesl_mapper_t *mapper)
+nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
 {
     g_test.mapper.reset = true;
 
@@ -162,7 +171,7 @@ void NESL_MapperUninit(nesl_mapper_t *mapper)
     return;
 }
 
-void NESL_MapperWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_MapperWrite(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
     g_test.type = type;
     g_test.address = address;
@@ -174,12 +183,12 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
     return;
 }
 
-int NESL_ProcessorInit(nesl_processor_t *processor)
+nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor)
 {
     return NESL_SUCCESS;
 }
 
-int NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)
+nesl_error_e NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)
 {
     g_test.processor.interrupt = true;
     g_test.processor.interrupt_maskable = maskable;
@@ -194,7 +203,7 @@ uint8_t NESL_ProcessorRead(nesl_processor_t *processor, uint16_t address)
     return g_test.data;
 }
 
-int NESL_ProcessorReset(nesl_processor_t *processor)
+nesl_error_e NESL_ProcessorReset(nesl_processor_t *processor)
 {
     g_test.processor.reset = true;
 
@@ -212,7 +221,7 @@ void NESL_ProcessorWrite(nesl_processor_t *processor, uint16_t address, uint8_t 
     g_test.data = data;
 }
 
-int NESL_ServiceReset(void)
+nesl_error_e NESL_ServiceReset(void)
 {
     g_test.service.reset = true;
 
@@ -224,7 +233,7 @@ bool NESL_VideoCycle(nesl_video_t *video)
     return true;
 }
 
-int NESL_VideoInit(nesl_video_t *video, const int *mirror)
+nesl_error_e NESL_VideoInit(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
     return NESL_SUCCESS;
 }
@@ -250,7 +259,7 @@ uint8_t NESL_VideoReadPort(nesl_video_t *video, uint16_t address)
     return g_test.data;
 }
 
-int NESL_VideoReset(nesl_video_t *video, const int *mirror)
+nesl_error_e NESL_VideoReset(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
     g_test.video.reset = true;
 
@@ -285,11 +294,11 @@ static void NESL_TestInit(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-static int NESL_TestBusInterrupt(void)
+static nesl_error_e NESL_TestBusInterrupt(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
-    for(int type = 0; type < NESL_INTERRUPT_MAX; ++type) {
+    for(nesl_interrupt_e type = 0; type < NESL_INTERRUPT_MAX; ++type) {
         NESL_TestInit();
         NESL_BusInterrupt(type);
 
@@ -333,11 +342,11 @@ exit:
     return result;
 }
 
-static int NESL_TestBusRead(void)
+static nesl_error_e NESL_TestBusRead(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
-    for(int type = 0; type < NESL_BUS_MAX; ++type) {
+    for(nesl_bus_e type = 0; type < NESL_BUS_MAX; ++type) {
         uint8_t data = 0;
 
         switch(type) {
@@ -443,11 +452,11 @@ exit:
     return result;
 }
 
-static int NESL_TestBusWrite(void)
+static nesl_error_e NESL_TestBusWrite(void)
 {
     int result = NESL_SUCCESS;
 
-    for(int type = 0; type < NESL_BUS_MAX; ++type) {
+    for(nesl_bus_e type = 0; type < NESL_BUS_MAX; ++type) {
         uint8_t data = 0;
 
         switch(type) {
@@ -567,7 +576,7 @@ int main(void)
         NESL_TestBusInterrupt, NESL_TestBusRead, NESL_TestBusWrite,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
@@ -576,7 +585,7 @@ int main(void)
         }
     }
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus

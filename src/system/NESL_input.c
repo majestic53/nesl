@@ -19,13 +19,22 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_input.c
+ * @brief Input subsystem.
+ */
+
 #include "../../include/system/NESL_input.h"
 #include "../../include/NESL_service.h"
 
+/**
+ * @struct nesl_strobe_t
+ * @brief Input strobe state.
+ */
 typedef union {
 
     struct {
-        uint8_t state : 1;
+        uint8_t state : 1;  /*< Strobe state */
     };
 
     uint8_t raw;
@@ -35,15 +44,15 @@ typedef union {
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_InputInit(nesl_input_t *input)
+nesl_error_e NESL_InputInit(nesl_input_t *input)
 {
     return NESL_InputReset(input);
 }
 
 uint8_t NESL_InputRead(nesl_input_t *input, uint16_t address)
 {
-    int controller = NESL_CONTROLLER_MAX;
     nesl_strobe_t result = { .raw = 0x41 };
+    nesl_controller_e controller = NESL_CONTROLLER_MAX;
 
     switch(address) {
         case 0x4016:
@@ -66,12 +75,12 @@ uint8_t NESL_InputRead(nesl_input_t *input, uint16_t address)
     return result.raw;
 }
 
-int NESL_InputReset(nesl_input_t *input)
+nesl_error_e NESL_InputReset(nesl_input_t *input)
 {
 
-    for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
+    for(nesl_controller_e controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
-        for(int button = 0; button < NESL_BUTTON_MAX; ++button) {
+        for(nesl_button_e button = 0; button < NESL_BUTTON_MAX; ++button) {
             input->button[controller].state[button] = false;
         }
 
@@ -101,9 +110,9 @@ NESL_InputWrite(nesl_input_t *input, uint16_t address, uint8_t data)
 
                 if(!strobe.state) {
 
-                    for(int controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
+                    for(nesl_controller_e controller = 0; controller < NESL_CONTROLLER_MAX; ++controller) {
 
-                        for(int button = 0; button < NESL_BUTTON_MAX; ++button) {
+                        for(nesl_button_e button = 0; button < NESL_BUTTON_MAX; ++button) {
                             input->button[controller].state[button] = NESL_ServiceGetButton(controller, button);
                         }
 

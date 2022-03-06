@@ -19,20 +19,29 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Test application for audio circular-buffer.
+ */
+
 #include "../../include/system/audio/NESL_audio_buffer.h"
 #include "../include/NESL_common.h"
 
+/**
+ * @struct nesl_test_t
+ * @brief Contains the test contexts.
+ */
 typedef struct {
-    nesl_audio_buffer_t buffer;
+    nesl_audio_buffer_t buffer; /*< Audio buffer context */
 } nesl_test_t;
 
-static nesl_test_t g_test = {};
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
+nesl_error_e NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
 {
     return NESL_FAILURE;
 }
@@ -61,16 +70,16 @@ static void NESL_TestUninit(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-static int NESL_TestInit(int length)
+static nesl_error_e NESL_TestInit(int length)
 {
     NESL_TestUninit();
 
     return NESL_AudioBufferInit(&g_test.buffer, length);
 }
 
-static int NESL_TestAudioBufferInit(void)
+static nesl_error_e NESL_TestAudioBufferInit(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -91,9 +100,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioBufferRead(void)
+static nesl_error_e NESL_TestAudioBufferRead(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
     float buffer[10] = {}, data = 1024.f;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
@@ -169,9 +178,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioBufferReadable(void)
+static nesl_error_e NESL_TestAudioBufferReadable(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -206,9 +215,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioBufferReset(void)
+static nesl_error_e NESL_TestAudioBufferReset(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit(30) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -217,9 +226,9 @@ static int NESL_TestAudioBufferReset(void)
 
     g_test.buffer.read = 10;
     g_test.buffer.write = 20;
-    NESL_AudioBufferReset(&g_test.buffer);
 
-    if(NESL_ASSERT((g_test.buffer.read == 0)
+    if(NESL_ASSERT((NESL_AudioBufferReset(&g_test.buffer) == NESL_SUCCESS)
+            && (g_test.buffer.read == 0)
             && (g_test.buffer.write == 0))) {
         result = NESL_FAILURE;
         goto exit;
@@ -231,9 +240,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioBufferUninit(void)
+static nesl_error_e NESL_TestAudioBufferUninit(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -256,9 +265,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioBufferWrite(void)
+static nesl_error_e NESL_TestAudioBufferWrite(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
     float buffer[10] = {}, data = 1024.f;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
@@ -338,9 +347,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioBufferWritable(void)
+static nesl_error_e NESL_TestAudioBufferWritable(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -382,7 +391,7 @@ int main(void)
         NESL_TestAudioBufferUninit, NESL_TestAudioBufferWrite, NESL_TestAudioBufferWritable,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
@@ -393,7 +402,7 @@ int main(void)
 
     NESL_TestUninit();
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus

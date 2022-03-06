@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Application with a CLI interface, used to launch NESL.
+ */
+
 #include <getopt.h>
 #include <libgen.h>
 #include <stdbool.h>
@@ -27,15 +32,24 @@
 #include <stdlib.h>
 #include "../include/NESL.h"
 
-enum {
-    OPTION_FULLSCREEN = 0,
-    OPTION_HELP,
-    OPTION_LINEAR,
-    OPTION_SCALE,
-    OPTION_VERSION,
+/**
+ * @enum nesl_bank_e
+ * @brief Interface options.
+ */
+typedef enum {
+    OPTION_FULLSCREEN = 0,  /*< Set window fullscreen */
+    OPTION_HELP,            /*< Show help information */
+    OPTION_LINEAR,          /*< Set linear scaling */
+    OPTION_SCALE,           /*< Set window scaling */
+    OPTION_VERSION,         /*< Show version information */
     OPTION_MAX,
-};
+} nesl_option_e;
 
+/**
+ * @brief Color tracing macro.
+ * @param _RESULT_ Error code
+ * @param _FORMAT_ Error string format, followed by some number of arguments
+ */
 #define TRACE(_RESULT_, _FORMAT_, ...) \
     fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "%s" _FORMAT_ "\x1b[0m", \
         ((_RESULT_) != NESL_SUCCESS) ? "\x1b[91m" : "\x1b[0m", __VA_ARGS__)
@@ -44,10 +58,10 @@ enum {
 extern "C" {
 #endif /* __cplusplus */
 
-static int ReadFile(nesl_t *input, char *base, char *path)
+static nesl_error_e ReadFile(nesl_t *input, char *base, char *path)
 {
     FILE *file = NULL;
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(!(file = fopen(path, "rb"))) {
         TRACE(NESL_FAILURE, "%s: File does not exist -- %s\n", base, path);
@@ -129,8 +143,9 @@ static void ShowHelp(FILE *stream, bool verbose)
 
 int main(int argc, char *argv[])
 {
+    int option;
     nesl_t input = {};
-    int option, result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     opterr = 1;
 
@@ -179,7 +194,7 @@ exit:
         input.data = NULL;
     }
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus

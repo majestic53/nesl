@@ -19,32 +19,45 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_sdl.c
+ * @brief SDL implementation of the service interface.
+ */
+
 #include <SDL2/SDL.h>
 #include "../../include/system/NESL_input.h"
 #include "../../include/NESL_service.h"
 
+/**
+ * @union nesl_color_t
+ * @brief Contains pixel color channels.
+ */
 typedef union {
 
     struct {
-        uint8_t blue;
-        uint8_t green;
-        uint8_t red;
+        uint8_t blue;   /*< Blue channel */
+        uint8_t green;  /*< Green channel */
+        uint8_t red;    /*< Red channel */
     };
 
     uint32_t raw;
 } nesl_color_t;
 
+/**
+ * @struct nesl_service_t
+ * @brief Contains the service contexts.
+ */
 typedef struct {
-    uint32_t tick;
-    bool fullscreen;
-    nesl_color_t pixel[240][256];
-    SDL_AudioDeviceID audio;
-    SDL_Renderer *renderer;
-    SDL_Texture *texture;
-    SDL_Window *window;
+    uint32_t tick;                  /*< Tick since last redraw */
+    bool fullscreen;                /*< Fullscreen state */
+    nesl_color_t pixel[240][256];   /*< Pixel buffer */
+    SDL_AudioDeviceID audio;        /*< Open audio device id */
+    SDL_Renderer *renderer;         /*< Renderer handle */
+    SDL_Texture *texture;           /*< Texture handle */
+    SDL_Window *window;             /*< Window handle */
 } nesl_service_t;
 
-static nesl_service_t g_service = {};
+static nesl_service_t g_service = {};   /*< Service context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,7 +73,7 @@ static void NESL_ServiceCloseAudio(void)
     }
 }
 
-static int NESL_ServiceClear(void)
+static nesl_error_e NESL_ServiceClear(void)
 {
 
     for(int y = 0; y < 240; ++y) {
@@ -70,12 +83,12 @@ static int NESL_ServiceClear(void)
         }
     }
 
-    return NESL_ServiceShow();
+    return NESL_ServiceRedraw();
 }
 
-static int NESL_ServiceSetFullscreen(void)
+static nesl_error_e NESL_ServiceSetFullscreen(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(SDL_SetWindowFullscreen(g_service.window, !g_service.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0)) {
         result = NESL_SET_ERROR("%s", SDL_GetError());
@@ -88,7 +101,7 @@ exit:
     return result;
 }
 
-bool NESL_ServiceGetButton(int controller, int button)
+bool NESL_ServiceGetButton(nesl_controller_e controller, nesl_button_e button)
 {
     static uint32_t KEY[NESL_CONTROLLER_MAX][NESL_BUTTON_MAX] = {
         {
@@ -104,9 +117,9 @@ bool NESL_ServiceGetButton(int controller, int button)
     return SDL_GetKeyboardState(NULL)[KEY[controller][button]] ? true : false;
 }
 
-int NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale)
+nesl_error_e NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(scale < 1) {
         scale = 1;
@@ -169,10 +182,10 @@ exit:
     return result;
 }
 
-int NESL_ServicePoll(void)
+nesl_error_e NESL_ServicePoll(void)
 {
     SDL_Event event;
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     while(SDL_PollEvent(&event)) {
 
@@ -211,9 +224,40 @@ exit:
     return result;
 }
 
-int NESL_ServiceReset(void)
+nesl_error_e NESL_ServiceRedraw(void)
 {
-    int result;
+    uint32_t elapsed;
+    nesl_error_e result = NESL_SUCCESS;
+
+    if(SDL_UpdateTexture(g_service.texture, NULL, (uint32_t *)g_service.pixel, 256 * sizeof(uint32_t))) {
+        result = NESL_SET_ERROR("%s", SDL_GetError());
+        goto exit;
+    }
+
+    if(SDL_RenderClear(g_service.renderer)) {
+        result = NESL_SET_ERROR("%s", SDL_GetError());
+        goto exit;
+    }
+
+    if(SDL_RenderCopy(g_service.renderer, g_service.texture, NULL, NULL)) {
+        result = NESL_SET_ERROR("%s", SDL_GetError());
+        goto exit;
+    }
+
+    if((elapsed = (SDL_GetTicks() - g_service.tick)) < (1000 / (float)60)) {
+        SDL_Delay((1000 / (float)60) - elapsed);
+    }
+
+    SDL_RenderPresent(g_service.renderer);
+    g_service.tick = SDL_GetTicks();
+
+exit:
+    return result;
+}
+
+nesl_error_e NESL_ServiceReset(void)
+{
+    nesl_error_e result;
 
     if((result = NESL_ServiceClear()) == NESL_FAILURE) {
         goto exit;
@@ -226,9 +270,9 @@ exit:
     return result;
 }
 
-int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
+nesl_error_e NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
     SDL_AudioSpec desired = {}, obtained = {};
 
     desired.callback = callback;
@@ -276,37 +320,6 @@ void NESL_ServiceSetPixel(uint8_t color, bool red, bool green, bool blue, uint8_
     if(blue) {
         g_service.pixel[y][x].blue = 0xFF;
     }
-}
-
-int NESL_ServiceShow(void)
-{
-    uint32_t elapsed;
-    int result = NESL_SUCCESS;
-
-    if(SDL_UpdateTexture(g_service.texture, NULL, (uint32_t *)g_service.pixel, 256 * sizeof(uint32_t))) {
-        result = NESL_SET_ERROR("%s", SDL_GetError());
-        goto exit;
-    }
-
-    if(SDL_RenderClear(g_service.renderer)) {
-        result = NESL_SET_ERROR("%s", SDL_GetError());
-        goto exit;
-    }
-
-    if(SDL_RenderCopy(g_service.renderer, g_service.texture, NULL, NULL)) {
-        result = NESL_SET_ERROR("%s", SDL_GetError());
-        goto exit;
-    }
-
-    if((elapsed = (SDL_GetTicks() - g_service.tick)) < (1000 / (float)60)) {
-        SDL_Delay((1000 / (float)60) - elapsed);
-    }
-
-    SDL_RenderPresent(g_service.renderer);
-    g_service.tick = SDL_GetTicks();
-
-exit:
-    return result;
 }
 
 void NESL_ServiceUninit(void)

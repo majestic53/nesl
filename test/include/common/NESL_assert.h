@@ -19,9 +19,19 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_assert.h
+ * @brief Test assertion.
+ */
+
 #ifndef NESL_TEST_ASSERT_H_
 #define NESL_TEST_ASSERT_H_
 
+/**
+ * @brief Test assertion macro.
+ * @param _CONDITION_ Assert on condition
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 #define NESL_ASSERT(_CONDITION_) \
     (_CONDITION_) ? NESL_SUCCESS : NESL_Assert(# _CONDITION_, __FILE__, __FUNCTION__, __LINE__)
 
@@ -29,7 +39,15 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_Assert(const char *condition, const char *file, const char *function, size_t line)
+/**
+ * @brief Test assertion.
+ * @param condition Constant pointer to condition string
+ * @param file Constant pointer to file string
+ * @param function Constant pointer to function string
+ * @param line File line
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Assert(const char *condition, const char *file, const char *function, size_t line)
 {
     fprintf(stderr, "Assert failed -- %s (%s:%s@%zu)\n", condition, function, file, line);
 

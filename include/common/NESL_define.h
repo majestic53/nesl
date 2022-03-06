@@ -37,7 +37,7 @@
 #include <string.h>
 
 /**
- * Version macros
+ * @brief Versioning macros.
  */
 #define NESL_MAJOR 0    /*< Major version*/
 #define NESL_MINOR 1    /*< Minor version*/
@@ -245,9 +245,6 @@ typedef enum {
  */
 typedef union {
 
-    /**
-     * Register bits
-     */
     struct {
         uint8_t bit_0 : 1;  /*< Bit-0 */
         uint8_t unused : 5;
@@ -255,9 +252,6 @@ typedef union {
         uint8_t bit_7 : 1;  /*< Bit-7 */
     };
 
-    /**
-     * Register bytes
-     */
     struct {
         uint8_t low;        /*< Low byte */
         uint8_t high;       /*< High byte */

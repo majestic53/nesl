@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_audio_square.c
+ * @brief Audio square-wave synthesizer.
+ */
+
 #include "../../../include/system/audio/NESL_audio_square.h"
 
 #ifdef __cplusplus
@@ -30,7 +35,7 @@ void NESL_AudioSquareCycle(nesl_audio_square_t *square)
     /* TODO: CYCLE SQUARE SYNTHESIZER */
 }
 
-int NESL_AudioSquareInit(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
 {
     int result;
 
@@ -52,7 +57,7 @@ int NESL_AudioSquareReadable(nesl_audio_square_t *square)
     return NESL_AudioBufferReadable(&square->buffer);
 }
 
-int NESL_AudioSquareReset(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioSquareReset(nesl_audio_square_t *square)
 {
     int result;
 

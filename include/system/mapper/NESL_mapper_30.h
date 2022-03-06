@@ -19,37 +19,104 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_mapper_30.h
+ * @brief Mapper 30 (UNROM) extension.
+ */
+
 #ifndef NESL_MAPPER_30_H_
 #define NESL_MAPPER_30_H_
 
 #include "../NESL_mapper.h"
 
+/**
+ * @union nesl_mapper_30_bank_t
+ * @brief Mapper-30 bank register.
+ */
 typedef union {
 
     struct {
-        uint8_t program : 5;
-        uint8_t character : 2;
-        uint8_t one_screen : 1;
+        uint8_t program : 5;    /*< Program bank */
+        uint8_t character : 2;  /*< Character bank */
+        uint8_t one_screen : 1; /*< One-screen mirror mode */
     };
 
     uint8_t raw;
 } nesl_mapper_30_bank_t;
 
+/**
+ * @struct nesl_mapper_30_context_t
+ * @brief Mapper-30 extension context.
+ */
 typedef struct {
-    nesl_mapper_30_bank_t bank;
+    nesl_mapper_30_bank_t bank; /*< Bank register */
 } nesl_mapper_30_context_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_Mapper30Init(nesl_mapper_t *mapper);
-int NESL_Mapper30Interrupt(nesl_mapper_t *mapper);
-uint8_t NESL_Mapper30ReadRam(nesl_mapper_t *mapper, int type, uint16_t address);
-uint8_t NESL_Mapper30ReadRom(nesl_mapper_t *mapper, int type, uint16_t address);
-int NESL_Mapper30Reset(nesl_mapper_t *mapper);
-void NESL_Mapper30WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
-void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+/**
+ * @brief Initialize mapper-30 extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Mapper30Init(nesl_mapper_t *mapper);
+
+/**
+ * @brief Send mapper-30 extension interrupt.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Mapper30Interrupt(nesl_mapper_t *mapper);
+
+/**
+ * @brief Read byte from mapper-30 RAM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @return mapper data
+ */
+uint8_t NESL_Mapper30ReadRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
+
+/**
+ * @brief Read byte from mapper-30 ROM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @return mapper data
+ */
+uint8_t NESL_Mapper30ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
+
+/**
+ * @brief Reset mapper-30 extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Mapper30Reset(nesl_mapper_t *mapper);
+
+/**
+ * @brief Write byte to mapper-30 RAM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @param data mapper data
+ */
+void NESL_Mapper30WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
+
+/**
+ * @brief Write byte to mapper-30 ROM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @param data mapper data
+ */
+void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
+
+/**
+ * @brief Uninitialize mapper-30 extension.
+ * @param mapper Pointer to mapper subsystem context
+ */
 void NESL_Mapper30Uninit(nesl_mapper_t *mapper);
 
 #ifdef __cplusplus

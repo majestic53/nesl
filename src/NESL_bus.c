@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_bus.c
+ * @brief Common bus used by the various subsystems for communication.
+ */
+
 #include "../include/system/NESL_audio.h"
 #include "../include/system/NESL_input.h"
 #include "../include/system/NESL_mapper.h"
@@ -26,24 +31,28 @@
 #include "../include/system/NESL_video.h"
 #include "../include/NESL_service.h"
 
+/**
+ * @struct nesl_bus_t
+ * @brief Bus and subsystem contexts.
+ */
 typedef struct {
-    uint64_t cycle;
-    nesl_audio_t audio;
-    nesl_input_t input;
-    nesl_mapper_t mapper;
-    nesl_processor_t processor;
-    nesl_video_t video;
+    uint64_t cycle;             /*< Cycle-count since start of emulation */
+    nesl_audio_t audio;         /*< Audio subsystem context */
+    nesl_input_t input;         /*< Input subsystem context */
+    nesl_mapper_t mapper;       /*< Mapper subsystem context */
+    nesl_processor_t processor; /*< Processor subsystem context */
+    nesl_video_t video;         /*< Video subsystem context */
 } nesl_bus_t;
 
-static nesl_bus_t g_bus = {};
+static nesl_bus_t g_bus = {};   /*< Bus context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-static int NESL_BusReset(void)
+static nesl_error_e NESL_BusReset(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_ServiceReset()) == NESL_FAILURE) {
         goto exit;
@@ -84,9 +93,9 @@ bool NESL_BusCycle(void)
     return NESL_VideoCycle(&g_bus.video);
 }
 
-int NESL_BusInit(const void *data, int length)
+nesl_error_e NESL_BusInit(const void *data, int length)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_MapperInit(&g_bus.mapper, data, length)) == NESL_FAILURE) {
         goto exit;
@@ -112,7 +121,7 @@ exit:
     return result;
 }
 
-int NESL_BusInterrupt(int type)
+nesl_error_e NESL_BusInterrupt(nesl_interrupt_e type)
 {
     int result = NESL_FAILURE;
 
@@ -144,7 +153,7 @@ exit:
     return result;
 }
 
-uint8_t NESL_BusRead(int type, uint16_t address)
+uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -214,7 +223,7 @@ void NESL_BusUninit(void)
     memset(&g_bus, 0, sizeof(g_bus));
 }
 
-void NESL_BusWrite(int type, uint16_t address, uint8_t data)
+void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
 {
 
     switch(type) {

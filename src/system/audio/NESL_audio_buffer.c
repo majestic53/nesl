@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_audio_buffer.c
+ * @brief Audio circular-buffer.
+ */
+
 #include "../../../include/system/audio/NESL_audio_buffer.h"
 
 #ifdef __cplusplus
@@ -87,9 +92,9 @@ static bool NESL_AudioBufferFull(nesl_audio_buffer_t *buffer)
     return buffer->full;
 }
 
-int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(pthread_mutex_init(&buffer->lock, NULL) == -1) {
         result = NESL_SET_ERROR("Failed to initialize lock -- %i: %s", errno, strerror(errno));
@@ -140,7 +145,7 @@ int NESL_AudioBufferReadable(nesl_audio_buffer_t *buffer)
     return result;
 }
 
-int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
+nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 {
     pthread_mutex_lock(&buffer->lock);
     memset(buffer->data, 0, buffer->length);

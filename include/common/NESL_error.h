@@ -19,11 +19,21 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_error.h
+ * @brief Get/Set global error string.
+ */
+
 #ifndef NESL_ERROR_H_
 #define NESL_ERROR_H_
 
 #include "./NESL_define.h"
 
+/**
+ * @brief Set global error macro.
+ * @param _FORMAT_ Error string format, followed by some number of arguments
+ * @return NESL_FAILURE
+ */
 #define NESL_SET_ERROR(_FORMAT_, ...) \
     NESL_SetError(__FILE__, __FUNCTION__, __LINE__, _FORMAT_, __VA_ARGS__)
 
@@ -31,7 +41,15 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_SetError(const char *file, const char *function, int line, const char *format, ...);
+/**
+ * @brief Set global error.
+ * @param file Constant pointer to file string
+ * @param function Constant pointer to function string
+ * @param line File line
+ * @param format Error string format, followed by some number of arguments
+ * @return NESL_FAILURE
+ */
+nesl_error_e NESL_SetError(const char *file, const char *function, int line, const char *format, ...);
 
 #ifdef __cplusplus
 }

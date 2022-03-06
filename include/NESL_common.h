@@ -19,10 +19,15 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_common.h
+ * @brief Common header.
+ */
+
 #ifndef NESL_COMMON_H_
 #define NESL_COMMON_H_
 
-#include "./common/NESL_error.h"
 #include "./NESL.h"
+#include "./common/NESL_error.h"
 
 #endif /* NESL_COMMON_H_ */

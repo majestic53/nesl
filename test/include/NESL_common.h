@@ -19,20 +19,38 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_common.h
+ * @brief Common test header.
+ */
+
 #ifndef NESL_TEST_COMMON_H_
 #define NESL_TEST_COMMON_H_
 
 #include "./common/NESL_assert.h"
 
+/**
+ * @brief Test count macro.
+ * @param _TESTS_ Pointer to test array
+ * @return Number of test in test array
+ */
 #define NESL_TEST_COUNT(_TESTS_) \
     sizeof(_TESTS_) / sizeof(*(_TESTS_))
 
+/**
+ * @brief Test result macro.
+ * @param _RESULT_ Test result
+ */
 #define NESL_TEST_RESULT(_RESULT_) \
     fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "[%s%s%s] %s\n", \
         ((_RESULT_) != NESL_SUCCESS) ? "\x1b[91m" : "\x1b[94m", \
         ((_RESULT_) != NESL_SUCCESS) ? "FAIL" : "PASS", \
         "\x1b[0m", __FUNCTION__)
 
-typedef int (*NESL_Test)(void);
+/**
+ * @brief Test function.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+typedef nesl_error_e (*NESL_Test)(void);
 
 #endif /* NESL_TEST_COMMON_H_ */

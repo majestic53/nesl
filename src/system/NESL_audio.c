@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_audio.c
+ * @brief Audio subsystem.
+ */
+
 #include "../../include/system/NESL_audio.h"
 #include "../../include/NESL_service.h"
 
@@ -69,15 +74,15 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
     }
 }
 
-int NESL_AudioInit(nesl_audio_t *audio)
+nesl_error_e NESL_AudioInit(nesl_audio_t *audio)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_AudioBufferInit(&audio->buffer, 2048)) == NESL_FAILURE) {
         goto exit;
     }
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if((result = NESL_AudioSquareInit(&audio->synthesizer.square[channel])) == NESL_FAILURE) {
             goto exit;
@@ -109,14 +114,14 @@ uint8_t NESL_AudioRead(nesl_audio_t *audio, uint16_t address)
     return result;
 }
 
-int NESL_AudioReset(nesl_audio_t *audio)
+nesl_error_e NESL_AudioReset(nesl_audio_t *audio)
 {
-    int result;
+    nesl_error_e result;
 
     audio->frame.raw = 0;
     audio->status.raw = 0;
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if((result = NESL_AudioSquareReset(&audio->synthesizer.square[channel])) == NESL_FAILURE) {
             goto exit;
@@ -142,7 +147,7 @@ void NESL_AudioUninit(nesl_audio_t *audio)
 
     /* TODO: UNINIT SYNTHESIZERS */
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
         NESL_AudioSquareUninit(&audio->synthesizer.square[channel]);
     }
 
@@ -152,7 +157,7 @@ void NESL_AudioUninit(nesl_audio_t *audio)
 
 void NESL_AudioWrite(nesl_audio_t *audio, uint16_t address, uint8_t data)
 {
-    int channel;
+    nesl_channel_e channel;
 
     switch(address) {
         case 0x4000 ... 0x4007:

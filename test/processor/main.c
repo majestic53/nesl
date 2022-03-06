@@ -19,33 +19,46 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Test application for processor subsystem.
+ */
+
 #include "../../include/system/NESL_processor.h"
 #include "../include/NESL_common.h"
 
+/**
+ * @struct nesl_instruction_t
+ * @brief Processor instruction data.
+ */
 typedef struct {
-    int type;
-    int mode;
-    uint8_t cycles;
+    nesl_instruction_e type;    /*< Instruction type */
+    nesl_operand_e mode;        /*< Instruction address mode */
+    uint8_t cycles;             /*< Instruction cycles */
 } nesl_instruction_t;
 
+/**
+ * @struct nesl_test_t
+ * @brief Contains the test contexts.
+ */
 typedef struct {
-    nesl_processor_t processor;
+    nesl_processor_t processor; /*< Processor context */
 
     struct {
-        int type;
-        uint16_t address;
-        uint8_t ram[64 * 1024];
-        uint8_t oam[64 * 4];
+        nesl_bus_e type;        /*< Bus type */
+        uint16_t address;       /*< Bus address */
+        uint8_t ram[64 * 1024]; /*< Bus RAM */
+        uint8_t oam[64 * 4];    /*< Bus OAM RAM */
     } bus;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-uint8_t NESL_BusRead(int type, uint16_t address)
+uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 {
     int result = 0;
 
@@ -66,7 +79,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
     return result;
 }
 
-void NESL_BusWrite(int type, uint16_t address, uint8_t data)
+void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
 {
     g_test.bus.type = type;
     g_test.bus.address = address;
@@ -83,9 +96,9 @@ void NESL_BusWrite(int type, uint16_t address, uint8_t data)
     }
 }
 
-static int NESL_TestInit(uint16_t address, bool initialize)
+static nesl_error_e NESL_TestInit(uint16_t address, bool initialize)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     memset(&g_test.processor, 0, sizeof(g_test.processor));
 
@@ -102,9 +115,9 @@ exit:
     return result;
 }
 
-static int NESL_TestInstruction(uint16_t address, uint8_t opcode, int mode, uint16_t effective, uint16_t indirect, uint8_t data)
+static nesl_error_e NESL_TestInstruction(uint16_t address, uint8_t opcode, nesl_operand_e mode, uint16_t effective, uint16_t indirect, uint8_t data)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     g_test.processor.cycle = 0;
     NESL_BusWrite(NESL_BUS_PROCESSOR, address, opcode);
@@ -200,10 +213,10 @@ static bool NESL_TestValidate(uint8_t accumulator, uint8_t index_x, uint8_t inde
             && (g_test.processor.cycle == cycle);
 }
 
-static int NESL_TestProcessorCycle(void)
+static nesl_error_e NESL_TestProcessorCycle(void)
 {
-    int result;
     uint64_t cycle;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, false)) == NESL_FAILURE) {
         goto exit;
@@ -226,9 +239,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInit(void)
+static nesl_error_e NESL_TestProcessorInit(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, false)) == NESL_FAILURE) {
         goto exit;
@@ -245,9 +258,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionArithmetic(void)
+static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -783,9 +796,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionBit(void)
+static nesl_error_e NESL_TestProcessorInstructionBit(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -851,9 +864,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionBranch(void)
+static nesl_error_e NESL_TestProcessorInstructionBranch(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -1131,10 +1144,10 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionBreakpoint(void)
+static nesl_error_e NESL_TestProcessorInstructionBreakpoint(void)
 {
-    int result;
     uint16_t address;
+    nesl_error_e result;
     nesl_processor_status_t status = {};
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
@@ -1167,9 +1180,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionClear(void)
+static nesl_error_e NESL_TestProcessorInstructionClear(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -1237,9 +1250,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionCompare(void)
+static nesl_error_e NESL_TestProcessorInstructionCompare(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -1555,9 +1568,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionDecrement(void)
+static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -1719,9 +1732,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionIncrement(void)
+static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -1883,9 +1896,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionJump(void)
+static nesl_error_e NESL_TestProcessorInstructionJump(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -1934,9 +1947,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionLoad(void)
+static nesl_error_e NESL_TestProcessorInstructionLoad(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -2241,9 +2254,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionLogical(void)
+static nesl_error_e NESL_TestProcessorInstructionLogical(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -2815,9 +2828,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionNoOperation(void)
+static nesl_error_e NESL_TestProcessorInstructionNoOperation(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -2838,9 +2851,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionPull(void)
+static nesl_error_e NESL_TestProcessorInstructionPull(void)
 {
-    int result;
+    nesl_error_e result;
     nesl_processor_status_t status = {};
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
@@ -2935,9 +2948,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionPush(void)
+static nesl_error_e NESL_TestProcessorInstructionPush(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -2977,9 +2990,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionReturn(void)
+static nesl_error_e NESL_TestProcessorInstructionReturn(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -3039,9 +3052,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionRotate(void)
+static nesl_error_e NESL_TestProcessorInstructionRotate(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -3227,9 +3240,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionSet(void)
+static nesl_error_e NESL_TestProcessorInstructionSet(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -3282,9 +3295,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionShift(void)
+static nesl_error_e NESL_TestProcessorInstructionShift(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -3470,9 +3483,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionStore(void)
+static nesl_error_e NESL_TestProcessorInstructionStore(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -3699,9 +3712,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionTransfer(void)
+static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -3869,7 +3882,7 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInstructionUnsupported(void)
+static nesl_error_e NESL_TestProcessorInstructionUnsupported(void)
 {
     static const nesl_instruction_t UNSUPPORTED[] = {
         { 0x02, NESL_OPERAND_IMPLIED, 2 }, { 0x03, NESL_OPERAND_INDIRECT_X, 8 }, { 0x04, NESL_OPERAND_ZEROPAGE, 3 }, { 0x07, NESL_OPERAND_ZEROPAGE, 5 },
@@ -3900,7 +3913,7 @@ static int NESL_TestProcessorInstructionUnsupported(void)
         { 0xFA, NESL_OPERAND_IMMEDIATE, 2 }, { 0xFB, NESL_OPERAND_ABSOLUTE_Y, 7 }, { 0xFC, NESL_OPERAND_ABSOLUTE_X, 4 }, { 0xFF, NESL_OPERAND_ABSOLUTE_X, 7 },
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < (sizeof(UNSUPPORTED) / sizeof(nesl_instruction_t)); ++index) {
         uint16_t address = 0xABCD;
@@ -3946,10 +3959,10 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorInterrupt(void)
+static nesl_error_e NESL_TestProcessorInterrupt(void)
 {
-    int result;
     uint16_t address;
+    nesl_error_e result;
     nesl_processor_status_t status = {};
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
@@ -4048,10 +4061,10 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorRead(void)
+static nesl_error_e NESL_TestProcessorRead(void)
 {
-    int result;
     uint8_t data = 0;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -4072,9 +4085,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorReset(void)
+static nesl_error_e NESL_TestProcessorReset(void)
 {
-    int result;
+    nesl_error_e result;
     uint16_t address = 0xDCBA;
 
     if((result = NESL_TestInit(0xABCD, false)) == NESL_FAILURE) {
@@ -4099,11 +4112,11 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorTransfer(void)
+static nesl_error_e NESL_TestProcessorTransfer(void)
 {
-    int result;
     uint64_t cycle;
     uint16_t address;
+    nesl_error_e result;
     uint8_t data = 0, page = 0xAB;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
@@ -4195,9 +4208,9 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorUninit(void)
+static nesl_error_e NESL_TestProcessorUninit(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -4219,10 +4232,10 @@ exit:
     return result;
 }
 
-static int NESL_TestProcessorWrite(void)
+static nesl_error_e NESL_TestProcessorWrite(void)
 {
-    int result;
     uint8_t data = 0;
+    nesl_error_e result;
 
     if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
@@ -4254,20 +4267,20 @@ exit:
     return result;
 }
 
-static const NESL_Test TEST[] = {
-    NESL_TestProcessorCycle, NESL_TestProcessorInit, NESL_TestProcessorInstructionArithmetic, NESL_TestProcessorInstructionBit,
-    NESL_TestProcessorInstructionBranch, NESL_TestProcessorInstructionBreakpoint, NESL_TestProcessorInstructionClear, NESL_TestProcessorInstructionCompare,
-    NESL_TestProcessorInstructionDecrement, NESL_TestProcessorInstructionIncrement, NESL_TestProcessorInstructionJump, NESL_TestProcessorInstructionLoad,
-    NESL_TestProcessorInstructionLogical, NESL_TestProcessorInstructionNoOperation, NESL_TestProcessorInstructionPull, NESL_TestProcessorInstructionPush,
-    NESL_TestProcessorInstructionReturn, NESL_TestProcessorInstructionRotate, NESL_TestProcessorInstructionSet, NESL_TestProcessorInstructionShift,
-    NESL_TestProcessorInstructionStore, NESL_TestProcessorInstructionTransfer, NESL_TestProcessorInstructionUnsupported, NESL_TestProcessorInterrupt,
-    NESL_TestProcessorRead, NESL_TestProcessorReset, NESL_TestProcessorTransfer, NESL_TestProcessorUninit,
-    NESL_TestProcessorWrite,
-    };
-
 int main(void)
 {
-    int result = NESL_SUCCESS;
+    static const NESL_Test TEST[] = {
+        NESL_TestProcessorCycle, NESL_TestProcessorInit, NESL_TestProcessorInstructionArithmetic, NESL_TestProcessorInstructionBit,
+        NESL_TestProcessorInstructionBranch, NESL_TestProcessorInstructionBreakpoint, NESL_TestProcessorInstructionClear, NESL_TestProcessorInstructionCompare,
+        NESL_TestProcessorInstructionDecrement, NESL_TestProcessorInstructionIncrement, NESL_TestProcessorInstructionJump, NESL_TestProcessorInstructionLoad,
+        NESL_TestProcessorInstructionLogical, NESL_TestProcessorInstructionNoOperation, NESL_TestProcessorInstructionPull, NESL_TestProcessorInstructionPush,
+        NESL_TestProcessorInstructionReturn, NESL_TestProcessorInstructionRotate, NESL_TestProcessorInstructionSet, NESL_TestProcessorInstructionShift,
+        NESL_TestProcessorInstructionStore, NESL_TestProcessorInstructionTransfer, NESL_TestProcessorInstructionUnsupported, NESL_TestProcessorInterrupt,
+        NESL_TestProcessorRead, NESL_TestProcessorReset, NESL_TestProcessorTransfer, NESL_TestProcessorUninit,
+        NESL_TestProcessorWrite,
+        };
+
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
@@ -4276,7 +4289,7 @@ int main(void)
         }
     }
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus

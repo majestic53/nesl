@@ -19,23 +19,55 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_processor.c
+ * @brief Processor subsystem.
+ */
+
 #include "../../include/system/NESL_processor.h"
 
+/**
+ * @struct nesl_instruction_t
+ * @brief Processor instruction data.
+ */
 typedef struct {
-    int type;
-    int mode;
-    uint8_t cycles;
+    nesl_instruction_e type;    /*< Instruction type */
+    nesl_operand_e mode;        /*< Instruction address mode */
+    uint8_t cycles;             /*< Instruction cycles */
 } nesl_instruction_t;
 
+/**
+ * @struct nesl_operand_t
+ * @brief Processor operand data.
+ */
 typedef struct {
-    nesl_register_t data;
-    nesl_register_t effective;
-    nesl_register_t indirect;
-    bool page_cross;
+    nesl_register_t data;       /*< Immediate data */
+    nesl_register_t effective;  /*< Effective address to data */
+    nesl_register_t indirect;   /*< Indirect address to data */
+    bool page_cross;            /*< Page boundary crossed */
 } nesl_operand_t;
 
+/**
+ * @brief Processor execution function.
+ * @param processor Pointer to processor context
+ * @param instruction Constant pointer to instruction data
+ * @param operand Constant pointer to operand data
+ */
 typedef void (*NESL_ProcessorExecute)(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand);
+
+/**
+ * @brief Processor operand function.
+ * @param processor Pointer to processor context
+ * @param operand Pointer to operand data
+ */
 typedef void (*NESL_ProcessorOperand)(nesl_processor_t *processor, nesl_operand_t *operand);
+
+/**
+ * @brief Processor operation function.
+ * @param processor Pointer to processor context
+ * @param left Pointer to left register context
+ * @param right Constant pointer to right register context
+ */
 typedef void (*NESL_ProcessorOperation)(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right);
 
 #ifdef __cplusplus
@@ -962,12 +994,12 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
     }
 }
 
-int NESL_ProcessorInit(nesl_processor_t *processor)
+nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor)
 {
     return NESL_ProcessorReset(processor);
 }
 
-int NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)
+nesl_error_e NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable)
 {
 
     if(maskable) {

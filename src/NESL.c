@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL.c
+ * @brief Public API.
+ */
+
 #include "../include/NESL_bus.h"
 #include "../include/NESL_service.h"
 
@@ -42,7 +47,7 @@ int NESL_Run(const nesl_t *context)
 
         while(!NESL_BusCycle());
 
-        if((result = NESL_ServiceShow()) == NESL_FAILURE) {
+        if((result = NESL_ServiceRedraw()) == NESL_FAILURE) {
             goto exit;
         }
     }

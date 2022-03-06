@@ -19,59 +19,72 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_processor.h
+ * @brief Processor subsystem.
+ */
+
 #ifndef NESL_PROCESSOR_H_
 #define NESL_PROCESSOR_H_
 
 #include "../NESL_bus.h"
 
+/**
+ * @union nesl_processor_status_t
+ * @brief Processor status register.
+ */
 typedef union {
 
     struct {
-        uint8_t carry : 1;
-        uint8_t zero : 1;
-        uint8_t interrupt_disable : 1;
-        uint8_t decimal : 1;
-        uint8_t breakpoint : 1;
+        uint8_t carry : 1;              /*< Carry flag */
+        uint8_t zero : 1;               /*< Zero flag */
+        uint8_t interrupt_disable : 1;  /*< Interrupt disable flag */
+        uint8_t decimal : 1;            /*< Decimal flag */
+        uint8_t breakpoint : 1;         /*< Breakpoint flag */
         uint8_t unused : 1;
-        uint8_t overflow : 1;
-        uint8_t negative : 1;
+        uint8_t overflow : 1;           /*< Overflow flag */
+        uint8_t negative : 1;           /*< Negative flag */
     };
 
     uint8_t raw;
 } nesl_processor_status_t;
 
+/**
+ * @struct nesl_processor_t
+ * @brief Processor subsystem context.
+ */
 typedef struct {
-    uint8_t ram[2 * 1024];
-    uint8_t cycle;
+    uint8_t ram[2 * 1024];  /*< Program RAM buffer */
+    uint8_t cycle;          /*< Remaining cycles */
 
     union {
 
         struct {
-            uint8_t transfer : 1;
-            uint8_t transfer_sync : 1;
-            uint8_t non_maskable : 1;
-            uint8_t maskable : 1;
+            uint8_t transfer : 1;       /*< Transger start flag */
+            uint8_t transfer_sync : 1;  /*< Transger sync flag */
+            uint8_t non_maskable : 1;   /*< Non-maskable interrupt flag */
+            uint8_t maskable : 1;       /*< Maskable interrupt flag */
         };
 
         uint8_t raw;
     } interrupt;
 
     struct {
-        nesl_register_t accumulator;
-        nesl_register_t program_counter;
-        nesl_register_t stack_pointer;
-        nesl_processor_status_t status;
+        nesl_register_t accumulator;        /*< Accumulator register */
+        nesl_register_t program_counter;    /*< Program counter register */
+        nesl_register_t stack_pointer;      /*< Stack pointer register */
+        nesl_processor_status_t status;     /*< Status register */
 
         struct {
-            nesl_register_t x;
-            nesl_register_t y;
+            nesl_register_t x;  /*< Index-x register */
+            nesl_register_t y;  /*< Index-y register */
         } index;
     } state;
 
     struct {
-        uint8_t data;
-        nesl_register_t destination;
-        nesl_register_t source;
+        uint8_t data;                   /*< Data */
+        nesl_register_t destination;    /*< Destination address */
+        nesl_register_t source;         /*< Source address */
     } transfer;
 } nesl_processor_t;
 
@@ -79,12 +92,54 @@ typedef struct {
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Cycle processor subsystem through one cycle.
+ * @param processor Pointer to processor subsystem context
+ * @param cycle Current cycle
+ */
 void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle);
-int NESL_ProcessorInit(nesl_processor_t *processor);
-int NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable);
+
+/**
+ * @brief Initialize processor subsystem.
+ * @param processor Pointer to processor subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor);
+
+/**
+ * @brief Send processor subsystem interrupt.
+ * @param processor Pointer to processor subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ProcessorInterrupt(nesl_processor_t *processor, bool maskable);
+
+/**
+ * @brief Read byte from processor subsystem.
+ * @param processor Pointer to processor subsystem context
+ * @param address Processor address
+ * @return Processor data
+ */
 uint8_t NESL_ProcessorRead(nesl_processor_t *processor, uint16_t address);
-int NESL_ProcessorReset(nesl_processor_t *processor);
+
+/**
+ * @brief Reset processor subsystem.
+ * @param processor Pointer to processor subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ProcessorReset(nesl_processor_t *processor);
+
+/**
+ * @brief Uninitialize processor subsystem.
+ * @param processor Pointer to processor subsystem context
+ */
 void NESL_ProcessorUninit(nesl_processor_t *processor);
+
+/**
+ * @brief Write byte to processor subsystem.
+ * @param processor Pointer to processor subsystem context
+ * @param address Processor address
+ * @param data Processor data
+ */
 void NESL_ProcessorWrite(nesl_processor_t *processor, uint16_t address, uint8_t data);
 
 #ifdef __cplusplus

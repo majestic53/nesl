@@ -21,7 +21,7 @@
 
 /**
  * @file NESL.h
- * @brief NESL API.
+ * @brief Public API.
  */
 
 #ifndef NESL_H_
@@ -73,18 +73,18 @@ extern "C" {
 /**
  * @brief Run NESL with a caller defined context.
  * @param context Constant pointer to caller defined context struct
- * @return NESL_FAILURE on failure
+ * @return NESL_FAILURE on failure, NESL_SUCCESS or NESL_QUIT otherwise
  */
-int NESL_Run(const nesl_t *context);
+nesl_error_e NESL_Run(const nesl_t *context);
 
 /**
- * @brief Retrieve NESL error string.
+ * @brief Get NESL error string.
  * @return Constant pointer to NESL error string
  */
 const char *NESL_GetError(void);
 
 /**
- * @brief Retrieve NESL version struct.
+ * @brief Get NESL version struct.
  * @return Constant pointer to NESL version struct
  */
 const nesl_version_t *NESL_GetVersion(void);

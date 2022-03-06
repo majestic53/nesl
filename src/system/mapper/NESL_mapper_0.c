@@ -19,13 +19,18 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_mapper_0.c
+ * @brief Mapper 0 (NROM) extension.
+ */
+
 #include "../../../include/system/mapper/NESL_mapper_0.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_Mapper0Init(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper0Init(nesl_mapper_t *mapper)
 {
     mapper->callback.interrupt = &NESL_Mapper0Interrupt;
     mapper->callback.read_ram = &NESL_Mapper0ReadRam;
@@ -41,12 +46,12 @@ int NESL_Mapper0Init(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-int NESL_Mapper0Interrupt(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper0Interrupt(nesl_mapper_t *mapper)
 {
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_Mapper0ReadRam(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_Mapper0ReadRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -68,7 +73,7 @@ uint8_t NESL_Mapper0ReadRam(nesl_mapper_t *mapper, int type, uint16_t address)
     return result;
 }
 
-uint8_t NESL_Mapper0ReadRom(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_Mapper0ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -103,12 +108,12 @@ uint8_t NESL_Mapper0ReadRom(nesl_mapper_t *mapper, int type, uint16_t address)
     return result;
 }
 
-int NESL_Mapper0Reset(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper0Reset(nesl_mapper_t *mapper)
 {
     return NESL_SUCCESS;
 }
 
-void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
     switch(type) {
@@ -127,7 +132,7 @@ void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uin
     }
 }
 
-void NESL_Mapper0WriteRom(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_Mapper0WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
     return;
 }

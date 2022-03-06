@@ -19,15 +19,21 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_cartridge.c
+ * @brief Cartridge subsystem.
+ */
+
 #include "../../include/system/NESL_cartridge.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-static int NESL_CartridgeValidate(const void *data, int length)
+static nesl_error_e NESL_CartridgeValidate(const void *data, int length)
 {
-    int expected = sizeof(nesl_cartridge_header_t), result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
+    int expected = sizeof(nesl_cartridge_header_t);
     const nesl_cartridge_header_t *header = (const nesl_cartridge_header_t *)data;
 
     if(!data) {
@@ -70,7 +76,7 @@ exit:
     return result;
 }
 
-uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
+uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, nesl_bank_e type)
 {
     uint8_t result = 0;
 
@@ -91,19 +97,19 @@ uint8_t NESL_CartridgeGetBankCount(nesl_cartridge_t *cartridge, int type)
     return result;
 }
 
-uint8_t NESL_CartridgeGetMapper(nesl_cartridge_t *cartridge)
+nesl_mapper_e NESL_CartridgeGetMapper(nesl_cartridge_t *cartridge)
 {
-    return (cartridge->header->flag_7.type_high << 4) | cartridge->header->flag_6.type_low;
+    return (nesl_mapper_e)((cartridge->header->flag_7.type_high << 4) | cartridge->header->flag_6.type_low);
 }
 
-uint8_t NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge)
+nesl_mirror_e NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge)
 {
-    return cartridge->header->flag_6.mirror;
+    return (nesl_mirror_e)cartridge->header->flag_6.mirror;
 }
 
-int NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length)
+nesl_error_e NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length)
 {
-    int result;
+    nesl_error_e result;
     const uint8_t *offset = data;
 
     if((result = NESL_CartridgeValidate(data, length)) == NESL_FAILURE) {
@@ -147,7 +153,7 @@ exit:
     return result;
 }
 
-uint8_t NESL_CartridgeReadRam(nesl_cartridge_t *cartridge, int type, uint32_t address)
+uint8_t NESL_CartridgeReadRam(nesl_cartridge_t *cartridge, nesl_bank_e type, uint32_t address)
 {
     uint8_t result = 0;
 
@@ -162,7 +168,7 @@ uint8_t NESL_CartridgeReadRam(nesl_cartridge_t *cartridge, int type, uint32_t ad
     return result;
 }
 
-uint8_t NESL_CartridgeReadRom(nesl_cartridge_t *cartridge, int type, uint32_t address)
+uint8_t NESL_CartridgeReadRom(nesl_cartridge_t *cartridge, nesl_bank_e type, uint32_t address)
 {
     uint8_t result = 0;
 
@@ -196,7 +202,7 @@ void NESL_CartridgeUninit(nesl_cartridge_t *cartridge)
     memset(cartridge, 0, sizeof(*cartridge));
 }
 
-void NESL_CartridgeWriteRam(nesl_cartridge_t *cartridge, int type, uint32_t address, uint8_t data)
+void NESL_CartridgeWriteRam(nesl_cartridge_t *cartridge, nesl_bank_e type, uint32_t address, uint8_t data)
 {
 
     switch(type) {

@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_version.c
+ * @brief Get global version.
+ */
+
 #include "../../include/NESL_common.h"
 
 #ifdef __cplusplus

@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_mapper_2.c
+ * @brief Mapper 2 (UxROM) extension.
+ */
+
 #include "../../../include/system/mapper/NESL_mapper_2.h"
 
 #ifdef __cplusplus
@@ -30,9 +35,9 @@ static void NESL_Mapper2Set(nesl_mapper_t *mapper)
     mapper->rom.program[0] = ((nesl_mapper_2_context_t *)mapper->context)->program.bank * 16 * 1024;
 }
 
-int NESL_Mapper2Init(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper2Init(nesl_mapper_t *mapper)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(!(mapper->context = calloc(1, sizeof(nesl_mapper_2_context_t)))) {
         result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_2_context_t), sizeof(nesl_mapper_2_context_t));
@@ -54,12 +59,12 @@ exit:
     return result;
 }
 
-int NESL_Mapper2Interrupt(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper2Interrupt(nesl_mapper_t *mapper)
 {
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_Mapper2ReadRam(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_Mapper2ReadRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -81,7 +86,7 @@ uint8_t NESL_Mapper2ReadRam(nesl_mapper_t *mapper, int type, uint16_t address)
     return result;
 }
 
-uint8_t NESL_Mapper2ReadRom(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_Mapper2ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -116,7 +121,7 @@ uint8_t NESL_Mapper2ReadRom(nesl_mapper_t *mapper, int type, uint16_t address)
     return result;
 }
 
-int NESL_Mapper2Reset(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper2Reset(nesl_mapper_t *mapper)
 {
     mapper->ram.program = 0;
     mapper->rom.character[0] = 0;
@@ -126,7 +131,7 @@ int NESL_Mapper2Reset(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-void NESL_Mapper2WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_Mapper2WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
     switch(type) {
@@ -145,7 +150,7 @@ void NESL_Mapper2WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uin
     }
 }
 
-void NESL_Mapper2WriteRom(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_Mapper2WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
     switch(type) {

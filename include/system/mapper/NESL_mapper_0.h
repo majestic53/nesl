@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_mapper_0.h
+ * @brief Mapper 0 (NROM) extension.
+ */
+
 #ifndef NESL_MAPPER_0_H_
 #define NESL_MAPPER_0_H_
 
@@ -28,13 +33,67 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_Mapper0Init(nesl_mapper_t *mapper);
-int NESL_Mapper0Interrupt(nesl_mapper_t *mapper);
-uint8_t NESL_Mapper0ReadRam(nesl_mapper_t *mapper, int type, uint16_t address);
-uint8_t NESL_Mapper0ReadRom(nesl_mapper_t *mapper, int type, uint16_t address);
-int NESL_Mapper0Reset(nesl_mapper_t *mapper);
-void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
-void NESL_Mapper0WriteRom(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data);
+/**
+ * @brief Initialize mapper-0 extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Mapper0Init(nesl_mapper_t *mapper);
+
+/**
+ * @brief Send mapper-0 extension interrupt.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Mapper0Interrupt(nesl_mapper_t *mapper);
+
+/**
+ * @brief Read byte from mapper-0 RAM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @return mapper data
+ */
+uint8_t NESL_Mapper0ReadRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
+
+/**
+ * @brief Read byte from mapper-0 ROM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @return mapper data
+ */
+uint8_t NESL_Mapper0ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
+
+/**
+ * @brief Reset mapper-0 extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_Mapper0Reset(nesl_mapper_t *mapper);
+
+/**
+ * @brief Write byte to mapper-0 RAM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @param data mapper data
+ */
+void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
+
+/**
+ * @brief Write byte to mapper-0 ROM extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Bank type
+ * @param address mapper address
+ * @param data mapper data
+ */
+void NESL_Mapper0WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
+
+/**
+ * @brief Uninitialize mapper-0 extension.
+ * @param mapper Pointer to mapper subsystem context
+ */
 void NESL_Mapper0Uninit(nesl_mapper_t *mapper);
 
 #ifdef __cplusplus

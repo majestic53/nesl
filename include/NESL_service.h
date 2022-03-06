@@ -19,24 +19,86 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_service.h
+ * @brief Common service used by the various subsystems for input/output.
+ */
+
 #ifndef NESL_SERVICE_H_
 #define NESL_SERVICE_H_
 
 #include "./NESL_common.h"
 
+/**
+ * @brief Audio callback routine used to collect audio samples.
+ * @param context Constant pointer to audio context
+ * @param data Pointer to data buffer
+ * @param length Data buffer length in bytes
+ */
 typedef void (*NESL_ServiceGetAudio)(void *context, uint8_t *data, int length);
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-bool NESL_ServiceGetButton(int controller, int button);
-int NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale);
-int NESL_ServicePoll(void);
-int NESL_ServiceReset(void);
-int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context);
+/**
+ * @brief Get controller button state.
+ * @param controller Controller type
+ * @param button Button type
+ * @return true if pressed, false if released
+ */
+bool NESL_ServiceGetButton(nesl_controller_e controller, nesl_button_e button);
+
+/**
+ * @brief Initialize service.
+ * @param title Constant pointer to window title
+ * @param fullscreen Fullscreen enabled
+ * @param linear Linear scaling enabled
+ * @param scale Scaling value
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale);
+
+/**
+ * @brief Poll service state.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS or NESL_QUIT otherwise
+ */
+nesl_error_e NESL_ServicePoll(void);
+
+/**
+ * @brief Redraw service pixels to display.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ServiceRedraw(void);
+
+/**
+ * @brief Reset service.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ServiceReset(void);
+
+/**
+ * @brief Set service audio callback.
+ * @param callback Pointer to audio callback function
+ * @param context Constant pointer to audio context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context);
+
+/**
+ * @brief Set service pixel.
+ * @param color Color value (0-63)
+ * @param red Emphasize red channel
+ * @param green Emphasize green channel
+ * @param blue Emphasize blue channel
+ * @param x X-coordinate
+ * @param y Y-coordinate
+ */
 void NESL_ServiceSetPixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y);
-int NESL_ServiceShow(void);
+
+/**
+ * @brief Uninitialize service.
+ */
 void NESL_ServiceUninit(void);
 
 #ifdef __cplusplus

@@ -19,13 +19,22 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_error.c
+ * @brief Get/Set global error string.
+ */
+
 #include "../../include/NESL_common.h"
 
+/**
+ * @struct nesl_error_t
+ * @brief Contains the error context.
+ */
 typedef struct {
-    char buffer[256];
+    char buffer[256];   /*< Error string */
 } nesl_error_t;
 
-static nesl_error_t g_error = {};
+static nesl_error_t g_error = {};   /*< Error context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,7 +45,7 @@ const char *NESL_GetError(void)
     return g_error.buffer;
 }
 
-int NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
+nesl_error_e NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
 {
     va_list arguments;
 

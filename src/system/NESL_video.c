@@ -19,11 +19,27 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_Video.c
+ * @brief Video subsystem.
+ */
+
 #include "../../include/system/NESL_mapper.h"
 #include "../../include/system/NESL_video.h"
 #include "../../include/NESL_service.h"
 
+/**
+ * @brief Video port getter function.
+ * @param video Pointer to video context
+ * @return Byte read from video port
+ */
 typedef uint8_t (*NESL_VideoGetPort)(nesl_video_t *video);
+
+/**
+ * @brief Video port setter function.
+ * @param video Pointer to video context
+ * @param data Byte to write to video port
+ */
 typedef void (*NESL_VideoSetPort)(nesl_video_t *video, uint8_t data);
 
 #ifdef __cplusplus
@@ -160,7 +176,7 @@ static void NESL_VideoMapperInterrupt(nesl_video_t *video)
     }
 }
 
-static uint16_t NESL_VideoNametableAddress(uint16_t address, int mirror, int *bank)
+static uint16_t NESL_VideoNametableAddress(uint16_t address, nesl_mirror_e mirror, int *bank)
 {
 
     switch(mirror) {
@@ -575,9 +591,9 @@ bool NESL_VideoCycle(nesl_video_t *video)
     return result;
 }
 
-int NESL_VideoInit(nesl_video_t *video, const int *mirror)
+nesl_error_e NESL_VideoInit(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_VideoReset(video, mirror)) == NESL_FAILURE) {
         goto exit;
@@ -624,7 +640,7 @@ uint8_t NESL_VideoReadPort(nesl_video_t *video, uint16_t address)
     return PORT[address & 7](video);
 }
 
-int NESL_VideoReset(nesl_video_t *video, const int *mirror)
+nesl_error_e NESL_VideoReset(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
     memset(video, 0, sizeof(*video));
     video->scanline = -1;

@@ -19,37 +19,51 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Test application for video subsystem.
+ */
+
 #include "../../include/system/NESL_video.h"
 #include "../include/NESL_common.h"
 
+/**
+ * @struct nesl_test_t
+ * @brief Contains the test contexts.
+ */
 typedef struct {
-    nesl_video_t video;
+    nesl_video_t video; /*< Video context */
 
     struct {
-        uint16_t address;
-        int type;
-        uint8_t data[16 * 1024];
-        int int_type;
-        int mirror;
+        nesl_bus_e type;            /*< Bus type */
+        uint16_t address;           /*< Bus address */
+        uint8_t data[16 * 1024];    /*< Bus data */
+        nesl_interrupt_e int_type;  /*< Bus interrupt */
+        nesl_mirror_e mirror;       /*< Bus mirror */
     } bus;
 } nesl_test_t;
 
-typedef int (*NESL_TestPort)(uint16_t address);
+/**
+ * @brief Video port test function.
+ * @param address Test address
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+typedef nesl_error_e (*NESL_TestPort)(uint16_t address);
 
-static nesl_test_t g_test = {};
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_BusInterrupt(int type)
+nesl_error_e NESL_BusInterrupt(nesl_interrupt_e type)
 {
     g_test.bus.int_type = type;
 
     return NESL_SUCCESS;
 }
 
-uint8_t NESL_BusRead(int type, uint16_t address)
+uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -67,7 +81,7 @@ uint8_t NESL_BusRead(int type, uint16_t address)
     return result;
 }
 
-void NESL_BusWrite(int type, uint16_t address, uint8_t data)
+void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
 {
     g_test.bus.address = address;
     g_test.bus.type = type;
@@ -86,9 +100,9 @@ void NESL_ServiceSetPixel(uint8_t color, bool red_emphasis, bool green_emphasis,
     return;
 }
 
-static int NESL_TestVideoGetPortData(uint16_t address)
+static nesl_error_e NESL_TestVideoGetPortData(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int increment = 0; increment <= 1; ++increment) {
         uint8_t data = 0;
@@ -139,9 +153,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoGetPortOamData(uint16_t address)
+static nesl_error_e NESL_TestVideoGetPortOamData(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     ((uint8_t *)g_test.video.ram.oam)[g_test.video.port.oam_address.low] = g_test.video.port.oam_address.low;
 
@@ -156,9 +170,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoGetPortStatus(uint16_t address)
+static nesl_error_e NESL_TestVideoGetPortStatus(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     g_test.video.port.data.low = 0x0A;
     g_test.video.port.status.sprite_overflow = true;
@@ -177,9 +191,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoGetPortUnused(uint16_t address)
+static nesl_error_e NESL_TestVideoGetPortUnused(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     g_test.video.port.data.low = 0xAC;
 
@@ -192,9 +206,9 @@ exit:
     return result;
 }
 
-static int NESL_TestInit(bool initialize, int mirror)
+static nesl_error_e NESL_TestInit(bool initialize, nesl_mirror_e mirror)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     memset(&g_test, 0, sizeof(g_test));
     g_test.bus.mirror = mirror;
@@ -210,9 +224,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoNametableAddress(uint16_t address, int mirror, int *bank, uint16_t *addr)
+static nesl_error_e NESL_TestVideoNametableAddress(uint16_t address, nesl_mirror_e mirror, int *bank, uint16_t *addr)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     switch(mirror) {
         case NESL_MIRROR_HORIZONTAL:
@@ -284,9 +298,9 @@ static uint16_t NESL_TestVideoPaletteAddress(uint16_t address)
     return address;
 }
 
-static int NESL_TestVideoSetPortAddress(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortAddress(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
@@ -309,9 +323,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortControl(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortControl(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
@@ -326,10 +340,10 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortData(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortData(uint16_t address)
 {
     uint16_t addr;
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int increment = 0; increment <= 1; ++increment) {
         uint8_t data = 0;
@@ -359,9 +373,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortMask(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortMask(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
@@ -374,9 +388,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortOamAddress(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortOamAddress(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
@@ -389,10 +403,10 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortOamData(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortOamData(uint16_t address)
 {
     uint16_t addr;
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     addr = g_test.video.port.oam_address.low;
     g_test.video.port.status.vertical_blank = false;
@@ -418,9 +432,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortScroll(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortScroll(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
@@ -444,9 +458,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoSetPortUnused(uint16_t address)
+static nesl_error_e NESL_TestVideoSetPortUnused(uint16_t address)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     NESL_VideoWritePort(&g_test.video, address, 0xAC);
 
@@ -459,10 +473,10 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoCycle(void)
+static nesl_error_e NESL_TestVideoCycle(void)
 {
     uint64_t cycles = 0;
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if((result = NESL_TestInit(true, NESL_MIRROR_HORIZONTAL)) == NESL_FAILURE) {
         goto exit;
@@ -531,9 +545,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoInit(void)
+static nesl_error_e NESL_TestVideoInit(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if((result = NESL_TestInit(false, NESL_MIRROR_VERTICAL)) == NESL_FAILURE) {
         goto exit;
@@ -562,10 +576,11 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoRead(void)
+static nesl_error_e NESL_TestVideoRead(void)
 {
     uint16_t addr, addr_offset;
-    int bank = NESL_MIRROR_MAX, result = NESL_SUCCESS;
+    int bank = NESL_MIRROR_MAX;
+    nesl_error_e result = NESL_SUCCESS;
 
     if((result = NESL_TestInit(true, NESL_MIRROR_HORIZONTAL)) == NESL_FAILURE) {
         goto exit;
@@ -627,14 +642,14 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoReadPort(void)
+static nesl_error_e NESL_TestVideoReadPort(void)
 {
     static const NESL_TestPort TEST_PORT[] = {
         NESL_TestVideoGetPortUnused, NESL_TestVideoGetPortUnused, NESL_TestVideoGetPortStatus, NESL_TestVideoGetPortUnused,
         NESL_TestVideoGetPortOamData, NESL_TestVideoGetPortUnused, NESL_TestVideoGetPortUnused, NESL_TestVideoGetPortData,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(uint16_t address = 0x2000; address <= 0x3FFF; ++address) {
 
@@ -653,9 +668,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoReset(void)
+static nesl_error_e NESL_TestVideoReset(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if((result = NESL_TestInit(true, NESL_MIRROR_HORIZONTAL)) == NESL_FAILURE) {
         goto exit;
@@ -686,9 +701,9 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoUninit(void)
+static nesl_error_e NESL_TestVideoUninit(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if((result = NESL_TestInit(true, 0)) == NESL_FAILURE) {
         goto exit;
@@ -718,10 +733,11 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoWrite(void)
+static nesl_error_e NESL_TestVideoWrite(void)
 {
     uint16_t addr, addr_offset;
-    int bank = NESL_MIRROR_MAX, result = NESL_SUCCESS;
+    int bank = NESL_MIRROR_MAX;
+    nesl_error_e result = NESL_SUCCESS;
 
     if((result = NESL_TestInit(true, NESL_MIRROR_HORIZONTAL)) == NESL_FAILURE) {
         goto exit;
@@ -783,14 +799,14 @@ exit:
     return result;
 }
 
-static int NESL_TestVideoWritePort(void)
+static nesl_error_e NESL_TestVideoWritePort(void)
 {
     static const NESL_TestPort TEST_PORT[] = {
         NESL_TestVideoSetPortControl, NESL_TestVideoSetPortMask, NESL_TestVideoSetPortUnused, NESL_TestVideoSetPortOamAddress,
         NESL_TestVideoSetPortOamData, NESL_TestVideoSetPortScroll, NESL_TestVideoSetPortAddress, NESL_TestVideoSetPortData,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(uint16_t address = 0x2000; address <= 0x3FFF; ++address) {
 
@@ -816,7 +832,7 @@ int main(void)
         NESL_TestVideoReset, NESL_TestVideoUninit, NESL_TestVideoWrite, NESL_TestVideoWritePort,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
@@ -825,7 +841,7 @@ int main(void)
         }
     }
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus

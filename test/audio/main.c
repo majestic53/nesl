@@ -19,37 +19,46 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Test application for audio subsystem.
+ */
+
 #include "../../include/system/NESL_audio.h"
 #include "../../include/NESL_service.h"
 #include "../include/NESL_common.h"
 
+/**
+ * @struct nesl_test_t
+ * @brief Contains the test contexts.
+ */
 typedef struct {
-    nesl_audio_t audio;
+    nesl_audio_t audio; /*< Audio context */
 
     struct {
-        NESL_ServiceGetAudio callback;
-        void *context;
+        NESL_ServiceGetAudio callback;  /*< Audio callback */
+        void *context;                  /*< Audio callback context */
     } setup;
 
     struct {
 
         struct {
-            uint16_t address;
-            uint8_t data;
-            bool cycle;
-            bool initialized;
-            bool reset;
+            uint16_t address;   /*< Read/write address */
+            uint8_t data;       /*< Read/write data */
+            bool cycle;         /*< Cycle state */
+            bool initialized;   /*< Initialized state */
+            bool reset;         /*< Reset state */
         } square[NESL_CHANNEL_MAX];
     } synthesizer;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
 {
     return NESL_SUCCESS;
 }
@@ -59,7 +68,7 @@ int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
     return 0;
 }
 
-int NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
+nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 {
     return NESL_SUCCESS;
 }
@@ -72,7 +81,7 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 void NESL_AudioSquareCycle(nesl_audio_square_t *square)
 {
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if(square == &g_test.audio.synthesizer.square[channel]) {
             g_test.synthesizer.square[channel].cycle = true;
@@ -81,11 +90,11 @@ void NESL_AudioSquareCycle(nesl_audio_square_t *square)
     }
 }
 
-int NESL_AudioSquareInit(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
 {
-    int result = NESL_FAILURE;
+    nesl_error_e result = NESL_FAILURE;
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if(square == &g_test.audio.synthesizer.square[channel]) {
 
@@ -100,11 +109,11 @@ int NESL_AudioSquareInit(nesl_audio_square_t *square)
     return result;
 }
 
-int NESL_AudioSquareReset(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioSquareReset(nesl_audio_square_t *square)
 {
-    int result = NESL_FAILURE;
+    nesl_error_e result = NESL_FAILURE;
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if(square == &g_test.audio.synthesizer.square[channel]) {
             g_test.synthesizer.square[channel].reset = true;
@@ -119,7 +128,7 @@ int NESL_AudioSquareReset(nesl_audio_square_t *square)
 void NESL_AudioSquareUninit(nesl_audio_square_t *square)
 {
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if(square == &g_test.audio.synthesizer.square[channel]) {
 
@@ -134,7 +143,7 @@ void NESL_AudioSquareUninit(nesl_audio_square_t *square)
 void NESL_AudioSquareWrite(nesl_audio_square_t *square, uint16_t address, uint8_t data)
 {
 
-    for(int channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
+    for(nesl_channel_e channel = 0; channel < NESL_CHANNEL_MAX; ++channel) {
 
         if(square == &g_test.audio.synthesizer.square[channel]) {
             g_test.synthesizer.square[channel].address = address;
@@ -144,9 +153,9 @@ void NESL_AudioSquareWrite(nesl_audio_square_t *square, uint16_t address, uint8_
     }
 }
 
-int NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
+nesl_error_e NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     memset(&g_test.setup, 0, sizeof(g_test.setup));
 
@@ -162,16 +171,16 @@ exit:
     return result;
 }
 
-static int NESL_TestInit(void)
+static nesl_error_e NESL_TestInit(void)
 {
     memset(&g_test, 0, sizeof(g_test));
 
     return NESL_AudioInit(&g_test.audio);
 }
 
-static int NESL_TestAudioCycle(void)
+static nesl_error_e NESL_TestAudioCycle(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -186,9 +195,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioInit(void)
+static nesl_error_e NESL_TestAudioInit(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -211,9 +220,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioRead(void)
+static nesl_error_e NESL_TestAudioRead(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -246,9 +255,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioReset(void)
+static nesl_error_e NESL_TestAudioReset(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -274,9 +283,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioUninit(void)
+static nesl_error_e NESL_TestAudioUninit(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -299,9 +308,9 @@ exit:
     return result;
 }
 
-static int NESL_TestAudioWrite(void)
+static nesl_error_e NESL_TestAudioWrite(void)
 {
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -375,7 +384,7 @@ int main(void)
         NESL_TestAudioUninit, NESL_TestAudioWrite,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
@@ -384,7 +393,7 @@ int main(void)
         }
     }
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus

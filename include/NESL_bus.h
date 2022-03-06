@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_bus.h
+ * @brief Common bus used by the various subsystems for communication.
+ */
+
 #ifndef NESL_BUS_H_
 #define NESL_BUS_H_
 
@@ -28,12 +33,47 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Cycle bus and subsystems through one cycle.
+ * @return true if frame is complete, false otherwise
+ */
 bool NESL_BusCycle(void);
-int NESL_BusInit(const void *data, int length);
-int NESL_BusInterrupt(int type);
-uint8_t NESL_BusRead(int type, uint16_t address);
+
+/**
+ * @brief Initialize bus and subsystems.
+ * @param data Constant pointer to cartridge data
+ * @param length Cartridge data length in bytes
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_BusInit(const void *data, int length);
+
+/**
+ * @brief Send bus interrupt to subsystems.
+ * @param type Interrupt type
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+nesl_error_e NESL_BusInterrupt(nesl_interrupt_e type);
+
+/**
+ * @brief Read byte from bus subsystems.
+ * @param type Bus type
+ * @param address Bus address
+ * @return Bus data
+ */
+uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address);
+
+/**
+ * @brief Uninitialize bus and subsystems.
+ */
 void NESL_BusUninit(void);
-void NESL_BusWrite(int type, uint16_t address, uint8_t data);
+
+/**
+ * @brief Write byte to bus subsystems.
+ * @param type Bus type
+ * @param address Bus address
+ * @param data Bus data
+ */
+void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data);
 
 #ifdef __cplusplus
 }

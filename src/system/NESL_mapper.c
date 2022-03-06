@@ -19,6 +19,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file NESL_mapper.c
+ * @brief Mapper subsystem.
+ */
+
 #include "../../include/system/mapper/NESL_mapper_0.h"
 #include "../../include/system/mapper/NESL_mapper_1.h"
 #include "../../include/system/mapper/NESL_mapper_2.h"
@@ -27,30 +32,39 @@
 #include "../../include/system/mapper/NESL_mapper_30.h"
 #include "../../include/system/mapper/NESL_mapper_66.h"
 
+/**
+ * @struct nesl_mapper_context_t
+ * @brief Mapper extension context.
+ */
 typedef struct {
-    int type;
-    int (*initialize)(struct nesl_mapper_s *mapper);
-    void (*uninitialize)(struct nesl_mapper_s *mapper);
+    nesl_mapper_e type;                                         /*< Mapper type */
+    nesl_error_e (*initialize)(struct nesl_mapper_s *mapper);   /*< Mapper initialization callback */
+    void (*uninitialize)(struct nesl_mapper_s *mapper);         /*< Mapper uninitialization callback */
 } nesl_mapper_context_t;
 
+/**
+ * @brief Supported mapper extensions array.
+ * @note If a new mapper extension is added, it must be added into this array
+ */
 static const nesl_mapper_context_t CONTEXT[] = {
-    { NESL_MAPPER_0, NESL_Mapper0Init, NESL_Mapper0Uninit, },
-    { NESL_MAPPER_1, NESL_Mapper1Init, NESL_Mapper1Uninit, },
-    { NESL_MAPPER_2, NESL_Mapper2Init, NESL_Mapper2Uninit, },
-    { NESL_MAPPER_3, NESL_Mapper3Init, NESL_Mapper3Uninit, },
-    { NESL_MAPPER_4, NESL_Mapper4Init, NESL_Mapper4Uninit, },
-    { NESL_MAPPER_30, NESL_Mapper30Init, NESL_Mapper30Uninit, },
-    { NESL_MAPPER_66, NESL_Mapper66Init, NESL_Mapper66Uninit, },
+    { NESL_MAPPER_0, NESL_Mapper0Init, NESL_Mapper0Uninit, },       /*< Mapper 0 (NROM) */
+    { NESL_MAPPER_1, NESL_Mapper1Init, NESL_Mapper1Uninit, },       /*< Mapper 1 (MMC1) */
+    { NESL_MAPPER_2, NESL_Mapper2Init, NESL_Mapper2Uninit, },       /*< Mapper 2 (UxROM) */
+    { NESL_MAPPER_3, NESL_Mapper3Init, NESL_Mapper3Uninit, },       /*< Mapper 3 (CNROM) */
+    { NESL_MAPPER_4, NESL_Mapper4Init, NESL_Mapper4Uninit, },       /*< Mapper 4 (MMC3) */
+    { NESL_MAPPER_30, NESL_Mapper30Init, NESL_Mapper30Uninit, },    /*< Mapper 30 (UNROM) */
+    { NESL_MAPPER_66, NESL_Mapper66Init, NESL_Mapper66Uninit, },    /*< Mapper 66 (GxROM) */
     };
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-static int NESL_MapperContextInit(nesl_mapper_t *mapper)
+static nesl_error_e NESL_MapperContextInit(nesl_mapper_t *mapper)
 {
+    nesl_error_e result = NESL_FAILURE;
     const nesl_mapper_context_t *context = NULL;
-    int count = sizeof(CONTEXT) / sizeof(*(CONTEXT)), index, result = NESL_FAILURE;
+    int count = sizeof(CONTEXT) / sizeof(*(CONTEXT)), index;
 
     for(index = 0; index < count; ++index) {
         context = &CONTEXT[index];
@@ -86,9 +100,9 @@ static void NESL_MapperContextUninit(nesl_mapper_t *mapper)
     }
 }
 
-int NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
+nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_CartridgeInit(&mapper->cartridge, data, length)) == NESL_FAILURE) {
         goto exit;
@@ -109,12 +123,12 @@ exit:
     return result;
 }
 
-int NESL_MapperInterrupt(nesl_mapper_t *mapper)
+nesl_error_e NESL_MapperInterrupt(nesl_mapper_t *mapper)
 {
     return mapper->callback.interrupt(mapper);
 }
 
-uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
+uint8_t NESL_MapperRead(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     uint8_t result = 0;
 
@@ -134,7 +148,7 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, int type, uint16_t address)
     return result;
 }
 
-int NESL_MapperReset(nesl_mapper_t *mapper)
+nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
 {
     return mapper->callback.reset(mapper);
 }
@@ -146,7 +160,7 @@ void NESL_MapperUninit(nesl_mapper_t *mapper)
     memset(mapper, 0, sizeof(*mapper));
 }
 
-void NESL_MapperWrite(nesl_mapper_t *mapper, int type, uint16_t address, uint8_t data)
+void NESL_MapperWrite(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
     switch(type) {

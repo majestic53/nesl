@@ -19,26 +19,35 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file main.c
+ * @brief Test application for cartridge subsystem.
+ */
+
 #include "../../include/system/NESL_cartridge.h"
 #include "../include/NESL_common.h"
 
+/**
+ * @struct nesl_test_t
+ * @brief Contains the test contexts.
+ */
 typedef struct {
-    nesl_cartridge_t cartridge;
+    nesl_cartridge_t cartridge; /*< Cartridge context */
 
     struct {
-        nesl_cartridge_header_t header;
-        uint8_t program[2][16 * 1024];
-        uint8_t character[1][8 * 1024];
+        nesl_cartridge_header_t header; /*< Cartridge header */
+        uint8_t program[2][16 * 1024];  /*< Program banks */
+        uint8_t character[1][8 * 1024]; /*< Character banks */
     } data;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-int NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
+nesl_error_e NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
 {
     return NESL_FAILURE;
 }
@@ -49,9 +58,10 @@ static void NESL_TestUninit(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-static int NESL_TestInit(void)
+static nesl_error_e NESL_TestInit(void)
 {
-    int bank, result;
+    int bank;
+    nesl_error_e result;
 
     NESL_TestUninit();
     memcpy(g_test.data.header.magic, "NES\x1A", 4);
@@ -90,11 +100,11 @@ exit:
     return result;
 }
 
-static int NESL_TestCartridgeGetBankCount(void)
+static nesl_error_e NESL_TestCartridgeGetBankCount(void)
 {
-    int result = NESL_FAILURE;
+    nesl_error_e result = NESL_FAILURE;
 
-    for(uint8_t type = 0; type < NESL_BANK_MAX; ++type) {
+    for(nesl_bank_e type = 0; type < NESL_BANK_MAX; ++type) {
         uint8_t data = 0;
 
         if((result = NESL_TestInit()) == NESL_FAILURE) {
@@ -132,9 +142,9 @@ exit:
     return result;
 }
 
-static int NESL_TestCartridgeGetMapper(void)
+static nesl_error_e NESL_TestCartridgeGetMapper(void)
 {
-    int result;
+    nesl_error_e result;
 
     if((result = NESL_TestInit()) == NESL_FAILURE) {
         goto exit;
@@ -166,11 +176,11 @@ exit:
     return result;
 }
 
-static int NESL_TestCartridgeGetMirror(void)
+static nesl_error_e NESL_TestCartridgeGetMirror(void)
 {
-    int result = NESL_FAILURE;
+    nesl_error_e result = NESL_FAILURE;
 
-    for(uint8_t type = 0; type < NESL_MIRROR_ONE_LOW; ++type) {
+    for(nesl_mirror_e type = 0; type < NESL_MIRROR_ONE_LOW; ++type) {
 
         if((result = NESL_TestInit()) == NESL_FAILURE) {
             goto exit;
@@ -190,9 +200,10 @@ exit:
     return result;
 }
 
-static int NESL_TestCartridgeRead(void)
+static nesl_error_e NESL_TestCartridgeRead(void)
 {
-    int bank, result = NESL_SUCCESS;
+    int bank;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(bank = 0; bank < 1; ++bank) {
         uint8_t data = 0;
@@ -236,10 +247,10 @@ exit:
     return result;
 }
 
-static int NESL_TestCartridgeWrite(void)
+static nesl_error_e NESL_TestCartridgeWrite(void)
 {
     uint8_t data = 0xFF;
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     g_test.cartridge.ram.character = g_test.data.character[0];
 
@@ -280,7 +291,7 @@ int main(void)
         NESL_TestCartridgeWrite,
         };
 
-    int result = NESL_SUCCESS;
+    nesl_error_e result = NESL_SUCCESS;
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
@@ -296,7 +307,7 @@ int main(void)
 
     NESL_TestUninit();
 
-    return result;
+    return (int)result;
 }
 
 #ifdef __cplusplus
