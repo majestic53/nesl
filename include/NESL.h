@@ -21,7 +21,7 @@
 
 /**
  * @file NESL.h
- * @brief Public API.
+ * @brief NESL API.
  */
 
 #ifndef NESL_H_
@@ -40,7 +40,7 @@
 typedef enum {
     NESL_FAILURE = -1,  /*< Operation failed, call NESL_GetError */
     NESL_SUCCESS,       /*< Operation succeeded */
-    NESL_QUIT,          /*< Internal event, assume operation succeeded*/
+    NESL_QUIT,          /*< Internal event, assume operation succeeded */
 } nesl_error_e;
 
 /**
