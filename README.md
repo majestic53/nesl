@@ -25,7 +25,8 @@ __NOTE__: This project is a still a work-in-progress. Some features may be incom
 
 ### Work-in-progress
 
-* Support for audio playback.
+* Support for audio synthesis.
+* Support for light-gun controller
 
 ## Latest release
 
