@@ -53,6 +53,10 @@ static nesl_bus_t g_bus = {};       /*< Bus context */
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Reset Bus/Service and subsystems.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_BusReset(void)
 {
     nesl_error_e result;

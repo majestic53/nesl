@@ -31,12 +31,23 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Get audio data callback.
+ * @param context Pointer to audio context
+ * @param data Pointer to data array
+ * @param length Length of data array in bytes
+ */
 static void NESL_AudioGetData(void *context, uint8_t *data, int length)
 {
     memset(data, 0, length);
     NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (float *)data, length / sizeof(float));
 }
 
+/**
+ * @brief Get audio status register.
+ * @param audio Pointer to audio subsystem context
+ * @return Audio status data
+ */
 static uint8_t NESL_AudioGetStatus(nesl_audio_t *audio)
 {
     nesl_audio_status_t result = {};
@@ -46,6 +57,11 @@ static uint8_t NESL_AudioGetStatus(nesl_audio_t *audio)
     return result.raw;
 }
 
+/**
+ * @brief Set audio frame register.
+ * @param audio Pointer to audio subsystem context
+ * @param data Audio frame data
+ */
 static void NESL_AudioSetFrame(nesl_audio_t *audio, uint8_t data)
 {
     audio->frame.raw = data;
@@ -53,6 +69,11 @@ static void NESL_AudioSetFrame(nesl_audio_t *audio, uint8_t data)
     /* TODO: SET FRAME */
 }
 
+/**
+ * @brief Set audio status register.
+ * @param audio Pointer to audio subsystem context
+ * @param data Audio status data
+ */
 static void NESL_AudioSetStatus(nesl_audio_t *audio, uint8_t data)
 {
     audio->status.raw = data;

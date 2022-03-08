@@ -30,6 +30,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Set mapper-4 charcter/program ROM banks.
+ * @param mapper Pointer to mapper subsystem context
+ */
 static void NESL_Mapper4SetBank(nesl_mapper_t *mapper)
 {
     nesl_mapper_4_context_t *context = mapper->context;
@@ -69,6 +73,10 @@ static void NESL_Mapper4SetBank(nesl_mapper_t *mapper)
     mapper->rom.program[3] = (banks * 16 * 1024) - (1 * 8 * 1024);
 }
 
+/**
+ * @brief Set mapper-4 mirror type.
+ * @param mapper Pointer to mapper context
+ */
 static void NESL_Mapper4SetMirror(nesl_mapper_t *mapper)
 {
 
@@ -79,6 +87,12 @@ static void NESL_Mapper4SetMirror(nesl_mapper_t *mapper)
     }
 }
 
+/**
+ * @brief Set mapper-4 state.
+ * @param mapper Pointer to mapper context
+ * @param address mapper address
+ * @param data mapper data
+ */
 static void NESL_Mapper4Set( nesl_mapper_t *mapper, uint16_t address, uint8_t data)
 {
     nesl_mapper_4_context_t *context = mapper->context;

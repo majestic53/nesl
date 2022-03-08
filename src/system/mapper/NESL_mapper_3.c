@@ -30,6 +30,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Set mapper-3 charcter ROM bank.
+ * @param mapper Pointer to mapper subsystem context
+ */
 static void NESL_Mapper3Set(nesl_mapper_t *mapper)
 {
     mapper->rom.character[0] = ((nesl_mapper_3_context_t *)mapper->context)->character.bank * 8 * 1024;

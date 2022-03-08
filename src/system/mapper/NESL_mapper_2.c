@@ -30,6 +30,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Set mapper-2 program ROM bank.
+ * @param mapper Pointer to mapper subsystem context
+ */
 static void NESL_Mapper2Set(nesl_mapper_t *mapper)
 {
     mapper->rom.program[0] = ((nesl_mapper_2_context_t *)mapper->context)->program.bank * 16 * 1024;

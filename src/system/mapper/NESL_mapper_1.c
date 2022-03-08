@@ -30,6 +30,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Set mapper-1 character ROM bank offsets.
+ * @param mapper Pointer to mapper subsystem context
+ */
 static void NESL_Mapper1SetCharacter(nesl_mapper_t *mapper)
 {
     const nesl_mapper_1_context_t *context = mapper->context;
@@ -48,6 +52,10 @@ static void NESL_Mapper1SetCharacter(nesl_mapper_t *mapper)
     }
 }
 
+/**
+ * @brief Set mapper-1 mirror type.
+ * @param mapper Pointer to mapper subsystem context
+ */
 static void NESL_Mapper1SetMirror(nesl_mapper_t *mapper)
 {
 
@@ -69,6 +77,10 @@ static void NESL_Mapper1SetMirror(nesl_mapper_t *mapper)
     }
 }
 
+/**
+ * @brief Set mapper-1 program ROM bank offsets.
+ * @param mapper Pointer to mapper subsystem context
+ */
 static void NESL_Mapper1SetProgram(nesl_mapper_t *mapper)
 {
     const nesl_mapper_1_context_t *context = mapper->context;
@@ -91,6 +103,12 @@ static void NESL_Mapper1SetProgram(nesl_mapper_t *mapper)
     }
 }
 
+/**
+ * @brief Set mapper-1 shift register and state.
+ * @param mapper Pointer to mapper subsystem context
+ * @param address mapper address
+ * @param data mapper data
+ */
 static void NESL_Mapper1Set(nesl_mapper_t *mapper, uint16_t address, uint8_t data)
 {
     nesl_mapper_1_context_t *context = mapper->context;

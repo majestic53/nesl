@@ -33,20 +33,20 @@
 #include "../../include/system/mapper/NESL_mapper_66.h"
 
 /**
- * @struct nesl_mapper_context_t
+ * @struct nesl_mapper_extension_t
  * @brief Mapper extension context.
  */
 typedef struct {
     nesl_mapper_e type;                                             /*< Mapper type */
     nesl_error_e (*initialize)(struct nesl_mapper_s *mapper);       /*< Mapper initialization callback */
     void (*uninitialize)(struct nesl_mapper_s *mapper);             /*< Mapper uninitialization callback */
-} nesl_mapper_context_t;
+} nesl_mapper_extension_t;
 
 /**
  * @brief Supported mapper extensions array.
  * @note If a new mapper extension is added, it must be added into this array
  */
-static const nesl_mapper_context_t CONTEXT[] = {
+static const nesl_mapper_extension_t CONTEXT[] = {
     { NESL_MAPPER_0, NESL_Mapper0Init, NESL_Mapper0Uninit, },       /*< Mapper 0 (NROM) */
     { NESL_MAPPER_1, NESL_Mapper1Init, NESL_Mapper1Uninit, },       /*< Mapper 1 (MMC1) */
     { NESL_MAPPER_2, NESL_Mapper2Init, NESL_Mapper2Uninit, },       /*< Mapper 2 (UxROM) */
@@ -60,18 +60,23 @@ static const nesl_mapper_context_t CONTEXT[] = {
 extern "C" {
 #endif /* __cplusplus */
 
-static nesl_error_e NESL_MapperContextInit(nesl_mapper_t *mapper)
+/**
+ * @brief Initialize mapper extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_MapperExtensionInit(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_FAILURE;
-    const nesl_mapper_context_t *context = NULL;
+    const nesl_mapper_extension_t *extension = NULL;
     int count = sizeof(CONTEXT) / sizeof(*(CONTEXT)), index;
 
     for(index = 0; index < count; ++index) {
-        context = &CONTEXT[index];
+        extension = &CONTEXT[index];
 
-        if(context->type == mapper->type) {
+        if(extension->type == mapper->type) {
 
-            if((result = context->initialize(mapper)) == NESL_FAILURE) {
+            if((result = extension->initialize(mapper)) == NESL_FAILURE) {
                 goto exit;
             }
             break;
@@ -87,14 +92,19 @@ exit:
     return result;
 }
 
-static void NESL_MapperContextUninit(nesl_mapper_t *mapper)
+/**
+ * @brief Uninitialize mapper extension.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static void NESL_MapperExtensionUninit(nesl_mapper_t *mapper)
 {
 
     for(int index = 0; index < (sizeof(CONTEXT) / sizeof(*(CONTEXT))); ++index) {
-        const nesl_mapper_context_t *context = &CONTEXT[index];
+        const nesl_mapper_extension_t *extension = &CONTEXT[index];
 
-        if(context->type == mapper->type) {
-            context->uninitialize(mapper);
+        if(extension->type == mapper->type) {
+            extension->uninitialize(mapper);
             break;
         }
     }
@@ -111,7 +121,7 @@ nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length
     mapper->mirror = NESL_CartridgeGetMirror(&mapper->cartridge);
     mapper->type = NESL_CartridgeGetMapper(&mapper->cartridge);
 
-    if((result = NESL_MapperContextInit(mapper)) == NESL_FAILURE) {
+    if((result = NESL_MapperExtensionInit(mapper)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -155,7 +165,7 @@ nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
 
 void NESL_MapperUninit(nesl_mapper_t *mapper)
 {
-    NESL_MapperContextUninit(mapper);
+    NESL_MapperExtensionUninit(mapper);
     NESL_CartridgeUninit(&mapper->cartridge);
     memset(mapper, 0, sizeof(*mapper));
 }

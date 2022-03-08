@@ -30,6 +30,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Copy audio data into circular buffer.
+ * @param buffer Constant pointer to audio buffer context
+ * @param data Pointer to data array
+ * @param length Maximum number of entries in data array
+ */
 static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
@@ -47,6 +53,12 @@ static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, float *data, int
     buffer->full = (buffer->write == buffer->read);
 }
 
+/**
+ * @brief Copy audio data out of circular buffer.
+ * @param buffer Constant pointer to audio buffer context
+ * @param data Pointer to data array
+ * @param length Maximum number of entries in data array
+ */
 static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
@@ -64,6 +76,13 @@ static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, float *data, in
     buffer->full = false;
 }
 
+/**
+ * @brief Calculate the distance between the left and right offet, with wrap-around.
+ * @param max Maximum length (used to wrap-around)
+ * @param left Left offset
+ * @param right Right offset
+ * @return Distance between offsets
+ */
 static int NESL_AudioBufferDistance(int max, int left, int right)
 {
     int result = 0;
@@ -77,16 +96,30 @@ static int NESL_AudioBufferDistance(int max, int left, int right)
     return result;
 }
 
+/**
+ * @brief Calculate the minimum between the left and right offset.
+ * @param left Left offset
+ * @param right Right offset
+ * @return Minimum between offsets
+ */
 static int NESL_AudioBufferMinimum(int left, int right)
 {
     return (left > right) ? right : left;
 }
 
+/**
+ * @brief Determine if buffer is empty.
+ * @return true if empty, false otherwise
+ */
 static bool NESL_AudioBufferEmpty(nesl_audio_buffer_t *buffer)
 {
     return !buffer->full && (buffer->write == buffer->read);
 }
 
+/**
+ * @brief Determine if buffer is full.
+ * @return true if full, false otherwise
+ */
 static bool NESL_AudioBufferFull(nesl_audio_buffer_t *buffer)
 {
     return buffer->full;

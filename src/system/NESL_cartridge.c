@@ -30,6 +30,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Validate cartridge length/data.
+ * @param data Pointer to data array
+ * @param length Length of data array in bytes
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_CartridgeValidate(const void *data, int length)
 {
     nesl_error_e result = NESL_SUCCESS;

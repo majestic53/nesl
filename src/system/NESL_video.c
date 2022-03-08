@@ -46,6 +46,10 @@ typedef void (*NESL_VideoSetPort)(nesl_video_t *video, uint8_t data);
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Load background patterns into shift registers.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoBackgroundLoad(nesl_video_t *video)
 {
 
@@ -96,6 +100,10 @@ static void NESL_VideoBackgroundLoad(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Shift background shift registers.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoBackgroundShift(nesl_video_t *video)
 {
 
@@ -107,6 +115,11 @@ static void NESL_VideoBackgroundShift(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Flip sprite data.
+ * @param data Sprite data
+ * @return Flipped sprite data
+ */
 static uint8_t NESL_VideoFlip(uint8_t data)
 {
     data = ((data & 0x0F) << 4) | ((data & 0xF0) >> 4);
@@ -116,6 +129,11 @@ static uint8_t NESL_VideoFlip(uint8_t data)
     return data;
 }
 
+/**
+ * @brief Get data port register.
+ * @param video Pointer to video subsystem context
+ * @return Data port register data
+ */
 static uint8_t NESL_VideoGetPortData(nesl_video_t *video)
 {
     uint8_t result = video->port.data.low;
@@ -131,11 +149,21 @@ static uint8_t NESL_VideoGetPortData(nesl_video_t *video)
     return result;
 }
 
+/**
+ * @brief Get OAM-data port register.
+ * @param video Pointer to video subsystem context
+ * @return OAM-data port register data
+ */
 static uint8_t NESL_VideoGetPortOamData(nesl_video_t *video)
 {
     return ((uint8_t *)video->ram.oam)[video->port.oam_address.low];
 }
 
+/**
+ * @brief Get video status port register.
+ * @param video Pointer to video subsystem context
+ * @return Status port register data
+ */
 static uint8_t NESL_VideoGetPortStatus(nesl_video_t *video)
 {
     uint8_t result;
@@ -150,11 +178,20 @@ static uint8_t NESL_VideoGetPortStatus(nesl_video_t *video)
     return result;
 }
 
+/**
+ * @brief Get video unused port register.
+ * @param video Pointer to video subsystem context
+ * @return Unused port register data
+ */
 static uint8_t NESL_VideoGetPortUnused(nesl_video_t *video)
 {
     return video->port.data.low;
 }
 
+/**
+ * @brief Update internal address x-coordinates.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoHorizontalSet(nesl_video_t *video)
 {
     video->background.attribute.lsb.low = (video->background.attribute.data & 1) ? 0xFF : 0;
@@ -168,6 +205,10 @@ static void NESL_VideoHorizontalSet(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Send mapper interrupt on A12.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoMapperInterrupt(nesl_video_t *video)
 {
 
@@ -176,6 +217,12 @@ static void NESL_VideoMapperInterrupt(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Calculate video nametable address.
+ * @param address Desired address
+ * @param bank Calcuated bank
+ * @return Calculated address
+ */
 static uint16_t NESL_VideoNametableAddress(uint16_t address, nesl_mirror_e mirror, int *bank)
 {
 
@@ -223,6 +270,11 @@ static uint16_t NESL_VideoNametableAddress(uint16_t address, nesl_mirror_e mirro
     return address & 0x03FF;
 }
 
+/**
+ * @brief Calcluate video palette address.
+ * @param address Desired address
+ * @return Calculated address
+ */
 static uint16_t NESL_VideoPaletteAddress(uint16_t address)
 {
 
@@ -240,6 +292,10 @@ static uint16_t NESL_VideoPaletteAddress(uint16_t address)
     return address;
 }
 
+/**
+ * @brief Render video pixel to service.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoRender(nesl_video_t *video)
 {
     bool priority;
@@ -309,6 +365,11 @@ static void NESL_VideoRender(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Set video address port register.
+ * @param video Pointer to video subsystem context
+ * @param data Address port register data
+ */
 static void NESL_VideoSetPortAddress(nesl_video_t *video, uint8_t data)
 {
 
@@ -322,6 +383,11 @@ static void NESL_VideoSetPortAddress(nesl_video_t *video, uint8_t data)
     }
 }
 
+/**
+ * @brief Set video control port register.
+ * @param video Pointer to video subsystem context
+ * @param data Control port register data
+ */
 static void NESL_VideoSetPortControl(nesl_video_t *video, uint8_t data)
 {
     video->port.control.raw = data;
@@ -329,22 +395,42 @@ static void NESL_VideoSetPortControl(nesl_video_t *video, uint8_t data)
     video->address.t.nametable_y = video->port.control.nametable_y;
 }
 
+/**
+ * @brief Set video data port register.
+ * @param video Pointer to video subsystem context
+ * @param data Data port register data
+ */
 static void NESL_VideoSetPortData(nesl_video_t *video, uint8_t data)
 {
     NESL_BusWrite(NESL_BUS_VIDEO, video->address.v.word, data);
     video->address.v.word += (video->port.control.increment ? 32 : 1);
 }
 
+/**
+ * @brief Set video mask port register.
+ * @param video Pointer to video subsystem context
+ * @param data Mask port register data
+ */
 static void NESL_VideoSetPortMask(nesl_video_t *video, uint8_t data)
 {
     video->port.mask.raw = data;
 }
 
+/**
+ * @brief Set video OAM-address port register.
+ * @param video Pointer to video subsystem context
+ * @param data OAM-address port register data
+ */
 static void NESL_VideoSetPortOamAddress(nesl_video_t *video, uint8_t data)
 {
     video->port.oam_address.low = data;
 }
 
+/**
+ * @brief Set video OAM-data port register.
+ * @param video Pointer to video subsystem context
+ * @param data OAM-data port register data
+ */
 static void NESL_VideoSetPortOamData(nesl_video_t *video, uint8_t data)
 {
     ((uint8_t *)video->ram.oam)[video->port.oam_address.low] = data;
@@ -354,6 +440,11 @@ static void NESL_VideoSetPortOamData(nesl_video_t *video, uint8_t data)
     }
 }
 
+/**
+ * @brief Set video scroll port register.
+ * @param video Pointer to video subsystem context
+ * @param data Scroll port register data
+ */
 static void NESL_VideoSetPortScroll(nesl_video_t *video, uint8_t data)
 {
 
@@ -368,11 +459,20 @@ static void NESL_VideoSetPortScroll(nesl_video_t *video, uint8_t data)
     }
 }
 
+/**
+ * @brief Set video unused port register.
+ * @param video Pointer to video subsystem context
+ * @param data Unused port register data
+ */
 static void NESL_VideoSetPortUnused(nesl_video_t *video, uint8_t data)
 {
     video->port.data.low = data;
 }
 
+/**
+ * @brief Evaluate sprites present on current scanline.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoSpriteEvaluate(nesl_video_t *video)
 {
     video->port.status.sprite_overflow = false;
@@ -400,6 +500,10 @@ static void NESL_VideoSpriteEvaluate(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Load sprite patterns into shift registers.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoSpriteLoad(nesl_video_t *video)
 {
 
@@ -443,6 +547,10 @@ static void NESL_VideoSpriteLoad(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Shift sprite shift registers.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoSpriteShift(nesl_video_t *video)
 {
 
@@ -461,6 +569,10 @@ static void NESL_VideoSpriteShift(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Enter vertical blank.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoVerticalBlank(nesl_video_t *video)
 {
 
@@ -471,6 +583,10 @@ static void NESL_VideoVerticalBlank(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Exit vertical blank.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoVerticalBlankExit(nesl_video_t *video)
 {
     video->port.status.sprite_overflow = false;
@@ -483,6 +599,10 @@ static void NESL_VideoVerticalBlankExit(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Increment address y-coordinates.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoVerticalIncrement(nesl_video_t *video)
 {
 
@@ -507,6 +627,10 @@ static void NESL_VideoVerticalIncrement(nesl_video_t *video)
     }
 }
 
+/**
+ * @brief Update internal address y-coordinates.
+ * @param video Pointer to video subsystem context
+ */
 static void NESL_VideoVerticalSet(nesl_video_t *video)
 {
 

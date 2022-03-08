@@ -58,6 +58,13 @@ typedef enum {
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Read file at path.
+ * @param input Pointer to NESL context
+ * @param base Pointer to base path string
+ * @param path Pointer to path string
+ * @param NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e ReadFile(nesl_t *input, char *base, char *path)
 {
     FILE *file = NULL;
@@ -103,6 +110,11 @@ exit:
     return result;
 }
 
+/**
+ * @brief Show version string in stream.
+ * @param stream File stream
+ * @param verbose Verbose output
+ */
 static void ShowVersion(FILE *stream, bool verbose)
 {
     const nesl_version_t *version = NESL_GetVersion();
@@ -118,6 +130,11 @@ static void ShowVersion(FILE *stream, bool verbose)
     }
 }
 
+/**
+ * @brief Show help string in stream.
+ * @param stream File stream
+ * @param verbose Verbose output
+ */
 static void ShowHelp(FILE *stream, bool verbose)
 {
 
