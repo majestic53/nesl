@@ -30,7 +30,7 @@
 /**
  * @brief Test assertion macro.
  * @param _CONDITION_ Assert on condition
- * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ * @return NESL_FAILURE
  */
 #define NESL_ASSERT(_CONDITION_) \
     (_CONDITION_) ? NESL_SUCCESS : NESL_Assert(# _CONDITION_, __FILE__, __FUNCTION__, __LINE__)
@@ -45,7 +45,7 @@ extern "C" {
  * @param file Constant pointer to file string
  * @param function Constant pointer to function string
  * @param line File line
- * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ * @return NESL_FAILURE
  */
 nesl_error_e NESL_Assert(const char *condition, const char *file, const char *function, size_t line)
 {
