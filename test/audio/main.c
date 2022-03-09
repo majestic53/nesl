@@ -285,6 +285,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Initialize test context.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInit(void)
 {
     memset(&g_test, 0, sizeof(g_test));
@@ -292,6 +296,10 @@ static nesl_error_e NESL_TestInit(void)
     return NESL_AudioInit(&g_test.audio);
 }
 
+/**
+ * @brief Test audio subsystem cycle.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioCycle(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -322,6 +330,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio subsystem initialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioInit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -350,6 +362,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio subsystem read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -385,6 +401,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio subsystem reset.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -416,6 +436,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio subsystem uninitialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioUninit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -444,6 +468,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio subsystem write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioWrite(void)
 {
     nesl_error_e result = NESL_SUCCESS;

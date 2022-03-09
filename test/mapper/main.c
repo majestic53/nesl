@@ -173,6 +173,11 @@ nesl_error_e NESL_SetError(const char *file, const char *function, int line, con
     return NESL_FAILURE;
 }
 
+/**
+ * @brief Test interrupt handler.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInterruptHandler(nesl_mapper_t *mapper)
 {
     g_test.interrupt = true;
@@ -180,6 +185,13 @@ static nesl_error_e NESL_TestInterruptHandler(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
+/**
+ * @brief Test read handler.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Mapper type
+ * @param address Mapper address
+ * @return Mapper data
+ */
 static uint8_t NESL_TestReadHandler(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
 {
     g_test.type = type;
@@ -188,6 +200,11 @@ static uint8_t NESL_TestReadHandler(nesl_mapper_t *mapper, nesl_bank_e type, uin
     return g_test.data;
 }
 
+/**
+ * @brief Test reset handler.
+ * @param mapper Pointer to mapper subsystem context
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestResetHandler(nesl_mapper_t *mapper)
 {
     g_test.reset = true;
@@ -195,6 +212,13 @@ static nesl_error_e NESL_TestResetHandler(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
+/**
+ * @brief Test write handler.
+ * @param mapper Pointer to mapper subsystem context
+ * @param type Mapper type
+ * @param address Mapper address
+ * @param data Mapper data
+ */
 static void NESL_TestWriteHandler(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
     g_test.type = type;
@@ -202,6 +226,11 @@ static void NESL_TestWriteHandler(nesl_mapper_t *mapper, nesl_bank_e type, uint1
     g_test.data = data;
 }
 
+/**
+ * @brief Initialize test context.
+ * @param header Pointer to cartridge header
+ * @param type Mapper type
+ */
 static void NESL_TestInit(nesl_cartridge_header_t *header, nesl_mapper_e type)
 {
     memset(&g_test, 0, sizeof(g_test));
@@ -209,14 +238,18 @@ static void NESL_TestInit(nesl_cartridge_header_t *header, nesl_mapper_e type)
     header->flag_7.type_high = (type & 0xF0) >> 4;
     g_test.cartridge.header = header;
     g_test.mapper.cartridge.header = g_test.cartridge.header;
-    g_test.mapper.callback.interrupt = &NESL_TestInterruptHandler;
-    g_test.mapper.callback.read_ram = &NESL_TestReadHandler;
-    g_test.mapper.callback.read_rom = &NESL_TestReadHandler;
-    g_test.mapper.callback.reset = &NESL_TestResetHandler;
-    g_test.mapper.callback.write_ram = &NESL_TestWriteHandler;
-    g_test.mapper.callback.write_rom = &NESL_TestWriteHandler;
+    g_test.mapper.extension.interrupt = &NESL_TestInterruptHandler;
+    g_test.mapper.extension.read_ram = &NESL_TestReadHandler;
+    g_test.mapper.extension.read_rom = &NESL_TestReadHandler;
+    g_test.mapper.extension.reset = &NESL_TestResetHandler;
+    g_test.mapper.extension.write_ram = &NESL_TestWriteHandler;
+    g_test.mapper.extension.write_rom = &NESL_TestWriteHandler;
 }
 
+/**
+ * @brief Test mapper subsystem initialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapperInit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -265,6 +298,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper subsystem interrupt.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapperInterrupt(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -292,6 +329,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper subsystem read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapperRead(void)
 {
     uint8_t data = 0;
@@ -320,6 +361,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper subsystem reset.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapperReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -347,6 +392,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper subsystem uninitialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapperUninit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -366,6 +415,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper subsystem write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapperWrite(void)
 {
     uint8_t data = 0;

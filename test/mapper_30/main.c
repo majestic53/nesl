@@ -123,32 +123,44 @@ nesl_error_e NESL_SetError(const char *file, const char *function, int line, con
     return NESL_FAILURE;
 }
 
+/**
+ * @brief Uninitialize test context.
+ */
 static void NESL_TestUninit(void)
 {
     NESL_Mapper30Uninit(&g_test.mapper);
-    g_test.mapper.callback.interrupt = NULL;
-    g_test.mapper.callback.read_ram = NULL;
-    g_test.mapper.callback.read_rom = NULL;
-    g_test.mapper.callback.reset = NULL;
-    g_test.mapper.callback.write_ram = NULL;
-    g_test.mapper.callback.write_rom = NULL;
+    g_test.mapper.extension.interrupt = NULL;
+    g_test.mapper.extension.read_ram = NULL;
+    g_test.mapper.extension.read_rom = NULL;
+    g_test.mapper.extension.reset = NULL;
+    g_test.mapper.extension.write_ram = NULL;
+    g_test.mapper.extension.write_rom = NULL;
 }
 
+/**
+ * @brief Initialize test context.
+ * @param header Pointer to cartridge header
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInit(const nesl_cartridge_header_t *header)
 {
     NESL_TestUninit();
     memset(&g_test, 0, sizeof(g_test));
     g_test.mapper.cartridge.header = header;
-    g_test.mapper.callback.interrupt = &NESL_Mapper30Interrupt;
-    g_test.mapper.callback.read_ram = &NESL_Mapper30ReadRam;
-    g_test.mapper.callback.read_rom = &NESL_Mapper30ReadRom;
-    g_test.mapper.callback.reset = &NESL_Mapper30Reset;
-    g_test.mapper.callback.write_ram = &NESL_Mapper30WriteRam;
-    g_test.mapper.callback.write_rom = &NESL_Mapper30WriteRom;
+    g_test.mapper.extension.interrupt = &NESL_Mapper30Interrupt;
+    g_test.mapper.extension.read_ram = &NESL_Mapper30ReadRam;
+    g_test.mapper.extension.read_rom = &NESL_Mapper30ReadRom;
+    g_test.mapper.extension.reset = &NESL_Mapper30Reset;
+    g_test.mapper.extension.write_ram = &NESL_Mapper30WriteRam;
+    g_test.mapper.extension.write_rom = &NESL_Mapper30WriteRom;
 
     return NESL_Mapper30Init(&g_test.mapper);
 }
 
+/**
+ * @brief Test mapper-30 extension initialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30Init(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -166,12 +178,12 @@ static nesl_error_e NESL_TestMapper30Init(void)
             && (g_test.mapper.rom.program[1] == 16 * 1024)
             && (g_test.mapper.mirror == NESL_MIRROR_HORIZONTAL)
             && (g_test.mapper.context != NULL)
-            && (g_test.mapper.callback.interrupt == &NESL_Mapper30Interrupt)
-            && (g_test.mapper.callback.read_ram == &NESL_Mapper30ReadRam)
-            && (g_test.mapper.callback.read_rom == &NESL_Mapper30ReadRom)
-            && (g_test.mapper.callback.reset == &NESL_Mapper30Reset)
-            && (g_test.mapper.callback.write_ram == &NESL_Mapper30WriteRam)
-            && (g_test.mapper.callback.write_rom == &NESL_Mapper30WriteRom))) {
+            && (g_test.mapper.extension.interrupt == &NESL_Mapper30Interrupt)
+            && (g_test.mapper.extension.read_ram == &NESL_Mapper30ReadRam)
+            && (g_test.mapper.extension.read_rom == &NESL_Mapper30ReadRom)
+            && (g_test.mapper.extension.reset == &NESL_Mapper30Reset)
+            && (g_test.mapper.extension.write_ram == &NESL_Mapper30WriteRam)
+            && (g_test.mapper.extension.write_rom == &NESL_Mapper30WriteRom))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -188,12 +200,12 @@ static nesl_error_e NESL_TestMapper30Init(void)
             && (g_test.mapper.rom.program[1] == 3 * 16 * 1024)
             && (g_test.mapper.mirror == NESL_MIRROR_HORIZONTAL)
             && (g_test.mapper.context != NULL)
-            && (g_test.mapper.callback.interrupt == &NESL_Mapper30Interrupt)
-            && (g_test.mapper.callback.read_ram == &NESL_Mapper30ReadRam)
-            && (g_test.mapper.callback.read_rom == &NESL_Mapper30ReadRom)
-            && (g_test.mapper.callback.reset == &NESL_Mapper30Reset)
-            && (g_test.mapper.callback.write_ram == &NESL_Mapper30WriteRam)
-            && (g_test.mapper.callback.write_rom == &NESL_Mapper30WriteRom))) {
+            && (g_test.mapper.extension.interrupt == &NESL_Mapper30Interrupt)
+            && (g_test.mapper.extension.read_ram == &NESL_Mapper30ReadRam)
+            && (g_test.mapper.extension.read_rom == &NESL_Mapper30ReadRom)
+            && (g_test.mapper.extension.reset == &NESL_Mapper30Reset)
+            && (g_test.mapper.extension.write_ram == &NESL_Mapper30WriteRam)
+            && (g_test.mapper.extension.write_rom == &NESL_Mapper30WriteRom))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -204,6 +216,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension interrupt.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30Interrupt(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -224,6 +240,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension RAM read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30ReadRam(void)
 {
     uint8_t data = 0;
@@ -276,6 +296,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension ROM read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30ReadRom(void)
 {
     uint8_t data = 0;
@@ -354,9 +378,13 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension reset.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30Reset(void)
 {
-    nesl_mapper_30_context_t *context;
+    nesl_mapper_30_t *context;
     nesl_error_e result = NESL_SUCCESS;
     nesl_cartridge_header_t header = { .rom.program = 2, .rom.character = 2 };
 
@@ -369,7 +397,7 @@ static nesl_error_e NESL_TestMapper30Reset(void)
         goto exit;
     }
 
-    context = (nesl_mapper_30_context_t *)g_test.mapper.context;
+    context = (nesl_mapper_30_t *)g_test.mapper.context;
 
     if(NESL_ASSERT((g_test.mapper.rom.program[0] == context->bank.program * 16 * 1024)
             && (g_test.mapper.rom.program[1] == (g_test.mapper.cartridge.header->rom.program * 16 * 1024) - (1 * 16 * 1024))
@@ -385,6 +413,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension RAM write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30WriteRam(void)
 {
     uint8_t data = 0;
@@ -438,6 +470,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension ROM write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30WriteRom(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -484,6 +520,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test mapper-30 extension uninitialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestMapper30Uninit(void)
 {
     nesl_error_e result = NESL_SUCCESS;

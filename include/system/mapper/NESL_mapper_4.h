@@ -74,8 +74,8 @@ typedef union {
 } nesl_mapper_4_select_t;
 
 /**
- * @struct nesl_mapper_4_context_t
- * @brief Mapper-4 extension context.
+ * @struct nesl_mapper_4_t
+ * @brief Mapper-4 context.
  */
 typedef struct {
 
@@ -93,7 +93,7 @@ typedef struct {
     nesl_mapper_4_select_t select;      /*< Select register */
     nesl_mapper_4_mirror_t mirror;      /*< Mirror register */
     nesl_mapper_4_protect_t protect;    /*< RAM protection register */
-} nesl_mapper_4_context_t;
+} nesl_mapper_4_t;
 
 #ifdef __cplusplus
 extern "C" {

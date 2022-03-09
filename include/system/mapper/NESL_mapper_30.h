@@ -45,12 +45,12 @@ typedef union {
 } nesl_mapper_30_bank_t;
 
 /**
- * @struct nesl_mapper_30_context_t
- * @brief Mapper-30 extension context.
+ * @struct nesl_mapper_30_t
+ * @brief Mapper-30 context.
  */
 typedef struct {
     nesl_mapper_30_bank_t bank;     /*< Bank register */
-} nesl_mapper_30_context_t;
+} nesl_mapper_30_t;
 
 #ifdef __cplusplus
 extern "C" {

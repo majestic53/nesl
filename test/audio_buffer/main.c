@@ -46,6 +46,13 @@ nesl_error_e NESL_SetError(const char *file, const char *function, int line, con
     return NESL_FAILURE;
 }
 
+/**
+ * @brief Calculate the distance between the left and right offet, with wrap-around.
+ * @param max Maximum length (used to wrap-around)
+ * @param left Left offset
+ * @param right Right offset
+ * @return Distance between offsets
+ */
 static int NESL_TestDistance(int max, int left, int right)
 {
     int result = 0;
@@ -59,17 +66,30 @@ static int NESL_TestDistance(int max, int left, int right)
     return result;
 }
 
+/**
+ * @brief Calculate the minimum between the left and right offset.
+ * @param left Left offset
+ * @param right Right offset
+ * @return Minimum between offsets
+ */
 static int NESL_TestMinimum(int left, int right)
 {
     return (left > right) ? right : left;
 }
 
+/**
+ * @brief Uninitialize test context.
+ */
 static void NESL_TestUninit(void)
 {
     NESL_AudioBufferUninit(&g_test.buffer);
     memset(&g_test, 0, sizeof(g_test));
 }
 
+/**
+ * @brief Initialize test context.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInit(int length)
 {
     NESL_TestUninit();
@@ -77,6 +97,10 @@ static nesl_error_e NESL_TestInit(int length)
     return NESL_AudioBufferInit(&g_test.buffer, length);
 }
 
+/**
+ * @brief Test audio buffer initialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferInit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -100,6 +124,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio buffer read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -178,6 +206,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio buffer readable.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferReadable(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -215,6 +247,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio buffer reset.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -240,6 +276,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio buffer uninitialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferUninit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -265,6 +305,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio buffer write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferWrite(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -347,6 +391,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test audio buffer writable.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestAudioBufferWritable(void)
 {
     nesl_error_e result = NESL_SUCCESS;

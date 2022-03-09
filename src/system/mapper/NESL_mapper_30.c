@@ -36,26 +36,26 @@ extern "C" {
  */
 static void NESL_Mapper30Set(nesl_mapper_t *mapper)
 {
-    mapper->rom.program[0] = ((nesl_mapper_30_context_t *)mapper->context)->bank.program * 16 * 1024;
-    mapper->rom.character[0] = ((nesl_mapper_30_context_t *)mapper->context)->bank.character * 8 * 1024;
-    mapper->mirror = ((nesl_mapper_30_context_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : NESL_CartridgeGetMirror(&mapper->cartridge);
+    mapper->rom.program[0] = ((nesl_mapper_30_t *)mapper->context)->bank.program * 16 * 1024;
+    mapper->rom.character[0] = ((nesl_mapper_30_t *)mapper->context)->bank.character * 8 * 1024;
+    mapper->mirror = ((nesl_mapper_30_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : NESL_CartridgeGetMirror(&mapper->cartridge);
 }
 
 nesl_error_e NESL_Mapper30Init(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(!(mapper->context = calloc(1, sizeof(nesl_mapper_30_context_t)))) {
-        result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_30_context_t), sizeof(nesl_mapper_30_context_t));
+    if(!(mapper->context = calloc(1, sizeof(nesl_mapper_30_t)))) {
+        result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_30_t), sizeof(nesl_mapper_30_t));
         goto exit;
     }
 
-    mapper->callback.interrupt = &NESL_Mapper30Interrupt;
-    mapper->callback.read_ram = &NESL_Mapper30ReadRam;
-    mapper->callback.read_rom = &NESL_Mapper30ReadRom;
-    mapper->callback.reset = &NESL_Mapper30Reset;
-    mapper->callback.write_ram = &NESL_Mapper30WriteRam;
-    mapper->callback.write_rom = &NESL_Mapper30WriteRom;
+    mapper->extension.interrupt = &NESL_Mapper30Interrupt;
+    mapper->extension.read_ram = &NESL_Mapper30ReadRam;
+    mapper->extension.read_rom = &NESL_Mapper30ReadRom;
+    mapper->extension.reset = &NESL_Mapper30Reset;
+    mapper->extension.write_ram = &NESL_Mapper30WriteRam;
+    mapper->extension.write_rom = &NESL_Mapper30WriteRom;
 
     if((result = NESL_Mapper30Reset(mapper)) == NESL_FAILURE) {
         goto exit;
@@ -172,7 +172,7 @@ void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t add
 
             switch(address) {
                 case 0x8000 ... 0xFFFF:
-                    ((nesl_mapper_30_context_t *)mapper->context)->bank.raw = data;
+                    ((nesl_mapper_30_t *)mapper->context)->bank.raw = data;
                     NESL_Mapper30Set(mapper);
                     break;
                 default:
@@ -186,7 +186,7 @@ void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t add
 
 void NESL_Mapper30Uninit(nesl_mapper_t *mapper)
 {
-    memset(&mapper->callback, 0, sizeof(mapper->callback));
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
 
     if(mapper->context) {
         free(mapper->context);

@@ -36,7 +36,7 @@ extern "C" {
  */
 static void NESL_Mapper4SetBank(nesl_mapper_t *mapper)
 {
-    nesl_mapper_4_context_t *context = mapper->context;
+    nesl_mapper_4_t *context = mapper->context;
     uint8_t banks = NESL_CartridgeGetBankCount(&mapper->cartridge, NESL_BANK_PROGRAM_ROM);
 
     context->bank.index[context->select.bank] = context->bank.data;
@@ -80,7 +80,7 @@ static void NESL_Mapper4SetBank(nesl_mapper_t *mapper)
 static void NESL_Mapper4SetMirror(nesl_mapper_t *mapper)
 {
 
-    if(((nesl_mapper_4_context_t *)mapper->context)->mirror.mode) {
+    if(((nesl_mapper_4_t *)mapper->context)->mirror.mode) {
         mapper->mirror = NESL_MIRROR_HORIZONTAL;
     } else {
         mapper->mirror = NESL_MIRROR_VERTICAL;
@@ -95,7 +95,7 @@ static void NESL_Mapper4SetMirror(nesl_mapper_t *mapper)
  */
 static void NESL_Mapper4Set( nesl_mapper_t *mapper, uint16_t address, uint8_t data)
 {
-    nesl_mapper_4_context_t *context = mapper->context;
+    nesl_mapper_4_t *context = mapper->context;
 
     switch(address) {
         case 0x8000 ... 0x9FFF:
@@ -148,17 +148,17 @@ nesl_error_e NESL_Mapper4Init(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(!(mapper->context = calloc(1, sizeof(nesl_mapper_4_context_t)))) {
-        result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_4_context_t), sizeof(nesl_mapper_4_context_t));
+    if(!(mapper->context = calloc(1, sizeof(nesl_mapper_4_t)))) {
+        result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_4_t), sizeof(nesl_mapper_4_t));
         goto exit;
     }
 
-    mapper->callback.interrupt = &NESL_Mapper4Interrupt;
-    mapper->callback.read_ram = &NESL_Mapper4ReadRam;
-    mapper->callback.read_rom = &NESL_Mapper4ReadRom;
-    mapper->callback.reset = &NESL_Mapper4Reset;
-    mapper->callback.write_ram = &NESL_Mapper4WriteRam;
-    mapper->callback.write_rom = &NESL_Mapper4WriteRom;
+    mapper->extension.interrupt = &NESL_Mapper4Interrupt;
+    mapper->extension.read_ram = &NESL_Mapper4ReadRam;
+    mapper->extension.read_rom = &NESL_Mapper4ReadRom;
+    mapper->extension.reset = &NESL_Mapper4Reset;
+    mapper->extension.write_ram = &NESL_Mapper4WriteRam;
+    mapper->extension.write_rom = &NESL_Mapper4WriteRom;
 
     if((result = NESL_Mapper4Reset(mapper)) == NESL_FAILURE) {
         goto exit;
@@ -172,7 +172,7 @@ nesl_error_e NESL_Mapper4Interrupt(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    nesl_mapper_4_context_t *context = mapper->context;
+    nesl_mapper_4_t *context = mapper->context;
 
     if(!context->interrupt.count) {
         context->interrupt.count = context->interrupt.latch;
@@ -201,7 +201,7 @@ uint8_t NESL_Mapper4ReadRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t ad
             switch(address) {
                 case 0x6000 ... 0x7FFF:
 
-                    if(((nesl_mapper_4_context_t *)mapper->context)->protect.ram_enable) {
+                    if(((nesl_mapper_4_t *)mapper->context)->protect.ram_enable) {
                         result = NESL_CartridgeReadRam(&mapper->cartridge, NESL_BANK_PROGRAM_RAM, mapper->ram.program + (address & 0x1FFF));
                     }
                     break;
@@ -280,7 +280,7 @@ uint8_t NESL_Mapper4ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t ad
 
 nesl_error_e NESL_Mapper4Reset(nesl_mapper_t *mapper)
 {
-    nesl_mapper_4_context_t *context = mapper->context;
+    nesl_mapper_4_t *context = mapper->context;
 
     context->protect.ram_enable = true;
     context->protect.ram_read_only = false;
@@ -299,8 +299,8 @@ void NESL_Mapper4WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
             switch(address) {
                 case 0x6000 ... 0x7FFF:
 
-                    if(((nesl_mapper_4_context_t *)mapper->context)->protect.ram_enable
-                            && !((nesl_mapper_4_context_t *)mapper->context)->protect.ram_read_only) {
+                    if(((nesl_mapper_4_t *)mapper->context)->protect.ram_enable
+                            && !((nesl_mapper_4_t *)mapper->context)->protect.ram_read_only) {
                         NESL_CartridgeWriteRam(&mapper->cartridge, NESL_BANK_PROGRAM_RAM, mapper->ram.program + (address & 0x1FFF), data);
                     }
                     break;
@@ -334,7 +334,7 @@ void NESL_Mapper4WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
 
 void NESL_Mapper4Uninit(nesl_mapper_t *mapper)
 {
-    memset(&mapper->callback, 0, sizeof(mapper->callback));
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
 
     if(mapper->context) {
         free(mapper->context);

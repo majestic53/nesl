@@ -52,12 +52,19 @@ nesl_error_e NESL_SetError(const char *file, const char *function, int line, con
     return NESL_FAILURE;
 }
 
+/**
+ * @brief Uninitialize test context.
+ */
 static void NESL_TestUninit(void)
 {
     NESL_CartridgeUninit(&g_test.cartridge);
     memset(&g_test, 0, sizeof(g_test));
 }
 
+/**
+ * @brief Initialize test context.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInit(void)
 {
     int bank;
@@ -100,6 +107,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test cartridge subsystem bank count.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestCartridgeGetBankCount(void)
 {
     nesl_error_e result = NESL_FAILURE;
@@ -142,6 +153,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test cartridge subsystem mapper.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestCartridgeGetMapper(void)
 {
     nesl_error_e result;
@@ -176,6 +191,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test cartridge subsystem mirror.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestCartridgeGetMirror(void)
 {
     nesl_error_e result = NESL_FAILURE;
@@ -200,6 +219,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test cartridge subsystem read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestCartridgeRead(void)
 {
     int bank;
@@ -247,6 +270,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test cartridge subsystem write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestCartridgeWrite(void)
 {
     uint8_t data = 0xFF;

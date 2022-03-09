@@ -32,60 +32,293 @@
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer; /*< Audio square-wave synthesizer context */
+    nesl_audio_square_t square; /*< Audio square-wave synthesizer context */
+    float buffer[256];          /*< Audio buffer */
 } nesl_test_t;
 
-//static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {}; /*< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+/**
+ * @brief Copy audio data into circular buffer.
+ * @param buffer Constant pointer to audio buffer context
+ * @param data Pointer to data array
+ * @param length Maximum number of entries in data array
+ */
+static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
-    /* TODO */
+    if((buffer->read + length) >= buffer->length) {
+        int offset = buffer->length - buffer->read;
 
-    return NESL_SUCCESS;
+        memcpy(data, &buffer->data[buffer->read], offset * sizeof(float));
+        length -= offset;
+        data += offset;
+        buffer->read = 0;
+    }
+
+    memcpy(data, &buffer->data[buffer->read], length * sizeof(float));
+    buffer->read += length;
+    buffer->full = false;
+}
+
+/**
+ * @brief Calculate the distance between the left and right offet, with wrap-around.
+ * @param max Maximum length (used to wrap-around)
+ * @param left Left offset
+ * @param right Right offset
+ * @return Distance between offsets
+ */
+static int NESL_AudioBufferDistance(int max, int left, int right)
+{
+    int result = 0;
+
+    if(left <= right) {
+        result = right - left;
+    } else {
+        result = (max - left) + right;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Calculate the minimum between the left and right offset.
+ * @param left Left offset
+ * @param right Right offset
+ * @return Minimum between offsets
+ */
+static int NESL_AudioBufferMinimum(int left, int right)
+{
+    return (left > right) ? right : left;
+}
+
+/**
+ * @brief Determine if buffer is empty.
+ * @return true if empty, false otherwise
+ */
+static bool NESL_AudioBufferEmpty(nesl_audio_buffer_t *buffer)
+{
+    return !buffer->full && (buffer->write == buffer->read);
+}
+
+nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+{
+    nesl_error_e result = NESL_SUCCESS;
+
+    if(length != 256) {
+        result = NESL_FAILURE;
+        goto exit;
+    }
+
+    buffer->data = g_test.buffer;
+    buffer->length = length;
+
+exit:
+    return result;
 }
 
 int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
 {
+    int result = 0;
 
-    /* TODO */
+    if(!NESL_AudioBufferEmpty(buffer)) {
 
-    return 0;
+        if((result = NESL_AudioBufferMinimum(NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write), length)) > 0) {
+            NESL_AudioBufferCopyOut(buffer, data, result);
+        }
+    }
+
+    return result;
 }
 
 int NESL_AudioBufferReadable(nesl_audio_buffer_t *buffer)
 {
-
-    /* TODO */
-
-    return 0;
+    return NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write);
 }
 
 nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 {
-
-    /* TODO */
+    buffer->read = 0;
+    buffer->write = 0;
 
     return NESL_SUCCESS;
 }
 
 void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 {
-    /* TODO */
+    memset(g_test.buffer, 0, 256 * sizeof(float));
+    memset(buffer, 0, sizeof(*buffer));
 }
 
-/* TODO */
+/**
+ * @brief Uninitialize test context.
+ */
+static void NESL_TestUninit(void)
+{
+    NESL_AudioSquareUninit(&g_test.square);
+    memset(&g_test, 0, sizeof(g_test));
+}
+
+/**
+ * @brief Initialize test context.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static int NESL_TestInit(void)
+{
+    NESL_TestUninit();
+
+    return NESL_AudioSquareInit(&g_test.square);
+}
+
+/**
+ * @brief Test audio square synthesizer cycle.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareCycle(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+/**
+ * @brief Test audio square synthesizer initialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareInit(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+/**
+ * @brief Test audio square synthesizer read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareRead(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+/**
+ * @brief Test audio square synthesizer readable.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareReadable(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+/**
+ * @brief Test audio square synthesizer reset.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareReset(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+/**
+ * @brief Test audio square synthesizer uninitialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareUninit(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
+
+/**
+ * @brief Test audio square synthesizer write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e NESL_TestAudioSquareWrite(void)
+{
+    nesl_error_e result;
+
+    if((result = NESL_TestInit()) == NESL_FAILURE) {
+        goto exit;
+    }
+
+    /* TODO */
+
+exit:
+    NESL_TEST_RESULT(result);
+
+    return result;
+}
 
 int main(void)
 {
     static const NESL_Test TEST[] = {
-
-        /* TODO */
-
+        NESL_TestAudioSquareCycle, NESL_TestAudioSquareInit, NESL_TestAudioSquareRead, NESL_TestAudioSquareReadable,
+        NESL_TestAudioSquareReset, NESL_TestAudioSquareUninit, NESL_TestAudioSquareWrite,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -96,6 +329,8 @@ int main(void)
             result = NESL_FAILURE;
         }
     }
+
+    NESL_TestUninit();
 
     return (int)result;
 }

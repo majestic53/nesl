@@ -72,8 +72,8 @@ typedef union {
 } nesl_mapper_1_program_t;
 
 /**
- * @struct nesl_mapper_1_context_t
- * @brief Mapper-1 extension context.
+ * @struct nesl_mapper_1_t
+ * @brief Mapper-1 context.
  */
 typedef struct {
 
@@ -85,7 +85,7 @@ typedef struct {
     nesl_mapper_1_control_t control;        /*< Control register */
     nesl_mapper_1_character_t character[2]; /*< Character register */
     nesl_mapper_1_program_t program;        /*< Program register */
-} nesl_mapper_1_context_t;
+} nesl_mapper_1_t;
 
 #ifdef __cplusplus
 extern "C" {

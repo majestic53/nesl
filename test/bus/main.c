@@ -292,11 +292,18 @@ void NESL_VideoWritePort(nesl_video_t *video, uint16_t address, uint8_t data)
     g_test.data = data;
 }
 
+/**
+ * @brief Initialize test context.
+ */
 static void NESL_TestInit(void)
 {
     memset(&g_test, 0, sizeof(g_test));
 }
 
+/**
+ * @brief Test bus interrupt.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestBusInterrupt(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -345,6 +352,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test bus read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestBusRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -455,6 +466,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test bus write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestBusWrite(void)
 {
     int result = NESL_SUCCESS;

@@ -38,8 +38,8 @@
  */
 typedef struct {
     nesl_mapper_e type;                                             /*< Mapper type */
-    nesl_error_e (*initialize)(struct nesl_mapper_s *mapper);       /*< Mapper initialization callback */
-    void (*uninitialize)(struct nesl_mapper_s *mapper);             /*< Mapper uninitialization callback */
+    nesl_error_e (*initialize)(nesl_mapper_t *mapper);              /*< Mapper extension initialization */
+    void (*uninitialize)(nesl_mapper_t *mapper);                    /*< Mapper extension uninitialization */
 } nesl_mapper_extension_t;
 
 /**
@@ -135,7 +135,7 @@ exit:
 
 nesl_error_e NESL_MapperInterrupt(nesl_mapper_t *mapper)
 {
-    return mapper->callback.interrupt(mapper);
+    return mapper->extension.interrupt(mapper);
 }
 
 uint8_t NESL_MapperRead(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
@@ -145,11 +145,11 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addres
     switch(type) {
         case NESL_BANK_CHARACTER_RAM:
         case NESL_BANK_PROGRAM_RAM:
-            result = mapper->callback.read_ram(mapper, type, address);
+            result = mapper->extension.read_ram(mapper, type, address);
             break;
         case NESL_BANK_CHARACTER_ROM:
         case NESL_BANK_PROGRAM_ROM:
-            result = mapper->callback.read_rom(mapper, type, address);
+            result = mapper->extension.read_rom(mapper, type, address);
             break;
         default:
             break;
@@ -160,7 +160,7 @@ uint8_t NESL_MapperRead(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addres
 
 nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
 {
-    return mapper->callback.reset(mapper);
+    return mapper->extension.reset(mapper);
 }
 
 void NESL_MapperUninit(nesl_mapper_t *mapper)
@@ -176,11 +176,11 @@ void NESL_MapperWrite(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address,
     switch(type) {
         case NESL_BANK_CHARACTER_RAM:
         case NESL_BANK_PROGRAM_RAM:
-            mapper->callback.write_ram(mapper, type, address, data);
+            mapper->extension.write_ram(mapper, type, address, data);
             break;
         case NESL_BANK_CHARACTER_ROM:
         case NESL_BANK_PROGRAM_ROM:
-            mapper->callback.write_rom(mapper, type, address, data);
+            mapper->extension.write_rom(mapper, type, address, data);
             break;
         default:
             break;

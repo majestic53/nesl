@@ -36,24 +36,24 @@ extern "C" {
  */
 static void NESL_Mapper2Set(nesl_mapper_t *mapper)
 {
-    mapper->rom.program[0] = ((nesl_mapper_2_context_t *)mapper->context)->program.bank * 16 * 1024;
+    mapper->rom.program[0] = ((nesl_mapper_2_t *)mapper->context)->program.bank * 16 * 1024;
 }
 
 nesl_error_e NESL_Mapper2Init(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(!(mapper->context = calloc(1, sizeof(nesl_mapper_2_context_t)))) {
-        result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_2_context_t), sizeof(nesl_mapper_2_context_t));
+    if(!(mapper->context = calloc(1, sizeof(nesl_mapper_2_t)))) {
+        result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", sizeof(nesl_mapper_2_t), sizeof(nesl_mapper_2_t));
         goto exit;
     }
 
-    mapper->callback.interrupt = &NESL_Mapper2Interrupt;
-    mapper->callback.read_ram = &NESL_Mapper2ReadRam;
-    mapper->callback.read_rom = &NESL_Mapper2ReadRom;
-    mapper->callback.reset = &NESL_Mapper2Reset;
-    mapper->callback.write_ram = &NESL_Mapper2WriteRam;
-    mapper->callback.write_rom = &NESL_Mapper2WriteRom;
+    mapper->extension.interrupt = &NESL_Mapper2Interrupt;
+    mapper->extension.read_ram = &NESL_Mapper2ReadRam;
+    mapper->extension.read_rom = &NESL_Mapper2ReadRom;
+    mapper->extension.reset = &NESL_Mapper2Reset;
+    mapper->extension.write_ram = &NESL_Mapper2WriteRam;
+    mapper->extension.write_rom = &NESL_Mapper2WriteRom;
 
     if((result = NESL_Mapper2Reset(mapper)) == NESL_FAILURE) {
         goto exit;
@@ -172,7 +172,7 @@ void NESL_Mapper2WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
 
             switch(address) {
                 case 0x8000 ... 0xFFFF:
-                    ((nesl_mapper_2_context_t *)mapper->context)->program.raw = data;
+                    ((nesl_mapper_2_t *)mapper->context)->program.raw = data;
                     NESL_Mapper2Set(mapper);
                     break;
                 default:
@@ -186,7 +186,7 @@ void NESL_Mapper2WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
 
 void NESL_Mapper2Uninit(nesl_mapper_t *mapper)
 {
-    memset(&mapper->callback, 0, sizeof(mapper->callback));
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
 
     if(mapper->context) {
         free(mapper->context);

@@ -52,11 +52,18 @@ bool NESL_ServiceGetButton(nesl_controller_e controller, nesl_button_e button)
     return g_test.state[KEY[controller][button] - 1];
 }
 
+/**
+ * @brief Initialize test context.
+ */
 static void NESL_TestInit(void)
 {
     memset(&g_test, 0, sizeof(g_test));
 }
 
+/**
+ * @brief Test input subsystem initialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInputInit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -82,6 +89,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test input subsystem read.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInputRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -141,6 +152,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test input subsystem reset.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInputReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -185,6 +200,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test input subsystem uninitialization.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInputUninit(void)
 {
     nesl_error_e result = NESL_SUCCESS;
@@ -225,6 +244,10 @@ exit:
     return result;
 }
 
+/**
+ * @brief Test input subsystem write.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e NESL_TestInputWrite(void)
 {
     nesl_error_e result = NESL_SUCCESS;

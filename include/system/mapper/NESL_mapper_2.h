@@ -43,12 +43,12 @@ typedef union {
 } nesl_mapper_2_program_t;
 
 /**
- * @struct nesl_mapper_2_context_t
- * @brief Mapper-2 extension context.
+ * @struct nesl_mapper_2_t
+ * @brief Mapper-2 context.
  */
 typedef struct {
     nesl_mapper_2_program_t program;    /*< Program register */
-} nesl_mapper_2_context_t;
+} nesl_mapper_2_t;
 
 #ifdef __cplusplus
 extern "C" {

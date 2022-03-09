@@ -41,13 +41,13 @@ typedef struct nesl_mapper_s {
     nesl_mapper_e type;                                                                                     /*< Mapper type */
 
     struct {
-        nesl_error_e (*interrupt)(struct nesl_mapper_s *mapper);                                            /*< Interrupt callback */
-        uint8_t (*read_ram)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address);              /*< Read RAM callback */
-        uint8_t (*read_rom)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address);              /*< Read ROM callback */
-        nesl_error_e (*reset)(struct nesl_mapper_s *mapper);                                                /*< Reset callback */
-        void (*write_ram)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address, uint8_t data);  /*< Write RAM callback */
-        void (*write_rom)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address, uint8_t data);  /*< Write ROM callback */
-    } callback;
+        nesl_error_e (*interrupt)(struct nesl_mapper_s *mapper);                                            /*< Mapper extension interrupt */
+        uint8_t (*read_ram)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address);              /*< Mapper extension read RAM */
+        uint8_t (*read_rom)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address);              /*< Mapper extension read ROM */
+        nesl_error_e (*reset)(struct nesl_mapper_s *mapper);                                                /*< Mapper extension reset */
+        void (*write_ram)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address, uint8_t data);  /*< Mapper extension write RAM */
+        void (*write_rom)(struct nesl_mapper_s *mapper, nesl_bank_e type, uint16_t address, uint8_t data);  /*< Mapper extension write ROM */
+    } extension;
 
     struct {
         uint32_t program;                                                                                   /*< Program RAM index */
