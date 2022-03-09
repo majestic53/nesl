@@ -40,17 +40,17 @@
 typedef union {
 
     struct {
-        uint8_t square_0 : 1;                           /*< Square-wave flag (channel 1) */
-        uint8_t square_1 : 1;                           /*< Square-wave flag (channel 2) */
-        uint8_t triangle : 1;                           /*< Triangle-wave flag */
-        uint8_t noise : 1;                              /*< Noise-wave flag */
-        uint8_t dmc : 1;                                /*< DMC flag */
-        uint8_t unused : 1;                             /*< Unused flag */
-        uint8_t frame_interrupt : 1;                    /*< Flag interrupt flag */
-        uint8_t dmc_interrupt : 1;                      /*< DMC interrupt flag */
+        uint8_t square_0 : 1;                                       /*< Square-wave flag (channel 1) */
+        uint8_t square_1 : 1;                                       /*< Square-wave flag (channel 2) */
+        uint8_t triangle : 1;                                       /*< Triangle-wave flag */
+        uint8_t noise : 1;                                          /*< Noise-wave flag */
+        uint8_t dmc : 1;                                            /*< DMC flag */
+        uint8_t unused : 1;                                         /*< Unused flag */
+        uint8_t frame_interrupt : 1;                                /*< Flag interrupt flag */
+        uint8_t dmc_interrupt : 1;                                  /*< DMC interrupt flag */
     };
 
-    uint8_t raw;                                        /*< Raw byte */
+    uint8_t raw;                                                    /*< Raw byte */
 } nesl_audio_status_t;
 
 /**
@@ -58,25 +58,25 @@ typedef union {
  * @brief Audio subsystem context.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer;                         /*< Audio buffer context */
-    nesl_audio_status_t status;                         /*< Status register */
+    nesl_audio_buffer_t buffer;                                     /*< Audio buffer context */
+    nesl_audio_status_t status;                                     /*< Status register */
 
     union {
 
         struct {
-            uint8_t unused : 6;                         /*< Unused bits */
-            uint8_t interrupt_disable : 1;              /*< Interrupt disable flag */
-            uint8_t mode : 1;                           /*< 4/5-step mode */
+            uint8_t unused : 6;                                     /*< Unused bits */
+            uint8_t interrupt_disable : 1;                          /*< Interrupt disable flag */
+            uint8_t mode : 1;                                       /*< 4/5-step mode */
         };
 
-        uint8_t raw;                                    /*< Raw byte */
+        uint8_t raw;                                                /*< Raw byte */
     } frame;
 
     struct {
-        nesl_audio_square_t square[NESL_CHANNEL_MAX];   /*< Square-wave synthesizer contexts */
-        nesl_audio_triangle_t triangle;                 /*< Triangle synthesizer context */
-        nesl_audio_noise_t noise;                       /*< Noise synthesizer context */
-        nesl_audio_dmc_t dmc;                           /*< DMC synthesizer contexts */
+        nesl_audio_square_t square[NESL_SYNTHESIZER_SQUARE_2 + 1];  /*< Square-wave synthesizer contexts */
+        nesl_audio_triangle_t triangle;                             /*< Triangle synthesizer context */
+        nesl_audio_noise_t noise;                                   /*< Noise synthesizer context */
+        nesl_audio_dmc_t dmc;                                       /*< DMC synthesizer contexts */
     } synthesizer;
 } nesl_audio_t;
 

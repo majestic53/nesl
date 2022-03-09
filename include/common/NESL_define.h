@@ -83,16 +83,6 @@ typedef enum {
 } nesl_button_e;
 
 /**
- * @enum nesl_channel_e
- * @brief Channel types used in the audio subsystem square-wave synthesizer.
- */
-typedef enum {
-    NESL_CHANNEL_1 = 0,             /*< First square-wave channel */
-    NESL_CHANNEL_2,                 /*< Second square-wave channel */
-    NESL_CHANNEL_MAX,               /*< Maximum channel */
-} nesl_channel_e;
-
-/**
  * @enum nesl_controller_e
  * @brief Controller types used in the input subsystem.
  */
@@ -238,6 +228,19 @@ typedef enum {
     NESL_PORT_ADDRESS,              /*< Address register */
     NESL_PORT_DATA,                 /*< Data register */
 } nesl_port_e;
+
+/**
+ * @enum nesl_synthesizer_e
+ * @brief Synthesizer types used in the audio subsystem.
+ */
+typedef enum {
+    NESL_SYNTHESIZER_SQUARE_1 = 0,  /*< First square-wave synthesizer */
+    NESL_SYNTHESIZER_SQUARE_2,      /*< Second square-wave synthesizer */
+    NESL_SYNTHESIZER_TRIANGLE,      /*< Triangle-wave synthesizer */
+    NESL_SYNTHESIZER_NOISE,         /*< Noise synthesizer */
+    NESL_SYNTHESIZER_DMC,           /*< DMC synthesizer */
+    NESL_SYNTHESIZER_MAX,           /*< Maximum synthesizer */
+} nesl_synthesizer_e;
 
 /**
  * @struct nesl_register_t
