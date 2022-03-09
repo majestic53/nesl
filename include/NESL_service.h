@@ -21,7 +21,7 @@
 
 /**
  * @file NESL_service.h
- * @brief Common service used by the various subsystems for input/output.
+ * @brief Common service used by subsystems for input/output.
  */
 
 #ifndef NESL_SERVICE_H_
