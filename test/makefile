@@ -21,13 +21,15 @@ DIR_TESTS=$(filter-out include/,$(wildcard */))
 
 FLAGS_MAKE=--no-print-directory -C
 
+MAX_PARALLEL=8
+
 .PHONY: all
 all: build
 
 .PHONY: build
 build:
 	@for test in $(DIR_TESTS); do \
-		make $(FLAGS_MAKE) $$test build; \
+		make $(FLAGS_MAKE) $$test build -j${MAX_PARALLEL}; \
 	done
 
 .PHONY: run

@@ -25,16 +25,18 @@ FLAGS_DEBUG=FLAGS=$(FLAGS)\ -g
 FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3\ -flto
 FLAGS_MAKE=--no-print-directory -C
 
+MAX_PARALLEL=8
+
 .PHONY: all
 all: release
 
 .PHONY: debug
 debug:
-	@make $(FLAGS_MAKE) $(DIR_SRC) build $(FLAGS_DEBUG)
+	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_DEBUG)
 
 .PHONY: release
 release:
-	@make $(FLAGS_MAKE) $(DIR_SRC) build $(FLAGS_RELEASE)
+	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_RELEASE)
 
 .PHONY: test
 test: test-release
