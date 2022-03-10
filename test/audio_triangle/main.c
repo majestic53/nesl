@@ -33,7 +33,7 @@
  */
 typedef struct {
     nesl_audio_triangle_t triangle; /*< Audio triangle-wave synthesizer context */
-    float buffer[256];              /*< Audio buffer */
+    int16_t buffer[256];            /*< Audio buffer */
 } nesl_test_t;
 
 static nesl_test_t g_test = {};     /*< Test context */
@@ -48,19 +48,19 @@ extern "C" {
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, float *data, int length)
+static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
         int offset = buffer->length - buffer->read;
 
-        memcpy(data, &buffer->data[buffer->read], offset * sizeof(float));
+        memcpy(data, &buffer->data[buffer->read], offset * sizeof(*data));
         length -= offset;
         data += offset;
         buffer->read = 0;
     }
 
-    memcpy(data, &buffer->data[buffer->read], length * sizeof(float));
+    memcpy(data, &buffer->data[buffer->read], length * sizeof(*data));
     buffer->read += length;
     buffer->full = false;
 }
@@ -121,7 +121,7 @@ exit:
     return result;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
     int result = 0;
 
@@ -150,7 +150,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
 
 void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 {
-    memset(g_test.buffer, 0, 256 * sizeof(float));
+    memset(g_test.buffer, 0, 256 * sizeof(*g_test.buffer));
     memset(buffer, 0, sizeof(*buffer));
 }
 

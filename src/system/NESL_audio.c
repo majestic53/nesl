@@ -40,7 +40,7 @@ extern "C" {
 static void NESL_AudioGetData(void *context, uint8_t *data, int length)
 {
     memset(data, 0, length);
-    NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (float *)data, length / sizeof(float));
+    NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (int16_t *)data, length / sizeof(int16_t));
 }
 
 /**
@@ -85,18 +85,18 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
 {
 
     if(!(cycle % 6)) {
-        NESL_AudioSquareCycle(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_1]);
-        NESL_AudioSquareCycle(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_2]);
-        NESL_AudioTriangleCycle(&audio->synthesizer.triangle);
-        NESL_AudioNoiseCycle(&audio->synthesizer.noise);
-        NESL_AudioDMCCycle(&audio->synthesizer.dmc);
+        NESL_AudioSquareCycle(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_1], cycle);
+        NESL_AudioSquareCycle(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_2], cycle);
+        NESL_AudioTriangleCycle(&audio->synthesizer.triangle, cycle);
+        NESL_AudioNoiseCycle(&audio->synthesizer.noise, cycle);
+        NESL_AudioDMCCycle(&audio->synthesizer.dmc, cycle);
 
         if((NESL_AudioSquareReadable(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_1]) >= 128)
-                && (NESL_AudioSquareReadable(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_2]) >= 128)
-                && (NESL_AudioTriangleReadable(&audio->synthesizer.triangle) >= 128)
-                && (NESL_AudioNoiseReadable(&audio->synthesizer.noise) >= 128)
-                && (NESL_AudioDMCReadable(&audio->synthesizer.dmc) >= 128)) {
-            float data[NESL_SYNTHESIZER_MAX + 1][128] = {};
+                || (NESL_AudioSquareReadable(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_2]) >= 128)
+                || (NESL_AudioTriangleReadable(&audio->synthesizer.triangle) >= 128)
+                || (NESL_AudioNoiseReadable(&audio->synthesizer.noise) >= 128)
+                || (NESL_AudioDMCReadable(&audio->synthesizer.dmc) >= 128)) {
+            int16_t data[NESL_SYNTHESIZER_MAX + 1][128] = {};
 
             NESL_AudioSquareRead(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_1], data[NESL_SYNTHESIZER_SQUARE_1], 128);
             NESL_AudioSquareRead(&audio->synthesizer.square[NESL_SYNTHESIZER_SQUARE_2], data[NESL_SYNTHESIZER_SQUARE_2], 128);
@@ -117,7 +117,7 @@ nesl_error_e NESL_AudioInit(nesl_audio_t *audio)
 {
     nesl_error_e result;
 
-    if((result = NESL_AudioBufferInit(&audio->buffer, 2048)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInit(&audio->buffer, 1024)) == NESL_FAILURE) {
         goto exit;
     }
 

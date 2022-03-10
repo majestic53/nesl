@@ -82,8 +82,9 @@ typedef struct {
 /**
  * @brief Cycle audio noise synthesizer through one cycle.
  * @param noise Pointer to audio noise synthesizer context
+ * @param cycle Current cycle
  */
-void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise);
+void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise, uint64_t cycle);
 
 /**
  * @brief Initialize audio noise synthesizer.
@@ -99,7 +100,7 @@ nesl_error_e NESL_AudioNoiseInit(nesl_audio_noise_t *noise);
  * @param length Maximum number of entries in data array
  * @return Number of entries read
  */
-int NESL_AudioNoiseRead(nesl_audio_noise_t *noise, float *data, int length);
+int NESL_AudioNoiseRead(nesl_audio_noise_t *noise, int16_t *data, int length);
 
 /**
  * @brief Readable bytes in audio noise synthesizer.

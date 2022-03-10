@@ -84,8 +84,9 @@ typedef struct {
 /**
  * @brief Cycle audio square-wave synthesizer through one cycle.
  * @param square Pointer to audio square-wave synthesizer context
+ * @param cycle Current cycle
  */
-void NESL_AudioSquareCycle(nesl_audio_square_t *square);
+void NESL_AudioSquareCycle(nesl_audio_square_t *square, uint64_t cycle);
 
 /**
  * @brief Initialize audio square-wave synthesizer.
@@ -101,7 +102,7 @@ nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square);
  * @param length Maximum number of entries in data array
  * @return Number of entries read
  */
-int NESL_AudioSquareRead(nesl_audio_square_t *square, float *data, int length);
+int NESL_AudioSquareRead(nesl_audio_square_t *square, int16_t *data, int length);
 
 /**
  * @brief Readable bytes in audio square-wave synthesizer.

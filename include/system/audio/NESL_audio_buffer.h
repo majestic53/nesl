@@ -35,7 +35,7 @@
  */
 typedef struct {
     pthread_mutex_t lock;   /*< Mutex */
-    float *data;            /*< Audio data buffer */
+    int16_t *data;          /*< Audio data buffer */
     int length;             /*< Audio data length in bytes */
     int read;               /*< Read index */
     int write;              /*< Write index */
@@ -61,7 +61,7 @@ nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length);
  * @param length Maximum number of entries in data array
  * @return Number of entries read
  */
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length);
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int16_t *data, int length);
 
 /**
  * @brief Readable bytes in audio buffer.
@@ -90,7 +90,7 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer);
  * @param length Bumber of entries in data array
  * @return Number of entries written
  */
-int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, float *data, int length);
+int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int16_t *data, int length);
 
 /**
  * @brief Writable bytes in audio buffer.

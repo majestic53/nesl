@@ -30,7 +30,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc)
+void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc, uint64_t cycle)
 {
     /* TODO: CYCLE SYNTHESIZER */
 }
@@ -47,7 +47,7 @@ exit:
     return result;
 }
 
-int NESL_AudioDMCRead(nesl_audio_dmc_t *dmc, float *data, int length)
+int NESL_AudioDMCRead(nesl_audio_dmc_t *dmc, int16_t *data, int length)
 {
     return NESL_AudioBufferRead(&dmc->buffer, data, length);
 }

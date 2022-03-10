@@ -87,7 +87,7 @@ nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
     return NESL_SUCCESS;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
     return 0;
 }
@@ -102,12 +102,12 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
     return;
 }
 
-int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, float *data, int length)
+int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
     return 0;
 }
 
-void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc)
+void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc, uint64_t cycle)
 {
     g_test.synthesizer.dmc.cycle = true;
 }
@@ -119,7 +119,7 @@ nesl_error_e NESL_AudioDMCInit(nesl_audio_dmc_t *dmc)
     return NESL_SUCCESS;
 }
 
-int NESL_AudioDMCRead(nesl_audio_dmc_t *dmc, float *data, int length)
+int NESL_AudioDMCRead(nesl_audio_dmc_t *dmc, int16_t *data, int length)
 {
     return 0;
 }
@@ -147,7 +147,7 @@ void NESL_AudioDMCWrite(nesl_audio_dmc_t *dmc, uint16_t address, uint8_t data)
     g_test.synthesizer.dmc.data = data;
 }
 
-void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise)
+void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise, uint64_t cycle)
 {
     g_test.synthesizer.noise.cycle = true;
 }
@@ -159,7 +159,7 @@ nesl_error_e NESL_AudioNoiseInit(nesl_audio_noise_t *noise)
     return NESL_SUCCESS;
 }
 
-int NESL_AudioNoiseRead(nesl_audio_noise_t *noise, float *data, int length)
+int NESL_AudioNoiseRead(nesl_audio_noise_t *noise, int16_t *data, int length)
 {
     return 0;
 }
@@ -187,7 +187,7 @@ void NESL_AudioNoiseWrite(nesl_audio_noise_t *noise, uint16_t address, uint8_t d
     g_test.synthesizer.noise.data = data;
 }
 
-void NESL_AudioSquareCycle(nesl_audio_square_t *square)
+void NESL_AudioSquareCycle(nesl_audio_square_t *square, uint64_t cycle)
 {
 
     for(nesl_synthesizer_e channel = NESL_SYNTHESIZER_SQUARE_1; channel <= NESL_SYNTHESIZER_SQUARE_2; ++channel) {
@@ -218,7 +218,7 @@ nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
     return result;
 }
 
-int NESL_AudioSquareRead(nesl_audio_square_t *square, float *data, int length)
+int NESL_AudioSquareRead(nesl_audio_square_t *square, int16_t *data, int length)
 {
     return 0;
 }
@@ -272,7 +272,7 @@ void NESL_AudioSquareWrite(nesl_audio_square_t *square, uint16_t address, uint8_
     }
 }
 
-void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle)
+void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle, uint64_t cycle)
 {
     g_test.synthesizer.triangle.cycle = true;
 }
@@ -284,7 +284,7 @@ nesl_error_e NESL_AudioTriangleInit(nesl_audio_triangle_t *triangle)
     return NESL_SUCCESS;
 }
 
-int NESL_AudioTriangleRead(nesl_audio_triangle_t *triangle, float *data, int length)
+int NESL_AudioTriangleRead(nesl_audio_triangle_t *triangle, int16_t *data, int length)
 {
     return 0;
 }

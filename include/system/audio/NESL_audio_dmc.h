@@ -72,8 +72,9 @@ typedef struct {
 /**
  * @brief Cycle audio DMC synthesizer through one cycle.
  * @param dmc Pointer to audio DMC synthesizer context
+ * @param cycle Current cycle
  */
-void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc);
+void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc, uint64_t cycle);
 
 /**
  * @brief Initialize audio DMC synthesizer.
@@ -89,7 +90,7 @@ nesl_error_e NESL_AudioDMCInit(nesl_audio_dmc_t *dmc);
  * @param length Maximum number of entries in data array
  * @return Number of entries read
  */
-int NESL_AudioDMCRead(nesl_audio_dmc_t *dmc, float *data, int length);
+int NESL_AudioDMCRead(nesl_audio_dmc_t *dmc, int16_t *data, int length);
 
 /**
  * @brief Readable bytes in audio DMC synthesizer.

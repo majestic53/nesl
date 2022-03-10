@@ -71,8 +71,9 @@ typedef struct {
 /**
  * @brief Cycle audio triangle-wave synthesizer through one cycle.
  * @param triangle Pointer to audio triangle-wave synthesizer context
+ * @param cycle Current cycle
  */
-void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle);
+void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle, uint64_t cycle);
 
 /**
  * @brief Initialize audio triangle-wave synthesizer.
@@ -88,7 +89,7 @@ nesl_error_e NESL_AudioTriangleInit(nesl_audio_triangle_t *triangle);
  * @param length Maximum number of entries in data array
  * @return Number of entries read
  */
-int NESL_AudioTriangleRead(nesl_audio_triangle_t *triangle, float *data, int length);
+int NESL_AudioTriangleRead(nesl_audio_triangle_t *triangle, int16_t *data, int length);
 
 /**
  * @brief Readable bytes in audio triangle-wave synthesizer.

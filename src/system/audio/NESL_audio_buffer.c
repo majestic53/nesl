@@ -36,19 +36,19 @@ extern "C" {
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, float *data, int length)
+static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
 
     if((buffer->write + length) >= buffer->length) {
         int offset = buffer->length - buffer->write;
 
-        memcpy(&buffer->data[buffer->write], data, offset * sizeof(float));
+        memcpy(&buffer->data[buffer->write], data, offset * sizeof(*data));
         length -= offset;
         data += offset;
         buffer->write = 0;
     }
 
-    memcpy(&buffer->data[buffer->write], data, length * sizeof(float));
+    memcpy(&buffer->data[buffer->write], data, length * sizeof(*data));
     buffer->write += length;
     buffer->full = (buffer->write == buffer->read);
 }
@@ -59,19 +59,19 @@ static void NESL_AudioBufferCopyIn(nesl_audio_buffer_t *buffer, float *data, int
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, float *data, int length)
+static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
         int offset = buffer->length - buffer->read;
 
-        memcpy(data, &buffer->data[buffer->read], offset * sizeof(float));
+        memcpy(data, &buffer->data[buffer->read], offset * sizeof(*data));
         length -= offset;
         data += offset;
         buffer->read = 0;
     }
 
-    memcpy(data, &buffer->data[buffer->read], length * sizeof(float));
+    memcpy(data, &buffer->data[buffer->read], length * sizeof(*data));
     buffer->read += length;
     buffer->full = false;
 }
@@ -134,7 +134,7 @@ nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
         goto exit;
     }
 
-    if(!(buffer->data = calloc(length, sizeof(float)))) {
+    if(!(buffer->data = calloc(length, sizeof(*buffer->data)))) {
         result = NESL_SET_ERROR("Failed to allocate buffer -- %u KB (%i bytes)", length / 1024.f, length);
         goto exit;
     }
@@ -149,7 +149,7 @@ exit:
     return result;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, float *data, int length)
+int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
     int result = 0;
 
@@ -204,7 +204,7 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
     memset(buffer, 0, sizeof(*buffer));
 }
 
-int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, float *data, int length)
+int NESL_AudioBufferWrite(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
     int result = 0;
 

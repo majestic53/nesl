@@ -131,7 +131,7 @@ exit:
 static nesl_error_e NESL_TestAudioBufferRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
-    float buffer[10] = {}, data = 1024.f;
+    int16_t buffer[10] = {}, data = 0;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -144,8 +144,7 @@ static nesl_error_e NESL_TestAudioBufferRead(void)
     }
 
     for(int index = 0; index < g_test.buffer.length; ++index) {
-        g_test.buffer.data[index] = data;
-        data *= 2.f;
+        g_test.buffer.data[index] = data++;
     }
 
     for(int length = 0; length <= (sizeof(buffer) / sizeof(*buffer)); ++length) {
@@ -312,7 +311,7 @@ exit:
 static nesl_error_e NESL_TestAudioBufferWrite(void)
 {
     nesl_error_e result = NESL_SUCCESS;
-    float buffer[10] = {}, data = 1024.f;
+    int16_t buffer[10] = {}, data = 0;
 
     if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -320,8 +319,7 @@ static nesl_error_e NESL_TestAudioBufferWrite(void)
     }
 
     for(int index = 0; index < g_test.buffer.length; ++index) {
-        buffer[index] = data;
-        data *= 2.f;
+        buffer[index] = data++;
     }
 
     for(int length = 0; length <= (sizeof(buffer) / sizeof(*buffer)); ++length) {
