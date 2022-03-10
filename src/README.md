@@ -6,7 +6,6 @@ This project is built around a common bus, allowing the various subsystems to co
 
 ## File layout
 
-* Subsystems conform to the model above, and avoid calling each other directly. Instead, they communicate through the common bus.
 * Subsystem specific source files are placed into a subdirectory, under [`src/system`](https://github.com/majestic53/nesl/tree/master/src/system).
 
 |Directory                                                                              |Description                          |
