@@ -41,7 +41,7 @@
  */
 #define NESL_MAJOR 0                /*< Major version*/
 #define NESL_MINOR 1                /*< Minor version*/
-#define NESL_PATCH 40               /*< Patch version*/
+#define NESL_PATCH 41               /*< Patch version*/
 
 /**
  * @enum nesl_bank_e
