@@ -120,7 +120,7 @@ bool NESL_ServiceGetButton(nesl_controller_e controller, nesl_button_e button)
     return SDL_GetKeyboardState(NULL)[KEY[controller][button]] ? true : false;
 }
 
-nesl_error_e NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale)
+nesl_error_e NESL_ServiceInitialize(const char *title, int fullscreen, int linear, int scale)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -325,7 +325,7 @@ void NESL_ServiceSetPixel(uint8_t color, bool red, bool green, bool blue, uint8_
     }
 }
 
-void NESL_ServiceUninit(void)
+void NESL_ServiceUninitialize(void)
 {
     NESL_ServiceCloseAudio();
 

@@ -57,7 +57,7 @@ bool NESL_ServiceGetButton(nesl_controller_e controller, nesl_button_e button);
  * @param scale Scaling value
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_ServiceInit(const char *title, int fullscreen, int linear, int scale);
+nesl_error_e NESL_ServiceInitialize(const char *title, int fullscreen, int linear, int scale);
 
 /**
  * @brief Poll service state.
@@ -99,7 +99,7 @@ void NESL_ServiceSetPixel(uint8_t color, bool red, bool green, bool blue, uint8_
 /**
  * @brief Uninitialize service.
  */
-void NESL_ServiceUninit(void);
+void NESL_ServiceUninitialize(void);
 
 #ifdef __cplusplus
 }

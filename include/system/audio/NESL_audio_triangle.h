@@ -80,7 +80,7 @@ void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle, uint64_t cycle);
  * @param triangle Pointer to audio triangle-wave synthesizer context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_AudioTriangleInit(nesl_audio_triangle_t *triangle);
+nesl_error_e NESL_AudioTriangleInitialize(nesl_audio_triangle_t *triangle);
 
 /**
  * @brief Read bytes from audio triangle-wave synthesizer.
@@ -109,7 +109,7 @@ nesl_error_e NESL_AudioTriangleReset(nesl_audio_triangle_t *triangle);
  * @brief Uninitialize audio triangle-wave synthesizer.
  * @param triangle Pointer to audio triangle-wave synthesizer context
  */
-void NESL_AudioTriangleUninit(nesl_audio_triangle_t *triangle);
+void NESL_AudioTriangleUninitialize(nesl_audio_triangle_t *triangle);
 
 /**
  * @brief Write byte to audio triangle-wave synthesizer.

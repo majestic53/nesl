@@ -213,7 +213,7 @@ bool NESL_VideoCycle(nesl_video_t *video);
  * @param mirror Constant pointer to mapper mirror
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_VideoInit(nesl_video_t *video, const nesl_mirror_e *mirror);
+nesl_error_e NESL_VideoInitialize(nesl_video_t *video, const nesl_mirror_e *mirror);
 
 /**
  * @brief Read byte from video subsystem.
@@ -251,7 +251,7 @@ nesl_error_e NESL_VideoReset(nesl_video_t *video, const nesl_mirror_e *mirror);
  * @brief Uninitialize video subsystem.
  * @param video Pointer to video subsystem context
  */
-void NESL_VideoUninit(nesl_video_t *video);
+void NESL_VideoUninitialize(nesl_video_t *video);
 
 /**
  * @brief Write byte to video subsystem.

@@ -30,7 +30,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-nesl_error_e NESL_Mapper0Init(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper0Initialize(nesl_mapper_t *mapper)
 {
     mapper->extension.interrupt = &NESL_Mapper0Interrupt;
     mapper->extension.read_ram = &NESL_Mapper0ReadRam;
@@ -113,6 +113,11 @@ nesl_error_e NESL_Mapper0Reset(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
+void NESL_Mapper0Uninitialize(nesl_mapper_t *mapper)
+{
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
+}
+
 void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
@@ -135,11 +140,6 @@ void NESL_Mapper0WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
 void NESL_Mapper0WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
     return;
-}
-
-void NESL_Mapper0Uninit(nesl_mapper_t *mapper)
-{
-    memset(&mapper->extension, 0, sizeof(mapper->extension));
 }
 
 #ifdef __cplusplus

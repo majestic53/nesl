@@ -113,30 +113,30 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
     }
 }
 
-nesl_error_e NESL_AudioInit(nesl_audio_t *audio)
+nesl_error_e NESL_AudioInitialize(nesl_audio_t *audio)
 {
     nesl_error_e result;
 
-    if((result = NESL_AudioBufferInit(&audio->buffer, 1024)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInitialize(&audio->buffer, 1024)) == NESL_FAILURE) {
         goto exit;
     }
 
     for(nesl_synthesizer_e channel = NESL_SYNTHESIZER_SQUARE_1; channel <= NESL_SYNTHESIZER_SQUARE_2; ++channel) {
 
-        if((result = NESL_AudioSquareInit(&audio->synthesizer.square[channel])) == NESL_FAILURE) {
+        if((result = NESL_AudioSquareInitialize(&audio->synthesizer.square[channel])) == NESL_FAILURE) {
             goto exit;
         }
     }
 
-    if((result = NESL_AudioTriangleInit(&audio->synthesizer.triangle)) == NESL_FAILURE) {
+    if((result = NESL_AudioTriangleInitialize(&audio->synthesizer.triangle)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_AudioNoiseInit(&audio->synthesizer.noise)) == NESL_FAILURE) {
+    if((result = NESL_AudioNoiseInitialize(&audio->synthesizer.noise)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_AudioDMCInit(&audio->synthesizer.dmc)) == NESL_FAILURE) {
+    if((result = NESL_AudioDMCInitialize(&audio->synthesizer.dmc)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -201,17 +201,17 @@ exit:
     return result;
 }
 
-void NESL_AudioUninit(nesl_audio_t *audio)
+void NESL_AudioUninitialize(nesl_audio_t *audio)
 {
-    NESL_AudioDMCUninit(&audio->synthesizer.dmc);
-    NESL_AudioNoiseUninit(&audio->synthesizer.noise);
-    NESL_AudioTriangleUninit(&audio->synthesizer.triangle);
+    NESL_AudioDMCUninitialize(&audio->synthesizer.dmc);
+    NESL_AudioNoiseUninitialize(&audio->synthesizer.noise);
+    NESL_AudioTriangleUninitialize(&audio->synthesizer.triangle);
 
     for(nesl_synthesizer_e channel = NESL_SYNTHESIZER_SQUARE_1; channel <= NESL_SYNTHESIZER_SQUARE_2; ++channel) {
-        NESL_AudioSquareUninit(&audio->synthesizer.square[channel]);
+        NESL_AudioSquareUninitialize(&audio->synthesizer.square[channel]);
     }
 
-    NESL_AudioBufferUninit(&audio->buffer);
+    NESL_AudioBufferUninitialize(&audio->buffer);
     memset(audio, 0, sizeof(*audio));
 }
 

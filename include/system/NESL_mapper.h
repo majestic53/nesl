@@ -70,7 +70,7 @@ extern "C" {
  * @param length Cartridge data length in bytes
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length);
+nesl_error_e NESL_MapperInitialize(nesl_mapper_t *mapper, const void *data, int length);
 
 /**
  * @brief Send mapper subsystem interrupt.
@@ -99,7 +99,7 @@ nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper);
  * @brief Uninitialize mapper subsystem.
  * @param mapper Pointer to mapper subsystem context
  */
-void NESL_MapperUninit(nesl_mapper_t *mapper);
+void NESL_MapperUninitialize(nesl_mapper_t *mapper);
 
 /**
  * @brief Write byte to mapper subsystem.

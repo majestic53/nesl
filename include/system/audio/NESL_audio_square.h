@@ -93,7 +93,7 @@ void NESL_AudioSquareCycle(nesl_audio_square_t *square, uint64_t cycle);
  * @param square Pointer to audio square-wave synthesizer context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square);
+nesl_error_e NESL_AudioSquareInitialize(nesl_audio_square_t *square);
 
 /**
  * @brief Read bytes from audio square-wave synthesizer.
@@ -122,7 +122,7 @@ nesl_error_e NESL_AudioSquareReset(nesl_audio_square_t *square);
  * @brief Uninitialize audio square-wave synthesizer.
  * @param square Pointer to audio square-wave synthesizer context
  */
-void NESL_AudioSquareUninit(nesl_audio_square_t *square);
+void NESL_AudioSquareUninitialize(nesl_audio_square_t *square);
 
 /**
  * @brief Write byte to audio square-wave synthesizer.

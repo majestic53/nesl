@@ -147,7 +147,7 @@ static void NESL_Mapper1Set(nesl_mapper_t *mapper, uint16_t address, uint8_t dat
     }
 }
 
-nesl_error_e NESL_Mapper1Init(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper1Initialize(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -249,6 +249,16 @@ nesl_error_e NESL_Mapper1Reset(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
+void NESL_Mapper1Uninitialize(nesl_mapper_t *mapper)
+{
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
+
+    if(mapper->context) {
+        free(mapper->context);
+        mapper->context = NULL;
+    }
+}
+
 void NESL_Mapper1WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
@@ -300,16 +310,6 @@ void NESL_Mapper1WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
             break;
         default:
             break;
-    }
-}
-
-void NESL_Mapper1Uninit(nesl_mapper_t *mapper)
-{
-    memset(&mapper->extension, 0, sizeof(mapper->extension));
-
-    if(mapper->context) {
-        free(mapper->context);
-        mapper->context = NULL;
     }
 }
 

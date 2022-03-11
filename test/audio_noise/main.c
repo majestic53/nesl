@@ -105,7 +105,7 @@ static bool NESL_AudioBufferEmpty(nesl_audio_buffer_t *buffer)
     return !buffer->full && (buffer->write == buffer->read);
 }
 
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -148,7 +148,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
+void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
 {
     memset(g_test.buffer, 0, 256 * sizeof(*g_test.buffer));
     memset(buffer, 0, sizeof(*buffer));
@@ -157,9 +157,9 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninit(void)
+static void NESL_TestUninitialize(void)
 {
-    NESL_AudioNoiseUninit(&g_test.noise);
+    NESL_AudioNoiseUninitialize(&g_test.noise);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -167,11 +167,11 @@ static void NESL_TestUninit(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static int NESL_TestInit(void)
+static int NESL_TestInitialize(void)
 {
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
-    return NESL_AudioNoiseInit(&g_test.noise);
+    return NESL_AudioNoiseInitialize(&g_test.noise);
 }
 
 /**
@@ -182,7 +182,7 @@ static nesl_error_e NESL_TestAudioNoiseCycle(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -198,11 +198,11 @@ exit:
  * @brief Test audio noise synthesizer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioNoiseInit(void)
+static nesl_error_e NESL_TestAudioNoiseInitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -222,7 +222,7 @@ static nesl_error_e NESL_TestAudioNoiseRead(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -242,7 +242,7 @@ static nesl_error_e NESL_TestAudioNoiseReadable(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -262,7 +262,7 @@ static nesl_error_e NESL_TestAudioNoiseReset(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -278,11 +278,11 @@ exit:
  * @brief Test audio noise synthesizer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioNoiseUninit(void)
+static nesl_error_e NESL_TestAudioNoiseUninitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -302,7 +302,7 @@ static nesl_error_e NESL_TestAudioNoiseWrite(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -317,8 +317,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestAudioNoiseCycle, NESL_TestAudioNoiseInit, NESL_TestAudioNoiseRead, NESL_TestAudioNoiseReadable,
-        NESL_TestAudioNoiseReset, NESL_TestAudioNoiseUninit, NESL_TestAudioNoiseWrite,
+        NESL_TestAudioNoiseCycle, NESL_TestAudioNoiseInitialize, NESL_TestAudioNoiseRead, NESL_TestAudioNoiseReadable,
+        NESL_TestAudioNoiseReset, NESL_TestAudioNoiseUninitialize, NESL_TestAudioNoiseWrite,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -330,7 +330,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
     return (int)result;
 }

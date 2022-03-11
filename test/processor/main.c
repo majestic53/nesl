@@ -102,7 +102,7 @@ void NESL_BusWrite(nesl_bus_e type, uint16_t address, uint8_t data)
  * @param initialize Initialize processor
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInit(uint16_t address, bool initialize)
+static nesl_error_e NESL_TestInitialize(uint16_t address, bool initialize)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -112,7 +112,7 @@ static nesl_error_e NESL_TestInit(uint16_t address, bool initialize)
         NESL_BusWrite(NESL_BUS_PROCESSOR, 0xFFFC, address);
         NESL_BusWrite(NESL_BUS_PROCESSOR, 0xFFFD, address >> 8);
 
-        if((result = NESL_ProcessorInit(&g_test.processor)) == NESL_FAILURE) {
+        if((result = NESL_ProcessorInitialize(&g_test.processor)) == NESL_FAILURE) {
             goto exit;
         }
     }
@@ -249,7 +249,7 @@ static nesl_error_e NESL_TestProcessorCycle(void)
     uint64_t cycle;
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, false)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, false)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -274,15 +274,15 @@ exit:
  * @brief Test processor subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestProcessorInit(void)
+static nesl_error_e NESL_TestProcessorInitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, false)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, false)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_ProcessorInit(&g_test.processor) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_ProcessorInitialize(&g_test.processor) == NESL_SUCCESS)) {
         result = NESL_SUCCESS;
         goto exit;
     }
@@ -301,7 +301,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -317,7 +317,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -333,7 +333,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -349,7 +349,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -365,7 +365,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -381,7 +381,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -397,7 +397,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -414,7 +414,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -431,7 +431,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -448,7 +448,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -465,7 +465,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -481,7 +481,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -498,7 +498,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -515,7 +515,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -532,7 +532,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -548,7 +548,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -565,7 +565,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -581,7 +581,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -597,7 +597,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -613,7 +613,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -629,7 +629,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -645,7 +645,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -661,7 +661,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -678,7 +678,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -695,7 +695,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -712,7 +712,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -729,7 +729,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -745,7 +745,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -762,7 +762,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -779,7 +779,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -796,7 +796,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -812,7 +812,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -843,7 +843,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -856,7 +856,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -871,7 +871,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -886,7 +886,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -915,7 +915,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -930,7 +930,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -945,7 +945,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -960,7 +960,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -975,7 +975,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -990,7 +990,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1005,7 +1005,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1020,7 +1020,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1035,7 +1035,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1050,7 +1050,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1065,7 +1065,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1080,7 +1080,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1095,7 +1095,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1110,7 +1110,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1125,7 +1125,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1140,7 +1140,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1155,7 +1155,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1170,7 +1170,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1201,7 +1201,7 @@ static nesl_error_e NESL_TestProcessorInstructionBreakpoint(void)
     nesl_error_e result;
     nesl_processor_status_t status = {};
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1239,7 +1239,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1254,7 +1254,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1269,7 +1269,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1284,7 +1284,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1313,7 +1313,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1328,7 +1328,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1343,7 +1343,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1358,7 +1358,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1373,7 +1373,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1389,7 +1389,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1405,7 +1405,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1421,7 +1421,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1437,7 +1437,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1452,7 +1452,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1468,7 +1468,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1484,7 +1484,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1500,7 +1500,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1515,7 +1515,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1531,7 +1531,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1546,7 +1546,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1561,7 +1561,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1576,7 +1576,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1591,7 +1591,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1606,7 +1606,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1635,11 +1635,11 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1653,7 +1653,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1669,7 +1669,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1683,7 +1683,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1699,7 +1699,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1714,7 +1714,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1729,7 +1729,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1744,7 +1744,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1759,7 +1759,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1774,7 +1774,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1803,11 +1803,11 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1821,7 +1821,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1837,7 +1837,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1851,7 +1851,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1867,7 +1867,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1882,7 +1882,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1897,7 +1897,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1912,7 +1912,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1927,7 +1927,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1942,7 +1942,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1971,7 +1971,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1984,7 +1984,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -1997,7 +1997,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2026,7 +2026,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2039,7 +2039,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2054,7 +2054,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2069,7 +2069,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2084,7 +2084,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2099,7 +2099,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2112,7 +2112,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2127,7 +2127,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2142,7 +2142,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2157,7 +2157,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2170,7 +2170,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2185,7 +2185,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2198,7 +2198,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2213,7 +2213,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2226,7 +2226,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2239,7 +2239,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2254,7 +2254,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2267,7 +2267,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2282,7 +2282,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2295,7 +2295,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2308,7 +2308,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2337,7 +2337,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2352,7 +2352,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2367,7 +2367,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2383,7 +2383,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2399,7 +2399,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2415,7 +2415,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2431,7 +2431,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2446,7 +2446,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2462,7 +2462,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2478,7 +2478,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2494,7 +2494,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2509,7 +2509,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2525,7 +2525,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2540,7 +2540,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2555,7 +2555,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2571,7 +2571,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2587,7 +2587,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2603,7 +2603,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2619,7 +2619,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2634,7 +2634,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2650,7 +2650,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2666,7 +2666,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2682,7 +2682,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2697,7 +2697,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2713,7 +2713,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2728,7 +2728,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2743,7 +2743,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2759,7 +2759,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2775,7 +2775,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2791,7 +2791,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2807,7 +2807,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2822,7 +2822,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2838,7 +2838,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2854,7 +2854,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2870,7 +2870,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2885,7 +2885,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2915,7 +2915,7 @@ static nesl_error_e NESL_TestProcessorInstructionNoOperation(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2943,7 +2943,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
     nesl_error_e result;
     nesl_processor_status_t status = {};
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2959,7 +2959,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2975,7 +2975,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -2991,7 +2991,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3010,7 +3010,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3043,7 +3043,7 @@ static nesl_error_e NESL_TestProcessorInstructionPush(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3059,7 +3059,7 @@ static nesl_error_e NESL_TestProcessorInstructionPush(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3089,7 +3089,7 @@ static nesl_error_e NESL_TestProcessorInstructionReturn(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3107,7 +3107,7 @@ static nesl_error_e NESL_TestProcessorInstructionReturn(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3125,7 +3125,7 @@ static nesl_error_e NESL_TestProcessorInstructionReturn(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3155,7 +3155,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3171,7 +3171,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3185,7 +3185,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3201,7 +3201,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3214,7 +3214,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3228,7 +3228,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3244,7 +3244,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3260,7 +3260,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3274,7 +3274,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3290,7 +3290,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3303,7 +3303,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3317,7 +3317,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3347,7 +3347,7 @@ static nesl_error_e NESL_TestProcessorInstructionSet(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3362,7 +3362,7 @@ static nesl_error_e NESL_TestProcessorInstructionSet(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3377,7 +3377,7 @@ static nesl_error_e NESL_TestProcessorInstructionSet(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3406,7 +3406,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3422,7 +3422,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3436,7 +3436,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3452,7 +3452,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3465,7 +3465,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3479,7 +3479,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3495,7 +3495,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3511,7 +3511,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3525,7 +3525,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3541,7 +3541,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3554,7 +3554,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3568,7 +3568,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3598,7 +3598,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3614,7 +3614,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3631,7 +3631,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3648,7 +3648,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3667,7 +3667,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3686,7 +3686,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3702,7 +3702,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3719,7 +3719,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3735,7 +3735,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3751,7 +3751,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3768,7 +3768,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3784,7 +3784,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3800,7 +3800,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3831,7 +3831,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3847,7 +3847,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3863,7 +3863,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3879,7 +3879,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3895,7 +3895,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3911,7 +3911,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3927,7 +3927,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3943,7 +3943,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3959,7 +3959,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -3975,7 +3975,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4038,7 +4038,7 @@ static nesl_error_e NESL_TestProcessorInstructionUnsupported(void)
         uint16_t address = 0xABCD;
         const nesl_instruction_t *unsupported = &UNSUPPORTED[index];
 
-        if((result = NESL_TestInit(address, true)) == NESL_FAILURE) {
+        if((result = NESL_TestInitialize(address, true)) == NESL_FAILURE) {
             goto exit;
         }
 
@@ -4088,7 +4088,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
     nesl_error_e result;
     nesl_processor_status_t status = {};
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4099,7 +4099,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4110,7 +4110,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
         goto exit;
     }
 
-   if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+   if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4145,7 +4145,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4193,7 +4193,7 @@ static nesl_error_e NESL_TestProcessorRead(void)
     uint8_t data = 0;
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4221,7 +4221,7 @@ static nesl_error_e NESL_TestProcessorReset(void)
     nesl_error_e result;
     uint16_t address = 0xDCBA;
 
-    if((result = NESL_TestInit(0xABCD, false)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, false)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4254,7 +4254,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
     nesl_error_e result;
     uint8_t data = 0, page = 0xAB;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4296,7 +4296,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
         }
     }
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4347,15 +4347,15 @@ exit:
  * @brief Test processor subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestProcessorUninit(void)
+static nesl_error_e NESL_TestProcessorUninitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
-    NESL_ProcessorUninit(&g_test.processor);
+    NESL_ProcessorUninitialize(&g_test.processor);
 
     if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0x0000, 0x00, 0x00, 0) == true)
             && (g_test.processor.interrupt.raw == 0)
@@ -4380,7 +4380,7 @@ static nesl_error_e NESL_TestProcessorWrite(void)
     uint8_t data = 0;
     nesl_error_e result;
 
-    if((result = NESL_TestInit(0xABCD, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0xABCD, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -4413,13 +4413,13 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestProcessorCycle, NESL_TestProcessorInit, NESL_TestProcessorInstructionArithmetic, NESL_TestProcessorInstructionBit,
+        NESL_TestProcessorCycle, NESL_TestProcessorInitialize, NESL_TestProcessorInstructionArithmetic, NESL_TestProcessorInstructionBit,
         NESL_TestProcessorInstructionBranch, NESL_TestProcessorInstructionBreakpoint, NESL_TestProcessorInstructionClear, NESL_TestProcessorInstructionCompare,
         NESL_TestProcessorInstructionDecrement, NESL_TestProcessorInstructionIncrement, NESL_TestProcessorInstructionJump, NESL_TestProcessorInstructionLoad,
         NESL_TestProcessorInstructionLogical, NESL_TestProcessorInstructionNoOperation, NESL_TestProcessorInstructionPull, NESL_TestProcessorInstructionPush,
         NESL_TestProcessorInstructionReturn, NESL_TestProcessorInstructionRotate, NESL_TestProcessorInstructionSet, NESL_TestProcessorInstructionShift,
         NESL_TestProcessorInstructionStore, NESL_TestProcessorInstructionTransfer, NESL_TestProcessorInstructionUnsupported, NESL_TestProcessorInterrupt,
-        NESL_TestProcessorRead, NESL_TestProcessorReset, NESL_TestProcessorTransfer, NESL_TestProcessorUninit,
+        NESL_TestProcessorRead, NESL_TestProcessorReset, NESL_TestProcessorTransfer, NESL_TestProcessorUninitialize,
         NESL_TestProcessorWrite,
         };
 

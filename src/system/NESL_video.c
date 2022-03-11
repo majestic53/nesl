@@ -715,7 +715,7 @@ bool NESL_VideoCycle(nesl_video_t *video)
     return result;
 }
 
-nesl_error_e NESL_VideoInit(nesl_video_t *video, const nesl_mirror_e *mirror)
+nesl_error_e NESL_VideoInitialize(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
     nesl_error_e result;
 
@@ -773,7 +773,7 @@ nesl_error_e NESL_VideoReset(nesl_video_t *video, const nesl_mirror_e *mirror)
     return NESL_SUCCESS;
 }
 
-void NESL_VideoUninit(nesl_video_t *video)
+void NESL_VideoUninitialize(nesl_video_t *video)
 {
     memset(video, 0, sizeof(*video));
 }

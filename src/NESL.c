@@ -35,11 +35,11 @@ int NESL_Run(const nesl_t *context)
 {
     int result;
 
-    if((result = NESL_ServiceInit(context->title, context->fullscreen, context->linear, context->scale)) == NESL_FAILURE) {
+    if((result = NESL_ServiceInitialize(context->title, context->fullscreen, context->linear, context->scale)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_BusInit(context->data, context->length)) == NESL_FAILURE) {
+    if((result = NESL_BusInitialize(context->data, context->length)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -53,8 +53,8 @@ int NESL_Run(const nesl_t *context)
     }
 
 exit:
-    NESL_BusUninit();
-    NESL_ServiceUninit();
+    NESL_BusUninitialize();
+    NESL_ServiceUninitialize();
 
     return result;
 }

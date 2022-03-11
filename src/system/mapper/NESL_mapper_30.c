@@ -41,7 +41,7 @@ static void NESL_Mapper30Set(nesl_mapper_t *mapper)
     mapper->mirror = ((nesl_mapper_30_t *)mapper->context)->bank.one_screen ? NESL_MIRROR_ONE_LOW : NESL_CartridgeGetMirror(&mapper->cartridge);
 }
 
-nesl_error_e NESL_Mapper30Init(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper30Initialize(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -154,6 +154,16 @@ void NESL_Mapper30WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t add
     }
 }
 
+void NESL_Mapper30Uninitialize(nesl_mapper_t *mapper)
+{
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
+
+    if(mapper->context) {
+        free(mapper->context);
+        mapper->context = NULL;
+    }
+}
+
 void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
@@ -181,16 +191,6 @@ void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t add
             break;
         default:
             break;
-    }
-}
-
-void NESL_Mapper30Uninit(nesl_mapper_t *mapper)
-{
-    memset(&mapper->extension, 0, sizeof(mapper->extension));
-
-    if(mapper->context) {
-        free(mapper->context);
-        mapper->context = NULL;
     }
 }
 

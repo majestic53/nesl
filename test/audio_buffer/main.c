@@ -80,9 +80,9 @@ static int NESL_TestMinimum(int left, int right)
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninit(void)
+static void NESL_TestUninitialize(void)
 {
-    NESL_AudioBufferUninit(&g_test.buffer);
+    NESL_AudioBufferUninitialize(&g_test.buffer);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -90,22 +90,22 @@ static void NESL_TestUninit(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInit(int length)
+static nesl_error_e NESL_TestInitialize(int length)
 {
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
-    return NESL_AudioBufferInit(&g_test.buffer, length);
+    return NESL_AudioBufferInitialize(&g_test.buffer, length);
 }
 
 /**
  * @brief Test audio buffer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferInit(void)
+static nesl_error_e NESL_TestAudioBufferInitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -130,10 +130,10 @@ exit:
  */
 static nesl_error_e NESL_TestAudioBufferRead(void)
 {
-    nesl_error_e result = NESL_SUCCESS;
     int16_t buffer[10] = {}, data = 0;
+    nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -213,7 +213,7 @@ static nesl_error_e NESL_TestAudioBufferReadable(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -254,7 +254,7 @@ static nesl_error_e NESL_TestAudioBufferReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(30) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(30) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -279,16 +279,16 @@ exit:
  * @brief Test audio buffer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferUninit(void)
+static nesl_error_e NESL_TestAudioBufferUninitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    NESL_AudioBufferUninit(&g_test.buffer);
+    NESL_AudioBufferUninitialize(&g_test.buffer);
 
     if(NESL_ASSERT((g_test.buffer.data == NULL)
             && (g_test.buffer.length == 0)
@@ -310,10 +310,10 @@ exit:
  */
 static nesl_error_e NESL_TestAudioBufferWrite(void)
 {
-    nesl_error_e result = NESL_SUCCESS;
     int16_t buffer[10] = {}, data = 0;
+    nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -397,7 +397,7 @@ static nesl_error_e NESL_TestAudioBufferWritable(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit(5) == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -433,8 +433,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestAudioBufferInit, NESL_TestAudioBufferRead, NESL_TestAudioBufferReadable, NESL_TestAudioBufferReset,
-        NESL_TestAudioBufferUninit, NESL_TestAudioBufferWrite, NESL_TestAudioBufferWritable,
+        NESL_TestAudioBufferInitialize, NESL_TestAudioBufferRead, NESL_TestAudioBufferReadable, NESL_TestAudioBufferReset,
+        NESL_TestAudioBufferUninitialize, NESL_TestAudioBufferWrite, NESL_TestAudioBufferWritable,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -446,7 +446,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
     return (int)result;
 }

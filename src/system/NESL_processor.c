@@ -1303,7 +1303,7 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
     }
 }
 
-nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor)
+nesl_error_e NESL_ProcessorInitialize(nesl_processor_t *processor)
 {
     return NESL_ProcessorReset(processor);
 }
@@ -1349,7 +1349,7 @@ int NESL_ProcessorReset(nesl_processor_t *processor)
     return NESL_SUCCESS;
 }
 
-void NESL_ProcessorUninit(nesl_processor_t *processor)
+void NESL_ProcessorUninitialize(nesl_processor_t *processor)
 {
     memset(processor, 0, sizeof(*processor));
 }

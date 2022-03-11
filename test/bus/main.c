@@ -82,7 +82,7 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle)
     return;
 }
 
-nesl_error_e NESL_AudioInit(nesl_audio_t *audio)
+nesl_error_e NESL_AudioInitialize(nesl_audio_t *audio)
 {
     return NESL_SUCCESS;
 }
@@ -101,7 +101,7 @@ nesl_error_e NESL_AudioReset(nesl_audio_t *audio)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioUninit(nesl_audio_t *audio)
+void NESL_AudioUninitialize(nesl_audio_t *audio)
 {
     return;
 }
@@ -112,7 +112,7 @@ void NESL_AudioWrite(nesl_audio_t *audio, uint16_t address, uint8_t data)
     g_test.data = data;
 }
 
-nesl_error_e NESL_InputInit(nesl_input_t *input)
+nesl_error_e NESL_InputInitialize(nesl_input_t *input)
 {
     return NESL_SUCCESS;
 }
@@ -131,7 +131,7 @@ nesl_error_e NESL_InputReset(nesl_input_t *input)
     return NESL_SUCCESS;
 }
 
-void NESL_InputUninit(nesl_input_t *input)
+void NESL_InputUninitialize(nesl_input_t *input)
 {
     return;
 }
@@ -142,7 +142,7 @@ void NESL_InputWrite(nesl_input_t *input, uint16_t address, uint8_t data)
     g_test.data = data;
 }
 
-nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
+nesl_error_e NESL_MapperInitialize(nesl_mapper_t *mapper, const void *data, int length)
 {
     return NESL_SUCCESS;
 }
@@ -169,7 +169,7 @@ nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-void NESL_MapperUninit(nesl_mapper_t *mapper)
+void NESL_MapperUninitialize(nesl_mapper_t *mapper)
 {
     return;
 }
@@ -186,7 +186,7 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle)
     return;
 }
 
-nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor)
+nesl_error_e NESL_ProcessorInitialize(nesl_processor_t *processor)
 {
     return NESL_SUCCESS;
 }
@@ -213,7 +213,7 @@ nesl_error_e NESL_ProcessorReset(nesl_processor_t *processor)
     return NESL_SUCCESS;
 }
 
-void NESL_ProcessorUninit(nesl_processor_t *processor)
+void NESL_ProcessorUninitialize(nesl_processor_t *processor)
 {
     return;
 }
@@ -236,7 +236,7 @@ bool NESL_VideoCycle(nesl_video_t *video)
     return true;
 }
 
-nesl_error_e NESL_VideoInit(nesl_video_t *video, const nesl_mirror_e *mirror)
+nesl_error_e NESL_VideoInitialize(nesl_video_t *video, const nesl_mirror_e *mirror)
 {
     return NESL_SUCCESS;
 }
@@ -269,7 +269,7 @@ nesl_error_e NESL_VideoReset(nesl_video_t *video, const nesl_mirror_e *mirror)
     return NESL_SUCCESS;
 }
 
-void NESL_VideoUninit(nesl_video_t *video)
+void NESL_VideoUninitialize(nesl_video_t *video)
 {
     return;
 }
@@ -295,7 +295,7 @@ void NESL_VideoWritePort(nesl_video_t *video, uint16_t address, uint8_t data)
 /**
  * @brief Initialize test context.
  */
-static void NESL_TestInit(void)
+static void NESL_TestInitialize(void)
 {
     memset(&g_test, 0, sizeof(g_test));
 }
@@ -309,7 +309,7 @@ static nesl_error_e NESL_TestBusInterrupt(void)
     nesl_error_e result = NESL_SUCCESS;
 
     for(nesl_interrupt_e type = 0; type < NESL_INTERRUPT_MAX; ++type) {
-        NESL_TestInit();
+        NESL_TestInitialize();
         NESL_BusInterrupt(type);
 
         switch(type) {
@@ -367,7 +367,7 @@ static nesl_error_e NESL_TestBusRead(void)
             case NESL_BUS_PROCESSOR:
 
                 for(uint32_t address = 0x0000; address <= 0xFFFF; ++address, ++data) {
-                    NESL_TestInit();
+                    NESL_TestInitialize();
                     g_test.data = data;
 
                     switch(address) {
@@ -411,7 +411,7 @@ static nesl_error_e NESL_TestBusRead(void)
             case NESL_BUS_VIDEO:
 
                 for(uint32_t address = 0x0000; address <= 0x3FFF; ++address, ++data) {
-                    NESL_TestInit();
+                    NESL_TestInitialize();
                     g_test.data = data;
 
                     switch(address & 0x3FFF) {
@@ -445,7 +445,7 @@ static nesl_error_e NESL_TestBusRead(void)
             case NESL_BUS_VIDEO_OAM:
 
                 for(uint32_t address = 0x0000; address <= 0x00FF; ++address, ++data) {
-                    NESL_TestInit();
+                    NESL_TestInitialize();
                     g_test.data = data;
 
                     if(NESL_ASSERT((NESL_BusRead(NESL_BUS_VIDEO_OAM, address) == data)
@@ -481,7 +481,7 @@ static nesl_error_e NESL_TestBusWrite(void)
             case NESL_BUS_PROCESSOR:
 
                 for(uint32_t address = 0x0000; address <= 0xFFFF; ++address, ++data) {
-                    NESL_TestInit();
+                    NESL_TestInitialize();
 
                     switch(address) {
                         case 0x0000 ... 0x4017:
@@ -529,7 +529,7 @@ static nesl_error_e NESL_TestBusWrite(void)
             case NESL_BUS_VIDEO:
 
                 for(uint32_t address = 0x0000; address <= 0x3FFF; ++address, ++data) {
-                    NESL_TestInit();
+                    NESL_TestInitialize();
 
                     switch(address & 0x3FFF) {
                         case 0x0000 ... 0x1FFF:
@@ -567,7 +567,7 @@ static nesl_error_e NESL_TestBusWrite(void)
             case NESL_BUS_VIDEO_OAM:
 
                 for(uint32_t address = 0x0000; address <= 0x00FF; ++address, ++data) {
-                    NESL_TestInit();
+                    NESL_TestInitialize();
                     NESL_BusWrite(NESL_BUS_VIDEO_OAM, address, data);
 
                     if(NESL_ASSERT((g_test.address == (address & 0x00FF))

@@ -105,7 +105,7 @@ static bool NESL_AudioBufferEmpty(nesl_audio_buffer_t *buffer)
     return !buffer->full && (buffer->write == buffer->read);
 }
 
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -148,7 +148,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
+void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
 {
     memset(g_test.buffer, 0, 256 * sizeof(*g_test.buffer));
     memset(buffer, 0, sizeof(*buffer));
@@ -157,9 +157,9 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninit(void)
+static void NESL_TestUninitialize(void)
 {
-    NESL_AudioTriangleUninit(&g_test.triangle);
+    NESL_AudioTriangleUninitialize(&g_test.triangle);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -167,11 +167,11 @@ static void NESL_TestUninit(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static int NESL_TestInit(void)
+static int NESL_TestInitialize(void)
 {
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
-    return NESL_AudioTriangleInit(&g_test.triangle);
+    return NESL_AudioTriangleInitialize(&g_test.triangle);
 }
 
 /**
@@ -182,7 +182,7 @@ static nesl_error_e NESL_TestAudioTriangleCycle(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -198,11 +198,11 @@ exit:
  * @brief Test audio triangle synthesizer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioTriangleInit(void)
+static nesl_error_e NESL_TestAudioTriangleInitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -222,7 +222,7 @@ static nesl_error_e NESL_TestAudioTriangleRead(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -242,7 +242,7 @@ static nesl_error_e NESL_TestAudioTriangleReadable(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -262,7 +262,7 @@ static nesl_error_e NESL_TestAudioTriangleReset(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -278,11 +278,11 @@ exit:
  * @brief Test audio triangle synthesizer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioTriangleUninit(void)
+static nesl_error_e NESL_TestAudioTriangleUninitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -302,7 +302,7 @@ static nesl_error_e NESL_TestAudioTriangleWrite(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -317,8 +317,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestAudioTriangleCycle, NESL_TestAudioTriangleInit, NESL_TestAudioTriangleRead, NESL_TestAudioTriangleReadable,
-        NESL_TestAudioTriangleReset, NESL_TestAudioTriangleUninit, NESL_TestAudioTriangleWrite,
+        NESL_TestAudioTriangleCycle, NESL_TestAudioTriangleInitialize, NESL_TestAudioTriangleRead, NESL_TestAudioTriangleReadable,
+        NESL_TestAudioTriangleReset, NESL_TestAudioTriangleUninitialize, NESL_TestAudioTriangleWrite,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -330,7 +330,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
     return (int)result;
 }

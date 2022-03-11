@@ -125,7 +125,7 @@ static bool NESL_AudioBufferFull(nesl_audio_buffer_t *buffer)
     return buffer->full;
 }
 
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -190,7 +190,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
+void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
 {
 
     if(buffer->data) {

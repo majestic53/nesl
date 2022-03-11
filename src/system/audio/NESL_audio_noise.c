@@ -35,11 +35,11 @@ void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise, uint64_t cycle)
     /* TODO: CYCLE SYNTHESIZER */
 }
 
-nesl_error_e NESL_AudioNoiseInit(nesl_audio_noise_t *noise)
+nesl_error_e NESL_AudioNoiseInitialize(nesl_audio_noise_t *noise)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&noise->buffer, 256)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInitialize(&noise->buffer, 256)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -71,9 +71,9 @@ exit:
     return result;
 }
 
-void NESL_AudioNoiseUninit(nesl_audio_noise_t *noise)
+void NESL_AudioNoiseUninitialize(nesl_audio_noise_t *noise)
 {
-    NESL_AudioBufferUninit(&noise->buffer);
+    NESL_AudioBufferUninitialize(&noise->buffer);
     memset(noise, 0, sizeof(*noise));
 }
 

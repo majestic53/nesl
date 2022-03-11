@@ -35,11 +35,11 @@ void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc, uint64_t cycle)
     /* TODO: CYCLE SYNTHESIZER */
 }
 
-nesl_error_e NESL_AudioDMCInit(nesl_audio_dmc_t *dmc)
+nesl_error_e NESL_AudioDMCInitialize(nesl_audio_dmc_t *dmc)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&dmc->buffer, 256)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInitialize(&dmc->buffer, 256)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -71,9 +71,9 @@ exit:
     return result;
 }
 
-void NESL_AudioDMCUninit(nesl_audio_dmc_t *dmc)
+void NESL_AudioDMCUninitialize(nesl_audio_dmc_t *dmc)
 {
-    NESL_AudioBufferUninit(&dmc->buffer);
+    NESL_AudioBufferUninitialize(&dmc->buffer);
     memset(dmc, 0, sizeof(*dmc));
 }
 

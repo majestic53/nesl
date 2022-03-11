@@ -37,9 +37,9 @@
  * @brief Mapper extension context.
  */
 typedef struct {
-    nesl_mapper_e type;                                             /*< Mapper type */
-    nesl_error_e (*initialize)(nesl_mapper_t *mapper);              /*< Mapper extension initialization */
-    void (*uninitialize)(nesl_mapper_t *mapper);                    /*< Mapper extension uninitialization */
+    nesl_mapper_e type;                                                         /*< Mapper type */
+    nesl_error_e (*initialize)(nesl_mapper_t *mapper);                          /*< Mapper extension initialization */
+    void (*uninitialize)(nesl_mapper_t *mapper);                                /*< Mapper extension uninitialization */
 } nesl_mapper_extension_t;
 
 /**
@@ -47,13 +47,13 @@ typedef struct {
  * @note If a new mapper extension is added, it must be added into this array
  */
 static const nesl_mapper_extension_t CONTEXT[] = {
-    { NESL_MAPPER_0, NESL_Mapper0Init, NESL_Mapper0Uninit, },       /*< Mapper 0 (NROM) */
-    { NESL_MAPPER_1, NESL_Mapper1Init, NESL_Mapper1Uninit, },       /*< Mapper 1 (MMC1) */
-    { NESL_MAPPER_2, NESL_Mapper2Init, NESL_Mapper2Uninit, },       /*< Mapper 2 (UxROM) */
-    { NESL_MAPPER_3, NESL_Mapper3Init, NESL_Mapper3Uninit, },       /*< Mapper 3 (CNROM) */
-    { NESL_MAPPER_4, NESL_Mapper4Init, NESL_Mapper4Uninit, },       /*< Mapper 4 (MMC3) */
-    { NESL_MAPPER_30, NESL_Mapper30Init, NESL_Mapper30Uninit, },    /*< Mapper 30 (UNROM) */
-    { NESL_MAPPER_66, NESL_Mapper66Init, NESL_Mapper66Uninit, },    /*< Mapper 66 (GxROM) */
+    { NESL_MAPPER_0, NESL_Mapper0Initialize, NESL_Mapper0Uninitialize, },       /*< Mapper 0 (NROM) */
+    { NESL_MAPPER_1, NESL_Mapper1Initialize, NESL_Mapper1Uninitialize, },       /*< Mapper 1 (MMC1) */
+    { NESL_MAPPER_2, NESL_Mapper2Initialize, NESL_Mapper2Uninitialize, },       /*< Mapper 2 (UxROM) */
+    { NESL_MAPPER_3, NESL_Mapper3Initialize, NESL_Mapper3Uninitialize, },       /*< Mapper 3 (CNROM) */
+    { NESL_MAPPER_4, NESL_Mapper4Initialize, NESL_Mapper4Uninitialize, },       /*< Mapper 4 (MMC3) */
+    { NESL_MAPPER_30, NESL_Mapper30Initialize, NESL_Mapper30Uninitialize, },    /*< Mapper 30 (UNROM) */
+    { NESL_MAPPER_66, NESL_Mapper66Initialize, NESL_Mapper66Uninitialize, },    /*< Mapper 66 (GxROM) */
     };
 
 #ifdef __cplusplus
@@ -65,7 +65,7 @@ extern "C" {
  * @param mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_MapperExtensionInit(nesl_mapper_t *mapper)
+static nesl_error_e NESL_MapperExtensionInitialize(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_FAILURE;
     const nesl_mapper_extension_t *extension = NULL;
@@ -97,7 +97,7 @@ exit:
  * @param mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static void NESL_MapperExtensionUninit(nesl_mapper_t *mapper)
+static void NESL_MapperExtensionUninitialize(nesl_mapper_t *mapper)
 {
 
     for(int index = 0; index < (sizeof(CONTEXT) / sizeof(*(CONTEXT))); ++index) {
@@ -110,18 +110,18 @@ static void NESL_MapperExtensionUninit(nesl_mapper_t *mapper)
     }
 }
 
-nesl_error_e NESL_MapperInit(nesl_mapper_t *mapper, const void *data, int length)
+nesl_error_e NESL_MapperInitialize(nesl_mapper_t *mapper, const void *data, int length)
 {
     nesl_error_e result;
 
-    if((result = NESL_CartridgeInit(&mapper->cartridge, data, length)) == NESL_FAILURE) {
+    if((result = NESL_CartridgeInitialize(&mapper->cartridge, data, length)) == NESL_FAILURE) {
         goto exit;
     }
 
     mapper->mirror = NESL_CartridgeGetMirror(&mapper->cartridge);
     mapper->type = NESL_CartridgeGetMapper(&mapper->cartridge);
 
-    if((result = NESL_MapperExtensionInit(mapper)) == NESL_FAILURE) {
+    if((result = NESL_MapperExtensionInitialize(mapper)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -163,10 +163,10 @@ nesl_error_e NESL_MapperReset(nesl_mapper_t *mapper)
     return mapper->extension.reset(mapper);
 }
 
-void NESL_MapperUninit(nesl_mapper_t *mapper)
+void NESL_MapperUninitialize(nesl_mapper_t *mapper)
 {
-    NESL_MapperExtensionUninit(mapper);
-    NESL_CartridgeUninit(&mapper->cartridge);
+    NESL_MapperExtensionUninitialize(mapper);
+    NESL_CartridgeUninitialize(&mapper->cartridge);
     memset(mapper, 0, sizeof(*mapper));
 }
 

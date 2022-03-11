@@ -96,7 +96,7 @@ void NESL_AudioCycle(nesl_audio_t *audio, uint64_t cycle);
  * @param audio Pointer to audio subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_AudioInit(nesl_audio_t *audio);
+nesl_error_e NESL_AudioInitialize(nesl_audio_t *audio);
 
 /**
  * @brief Read byte from audio subsystem.
@@ -117,7 +117,7 @@ nesl_error_e NESL_AudioReset(nesl_audio_t *audio);
  * @brief Uninitialize audio subsystem.
  * @param audio Pointer to audio subsystem context
  */
-void NESL_AudioUninit(nesl_audio_t *audio);
+void NESL_AudioUninitialize(nesl_audio_t *audio);
 
 /**
  * @brief Write byte to audio subsystem.

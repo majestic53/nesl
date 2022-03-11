@@ -55,9 +55,9 @@ nesl_error_e NESL_SetError(const char *file, const char *function, int line, con
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninit(void)
+static void NESL_TestUninitialize(void)
 {
-    NESL_CartridgeUninit(&g_test.cartridge);
+    NESL_CartridgeUninitialize(&g_test.cartridge);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -65,12 +65,12 @@ static void NESL_TestUninit(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInit(void)
+static nesl_error_e NESL_TestInitialize(void)
 {
     int bank;
     nesl_error_e result;
 
-    NESL_TestUninit();
+    NESL_TestUninitialize();
     memcpy(g_test.data.header.magic, "NES\x1A", 4);
     g_test.data.header.rom.program = 2;
     g_test.data.header.rom.character = 1;
@@ -91,7 +91,7 @@ static nesl_error_e NESL_TestInit(void)
         }
     }
 
-    if((result = NESL_CartridgeInit(&g_test.cartridge, &g_test.data.header, sizeof(g_test.data))) == NESL_FAILURE) {
+    if((result = NESL_CartridgeInitialize(&g_test.cartridge, &g_test.data.header, sizeof(g_test.data))) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -118,7 +118,7 @@ static nesl_error_e NESL_TestCartridgeGetBankCount(void)
     for(nesl_bank_e type = 0; type < NESL_BANK_MAX; ++type) {
         uint8_t data = 0;
 
-        if((result = NESL_TestInit()) == NESL_FAILURE) {
+        if((result = NESL_TestInitialize()) == NESL_FAILURE) {
             goto exit;
         }
 
@@ -161,7 +161,7 @@ static nesl_error_e NESL_TestCartridgeGetMapper(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -173,7 +173,7 @@ static nesl_error_e NESL_TestCartridgeGetMapper(void)
         goto exit;
     }
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -201,7 +201,7 @@ static nesl_error_e NESL_TestCartridgeGetMirror(void)
 
     for(nesl_mirror_e type = 0; type < NESL_MIRROR_ONE_LOW; ++type) {
 
-        if((result = NESL_TestInit()) == NESL_FAILURE) {
+        if((result = NESL_TestInitialize()) == NESL_FAILURE) {
             goto exit;
         }
 
@@ -322,7 +322,7 @@ int main(void)
 
     for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
 
-        if(NESL_TestInit() == NESL_FAILURE) {
+        if(NESL_TestInitialize() == NESL_FAILURE) {
             result = NESL_FAILURE;
             continue;
         }
@@ -332,7 +332,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
     return (int)result;
 }

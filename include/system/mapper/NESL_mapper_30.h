@@ -61,7 +61,7 @@ extern "C" {
  * @param mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_Mapper30Init(nesl_mapper_t *mapper);
+nesl_error_e NESL_Mapper30Initialize(nesl_mapper_t *mapper);
 
 /**
  * @brief Send mapper-30 extension interrupt.
@@ -96,6 +96,12 @@ uint8_t NESL_Mapper30ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t a
 nesl_error_e NESL_Mapper30Reset(nesl_mapper_t *mapper);
 
 /**
+ * @brief Uninitialize mapper-30 extension.
+ * @param mapper Pointer to mapper subsystem context
+ */
+void NESL_Mapper30Uninitialize(nesl_mapper_t *mapper);
+
+/**
  * @brief Write byte to mapper-30 RAM extension.
  * @param mapper Pointer to mapper subsystem context
  * @param type Bank type
@@ -112,12 +118,6 @@ void NESL_Mapper30WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t add
  * @param data mapper data
  */
 void NESL_Mapper30WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
-
-/**
- * @brief Uninitialize mapper-30 extension.
- * @param mapper Pointer to mapper subsystem context
- */
-void NESL_Mapper30Uninit(nesl_mapper_t *mapper);
 
 #ifdef __cplusplus
 }

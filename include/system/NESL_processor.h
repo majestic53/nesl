@@ -104,7 +104,7 @@ void NESL_ProcessorCycle(nesl_processor_t *processor, uint64_t cycle);
  * @param processor Pointer to processor subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_ProcessorInit(nesl_processor_t *processor);
+nesl_error_e NESL_ProcessorInitialize(nesl_processor_t *processor);
 
 /**
  * @brief Send processor subsystem interrupt.
@@ -132,7 +132,7 @@ nesl_error_e NESL_ProcessorReset(nesl_processor_t *processor);
  * @brief Uninitialize processor subsystem.
  * @param processor Pointer to processor subsystem context
  */
-void NESL_ProcessorUninit(nesl_processor_t *processor);
+void NESL_ProcessorUninitialize(nesl_processor_t *processor);
 
 /**
  * @brief Write byte to processor subsystem.

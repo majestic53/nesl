@@ -44,7 +44,7 @@ typedef union {
 extern "C" {
 #endif /* __cplusplus */
 
-nesl_error_e NESL_InputInit(nesl_input_t *input)
+nesl_error_e NESL_InputInitialize(nesl_input_t *input)
 {
     return NESL_InputReset(input);
 }
@@ -92,7 +92,7 @@ nesl_error_e NESL_InputReset(nesl_input_t *input)
     return NESL_SUCCESS;
 }
 
-void NESL_InputUninit(nesl_input_t *input)
+void NESL_InputUninitialize(nesl_input_t *input)
 {
     memset(input, 0, sizeof(*input));
 }

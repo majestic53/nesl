@@ -105,7 +105,7 @@ static bool NESL_AudioBufferEmpty(nesl_audio_buffer_t *buffer)
     return !buffer->full && (buffer->write == buffer->read);
 }
 
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -148,7 +148,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
+void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
 {
     memset(g_test.buffer, 0, 256 * sizeof(*g_test.buffer));
     memset(buffer, 0, sizeof(*buffer));
@@ -157,9 +157,9 @@ void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninit(void)
+static void NESL_TestUninitialize(void)
 {
-    NESL_AudioDMCUninit(&g_test.dmc);
+    NESL_AudioDMCUninitialize(&g_test.dmc);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -167,11 +167,11 @@ static void NESL_TestUninit(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static int NESL_TestInit(void)
+static int NESL_TestInitialize(void)
 {
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
-    return NESL_AudioDMCInit(&g_test.dmc);
+    return NESL_AudioDMCInitialize(&g_test.dmc);
 }
 
 /**
@@ -182,7 +182,7 @@ static nesl_error_e NESL_TestAudioDMCCycle(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -198,11 +198,11 @@ exit:
  * @brief Test audio DMC synthesizer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCInit(void)
+static nesl_error_e NESL_TestAudioDMCInitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -222,7 +222,7 @@ static nesl_error_e NESL_TestAudioDMCRead(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -242,7 +242,7 @@ static nesl_error_e NESL_TestAudioDMCReadable(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -262,7 +262,7 @@ static nesl_error_e NESL_TestAudioDMCReset(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -278,11 +278,11 @@ exit:
  * @brief Test audio DMC synthesizer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCUninit(void)
+static nesl_error_e NESL_TestAudioDMCUninitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -302,7 +302,7 @@ static nesl_error_e NESL_TestAudioDMCWrite(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInit()) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -317,8 +317,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestAudioDMCCycle, NESL_TestAudioDMCInit, NESL_TestAudioDMCRead, NESL_TestAudioDMCReadable,
-        NESL_TestAudioDMCReset, NESL_TestAudioDMCUninit, NESL_TestAudioDMCWrite,
+        NESL_TestAudioDMCCycle, NESL_TestAudioDMCInitialize, NESL_TestAudioDMCRead, NESL_TestAudioDMCReadable,
+        NESL_TestAudioDMCReset, NESL_TestAudioDMCUninitialize, NESL_TestAudioDMCWrite,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -330,7 +330,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninit();
+    NESL_TestUninitialize();
 
     return (int)result;
 }

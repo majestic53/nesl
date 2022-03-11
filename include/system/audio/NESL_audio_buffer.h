@@ -52,7 +52,7 @@ extern "C" {
  * @param length Max number of entries
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length);
+nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length);
 
 /**
  * @brief Read bytes from audio buffer.
@@ -81,7 +81,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer);
  * @brief Uninitialize audio buffer.
  * @param buffer Constant pointer to audio buffer context
  */
-void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer);
+void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer);
 
 /**
  * @brief Write bytes to audio buffer.

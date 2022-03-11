@@ -100,27 +100,27 @@ bool NESL_BusCycle(void)
     return NESL_VideoCycle(&g_bus.subsystem.video);
 }
 
-nesl_error_e NESL_BusInit(const void *data, int length)
+nesl_error_e NESL_BusInitialize(const void *data, int length)
 {
     nesl_error_e result;
 
-    if((result = NESL_MapperInit(&g_bus.subsystem.mapper, data, length)) == NESL_FAILURE) {
+    if((result = NESL_MapperInitialize(&g_bus.subsystem.mapper, data, length)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_AudioInit(&g_bus.subsystem.audio)) == NESL_FAILURE) {
+    if((result = NESL_AudioInitialize(&g_bus.subsystem.audio)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_InputInit(&g_bus.subsystem.input)) == NESL_FAILURE) {
+    if((result = NESL_InputInitialize(&g_bus.subsystem.input)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_ProcessorInit(&g_bus.subsystem.processor)) == NESL_FAILURE) {
+    if((result = NESL_ProcessorInitialize(&g_bus.subsystem.processor)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if((result = NESL_VideoInit(&g_bus.subsystem.video, &g_bus.subsystem.mapper.mirror)) == NESL_FAILURE) {
+    if((result = NESL_VideoInitialize(&g_bus.subsystem.video, &g_bus.subsystem.mapper.mirror)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -220,13 +220,13 @@ uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address)
     return result;
 }
 
-void NESL_BusUninit(void)
+void NESL_BusUninitialize(void)
 {
-    NESL_VideoUninit(&g_bus.subsystem.video);
-    NESL_ProcessorUninit(&g_bus.subsystem.processor);
-    NESL_InputUninit(&g_bus.subsystem.input);
-    NESL_AudioUninit(&g_bus.subsystem.audio);
-    NESL_MapperUninit(&g_bus.subsystem.mapper);
+    NESL_VideoUninitialize(&g_bus.subsystem.video);
+    NESL_ProcessorUninitialize(&g_bus.subsystem.processor);
+    NESL_InputUninitialize(&g_bus.subsystem.input);
+    NESL_AudioUninitialize(&g_bus.subsystem.audio);
+    NESL_MapperUninitialize(&g_bus.subsystem.mapper);
     memset(&g_bus, 0, sizeof(g_bus));
 }
 

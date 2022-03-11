@@ -52,7 +52,7 @@ extern "C" {
  * @param input Pointer to input subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_InputInit(nesl_input_t *input);
+nesl_error_e NESL_InputInitialize(nesl_input_t *input);
 
 /**
  * @brief Read byte from input subsystem.
@@ -73,7 +73,7 @@ nesl_error_e NESL_InputReset(nesl_input_t *input);
  * @brief Uninitialize input subsystem.
  * @param input Pointer to input subsystem context
  */
-void NESL_InputUninit(nesl_input_t *input);
+void NESL_InputUninitialize(nesl_input_t *input);
 
 /**
  * @brief Write byte to input subsystem.

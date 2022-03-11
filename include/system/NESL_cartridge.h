@@ -124,7 +124,7 @@ nesl_mirror_e NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge);
  * @param length Cartridge data length in bytes
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length);
+nesl_error_e NESL_CartridgeInitialize(nesl_cartridge_t *cartridge, const void *data, int length);
 
 /**
  * @brief Read byte from cartridge subsystem RAM bank.
@@ -148,7 +148,7 @@ uint8_t NESL_CartridgeReadRom(nesl_cartridge_t *cartridge, nesl_bank_e type, uin
  * @brief Uninitialize cartridge subsystem.
  * @param cartridge Pointer to cartridge subsystem context
  */
-void NESL_CartridgeUninit(nesl_cartridge_t *cartridge);
+void NESL_CartridgeUninitialize(nesl_cartridge_t *cartridge);
 
 /**
  * @brief Write byte to cartridge subsystem RAM bank

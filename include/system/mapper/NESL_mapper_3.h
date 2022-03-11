@@ -59,7 +59,7 @@ extern "C" {
  * @param mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_Mapper3Init(nesl_mapper_t *mapper);
+nesl_error_e NESL_Mapper3Initialize(nesl_mapper_t *mapper);
 
 /**
  * @brief Send mapper-3 extension interrupt.
@@ -94,6 +94,12 @@ uint8_t NESL_Mapper3ReadRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t ad
 nesl_error_e NESL_Mapper3Reset(nesl_mapper_t *mapper);
 
 /**
+ * @brief Uninitialize mapper-3 extension.
+ * @param mapper Pointer to mapper subsystem context
+ */
+void NESL_Mapper3Uninitialize(nesl_mapper_t *mapper);
+
+/**
  * @brief Write byte to mapper-3 RAM extension.
  * @param mapper Pointer to mapper subsystem context
  * @param type Bank type
@@ -110,12 +116,6 @@ void NESL_Mapper3WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
  * @param data mapper data
  */
 void NESL_Mapper3WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
-
-/**
- * @brief Uninitialize mapper-3 extension.
- * @param mapper Pointer to mapper subsystem context
- */
-void NESL_Mapper3Uninit(nesl_mapper_t *mapper);
 
 #ifdef __cplusplus
 }

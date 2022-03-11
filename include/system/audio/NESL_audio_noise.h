@@ -91,7 +91,7 @@ void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise, uint64_t cycle);
  * @param noise Pointer to audio noise synthesizer context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_AudioNoiseInit(nesl_audio_noise_t *noise);
+nesl_error_e NESL_AudioNoiseInitialize(nesl_audio_noise_t *noise);
 
 /**
  * @brief Read bytes from audio noise synthesizer.
@@ -120,7 +120,7 @@ nesl_error_e NESL_AudioNoiseReset(nesl_audio_noise_t *noise);
  * @brief Uninitialize audio noise synthesizer.
  * @param noise Pointer to audio noise synthesizer context
  */
-void NESL_AudioNoiseUninit(nesl_audio_noise_t *noise);
+void NESL_AudioNoiseUninitialize(nesl_audio_noise_t *noise);
 
 /**
  * @brief Write byte to audio noise synthesizer.

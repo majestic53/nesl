@@ -35,11 +35,11 @@ void NESL_AudioSquareCycle(nesl_audio_square_t *square, uint64_t cycle)
     /* TODO: CYCLE SYNTHESIZER */
 }
 
-nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioSquareInitialize(nesl_audio_square_t *square)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&square->buffer, 256)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInitialize(&square->buffer, 256)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -71,9 +71,9 @@ exit:
     return result;
 }
 
-void NESL_AudioSquareUninit(nesl_audio_square_t *square)
+void NESL_AudioSquareUninitialize(nesl_audio_square_t *square)
 {
-    NESL_AudioBufferUninit(&square->buffer);
+    NESL_AudioBufferUninitialize(&square->buffer);
     memset(square, 0, sizeof(*square));
 }
 

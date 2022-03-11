@@ -39,7 +39,7 @@ static void NESL_Mapper3Set(nesl_mapper_t *mapper)
     mapper->rom.character[0] = ((nesl_mapper_3_t *)mapper->context)->character.bank * 8 * 1024;
 }
 
-nesl_error_e NESL_Mapper3Init(nesl_mapper_t *mapper)
+nesl_error_e NESL_Mapper3Initialize(nesl_mapper_t *mapper)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -135,6 +135,16 @@ nesl_error_e NESL_Mapper3Reset(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
+void NESL_Mapper3Uninitialize(nesl_mapper_t *mapper)
+{
+    memset(&mapper->extension, 0, sizeof(mapper->extension));
+
+    if(mapper->context) {
+        free(mapper->context);
+        mapper->context = NULL;
+    }
+}
+
 void NESL_Mapper3WriteRam(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
 
@@ -171,16 +181,6 @@ void NESL_Mapper3WriteRom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t addr
             break;
         default:
             break;
-    }
-}
-
-void NESL_Mapper3Uninit(nesl_mapper_t *mapper)
-{
-    memset(&mapper->extension, 0, sizeof(mapper->extension));
-
-    if(mapper->context) {
-        free(mapper->context);
-        mapper->context = NULL;
     }
 }
 

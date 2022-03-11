@@ -81,7 +81,7 @@ void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc, uint64_t cycle);
  * @param dmc Pointer to audio DMC synthesizer context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_AudioDMCInit(nesl_audio_dmc_t *dmc);
+nesl_error_e NESL_AudioDMCInitialize(nesl_audio_dmc_t *dmc);
 
 /**
  * @brief Read bytes from audio DMC synthesizer.
@@ -110,7 +110,7 @@ nesl_error_e NESL_AudioDMCReset(nesl_audio_dmc_t *dmc);
  * @brief Uninitialize audio DMC synthesizer.
  * @param dmc Pointer to audio DMC synthesizer context
  */
-void NESL_AudioDMCUninit(nesl_audio_dmc_t *dmc);
+void NESL_AudioDMCUninitialize(nesl_audio_dmc_t *dmc);
 
 /**
  * @brief Write byte to audio DMC synthesizer.

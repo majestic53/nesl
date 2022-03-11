@@ -35,11 +35,11 @@ void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle, uint64_t cycle)
     /* TODO: CYCLE SYNTHESIZER */
 }
 
-nesl_error_e NESL_AudioTriangleInit(nesl_audio_triangle_t *triangle)
+nesl_error_e NESL_AudioTriangleInitialize(nesl_audio_triangle_t *triangle)
 {
     int result;
 
-    if((result = NESL_AudioBufferInit(&triangle->buffer, 256)) == NESL_FAILURE) {
+    if((result = NESL_AudioBufferInitialize(&triangle->buffer, 256)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -71,9 +71,9 @@ exit:
     return result;
 }
 
-void NESL_AudioTriangleUninit(nesl_audio_triangle_t *triangle)
+void NESL_AudioTriangleUninitialize(nesl_audio_triangle_t *triangle)
 {
-    NESL_AudioBufferUninit(&triangle->buffer);
+    NESL_AudioBufferUninitialize(&triangle->buffer);
     memset(triangle, 0, sizeof(*triangle));
 }
 

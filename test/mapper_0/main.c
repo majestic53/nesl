@@ -115,7 +115,7 @@ void NESL_CartridgeWriteRam(nesl_cartridge_t *cartridge, nesl_bank_e type, uint3
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninit(void)
+static void NESL_TestUninitialize(void)
 {
     g_test.mapper.extension.interrupt = NULL;
     g_test.mapper.extension.read_ram = NULL;
@@ -130,9 +130,9 @@ static void NESL_TestUninit(void)
  * @param header Pointer to cartridge header
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInit(const nesl_cartridge_header_t *header)
+static nesl_error_e NESL_TestInitialize(const nesl_cartridge_header_t *header)
 {
-    NESL_TestUninit();
+    NESL_TestUninitialize();
     memset(&g_test, 0, sizeof(g_test));
     g_test.mapper.cartridge.header = header;
     g_test.mapper.extension.interrupt = &NESL_Mapper0Interrupt;
@@ -142,19 +142,19 @@ static nesl_error_e NESL_TestInit(const nesl_cartridge_header_t *header)
     g_test.mapper.extension.write_ram = &NESL_Mapper0WriteRam;
     g_test.mapper.extension.write_rom = &NESL_Mapper0WriteRom;
 
-    return NESL_Mapper0Init(&g_test.mapper);
+    return NESL_Mapper0Initialize(&g_test.mapper);
 }
 
 /**
  * @brief Test mapper-0 extension initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestMapper0Init(void)
+static nesl_error_e NESL_TestMapper0Initialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
     nesl_cartridge_header_t header = { .rom.program = 1, .rom.character = 2 };
 
-    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -176,7 +176,7 @@ static nesl_error_e NESL_TestMapper0Init(void)
     header.rom.program = 2;
     header.rom.character = 2;
 
-    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -210,7 +210,7 @@ static nesl_error_e NESL_TestMapper0Interrupt(void)
     nesl_error_e result = NESL_SUCCESS;
     nesl_cartridge_header_t header = {};
 
-    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -242,7 +242,7 @@ static nesl_error_e NESL_TestMapper0ReadRam(void)
                 for(nesl_bank_e type = 0; type < NESL_BANK_MAX; ++type) {
                     nesl_cartridge_header_t header = { .rom.program = 1, .rom.character = 2 };
 
-                    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+                    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
                         goto exit;
                     }
 
@@ -298,7 +298,7 @@ static nesl_error_e NESL_TestMapper0ReadRom(void)
                 for(nesl_bank_e type = 0; type < NESL_BANK_MAX; ++type) {
                     nesl_cartridge_header_t header = { .rom.program = 1, .rom.character = 2 };
 
-                    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+                    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
                         goto exit;
                     }
 
@@ -324,7 +324,7 @@ static nesl_error_e NESL_TestMapper0ReadRom(void)
                 for(nesl_bank_e type = 0; type < NESL_BANK_MAX; ++type) {
                     nesl_cartridge_header_t header = { .rom.program = 1, .rom.character = 2 };
 
-                    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+                    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
                         goto exit;
                     }
 
@@ -372,7 +372,7 @@ static nesl_error_e NESL_TestMapper0Reset(void)
     nesl_error_e result = NESL_SUCCESS;
     nesl_cartridge_header_t header = {};
 
-    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -404,7 +404,7 @@ static nesl_error_e NESL_TestMapper0WriteRam(void)
                 for(nesl_bank_e type = 0; type < NESL_BANK_MAX; ++type) {
                     nesl_cartridge_header_t header = { .rom.program = 1, .rom.character = 2 };
 
-                    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+                    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
                         goto exit;
                     }
 
@@ -456,7 +456,7 @@ static nesl_error_e NESL_TestMapper0WriteRom(void)
     for(uint32_t address = 0x0000; address <= 0xFFFF; ++address, ++data) {
         nesl_cartridge_header_t header = {};
 
-        if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+        if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
             goto exit;
         }
 
@@ -473,16 +473,16 @@ exit:
  * @brief Test mapper-0 extension uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestMapper0Uninit(void)
+static nesl_error_e NESL_TestMapper0Uninitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
     nesl_cartridge_header_t header = {};
 
-    if((result = NESL_TestInit(&header)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(&header)) == NESL_FAILURE) {
         goto exit;
     }
 
-    NESL_Mapper0Uninit(&g_test.mapper);
+    NESL_Mapper0Uninitialize(&g_test.mapper);
 
     if(NESL_ASSERT(g_test.mapper.context == NULL)) {
         result = NESL_FAILURE;
@@ -498,8 +498,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestMapper0Init, NESL_TestMapper0Interrupt, NESL_TestMapper0ReadRam, NESL_TestMapper0ReadRom,
-        NESL_TestMapper0Reset, NESL_TestMapper0WriteRam, NESL_TestMapper0WriteRom, NESL_TestMapper0Uninit,
+        NESL_TestMapper0Initialize, NESL_TestMapper0Interrupt, NESL_TestMapper0ReadRam, NESL_TestMapper0ReadRom,
+        NESL_TestMapper0Reset, NESL_TestMapper0WriteRam, NESL_TestMapper0WriteRom, NESL_TestMapper0Uninitialize,
         };
 
     nesl_error_e result = NESL_SUCCESS;

@@ -45,7 +45,7 @@ bool NESL_BusCycle(void);
  * @param length Cartridge data length in bytes
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e NESL_BusInit(const void *data, int length);
+nesl_error_e NESL_BusInitialize(const void *data, int length);
 
 /**
  * @brief Send bus interrupt to subsystems.
@@ -65,7 +65,7 @@ uint8_t NESL_BusRead(nesl_bus_e type, uint16_t address);
 /**
  * @brief Uninitialize bus and subsystems.
  */
-void NESL_BusUninit(void);
+void NESL_BusUninitialize(void);
 
 /**
  * @brief Write byte to bus subsystems.

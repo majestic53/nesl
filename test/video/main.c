@@ -228,7 +228,7 @@ exit:
  * @param initialize Initialize video
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInit(nesl_mirror_e mirror, bool initialize)
+static nesl_error_e NESL_TestInitialize(nesl_mirror_e mirror, bool initialize)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -237,7 +237,7 @@ static nesl_error_e NESL_TestInit(nesl_mirror_e mirror, bool initialize)
 
     if(initialize) {
 
-        if((result = NESL_VideoInit(&g_test.video, &g_test.bus.mirror)) == NESL_FAILURE) {
+        if((result = NESL_VideoInitialize(&g_test.video, &g_test.bus.mirror)) == NESL_FAILURE) {
             goto exit;
         }
     }
@@ -547,7 +547,7 @@ static nesl_error_e NESL_TestVideoCycle(void)
     uint64_t cycles = 0;
     nesl_error_e result = NESL_SUCCESS;
 
-    if((result = NESL_TestInit(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -618,15 +618,15 @@ exit:
  * @brief Test video subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestVideoInit(void)
+static nesl_error_e NESL_TestVideoInitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if((result = NESL_TestInit(NESL_MIRROR_VERTICAL, false)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(NESL_MIRROR_VERTICAL, false)) == NESL_FAILURE) {
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_VideoInit(&g_test.video, &g_test.bus.mirror) == NESL_SUCCESS)
+    if(NESL_ASSERT((NESL_VideoInitialize(&g_test.video, &g_test.bus.mirror) == NESL_SUCCESS)
             && (g_test.video.cycle == 0)
             && (g_test.video.scanline == -1)
             && (*g_test.video.mirror == NESL_MIRROR_VERTICAL)
@@ -659,7 +659,7 @@ static nesl_error_e NESL_TestVideoRead(void)
     int bank = NESL_MIRROR_MAX;
     nesl_error_e result = NESL_SUCCESS;
 
-    if((result = NESL_TestInit(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -734,7 +734,7 @@ static nesl_error_e NESL_TestVideoReadPort(void)
 
     for(uint16_t address = 0x2000; address <= 0x3FFF; ++address) {
 
-        if((result = NESL_TestInit(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
+        if((result = NESL_TestInitialize(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
             goto exit;
         }
 
@@ -757,7 +757,7 @@ static nesl_error_e NESL_TestVideoReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if((result = NESL_TestInit(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -790,15 +790,15 @@ exit:
  * @brief Test video subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestVideoUninit(void)
+static nesl_error_e NESL_TestVideoUninitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if((result = NESL_TestInit(0, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(0, true)) == NESL_FAILURE) {
         goto exit;
     }
 
-    NESL_VideoUninit(&g_test.video);
+    NESL_VideoUninitialize(&g_test.video);
 
     if(NESL_ASSERT((g_test.video.cycle == 0)
             && (g_test.video.scanline == 0)
@@ -832,7 +832,7 @@ static nesl_error_e NESL_TestVideoWrite(void)
     int bank = NESL_MIRROR_MAX;
     nesl_error_e result = NESL_SUCCESS;
 
-    if((result = NESL_TestInit(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
+    if((result = NESL_TestInitialize(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -907,7 +907,7 @@ static nesl_error_e NESL_TestVideoWritePort(void)
 
     for(uint16_t address = 0x2000; address <= 0x3FFF; ++address) {
 
-        if((result = NESL_TestInit(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
+        if((result = NESL_TestInitialize(NESL_MIRROR_HORIZONTAL, true)) == NESL_FAILURE) {
             goto exit;
         }
 
@@ -925,8 +925,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestVideoCycle, NESL_TestVideoInit, NESL_TestVideoRead, NESL_TestVideoReadPort,
-        NESL_TestVideoReset, NESL_TestVideoUninit, NESL_TestVideoWrite, NESL_TestVideoWritePort,
+        NESL_TestVideoCycle, NESL_TestVideoInitialize, NESL_TestVideoRead, NESL_TestVideoReadPort,
+        NESL_TestVideoReset, NESL_TestVideoUninitialize, NESL_TestVideoWrite, NESL_TestVideoWritePort,
         };
 
     nesl_error_e result = NESL_SUCCESS;

@@ -113,7 +113,7 @@ nesl_mirror_e NESL_CartridgeGetMirror(nesl_cartridge_t *cartridge)
     return (nesl_mirror_e)cartridge->header->flag_6.mirror;
 }
 
-nesl_error_e NESL_CartridgeInit(nesl_cartridge_t *cartridge, const void *data, int length)
+nesl_error_e NESL_CartridgeInitialize(nesl_cartridge_t *cartridge, const void *data, int length)
 {
     nesl_error_e result;
     const uint8_t *offset = data;
@@ -192,7 +192,7 @@ uint8_t NESL_CartridgeReadRom(nesl_cartridge_t *cartridge, nesl_bank_e type, uin
     return result;
 }
 
-void NESL_CartridgeUninit(nesl_cartridge_t *cartridge)
+void NESL_CartridgeUninitialize(nesl_cartridge_t *cartridge)
 {
 
     if(cartridge->ram.character) {

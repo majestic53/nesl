@@ -82,7 +82,7 @@ static nesl_test_t g_test = {};         /*< Test context */
 extern "C" {
 #endif /* __cplusplus */
 
-nesl_error_e NESL_AudioBufferInit(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
 {
     return NESL_SUCCESS;
 }
@@ -97,7 +97,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioBufferUninit(nesl_audio_buffer_t *buffer)
+void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
 {
     return;
 }
@@ -112,7 +112,7 @@ void NESL_AudioDMCCycle(nesl_audio_dmc_t *dmc, uint64_t cycle)
     g_test.synthesizer.dmc.cycle = true;
 }
 
-nesl_error_e NESL_AudioDMCInit(nesl_audio_dmc_t *dmc)
+nesl_error_e NESL_AudioDMCInitialize(nesl_audio_dmc_t *dmc)
 {
     g_test.synthesizer.dmc.initialized = true;
 
@@ -136,7 +136,7 @@ nesl_error_e NESL_AudioDMCReset(nesl_audio_dmc_t *dmc)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioDMCUninit(nesl_audio_dmc_t *dmc)
+void NESL_AudioDMCUninitialize(nesl_audio_dmc_t *dmc)
 {
     g_test.synthesizer.dmc.initialized = false;
 }
@@ -152,7 +152,7 @@ void NESL_AudioNoiseCycle(nesl_audio_noise_t *noise, uint64_t cycle)
     g_test.synthesizer.noise.cycle = true;
 }
 
-nesl_error_e NESL_AudioNoiseInit(nesl_audio_noise_t *noise)
+nesl_error_e NESL_AudioNoiseInitialize(nesl_audio_noise_t *noise)
 {
     g_test.synthesizer.noise.initialized = true;
 
@@ -176,7 +176,7 @@ nesl_error_e NESL_AudioNoiseReset(nesl_audio_noise_t *noise)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioNoiseUninit(nesl_audio_noise_t *noise)
+void NESL_AudioNoiseUninitialize(nesl_audio_noise_t *noise)
 {
     g_test.synthesizer.noise.initialized = false;
 }
@@ -199,7 +199,7 @@ void NESL_AudioSquareCycle(nesl_audio_square_t *square, uint64_t cycle)
     }
 }
 
-nesl_error_e NESL_AudioSquareInit(nesl_audio_square_t *square)
+nesl_error_e NESL_AudioSquareInitialize(nesl_audio_square_t *square)
 {
     nesl_error_e result = NESL_FAILURE;
 
@@ -244,7 +244,7 @@ nesl_error_e NESL_AudioSquareReset(nesl_audio_square_t *square)
     return result;
 }
 
-void NESL_AudioSquareUninit(nesl_audio_square_t *square)
+void NESL_AudioSquareUninitialize(nesl_audio_square_t *square)
 {
 
     for(nesl_synthesizer_e channel = NESL_SYNTHESIZER_SQUARE_1; channel <= NESL_SYNTHESIZER_SQUARE_2; ++channel) {
@@ -277,7 +277,7 @@ void NESL_AudioTriangleCycle(nesl_audio_triangle_t *triangle, uint64_t cycle)
     g_test.synthesizer.triangle.cycle = true;
 }
 
-nesl_error_e NESL_AudioTriangleInit(nesl_audio_triangle_t *triangle)
+nesl_error_e NESL_AudioTriangleInitialize(nesl_audio_triangle_t *triangle)
 {
     g_test.synthesizer.triangle.initialized = true;
 
@@ -301,7 +301,7 @@ nesl_error_e NESL_AudioTriangleReset(nesl_audio_triangle_t *triangle)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioTriangleUninit(nesl_audio_triangle_t *triangle)
+void NESL_AudioTriangleUninitialize(nesl_audio_triangle_t *triangle)
 {
     g_test.synthesizer.triangle.initialized = false;
 }
@@ -334,11 +334,11 @@ exit:
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInit(void)
+static nesl_error_e NESL_TestInitialize(void)
 {
     memset(&g_test, 0, sizeof(g_test));
 
-    return NESL_AudioInit(&g_test.audio);
+    return NESL_AudioInitialize(&g_test.audio);
 }
 
 /**
@@ -352,7 +352,7 @@ static nesl_error_e NESL_TestAudioCycle(void)
     for(uint64_t cycle = 0; cycle <= 12; ++cycle) {
         bool expected = !(cycle % 6);
 
-        if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
+        if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
             result = NESL_FAILURE;
             goto exit;
         }
@@ -379,11 +379,11 @@ exit:
  * @brief Test audio subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioInit(void)
+static nesl_error_e NESL_TestAudioInitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -415,7 +415,7 @@ static nesl_error_e NESL_TestAudioRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -454,7 +454,7 @@ static nesl_error_e NESL_TestAudioReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -485,16 +485,16 @@ exit:
  * @brief Test audio subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioUninit(void)
+static nesl_error_e NESL_TestAudioUninitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    NESL_AudioUninit(&g_test.audio);
+    NESL_AudioUninitialize(&g_test.audio);
 
     if(NESL_ASSERT((g_test.audio.status.raw == 0)
             && (g_test.audio.frame.raw == 0)
@@ -521,7 +521,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInit() == NESL_SUCCESS)) {
+    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -598,8 +598,8 @@ exit:
 int main(void)
 {
     static const NESL_Test TEST[] = {
-        NESL_TestAudioCycle, NESL_TestAudioInit, NESL_TestAudioRead, NESL_TestAudioReset,
-        NESL_TestAudioUninit, NESL_TestAudioWrite,
+        NESL_TestAudioCycle, NESL_TestAudioInitialize, NESL_TestAudioRead, NESL_TestAudioReset,
+        NESL_TestAudioUninitialize, NESL_TestAudioWrite,
         };
 
     nesl_error_e result = NESL_SUCCESS;
