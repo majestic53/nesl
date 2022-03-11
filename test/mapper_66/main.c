@@ -24,8 +24,8 @@
  * @brief Test application for mapper 66 extension.
  */
 
-#include "../../include/system/mapper/NESL_mapper_66.h"
-#include "../include/NESL_common.h"
+#include <NESL_mapper_66.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/NESL.h"
+#include <NESL.h>
 
 /**
  * @enum nesl_bank_e

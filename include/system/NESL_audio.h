@@ -27,11 +27,11 @@
 #ifndef NESL_AUDIO_H_
 #define NESL_AUDIO_H_
 
-#include "./audio/NESL_audio_dmc.h"
-#include "./audio/NESL_audio_noise.h"
-#include "./audio/NESL_audio_square.h"
-#include "./audio/NESL_audio_triangle.h"
-#include "../NESL_bus.h"
+#include <NESL_audio_dmc.h>
+#include <NESL_audio_noise.h>
+#include <NESL_audio_square.h>
+#include <NESL_audio_triangle.h>
+#include <NESL_bus.h>
 
 /**
  * @union nesl_audio_status_t

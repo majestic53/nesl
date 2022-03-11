@@ -24,7 +24,7 @@
  * @brief Mapper 66 (GxROM) extension.
  */
 
-#include "../../../include/system/mapper/NESL_mapper_66.h"
+#include <NESL_mapper_66.h>
 
 #ifdef __cplusplus
 extern "C" {

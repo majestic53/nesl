@@ -27,7 +27,7 @@
 #ifndef NESL_MAPPER_3_H_
 #define NESL_MAPPER_3_H_
 
-#include "../NESL_mapper.h"
+#include <NESL_mapper.h>
 
 /**
  * @union nesl_mapper_3_character_t

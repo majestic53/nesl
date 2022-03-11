@@ -24,7 +24,7 @@
  * @brief Mapper 3 (CNROM) extension.
  */
 
-#include "../../../include/system/mapper/NESL_mapper_3.h"
+#include <NESL_mapper_3.h>
 
 #ifdef __cplusplus
 extern "C" {

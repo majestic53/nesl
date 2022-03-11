@@ -24,7 +24,7 @@
  * @brief Audio DMC synthesizer.
  */
 
-#include "../../../include/system/audio/NESL_audio_dmc.h"
+#include <NESL_audio_dmc.h>
 
 #ifdef __cplusplus
 extern "C" {

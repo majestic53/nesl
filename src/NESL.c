@@ -24,8 +24,8 @@
  * @brief Public API.
  */
 
-#include "../include/NESL_bus.h"
-#include "../include/NESL_service.h"
+#include <NESL_bus.h>
+#include <NESL_service.h>
 
 #ifdef __cplusplus
 extern "C" {

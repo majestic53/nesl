@@ -24,7 +24,7 @@
  * @brief Audio square-wave synthesizer.
  */
 
-#include "../../../include/system/audio/NESL_audio_square.h"
+#include <NESL_audio_square.h>
 
 #ifdef __cplusplus
 extern "C" {

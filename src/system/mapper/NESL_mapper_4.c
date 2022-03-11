@@ -24,7 +24,7 @@
  * @brief Mapper 4 (MMC3) extension.
  */
 
-#include "../../../include/system/mapper/NESL_mapper_4.h"
+#include <NESL_mapper_4.h>
 
 #ifdef __cplusplus
 extern "C" {

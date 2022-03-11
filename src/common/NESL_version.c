@@ -24,7 +24,7 @@
  * @brief Get global version.
  */
 
-#include "../../include/NESL_common.h"
+#include <NESL_common.h>
 
 #ifdef __cplusplus
 extern "C" {

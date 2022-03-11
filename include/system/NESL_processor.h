@@ -27,7 +27,7 @@
 #ifndef NESL_PROCESSOR_H_
 #define NESL_PROCESSOR_H_
 
-#include "../NESL_bus.h"
+#include <NESL_bus.h>
 
 /**
  * @union nesl_processor_status_t

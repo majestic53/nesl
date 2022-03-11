@@ -24,8 +24,8 @@
  * @brief Test application for processor subsystem.
  */
 
-#include "../../include/system/NESL_processor.h"
-#include "../include/NESL_common.h"
+#include <NESL_processor.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_instruction_t

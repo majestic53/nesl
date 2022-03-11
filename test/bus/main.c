@@ -24,12 +24,12 @@
  * @brief Test application for bus.
  */
 
-#include "../../include/system/NESL_audio.h"
-#include "../../include/system/NESL_input.h"
-#include "../../include/system/NESL_mapper.h"
-#include "../../include/system/NESL_processor.h"
-#include "../../include/system/NESL_video.h"
-#include "../include/NESL_common.h"
+#include <NESL_audio.h>
+#include <NESL_input.h>
+#include <NESL_mapper.h>
+#include <NESL_processor.h>
+#include <NESL_video.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

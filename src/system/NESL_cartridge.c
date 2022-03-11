@@ -24,7 +24,7 @@
  * @brief Cartridge subsystem.
  */
 
-#include "../../include/system/NESL_cartridge.h"
+#include <NESL_cartridge.h>
 
 #ifdef __cplusplus
 extern "C" {

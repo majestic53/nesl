@@ -27,7 +27,7 @@
 #ifndef NESL_CARTRIDGE_H_
 #define NESL_CARTRIDGE_H_
 
-#include "../NESL_common.h"
+#include <NESL_common.h>
 
 /**
  * @struct nesl_cartridge_header_t

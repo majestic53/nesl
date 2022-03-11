@@ -24,7 +24,7 @@
  * @brief Mapper 0 (NROM) extension.
  */
 
-#include "../../../include/system/mapper/NESL_mapper_0.h"
+#include <NESL_mapper_0.h>
 
 #ifdef __cplusplus
 extern "C" {

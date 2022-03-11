@@ -24,7 +24,7 @@
  * @brief Audio noise synthesizer.
  */
 
-#include "../../../include/system/audio/NESL_audio_noise.h"
+#include <NESL_audio_noise.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -27,7 +27,7 @@
 #ifndef NESL_AUDIO_DMC_H_
 #define NESL_AUDIO_DMC_H_
 
-#include "./NESL_audio_buffer.h"
+#include <NESL_audio_buffer.h>
 
 /**
  * @struct nesl_audio_dmc_t

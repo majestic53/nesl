@@ -24,9 +24,9 @@
  * @brief Test application for audio subsystem.
  */
 
-#include "../../include/system/NESL_audio.h"
-#include "../../include/NESL_service.h"
-#include "../include/NESL_common.h"
+#include <NESL_audio.h>
+#include <NESL_service.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t
@@ -88,6 +88,11 @@ nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
 }
 
 int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+{
+    return 0;
+}
+
+int NESL_AudioBufferReadable(nesl_audio_buffer_t *buffer)
 {
     return 0;
 }

@@ -24,8 +24,8 @@
  * @brief Test application for mapper subsystem.
  */
 
-#include "../../include/system/NESL_mapper.h"
-#include "../include/NESL_common.h"
+#include <NESL_mapper.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

@@ -27,7 +27,7 @@
 #ifndef NESL_AUDIO_SQUARE_H_
 #define NESL_AUDIO_SQUARE_H_
 
-#include "./NESL_audio_buffer.h"
+#include <NESL_audio_buffer.h>
 
 /**
  * @struct nesl_audio_square_t

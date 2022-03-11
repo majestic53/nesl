@@ -27,7 +27,7 @@
 #ifndef NESL_AUDIO_BUFFER_H_
 #define NESL_AUDIO_BUFFER_H_
 
-#include "../../NESL_common.h"
+#include <NESL_common.h>
 
 /**
  * @struct nesl_audio_buffer_t

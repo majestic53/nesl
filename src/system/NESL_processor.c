@@ -24,7 +24,7 @@
  * @brief Processor subsystem.
  */
 
-#include "../../include/system/NESL_processor.h"
+#include <NESL_processor.h>
 
 /**
  * @struct nesl_instruction_t

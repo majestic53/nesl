@@ -27,7 +27,7 @@
 #ifndef NESL_MAPPER_0_H_
 #define NESL_MAPPER_0_H_
 
-#include "../NESL_mapper.h"
+#include <NESL_mapper.h>
 
 #ifdef __cplusplus
 extern "C" {

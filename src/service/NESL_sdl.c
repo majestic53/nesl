@@ -25,8 +25,8 @@
  */
 
 #include <SDL2/SDL.h>
-#include "../../include/system/NESL_input.h"
-#include "../../include/NESL_service.h"
+#include <NESL_input.h>
+#include <NESL_service.h>
 
 /**
  * @union nesl_color_t
@@ -280,7 +280,7 @@ nesl_error_e NESL_ServiceSetAudio(NESL_ServiceGetAudio callback, void *context)
 
     desired.callback = callback;
     desired.channels = 1;
-    desired.format = AUDIO_S16;
+    desired.format = AUDIO_S16SYS;
     desired.freq = 44100;
     desired.samples = 512;
     desired.userdata = context;

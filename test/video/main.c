@@ -24,8 +24,8 @@
  * @brief Test application for video subsystem.
  */
 
-#include "../../include/system/NESL_video.h"
-#include "../include/NESL_common.h"
+#include <NESL_video.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

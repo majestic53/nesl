@@ -24,7 +24,7 @@
  * @brief Mapper 1 (MMC1) extension.
  */
 
-#include "../../../include/system/mapper/NESL_mapper_1.h"
+#include <NESL_mapper_1.h>
 
 #ifdef __cplusplus
 extern "C" {

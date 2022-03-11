@@ -27,7 +27,7 @@
 #ifndef NESL_MAPPER_66_H_
 #define NESL_MAPPER_66_H_
 
-#include "../NESL_mapper.h"
+#include <NESL_mapper.h>
 
 /**
  * @union nesl_mapper_66_bank_t

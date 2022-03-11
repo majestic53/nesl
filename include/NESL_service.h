@@ -27,7 +27,7 @@
 #ifndef NESL_SERVICE_H_
 #define NESL_SERVICE_H_
 
-#include "./NESL_common.h"
+#include <NESL_common.h>
 
 /**
  * @brief Audio callback routine used to collect audio samples.

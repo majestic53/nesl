@@ -24,10 +24,10 @@
  * @brief Common test header.
  */
 
-#ifndef NESL_TEST_COMMON_H_
-#define NESL_TEST_COMMON_H_
+#ifndef NESL_TEST_H_
+#define NESL_TEST_H_
 
-#include "./common/NESL_assert.h"
+#include <NESL_assert.h>
 
 /**
  * @brief Test count macro.
@@ -53,4 +53,4 @@
  */
 typedef nesl_error_e (*NESL_Test)(void);
 
-#endif /* NESL_TEST_COMMON_H_ */
+#endif /* NESL_TEST_H_ */

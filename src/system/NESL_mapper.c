@@ -24,13 +24,13 @@
  * @brief Mapper subsystem.
  */
 
-#include "../../include/system/mapper/NESL_mapper_0.h"
-#include "../../include/system/mapper/NESL_mapper_1.h"
-#include "../../include/system/mapper/NESL_mapper_2.h"
-#include "../../include/system/mapper/NESL_mapper_3.h"
-#include "../../include/system/mapper/NESL_mapper_4.h"
-#include "../../include/system/mapper/NESL_mapper_30.h"
-#include "../../include/system/mapper/NESL_mapper_66.h"
+#include <NESL_mapper_0.h>
+#include <NESL_mapper_1.h>
+#include <NESL_mapper_2.h>
+#include <NESL_mapper_3.h>
+#include <NESL_mapper_4.h>
+#include <NESL_mapper_30.h>
+#include <NESL_mapper_66.h>
 
 /**
  * @struct nesl_mapper_extension_t

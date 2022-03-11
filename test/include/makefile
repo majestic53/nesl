@@ -17,9 +17,13 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+DIR_INCLUDE=../../include/
+DIR_INCLUDE_TEST=../include/
 DIR_ROOT=./
 
 FILE_BIN=$(DIR_ROOT)TEST-$(FILE)
+FLAGS_INCLUDE=$(subst $(DIR_INCLUDE),-I$(DIR_INCLUDE),$(shell find $(DIR_INCLUDE) -maxdepth 2 -type d))
+FLAGS_INCLUDE_TEST=$(subst $(DIR_INCLUDE_TEST),-I$(DIR_INCLUDE_TEST),$(shell find $(DIR_INCLUDE_TEST) -maxdepth 1 -type d))
 FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
@@ -42,10 +46,10 @@ clean:
 	@rm -rf $(DIR_SRC)$(FILE).o
 
 $(DIR_SRC)$(FILE).o: $(DIR_SRC)$(FILE).c
-	$(CC) $(FLAGS) -c -o $@ $<
+	$(CC) $(FLAGS) $(FLAGS_INCLUDE) -c -o $@ $<
 
 $(DIR_ROOT)%.o: $(DIR_ROOT)%.c
-	$(CC) $(FLAGS) -c -o $@ $<
+	$(CC) $(FLAGS) $(FLAGS_INCLUDE) $(FLAGS_INCLUDE_TEST) -c -o $@ $<
 
 $(FILE_BIN): $(DIR_SRC)$(FILE).o $(FILES_OBJ)
 	$(CC) $(FLAGS) $(DIR_SRC)$(FILE).o $(FILES_OBJ) -o $@

@@ -24,7 +24,7 @@
  * @brief Audio circular-buffer.
  */
 
-#include "../../../include/system/audio/NESL_audio_buffer.h"
+#include <NESL_audio_buffer.h>
 
 #ifdef __cplusplus
 extern "C" {

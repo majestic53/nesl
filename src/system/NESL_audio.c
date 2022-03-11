@@ -24,8 +24,8 @@
  * @brief Audio subsystem.
  */
 
-#include "../../include/system/NESL_audio.h"
-#include "../../include/NESL_service.h"
+#include <NESL_audio.h>
+#include <NESL_service.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,8 +39,13 @@ extern "C" {
  */
 static void NESL_AudioGetData(void *context, uint8_t *data, int length)
 {
+    nesl_audio_buffer_t *buffer = &((nesl_audio_t *)context)->buffer;
+
     memset(data, 0, length);
-    NESL_AudioBufferRead(&((nesl_audio_t *)context)->buffer, (int16_t *)data, length / sizeof(int16_t));
+
+    if(NESL_AudioBufferReadable(buffer) >= 512) {
+        NESL_AudioBufferRead(buffer, (int16_t *)data, length / sizeof(int16_t));
+    }
 }
 
 /**

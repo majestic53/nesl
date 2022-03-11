@@ -27,7 +27,7 @@
 #ifndef NESL_VIDEO_H_
 #define NESL_VIDEO_H_
 
-#include "../NESL_bus.h"
+#include <NESL_bus.h>
 
 /**
  * @union nesl_video_address_t

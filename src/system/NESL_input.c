@@ -24,8 +24,8 @@
  * @brief Input subsystem.
  */
 
-#include "../../include/system/NESL_input.h"
-#include "../../include/NESL_service.h"
+#include <NESL_input.h>
+#include <NESL_service.h>
 
 /**
  * @struct nesl_strobe_t

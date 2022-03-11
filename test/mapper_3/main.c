@@ -24,8 +24,8 @@
  * @brief Test application for mapper 3 extension.
  */
 
-#include "../../include/system/mapper/NESL_mapper_3.h"
-#include "../include/NESL_common.h"
+#include <NESL_mapper_3.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

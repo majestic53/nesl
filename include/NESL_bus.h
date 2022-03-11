@@ -27,7 +27,7 @@
 #ifndef NESL_BUS_H_
 #define NESL_BUS_H_
 
-#include "./NESL_common.h"
+#include <NESL_common.h>
 
 #ifdef __cplusplus
 extern "C" {

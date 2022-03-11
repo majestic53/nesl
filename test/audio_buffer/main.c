@@ -24,8 +24,8 @@
  * @brief Test application for audio circular-buffer.
  */
 
-#include "../../include/system/audio/NESL_audio_buffer.h"
-#include "../include/NESL_common.h"
+#include <NESL_audio_buffer.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

@@ -27,7 +27,7 @@
 #ifndef NESL_MAPPER_4_H_
 #define NESL_MAPPER_4_H_
 
-#include "../NESL_mapper.h"
+#include <NESL_mapper.h>
 
 /**
  * @union nesl_mapper_4_mirror_t

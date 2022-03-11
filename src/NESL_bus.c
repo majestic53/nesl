@@ -24,12 +24,12 @@
  * @brief Common bus used by the various subsystems for communication.
  */
 
-#include "../include/system/NESL_audio.h"
-#include "../include/system/NESL_input.h"
-#include "../include/system/NESL_mapper.h"
-#include "../include/system/NESL_processor.h"
-#include "../include/system/NESL_video.h"
-#include "../include/NESL_service.h"
+#include <NESL_audio.h>
+#include <NESL_input.h>
+#include <NESL_mapper.h>
+#include <NESL_processor.h>
+#include <NESL_video.h>
+#include <NESL_service.h>
 
 /**
  * @struct nesl_bus_t

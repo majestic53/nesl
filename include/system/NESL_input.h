@@ -27,7 +27,7 @@
 #ifndef NESL_INPUT_H_
 #define NESL_INPUT_H_
 
-#include "../NESL_bus.h"
+#include <NESL_bus.h>
 
 /**
  * @struct nesl_input_t

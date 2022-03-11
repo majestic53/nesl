@@ -27,7 +27,7 @@
 #ifndef NESL_COMMON_H_
 #define NESL_COMMON_H_
 
-#include "./NESL.h"
-#include "./common/NESL_error.h"
+#include <NESL.h>
+#include <NESL_error.h>
 
 #endif /* NESL_COMMON_H_ */

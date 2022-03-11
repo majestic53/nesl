@@ -27,7 +27,7 @@
 #ifndef NESL_ERROR_H_
 #define NESL_ERROR_H_
 
-#include "./NESL_define.h"
+#include <NESL_define.h>
 
 /**
  * @brief Set global error macro.

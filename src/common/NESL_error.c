@@ -24,7 +24,7 @@
  * @brief Get/Set global error string.
  */
 
-#include "../../include/NESL_common.h"
+#include <NESL_common.h>
 
 /**
  * @struct nesl_error_t

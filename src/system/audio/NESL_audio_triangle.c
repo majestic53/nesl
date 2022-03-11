@@ -24,7 +24,7 @@
  * @brief Audio triangle-wave synthesizer.
  */
 
-#include "../../../include/system/audio/NESL_audio_triangle.h"
+#include <NESL_audio_triangle.h>
 
 #ifdef __cplusplus
 extern "C" {

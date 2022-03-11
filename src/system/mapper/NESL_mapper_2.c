@@ -24,7 +24,7 @@
  * @brief Mapper 2 (UxROM) extension.
  */
 
-#include "../../../include/system/mapper/NESL_mapper_2.h"
+#include <NESL_mapper_2.h>
 
 #ifdef __cplusplus
 extern "C" {

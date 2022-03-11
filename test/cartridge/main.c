@@ -24,8 +24,8 @@
  * @brief Test application for cartridge subsystem.
  */
 
-#include "../../include/system/NESL_cartridge.h"
-#include "../include/NESL_common.h"
+#include <NESL_cartridge.h>
+#include <NESL_test.h>
 
 /**
  * @struct nesl_test_t

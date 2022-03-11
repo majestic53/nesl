@@ -27,8 +27,8 @@
 #ifndef NESL_MAPPER_H_
 #define NESL_MAPPER_H_
 
-#include "../NESL_bus.h"
-#include "./NESL_cartridge.h"
+#include <NESL_bus.h>
+#include <NESL_cartridge.h>
 
 /**
  * @struct nesl_mapper_t

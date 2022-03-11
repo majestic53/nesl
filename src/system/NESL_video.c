@@ -24,9 +24,9 @@
  * @brief Video subsystem.
  */
 
-#include "../../include/system/NESL_mapper.h"
-#include "../../include/system/NESL_video.h"
-#include "../../include/NESL_service.h"
+#include <NESL_mapper.h>
+#include <NESL_video.h>
+#include <NESL_service.h>
 
 /**
  * @brief Video port getter function.
