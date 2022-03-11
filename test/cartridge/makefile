@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/
 
-FILE=NESL_cartridge
+FILE=cartridge
 
 include ../include/makefile

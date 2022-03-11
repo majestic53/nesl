@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/
 
-FILE=NESL_bus
+FILE=bus
 
 include ../include/makefile

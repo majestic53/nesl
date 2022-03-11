@@ -24,8 +24,8 @@
  * @brief Test application for audio square-wave synthesizer.
  */
 
-#include <NESL_audio_square.h>
-#include <NESL_test.h>
+#include <audio_square.h>
+#include <test.h>
 
 /**
  * @struct nesl_test_t
@@ -189,7 +189,7 @@ static nesl_error_e NESL_TestAudioSquareCycle(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -209,7 +209,7 @@ static nesl_error_e NESL_TestAudioSquareInitialize(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -229,7 +229,7 @@ static nesl_error_e NESL_TestAudioSquareRead(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -249,7 +249,7 @@ static nesl_error_e NESL_TestAudioSquareReadable(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -269,7 +269,7 @@ static nesl_error_e NESL_TestAudioSquareReset(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -289,7 +289,7 @@ static nesl_error_e NESL_TestAudioSquareUninitialize(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -309,7 +309,7 @@ static nesl_error_e NESL_TestAudioSquareWrite(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -323,7 +323,7 @@ int main(void)
 
     nesl_error_e result = NESL_SUCCESS;
 
-    for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
+    for(int index = 0; index < TEST_COUNT(TEST); ++index) {
 
         if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;

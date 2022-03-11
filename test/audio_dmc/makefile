@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/audio/
 
-FILE=NESL_audio_dmc
+FILE=audio_dmc
 
 include ../include/makefile

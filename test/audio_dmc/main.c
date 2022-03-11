@@ -24,8 +24,8 @@
  * @brief Test application for audio dmc synthesizer.
  */
 
-#include <NESL_audio_dmc.h>
-#include <NESL_test.h>
+#include <audio_dmc.h>
+#include <test.h>
 
 /**
  * @struct nesl_test_t
@@ -189,7 +189,7 @@ static nesl_error_e NESL_TestAudioDMCCycle(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -209,7 +209,7 @@ static nesl_error_e NESL_TestAudioDMCInitialize(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -229,7 +229,7 @@ static nesl_error_e NESL_TestAudioDMCRead(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -249,7 +249,7 @@ static nesl_error_e NESL_TestAudioDMCReadable(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -269,7 +269,7 @@ static nesl_error_e NESL_TestAudioDMCReset(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -289,7 +289,7 @@ static nesl_error_e NESL_TestAudioDMCUninitialize(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -309,7 +309,7 @@ static nesl_error_e NESL_TestAudioDMCWrite(void)
     /* TODO */
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -323,7 +323,7 @@ int main(void)
 
     nesl_error_e result = NESL_SUCCESS;
 
-    for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
+    for(int index = 0; index < TEST_COUNT(TEST); ++index) {
 
         if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;

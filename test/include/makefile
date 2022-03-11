@@ -21,7 +21,7 @@ DIR_INCLUDE=../../include/
 DIR_INCLUDE_TEST=../include/
 DIR_ROOT=./
 
-FILE_BIN=$(DIR_ROOT)TEST-$(FILE)
+FILE_BIN=$(DIR_ROOT)test_$(FILE)
 FLAGS_INCLUDE=$(subst $(DIR_INCLUDE),-I$(DIR_INCLUDE),$(shell find $(DIR_INCLUDE) -maxdepth 2 -type d))
 FLAGS_INCLUDE_TEST=$(subst $(DIR_INCLUDE_TEST),-I$(DIR_INCLUDE_TEST),$(shell find $(DIR_INCLUDE_TEST) -maxdepth 1 -type d))
 FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))

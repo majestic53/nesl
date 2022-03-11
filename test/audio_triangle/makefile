@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/audio/
 
-FILE=NESL_audio_triangle
+FILE=audio_triangle
 
 include ../include/makefile

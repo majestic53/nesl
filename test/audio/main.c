@@ -24,9 +24,9 @@
  * @brief Test application for audio subsystem.
  */
 
-#include <NESL_audio.h>
-#include <NESL_service.h>
-#include <NESL_test.h>
+#include <audio.h>
+#include <service.h>
+#include <test.h>
 
 /**
  * @struct nesl_test_t
@@ -357,14 +357,14 @@ static nesl_error_e NESL_TestAudioCycle(void)
     for(uint64_t cycle = 0; cycle <= 12; ++cycle) {
         bool expected = !(cycle % 6);
 
-        if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
+        if(ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
             result = NESL_FAILURE;
             goto exit;
         }
 
         NESL_AudioCycle(&g_test.audio, cycle);
 
-        if(NESL_ASSERT((g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].cycle == expected)
+        if(ASSERT((g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].cycle == expected)
                 && (g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_2].cycle == expected)
                 && (g_test.synthesizer.triangle.cycle == expected)
                 && (g_test.synthesizer.noise.cycle == expected)
@@ -375,7 +375,7 @@ static nesl_error_e NESL_TestAudioCycle(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -388,12 +388,12 @@ static nesl_error_e NESL_TestAudioInitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
+    if(ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    if(NESL_ASSERT((g_test.audio.status.raw == 0)
+    if(ASSERT((g_test.audio.status.raw == 0)
             && (g_test.audio.frame.raw == 0)
             && (g_test.setup.callback != NULL)
             && (g_test.setup.context == &g_test.audio)
@@ -407,7 +407,7 @@ static nesl_error_e NESL_TestAudioInitialize(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -420,7 +420,7 @@ static nesl_error_e NESL_TestAudioRead(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
+    if(ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -430,14 +430,14 @@ static nesl_error_e NESL_TestAudioRead(void)
         switch(address) {
             case 0x4015:
 
-                if(NESL_ASSERT(NESL_AudioRead(&g_test.audio, address) == 0)) {
+                if(ASSERT(NESL_AudioRead(&g_test.audio, address) == 0)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             default:
 
-                if(NESL_ASSERT(NESL_AudioRead(&g_test.audio, address) == 0)) {
+                if(ASSERT(NESL_AudioRead(&g_test.audio, address) == 0)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -446,7 +446,7 @@ static nesl_error_e NESL_TestAudioRead(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -459,17 +459,17 @@ static nesl_error_e NESL_TestAudioReset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
+    if(ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_AudioReset(&g_test.audio) == NESL_SUCCESS)) {
+    if(ASSERT(NESL_AudioReset(&g_test.audio) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    if(NESL_ASSERT((g_test.audio.status.raw == 0)
+    if(ASSERT((g_test.audio.status.raw == 0)
             && (g_test.audio.frame.raw == 0)
             && g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].reset
             && g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_2].reset
@@ -481,7 +481,7 @@ static nesl_error_e NESL_TestAudioReset(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -494,14 +494,14 @@ static nesl_error_e NESL_TestAudioUninitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
+    if(ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
     NESL_AudioUninitialize(&g_test.audio);
 
-    if(NESL_ASSERT((g_test.audio.status.raw == 0)
+    if(ASSERT((g_test.audio.status.raw == 0)
             && (g_test.audio.frame.raw == 0)
             && !g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].initialized
             && !g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_2].initialized
@@ -513,7 +513,7 @@ static nesl_error_e NESL_TestAudioUninitialize(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -526,7 +526,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(NESL_ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
+    if(ASSERT(NESL_TestInitialize() == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -537,7 +537,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
         switch(address) {
             case 0x4000 ... 0x4003:
 
-                if(NESL_ASSERT((g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].address == address)
+                if(ASSERT((g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].address == address)
                         && (g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_1].data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
@@ -545,7 +545,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
                 break;
             case 0x4004 ... 0x4007:
 
-                if(NESL_ASSERT((g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_2].address == (address - 4))
+                if(ASSERT((g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_2].address == (address - 4))
                         && (g_test.synthesizer.square[NESL_SYNTHESIZER_SQUARE_2].data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
@@ -553,7 +553,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
                 break;
             case 0x4008 ... 0x400B:
 
-                if(NESL_ASSERT((g_test.synthesizer.triangle.address == address)
+                if(ASSERT((g_test.synthesizer.triangle.address == address)
                         && (g_test.synthesizer.triangle.data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
@@ -561,7 +561,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
                 break;
             case 0x400C ... 0x400F:
 
-                if(NESL_ASSERT((g_test.synthesizer.noise.address == address)
+                if(ASSERT((g_test.synthesizer.noise.address == address)
                         && (g_test.synthesizer.noise.data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
@@ -569,7 +569,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
                 break;
             case 0x4010 ... 0x4013:
 
-                if(NESL_ASSERT((g_test.synthesizer.dmc.address == address)
+                if(ASSERT((g_test.synthesizer.dmc.address == address)
                         && (g_test.synthesizer.dmc.data == data))) {
                     result = NESL_FAILURE;
                     goto exit;
@@ -577,14 +577,14 @@ static nesl_error_e NESL_TestAudioWrite(void)
                 break;
             case 0x4015:
 
-                if(NESL_ASSERT(g_test.audio.status.raw == data)) {
+                if(ASSERT(g_test.audio.status.raw == data)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             case 0x4017:
 
-                if(NESL_ASSERT(g_test.audio.frame.raw == data)) {
+                if(ASSERT(g_test.audio.frame.raw == data)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -595,7 +595,7 @@ static nesl_error_e NESL_TestAudioWrite(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -609,7 +609,7 @@ int main(void)
 
     nesl_error_e result = NESL_SUCCESS;
 
-    for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
+    for(int index = 0; index < TEST_COUNT(TEST); ++index) {
 
         if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;

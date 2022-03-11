@@ -24,8 +24,8 @@
  * @brief Test application for processor subsystem.
  */
 
-#include <NESL_processor.h>
-#include <NESL_test.h>
+#include <processor.h>
+#include <test.h>
 
 /**
  * @struct nesl_instruction_t
@@ -258,14 +258,14 @@ static nesl_error_e NESL_TestProcessorCycle(void)
     for(cycle = 1; cycle <= 3; ++cycle) {
         NESL_ProcessorCycle(&g_test.processor, cycle);
 
-        if(NESL_ASSERT(g_test.processor.cycle == ((cycle < 3) ? 10 : 9))) {
+        if(ASSERT(g_test.processor.cycle == ((cycle < 3) ? 10 : 9))) {
             result = NESL_FAILURE;
             goto exit;
         }
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -282,13 +282,13 @@ static nesl_error_e NESL_TestProcessorInitialize(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_ProcessorInitialize(&g_test.processor) == NESL_SUCCESS)) {
+    if(ASSERT(NESL_ProcessorInitialize(&g_test.processor) == NESL_SUCCESS)) {
         result = NESL_SUCCESS;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -312,7 +312,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -328,7 +328,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA1, 0x00, 0x00, 0xABD0, 0xFD, 0xF4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA1, 0x00, 0x00, 0xABD0, 0xFD, 0xF4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -344,7 +344,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x21, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x21, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -360,7 +360,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xE0, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xE0, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -376,7 +376,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABD0, 0xFD, 0x75, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABD0, 0xFD, 0x75, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -392,7 +392,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA1, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA1, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -409,7 +409,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -426,7 +426,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0xAC, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0xAC, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -443,7 +443,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -460,7 +460,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0xAC, 0xABD0, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0xAC, 0xABD0, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -476,7 +476,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -493,7 +493,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -510,7 +510,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -527,7 +527,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0xAC, 0xABCF, 0xFD, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0xAC, 0xABCF, 0xFD, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -543,7 +543,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -560,7 +560,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x60, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x60, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -576,7 +576,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -592,7 +592,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABD0, 0xFD, 0xF4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABD0, 0xFD, 0xF4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -608,7 +608,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x20, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x20, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -624,7 +624,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xDF, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xDF, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -640,7 +640,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABD0, 0xFD, 0x75, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABD0, 0xFD, 0x75, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -656,7 +656,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -673,7 +673,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -690,7 +690,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0xAC, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0xAC, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -707,7 +707,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -724,7 +724,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0xAC, 0xABD0, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0xAC, 0xABD0, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -740,7 +740,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -757,7 +757,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -774,7 +774,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -791,7 +791,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0xAC, 0xABCF, 0xFD, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0xAC, 0xABCF, 0xFD, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -807,7 +807,7 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -824,13 +824,13 @@ static nesl_error_e NESL_TestProcessorInstructionArithmetic(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5F, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5F, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -851,7 +851,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -866,7 +866,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -881,7 +881,7 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABD0, 0xFD, 0xF6, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABD0, 0xFD, 0xF6, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -896,13 +896,13 @@ static nesl_error_e NESL_TestProcessorInstructionBit(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABCF, 0xFD, 0xF6, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABCF, 0xFD, 0xF6, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -925,7 +925,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABC9, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABC9, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -940,7 +940,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xAC4E, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xAC4E, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -955,7 +955,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -970,7 +970,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x35, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x35, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -985,7 +985,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x35, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x35, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1000,7 +1000,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1015,7 +1015,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x36, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x36, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1030,7 +1030,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1045,7 +1045,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0xB4, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0xB4, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1060,7 +1060,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1075,7 +1075,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1090,7 +1090,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x36, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x36, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1105,7 +1105,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1120,7 +1120,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1135,7 +1135,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1150,7 +1150,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x74, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x74, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1165,7 +1165,7 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x74, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABDF, 0xFD, 0x74, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1180,13 +1180,13 @@ static nesl_error_e NESL_TestProcessorInstructionBranch(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -1217,7 +1217,7 @@ static nesl_error_e NESL_TestProcessorInstructionBreakpoint(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0xCF)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 3) == 0xAB))) {
@@ -1226,7 +1226,7 @@ static nesl_error_e NESL_TestProcessorInstructionBreakpoint(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -1249,7 +1249,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1264,7 +1264,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1279,7 +1279,7 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x30, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x30, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1294,13 +1294,13 @@ static nesl_error_e NESL_TestProcessorInstructionClear(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -1323,7 +1323,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1338,7 +1338,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xCD, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xCD, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1353,7 +1353,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFF, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFF, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1368,7 +1368,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABD0, 0xFD, 0x37, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABD0, 0xFD, 0x37, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1384,7 +1384,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABD0, 0xFD, 0x37, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABD0, 0xFD, 0x37, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1400,7 +1400,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0xAC, 0x00, 0xABD0, 0xFD, 0x37, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0xAC, 0x00, 0xABD0, 0xFD, 0x37, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1416,7 +1416,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABD0, 0xFD, 0x37, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABD0, 0xFD, 0x37, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1432,7 +1432,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABD0, 0xFD, 0x37, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABD0, 0xFD, 0x37, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1447,7 +1447,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0x37, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0x37, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1463,7 +1463,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x37, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x37, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1479,7 +1479,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABCF, 0xFD, 0x37, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABCF, 0xFD, 0x37, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1495,7 +1495,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABCF, 0xFD, 0x37, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABCF, 0xFD, 0x37, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1510,7 +1510,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0x37, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0x37, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1526,7 +1526,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x37, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x37, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1541,7 +1541,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABD0, 0xFD, 0x37, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABD0, 0xFD, 0x37, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1556,7 +1556,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0x37, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0x37, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1571,7 +1571,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0x37, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0x37, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1586,7 +1586,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABD0, 0xFD, 0x37, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABD0, 0xFD, 0x37, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1601,7 +1601,7 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0x37, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0x37, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1616,13 +1616,13 @@ static nesl_error_e NESL_TestProcessorInstructionCompare(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0x37, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0x37, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -1647,7 +1647,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xFF))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1663,7 +1663,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0xFF))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1677,7 +1677,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 4) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0xFF))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1693,7 +1693,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0xFF))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1709,7 +1709,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xFF, 0x00, 0xABCE, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xFF, 0x00, 0xABCE, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1724,7 +1724,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1739,7 +1739,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x0F, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x0F, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1754,7 +1754,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xFF, 0xABCE, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xFF, 0xABCE, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1769,7 +1769,7 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1784,13 +1784,13 @@ static nesl_error_e NESL_TestProcessorInstructionDecrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x0F, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x0F, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -1815,7 +1815,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x00))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1831,7 +1831,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0x36, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0x36, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0x00))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1845,7 +1845,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x36, 4) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x36, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0x00))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1861,7 +1861,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0x36, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0x36, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0x00))) {
         result = NESL_FAILURE;
         goto exit;
@@ -1877,7 +1877,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x80, 0x00, 0xABCE, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x80, 0x00, 0xABCE, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1892,7 +1892,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1907,7 +1907,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x11, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x11, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1922,7 +1922,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x80, 0xABCE, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x80, 0xABCE, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1937,7 +1937,7 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1952,13 +1952,13 @@ static nesl_error_e NESL_TestProcessorInstructionIncrement(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x11, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x11, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -1979,7 +1979,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x4455, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x4455, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -1992,7 +1992,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x4455, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x4455, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2005,7 +2005,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0x4455, 0xFB, 0x34, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0x4455, 0xFB, 0x34, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x01FC) == 0xCF)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x01FD) == 0xAB))) {
         result = NESL_FAILURE;
@@ -2013,7 +2013,7 @@ static nesl_error_e NESL_TestProcessorInstructionJump(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -2034,7 +2034,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2049,7 +2049,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2064,7 +2064,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0xAC, 0x00, 0xABD0, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0xAC, 0x00, 0xABD0, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2079,7 +2079,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2094,7 +2094,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABD0, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABD0, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2107,7 +2107,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2122,7 +2122,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2137,7 +2137,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABCF, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x03, 0xABCF, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2152,7 +2152,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABCF, 0xFD, 0xB4, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0xAC, 0xABCF, 0xFD, 0xB4, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2165,7 +2165,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2180,7 +2180,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2193,7 +2193,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2208,7 +2208,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2221,7 +2221,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2234,7 +2234,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2249,7 +2249,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xAB, 0x03, 0xABCF, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xAB, 0x03, 0xABCF, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2262,7 +2262,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2277,7 +2277,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x03, 0xAB, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x03, 0xAB, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2290,7 +2290,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2303,7 +2303,7 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0xB4, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0xB4, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2318,13 +2318,13 @@ static nesl_error_e NESL_TestProcessorInstructionLoad(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x03, 0xAB, 0xABCF, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x03, 0xAB, 0xABCF, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -2347,7 +2347,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2362,7 +2362,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2378,7 +2378,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2394,7 +2394,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0xAC, 0x00, 0xABD0, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0xAC, 0x00, 0xABD0, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2410,7 +2410,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2426,7 +2426,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0xAC, 0xABD0, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0xAC, 0xABD0, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2441,7 +2441,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2457,7 +2457,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2473,7 +2473,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x03, 0xABCF, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x03, 0xABCF, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2489,7 +2489,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0xAC, 0xABCF, 0xFD, 0xB4, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0xAC, 0xABCF, 0xFD, 0xB4, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2504,7 +2504,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2520,7 +2520,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xA0, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xA0, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2535,7 +2535,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFF, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFF, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2550,7 +2550,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2566,7 +2566,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2582,7 +2582,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0xAC, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0xAC, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2598,7 +2598,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2614,7 +2614,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0xAC, 0xABD0, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0xAC, 0xABD0, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2629,7 +2629,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2645,7 +2645,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2661,7 +2661,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2677,7 +2677,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0xAC, 0xABCF, 0xFD, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0xAC, 0xABCF, 0xFD, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2692,7 +2692,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2708,7 +2708,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x5B, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x5B, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2723,7 +2723,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFF, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFF, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2738,7 +2738,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2754,7 +2754,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x03, 0x00, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2770,7 +2770,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0xAC, 0x00, 0xABD0, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0xAC, 0x00, 0xABD0, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2786,7 +2786,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0x03, 0xABD0, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2802,7 +2802,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0xAC, 0xABD0, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0xAC, 0xABD0, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2817,7 +2817,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2833,7 +2833,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2849,7 +2849,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0x03, 0xABCF, 0xFD, 0xB4, 4) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0x03, 0xABCF, 0xFD, 0xB4, 4) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2865,7 +2865,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0xAC, 0xABCF, 0xFD, 0xB4, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0xAC, 0xABCF, 0xFD, 0xB4, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2880,7 +2880,7 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x00, 0x00, 0xABCF, 0xFD, 0xB4, 2) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2896,13 +2896,13 @@ static nesl_error_e NESL_TestProcessorInstructionLogical(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFB, 0x03, 0x00, 0xABCF, 0xFD, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -2923,13 +2923,13 @@ static nesl_error_e NESL_TestProcessorInstructionNoOperation(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -2954,7 +2954,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFE, 0x36, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFE, 0x36, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2970,7 +2970,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xAA, 0x00, 0x00, 0xABCE, 0xFE, 0xB4, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0xAA, 0x00, 0x00, 0xABCE, 0xFE, 0xB4, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -2986,7 +2986,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABCE, 0xFE, 0x34, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x00, 0x00, 0xABCE, 0xFE, 0x34, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3005,7 +3005,7 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
 
     status.breakpoint = false;
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFE, status.raw, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFE, status.raw, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3024,13 +3024,13 @@ static nesl_error_e NESL_TestProcessorInstructionPull(void)
 
     status.breakpoint = true;
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFE, status.raw, 3) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFE, status.raw, 3) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3053,7 +3053,7 @@ static nesl_error_e NESL_TestProcessorInstructionPush(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x10, 0x00, 0x00, 0xABCE, 0xFC, 0x34, 2) == true)
+    if(ASSERT((NESL_TestValidate(0x10, 0x00, 0x00, 0xABCE, 0xFC, 0x34, 2) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x01FD) == 0x10))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3069,14 +3069,14 @@ static nesl_error_e NESL_TestProcessorInstructionPush(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFC, 0x24, 2) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFC, 0x24, 2) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x01FD) == 0x24))) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3102,7 +3102,7 @@ static nesl_error_e NESL_TestProcessorInstructionReturn(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x5544, 0xFE, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x5544, 0xFE, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3120,7 +3120,7 @@ static nesl_error_e NESL_TestProcessorInstructionReturn(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x5544, 0xFE, 0x24, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x5544, 0xFE, 0x24, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3136,13 +3136,13 @@ static nesl_error_e NESL_TestProcessorInstructionReturn(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x5544, 0xFF, 0x34, 5) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0x5544, 0xFF, 0x34, 5) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3165,7 +3165,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x01))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3179,7 +3179,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3195,7 +3195,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0xB5, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0xB5, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3209,7 +3209,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFE, 0x00, 0x00, 0xABCE, 0xFD, 0xB5, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFE, 0x00, 0x00, 0xABCE, 0xFD, 0xB5, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3222,7 +3222,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB5, 4) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB5, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3238,7 +3238,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0xB5, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0xB5, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3254,7 +3254,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB4, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x80))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3268,7 +3268,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3284,7 +3284,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0x35, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0x35, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3298,7 +3298,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x7F, 0x00, 0x00, 0xABCE, 0xFD, 0x35, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x7F, 0x00, 0x00, 0xABCE, 0xFD, 0x35, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3311,7 +3311,7 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x35, 4) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x35, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3327,14 +3327,14 @@ static nesl_error_e NESL_TestProcessorInstructionRotate(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0x35, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0x35, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3357,7 +3357,7 @@ static nesl_error_e NESL_TestProcessorInstructionSet(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x35, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x35, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3372,7 +3372,7 @@ static nesl_error_e NESL_TestProcessorInstructionSet(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x3C, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x3C, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3387,13 +3387,13 @@ static nesl_error_e NESL_TestProcessorInstructionSet(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3416,7 +3416,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x00))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3430,7 +3430,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0xB5, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3446,7 +3446,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0xB5, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0xB5, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3460,7 +3460,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xFE, 0x00, 0x00, 0xABCE, 0xFD, 0xB5, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xFE, 0x00, 0x00, 0xABCE, 0xFD, 0xB5, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3473,7 +3473,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB5, 4) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0xB5, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3489,7 +3489,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0xB5, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0xB5, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0xFE))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3505,7 +3505,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x36, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x00))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3519,7 +3519,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABD0, 0xFD, 0x35, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3535,7 +3535,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0x35, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABD0, 0xFD, 0x35, 6) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3549,7 +3549,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x7F, 0x00, 0x00, 0xABCE, 0xFD, 0x35, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x7F, 0x00, 0x00, 0xABCE, 0xFD, 0x35, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3562,7 +3562,7 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x35, 4) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCF, 0xFD, 0x35, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3578,14 +3578,14 @@ static nesl_error_e NESL_TestProcessorInstructionShift(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0x35, 5) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0x00, 0xABCF, 0xFD, 0x35, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0x7F))) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3608,7 +3608,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x00, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3625,7 +3625,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x03, 0x00, 0xABD0, 0xFD, 0x34, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3642,7 +3642,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 4) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x00, 0x03, 0xABD0, 0xFD, 0x34, 4) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3659,7 +3659,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0035) == 0x55)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0036) == 0x44)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xAB))) {
@@ -3678,7 +3678,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 5) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x00, 0x03, 0xABCF, 0xFD, 0x34, 5) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0032) == 0x55)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0033) == 0x44)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4458) == 0xAB))) {
@@ -3696,7 +3696,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x00, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3713,7 +3713,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)
+    if(ASSERT((NESL_TestValidate(0xAB, 0x03, 0x00, 0xABCF, 0xFD, 0x34, 3) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3729,7 +3729,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0xAB, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0xAB, 0x00, 0xABD0, 0xFD, 0x34, 3) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3745,7 +3745,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0xAB, 0x00, 0xABCF, 0xFD, 0x34, 2) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3762,7 +3762,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0xAB, 0x03, 0xABCF, 0xFD, 0x34, 3) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0xAB, 0x03, 0xABCF, 0xFD, 0x34, 3) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3778,7 +3778,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0xAB, 0xABD0, 0xFD, 0x34, 3) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0xAB, 0xABD0, 0xFD, 0x34, 3) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x4455) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3794,7 +3794,7 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0x34, 2) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0xAB, 0xABCF, 0xFD, 0x34, 2) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0055) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
@@ -3811,14 +3811,14 @@ static nesl_error_e NESL_TestProcessorInstructionStore(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x03, 0xAB, 0xABCF, 0xFD, 0x34, 3) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x03, 0xAB, 0xABCF, 0xFD, 0x34, 3) == true)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, 0x0058) == 0xAB))) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -3842,7 +3842,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x36, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3858,7 +3858,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0xF0, 0xF0, 0x00, 0xABCE, 0xFD, 0xB4, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0xF0, 0xF0, 0x00, 0xABCE, 0xFD, 0xB4, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3874,7 +3874,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x10, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x10, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3890,7 +3890,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x00, 0x10, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x00, 0x10, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3906,7 +3906,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x10, 0x00, 0xABCE, 0x10, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x10, 0x00, 0xABCE, 0x10, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3922,7 +3922,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x10, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x10, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3938,7 +3938,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0x00, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0x00, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3954,7 +3954,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0xF0, 0x00, 0xABCE, 0xF0, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0xF0, 0x00, 0xABCE, 0xF0, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3970,7 +3970,7 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x00, 0x10, 0x00, 0xABCE, 0x10, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x00, 0x10, 0x00, 0xABCE, 0x10, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -3986,13 +3986,13 @@ static nesl_error_e NESL_TestProcessorInstructionTransfer(void)
         goto exit;
     }
 
-    if(NESL_ASSERT(NESL_TestValidate(0x10, 0x00, 0x10, 0xABCE, 0xFD, 0x34, 1) == true)) {
+    if(ASSERT(NESL_TestValidate(0x10, 0x00, 0x10, 0xABCE, 0xFD, 0x34, 1) == true)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4066,14 +4066,14 @@ static nesl_error_e NESL_TestProcessorInstructionUnsupported(void)
                 break;
         }
 
-        if(NESL_ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFD, 0x34, unsupported->cycles - 1) == true)) {
+        if(ASSERT(NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFD, 0x34, unsupported->cycles - 1) == true)) {
             result = NESL_FAILURE;
             goto exit;
         }
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4094,7 +4094,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
 
     NESL_ProcessorInterrupt(&g_test.processor, false);
 
-    if(NESL_ASSERT(g_test.processor.interrupt.non_maskable)) {
+    if(ASSERT(g_test.processor.interrupt.non_maskable)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -4105,7 +4105,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
 
     NESL_ProcessorInterrupt(&g_test.processor, true);
 
-    if(NESL_ASSERT(g_test.processor.interrupt.maskable)) {
+    if(ASSERT(g_test.processor.interrupt.maskable)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -4121,7 +4121,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
     NESL_ProcessorInterrupt(&g_test.processor, false);
     NESL_ProcessorCycle(&g_test.processor, 0);
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
             && (g_test.processor.interrupt.non_maskable == false)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == g_test.processor.state.status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0xCD)
@@ -4136,7 +4136,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
     NESL_ProcessorInterrupt(&g_test.processor, false);
     NESL_ProcessorCycle(&g_test.processor, 0);
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xF7, 0x34, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xF7, 0x34, 6) == true)
             && (g_test.processor.interrupt.non_maskable == false)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0x34)
@@ -4157,7 +4157,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
     NESL_ProcessorInterrupt(&g_test.processor, true);
     NESL_ProcessorCycle(&g_test.processor, 0);
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0xABCE, 0xFD, 0x34, 1) == true)
             && (g_test.processor.interrupt.maskable == true))) {
         result = NESL_SUCCESS;
         goto exit;
@@ -4169,7 +4169,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
     NESL_ProcessorInterrupt(&g_test.processor, true);
     NESL_ProcessorCycle(&g_test.processor, 0);
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFA, 0x34, 6) == true)
             && (g_test.processor.interrupt.maskable == false)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 1) == status.raw)
             && (NESL_BusRead(NESL_BUS_PROCESSOR, (0x0100 | g_test.processor.state.stack_pointer.low) + 2) == 0xCE)
@@ -4179,7 +4179,7 @@ static nesl_error_e NESL_TestProcessorInterrupt(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4200,14 +4200,14 @@ static nesl_error_e NESL_TestProcessorRead(void)
     for(uint16_t address = 0x0000; address < 0x1FFF; ++address, ++data) {
         g_test.processor.ram[address & 0x07FF] = data;
 
-        if(NESL_ASSERT(NESL_ProcessorRead(&g_test.processor, address) == data)) {
+        if(ASSERT(NESL_ProcessorRead(&g_test.processor, address) == data)) {
             result = NESL_FAILURE;
             goto exit;
         }
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4229,7 +4229,7 @@ static nesl_error_e NESL_TestProcessorReset(void)
     NESL_BusWrite(NESL_BUS_PROCESSOR, 0xFFFD, address >> 8);
     NESL_ProcessorReset(&g_test.processor);
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFD, 0x34, 7) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, address, 0xFD, 0x34, 7) == true)
             && (g_test.processor.interrupt.raw == 0)
             && (g_test.processor.transfer.destination.word == 0)
             && (g_test.processor.transfer.source.word == 0))) {
@@ -4238,7 +4238,7 @@ static nesl_error_e NESL_TestProcessorReset(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4266,7 +4266,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
     g_test.processor.cycle = 0;
     NESL_ProcessorWrite(&g_test.processor, 0x4014, page);
 
-    if(NESL_ASSERT((g_test.processor.interrupt.transfer == true)
+    if(ASSERT((g_test.processor.interrupt.transfer == true)
             && (g_test.processor.interrupt.transfer_sync == true)
             && (g_test.processor.transfer.source.word == (page << 8))
             && (g_test.processor.transfer.destination.word == 0))) {
@@ -4286,7 +4286,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
         NESL_ProcessorCycle(&g_test.processor, cycle);
         cycle += 3;
 
-        if(NESL_ASSERT((g_test.processor.interrupt.transfer == (address < 0xFF))
+        if(ASSERT((g_test.processor.interrupt.transfer == (address < 0xFF))
                 && (g_test.processor.interrupt.transfer_sync == false)
                 && (g_test.processor.transfer.source.word == ((address < 0xFF) ? ((page << 8) + address + 1) : 0))
                 && (g_test.processor.transfer.destination.word == ((address < 0xFF) ? address + 1 : 0))
@@ -4309,7 +4309,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
     g_test.processor.cycle = 0;
     NESL_ProcessorWrite(&g_test.processor, 0x4014, page);
 
-    if(NESL_ASSERT((g_test.processor.interrupt.transfer == true)
+    if(ASSERT((g_test.processor.interrupt.transfer == true)
             && (g_test.processor.interrupt.transfer_sync == true)
             && (g_test.processor.transfer.source.word == (page << 8))
             && (g_test.processor.transfer.destination.word == 0))) {
@@ -4327,7 +4327,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
         NESL_ProcessorCycle(&g_test.processor, cycle);
         cycle += 3;
 
-        if(NESL_ASSERT((g_test.processor.interrupt.transfer == (address < 0xFF))
+        if(ASSERT((g_test.processor.interrupt.transfer == (address < 0xFF))
                 && (g_test.processor.interrupt.transfer_sync == false)
                 && (g_test.processor.transfer.source.word == ((address < 0xFF) ? ((page << 8) + address + 1) : 0))
                 && (g_test.processor.transfer.destination.word == ((address < 0xFF) ? address + 1 : 0))
@@ -4338,7 +4338,7 @@ static nesl_error_e NESL_TestProcessorTransfer(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4357,7 +4357,7 @@ static nesl_error_e NESL_TestProcessorUninitialize(void)
 
     NESL_ProcessorUninitialize(&g_test.processor);
 
-    if(NESL_ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0x0000, 0x00, 0x00, 0) == true)
+    if(ASSERT((NESL_TestValidate(0x00, 0x00, 0x00, 0x0000, 0x00, 0x00, 0) == true)
             && (g_test.processor.interrupt.raw == 0)
             && (g_test.processor.transfer.destination.word == 0)
             && (g_test.processor.transfer.source.word == 0))) {
@@ -4366,7 +4366,7 @@ static nesl_error_e NESL_TestProcessorUninitialize(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4387,7 +4387,7 @@ static nesl_error_e NESL_TestProcessorWrite(void)
     for(uint16_t address = 0x0000; address < 0x1FFF; ++address, ++data) {
         NESL_ProcessorWrite(&g_test.processor, address, data);
 
-        if(NESL_ASSERT(g_test.processor.ram[address & 0x07FF] == data)) {
+        if(ASSERT(g_test.processor.ram[address & 0x07FF] == data)) {
             result = NESL_FAILURE;
             goto exit;
         }
@@ -4396,7 +4396,7 @@ static nesl_error_e NESL_TestProcessorWrite(void)
     data = 0xAB;
     NESL_ProcessorWrite(&g_test.processor, 0x4014, data);
 
-    if(NESL_ASSERT((g_test.processor.interrupt.transfer == true)
+    if(ASSERT((g_test.processor.interrupt.transfer == true)
             && (g_test.processor.interrupt.transfer_sync == true)
             && (g_test.processor.transfer.source.word == (data << 8))
             && (g_test.processor.transfer.destination.word == 0))) {
@@ -4405,7 +4405,7 @@ static nesl_error_e NESL_TestProcessorWrite(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -4425,7 +4425,7 @@ int main(void)
 
     nesl_error_e result = NESL_SUCCESS;
 
-    for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
+    for(int index = 0; index < TEST_COUNT(TEST); ++index) {
 
         if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;

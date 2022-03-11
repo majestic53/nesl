@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/audio/
 
-FILE=NESL_audio_square
+FILE=audio_square
 
 include ../include/makefile

@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/
 
-FILE=NESL_video
+FILE=video
 
 include ../include/makefile

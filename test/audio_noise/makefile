@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/audio/
 
-FILE=NESL_audio_noise
+FILE=audio_noise
 
 include ../include/makefile

@@ -21,7 +21,7 @@
 
 /**
  * @file main.c
- * @brief Application with a CLI interface, used to launch NESL.
+ * @brief NESL launcher application.
  */
 
 #include <getopt.h>
@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <NESL.h>
+#include <nesl.h>
 
 /**
  * @enum nesl_bank_e
@@ -65,7 +65,7 @@ extern "C" {
  * @param path Pointer to path string
  * @param NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e ReadFile(nesl_t *input, char *base, char *path)
+static nesl_error_e read_file(nesl_t *input, char *base, char *path)
 {
     FILE *file = NULL;
     nesl_error_e result = NESL_SUCCESS;
@@ -115,9 +115,9 @@ exit:
  * @param stream File stream
  * @param verbose Verbose output
  */
-static void ShowVersion(FILE *stream, bool verbose)
+static void show_version(FILE *stream, bool verbose)
 {
-    const nesl_version_t *version = NESL_GetVersion();
+    const nesl_version_t *version = nesl_get_version();
 
     if(verbose) {
         TRACE(NESL_SUCCESS, "%s", "NESL ");
@@ -135,11 +135,11 @@ static void ShowVersion(FILE *stream, bool verbose)
  * @param stream File stream
  * @param verbose Verbose output
  */
-static void ShowHelp(FILE *stream, bool verbose)
+static void show_help(FILE *stream, bool verbose)
 {
 
     if(verbose) {
-        ShowVersion(stream, true);
+        show_version(stream, true);
         TRACE(NESL_SUCCESS, "%s", "\n");
     }
 
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
                 input.fullscreen = true;
                 break;
             case 'h':
-                ShowHelp(stdout, true);
+                show_help(stdout, true);
                 goto exit;
             case 'l':
                 input.linear = true;
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
                 input.scale = strtol(optarg, NULL, 10);
                 break;
             case 'v':
-                ShowVersion(stdout, false);
+                show_version(stdout, false);
                 goto exit;
             case '?':
             default:
@@ -193,14 +193,14 @@ int main(int argc, char *argv[])
 
     for(option = optind; option < argc; ++option) {
 
-        if((result = ReadFile(&input, argv[0], argv[option])) == NESL_FAILURE) {
+        if((result = read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
             goto exit;
         }
         break;
     }
 
-    if((result = NESL_Run(&input)) == NESL_FAILURE) {
-        TRACE(NESL_FAILURE, "%s: %s\n", argv[0], NESL_GetError());
+    if((result = nesl(&input)) == NESL_FAILURE) {
+        TRACE(NESL_FAILURE, "%s: %s\n", argv[0], nesl_get_error());
         goto exit;
     }
 

@@ -29,8 +29,8 @@ This project uses the following coding style:
  * ...
  */
 typedef enum {
-    NESL_XXX_A = 0,
-    NESL_XXX_B,
+    XXX_A = 0,          /*< Doxygen comment */
+    XXX_B,              /*< Doxygen comment */
     ...
 } nesl_xxx_e;
 ```
@@ -44,8 +44,8 @@ typedef enum {
  * ...
  */
 typedef struct {
-    int val_0;
-    int val_1;
+    nesl_xxx_e val_0;   /*< Doxygen comment */
+    int val_1;          /*< Doxygen comment */
     ...
 } nesl_xxx_t;
 ```
@@ -64,7 +64,7 @@ extern "C" {
  * Doxygen comment
  * ...
  */
-int NESL_XxxYyy(nesl_xxx_t *arg_0, nesl_xxx_e arg_1, ...)
+int nesl_xxx_yyy(nesl_xxx_t *arg_0, nesl_xxx_e arg_1, ...)
 {
     int result = NESL_SUCCESS;
 

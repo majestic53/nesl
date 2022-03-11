@@ -24,12 +24,12 @@
  * @brief Test application for bus.
  */
 
-#include <NESL_audio.h>
-#include <NESL_input.h>
-#include <NESL_mapper.h>
-#include <NESL_processor.h>
-#include <NESL_video.h>
-#include <NESL_test.h>
+#include <audio.h>
+#include <input.h>
+#include <mapper.h>
+#include <processor.h>
+#include <video.h>
+#include <test.h>
 
 /**
  * @struct nesl_test_t
@@ -316,7 +316,7 @@ static nesl_error_e NESL_TestBusInterrupt(void)
             case NESL_INTERRUPT_MASKABLE:
             case NESL_INTERRUPT_NON_MASKABLE:
 
-                if(NESL_ASSERT((g_test.subsystem.processor.interrupt == true)
+                if(ASSERT((g_test.subsystem.processor.interrupt == true)
                         && (g_test.subsystem.processor.interrupt_maskable == (type == NESL_INTERRUPT_MASKABLE)))) {
                     result = NESL_FAILURE;
                     goto exit;
@@ -324,7 +324,7 @@ static nesl_error_e NESL_TestBusInterrupt(void)
                 break;
             case NESL_INTERRUPT_RESET:
 
-                if(NESL_ASSERT((g_test.service.reset == true)
+                if(ASSERT((g_test.service.reset == true)
                         && (g_test.subsystem.audio.reset == true)
                         && (g_test.subsystem.input.reset == true)
                         && (g_test.subsystem.mapper.reset == true)
@@ -336,7 +336,7 @@ static nesl_error_e NESL_TestBusInterrupt(void)
                 break;
             case NESL_INTERRUPT_MAPPER:
 
-                if(NESL_ASSERT(g_test.subsystem.mapper.interrupt == true)) {
+                if(ASSERT(g_test.subsystem.mapper.interrupt == true)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -347,7 +347,7 @@ static nesl_error_e NESL_TestBusInterrupt(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -374,7 +374,7 @@ static nesl_error_e NESL_TestBusRead(void)
                         case 0x0000 ... 0x3FFF:
                         case 0x4015 ... 0x4017:
 
-                            if(NESL_ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
+                            if(ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address))) {
                                 result = NESL_FAILURE;
                                 goto exit;
@@ -382,7 +382,7 @@ static nesl_error_e NESL_TestBusRead(void)
                             break;
                         case 0x6000 ... 0x7FFF:
 
-                            if(NESL_ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
+                            if(ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address)
                                     && (g_test.type == NESL_BANK_PROGRAM_RAM))) {
                                 result = NESL_FAILURE;
@@ -391,7 +391,7 @@ static nesl_error_e NESL_TestBusRead(void)
                             break;
                         case 0x8000 ... 0xFFFF:
 
-                            if(NESL_ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
+                            if(ASSERT((NESL_BusRead(NESL_BUS_PROCESSOR, address) == data)
                                     && (g_test.address == address)
                                     && (g_test.type == NESL_BANK_PROGRAM_ROM))) {
                                 result = NESL_FAILURE;
@@ -400,7 +400,7 @@ static nesl_error_e NESL_TestBusRead(void)
                             break;
                         default:
 
-                            if(NESL_ASSERT(NESL_BusRead(NESL_BUS_PROCESSOR, address) == 0)) {
+                            if(ASSERT(NESL_BusRead(NESL_BUS_PROCESSOR, address) == 0)) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -417,7 +417,7 @@ static nesl_error_e NESL_TestBusRead(void)
                     switch(address & 0x3FFF) {
                         case 0x0000 ... 0x1FFF:
 
-                            if(NESL_ASSERT((NESL_BusRead(NESL_BUS_VIDEO, address) == data)
+                            if(ASSERT((NESL_BusRead(NESL_BUS_VIDEO, address) == data)
                                     && (g_test.address == (address & 0x3FFF))
                                     && (g_test.type == NESL_BANK_CHARACTER_ROM))) {
                                 result = NESL_FAILURE;
@@ -426,7 +426,7 @@ static nesl_error_e NESL_TestBusRead(void)
                             break;
                         case 0x2000 ... 0x3FFF:
 
-                            if(NESL_ASSERT((NESL_BusRead(NESL_BUS_VIDEO, address) == data)
+                            if(ASSERT((NESL_BusRead(NESL_BUS_VIDEO, address) == data)
                                     && (g_test.address == (address & 0x3FFF)))) {
                                 result = NESL_FAILURE;
                                 goto exit;
@@ -434,7 +434,7 @@ static nesl_error_e NESL_TestBusRead(void)
                             break;
                         default:
 
-                            if(NESL_ASSERT(NESL_BusRead(NESL_BUS_VIDEO, address) == 0)) {
+                            if(ASSERT(NESL_BusRead(NESL_BUS_VIDEO, address) == 0)) {
                                 result = NESL_FAILURE;
                                 goto exit;
                             }
@@ -448,7 +448,7 @@ static nesl_error_e NESL_TestBusRead(void)
                     NESL_TestInitialize();
                     g_test.data = data;
 
-                    if(NESL_ASSERT((NESL_BusRead(NESL_BUS_VIDEO_OAM, address) == data)
+                    if(ASSERT((NESL_BusRead(NESL_BUS_VIDEO_OAM, address) == data)
                             && (g_test.address == (address & 0x00FF)))) {
                         result = NESL_FAILURE;
                         goto exit;
@@ -461,7 +461,7 @@ static nesl_error_e NESL_TestBusRead(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -487,7 +487,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         case 0x0000 ... 0x4017:
                             NESL_BusWrite(NESL_BUS_PROCESSOR, address, data);
 
-                            if(NESL_ASSERT((g_test.address == address)
+                            if(ASSERT((g_test.address == address)
                                     && (g_test.data == data))) {
                                 result = NESL_FAILURE;
                                 goto exit;
@@ -496,7 +496,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         case 0x6000 ... 0x7FFF:
                             NESL_BusWrite(NESL_BUS_PROCESSOR, address, data);
 
-                            if(NESL_ASSERT((g_test.address == address)
+                            if(ASSERT((g_test.address == address)
                                     && (g_test.data == data)
                                     && (g_test.type == NESL_BANK_PROGRAM_RAM))) {
                                 result = NESL_FAILURE;
@@ -506,7 +506,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         case 0x8000 ... 0xFFFF:
                             NESL_BusWrite(NESL_BUS_PROCESSOR, address, data);
 
-                            if(NESL_ASSERT((g_test.address == address)
+                            if(ASSERT((g_test.address == address)
                                     && (g_test.data == data)
                                     && (g_test.type == NESL_BANK_PROGRAM_ROM))) {
                                 result = NESL_FAILURE;
@@ -516,7 +516,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         default:
                             NESL_BusWrite(NESL_BUS_PROCESSOR, address, data);
 
-                            if(NESL_ASSERT((g_test.address == 0)
+                            if(ASSERT((g_test.address == 0)
                                     && (g_test.data == 0)
                                     && (g_test.type == 0))) {
                                 result = NESL_FAILURE;
@@ -535,7 +535,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         case 0x0000 ... 0x1FFF:
                             NESL_BusWrite(NESL_BUS_VIDEO, address, data);
 
-                            if(NESL_ASSERT((g_test.type == NESL_BANK_CHARACTER_ROM)
+                            if(ASSERT((g_test.type == NESL_BANK_CHARACTER_ROM)
                                     && (g_test.address == (address & 0x3FFF))
                                     && (g_test.data == data))) {
                                 result = NESL_FAILURE;
@@ -545,7 +545,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         case 0x2000 ... 0x3FFF:
                             NESL_BusWrite(NESL_BUS_VIDEO, address, data);
 
-                            if(NESL_ASSERT((g_test.address == (address & 0x3FFF))
+                            if(ASSERT((g_test.address == (address & 0x3FFF))
                                     && (g_test.data == data))) {
                                 result = NESL_FAILURE;
                                 goto exit;
@@ -554,7 +554,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                         default:
                             NESL_BusWrite(NESL_BUS_VIDEO, address, data);
 
-                            if(NESL_ASSERT((g_test.type == 0)
+                            if(ASSERT((g_test.type == 0)
                                     && (g_test.address == 0)
                                     && (g_test.data == 0))) {
                                 result = NESL_FAILURE;
@@ -570,7 +570,7 @@ static nesl_error_e NESL_TestBusWrite(void)
                     NESL_TestInitialize();
                     NESL_BusWrite(NESL_BUS_VIDEO_OAM, address, data);
 
-                    if(NESL_ASSERT((g_test.address == (address & 0x00FF))
+                    if(ASSERT((g_test.address == (address & 0x00FF))
                             && (g_test.data == data))) {
                         result = NESL_FAILURE;
                         goto exit;
@@ -583,7 +583,7 @@ static nesl_error_e NESL_TestBusWrite(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -596,7 +596,7 @@ int main(void)
 
     nesl_error_e result = NESL_SUCCESS;
 
-    for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
+    for(int index = 0; index < TEST_COUNT(TEST); ++index) {
 
         if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;

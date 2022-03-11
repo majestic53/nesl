@@ -24,8 +24,8 @@
  * @brief Test application for video subsystem.
  */
 
-#include <NESL_video.h>
-#include <NESL_test.h>
+#include <video.h>
+#include <test.h>
 
 /**
  * @struct nesl_test_t
@@ -115,7 +115,7 @@ static nesl_error_e NESL_TestVideoGetPortData(uint16_t address)
         for(uint16_t addr = 0x0000; addr <= 0x3FFF; addr += (g_test.video.port.control.increment ? 32 : 1), ++data) {
             uint8_t value;
 
-            if(NESL_ASSERT(g_test.video.address.v.word == addr)) {
+            if(ASSERT(g_test.video.address.v.word == addr)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
@@ -124,7 +124,7 @@ static nesl_error_e NESL_TestVideoGetPortData(uint16_t address)
             g_test.bus.data[g_test.video.address.v.word] = data;
             value = NESL_VideoReadPort(&g_test.video, address);
 
-            if(NESL_ASSERT((g_test.bus.address == addr)
+            if(ASSERT((g_test.bus.address == addr)
                     && (g_test.bus.type == NESL_BUS_VIDEO))) {
                 result = NESL_FAILURE;
                 goto exit;
@@ -133,7 +133,7 @@ static nesl_error_e NESL_TestVideoGetPortData(uint16_t address)
             switch(addr) {
                 case 0x3F00 ... 0x3FFF:
 
-                    if(NESL_ASSERT(value == data)
+                    if(ASSERT(value == data)
                             && (g_test.video.port.data.low == data)) {
                         result = NESL_FAILURE;
                         goto exit;
@@ -141,7 +141,7 @@ static nesl_error_e NESL_TestVideoGetPortData(uint16_t address)
                     break;
                 default:
 
-                    if(NESL_ASSERT((value != data)
+                    if(ASSERT((value != data)
                             && (g_test.video.port.data.low == data))) {
                         result = NESL_FAILURE;
                         goto exit;
@@ -167,7 +167,7 @@ static nesl_error_e NESL_TestVideoGetPortOamData(uint16_t address)
 
     ((uint8_t *)g_test.video.ram.oam)[g_test.video.port.oam_address.low] = g_test.video.port.oam_address.low;
 
-    if(NESL_ASSERT(NESL_VideoReadPort(&g_test.video, address) == g_test.video.port.oam_address.low)) {
+    if(ASSERT(NESL_VideoReadPort(&g_test.video, address) == g_test.video.port.oam_address.low)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -192,7 +192,7 @@ static nesl_error_e NESL_TestVideoGetPortStatus(uint16_t address)
     g_test.video.port.status.vertical_blank = true;
     g_test.video.port.latch = true;
 
-    if(NESL_ASSERT((NESL_VideoReadPort(&g_test.video, address) == 0xEA)
+    if(ASSERT((NESL_VideoReadPort(&g_test.video, address) == 0xEA)
             && (g_test.video.port.status.raw == 0x60)
             && (g_test.video.port.latch == false))) {
         result = NESL_FAILURE;
@@ -213,7 +213,7 @@ static nesl_error_e NESL_TestVideoGetPortUnused(uint16_t address)
 
     g_test.video.port.data.low = 0xAC;
 
-    if(NESL_ASSERT(NESL_VideoReadPort(&g_test.video, address) == 0xAC)) {
+    if(ASSERT(NESL_VideoReadPort(&g_test.video, address) == 0xAC)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -269,7 +269,7 @@ static nesl_error_e NESL_TestVideoNametableAddress(uint16_t address, nesl_mirror
                     *bank = 1;
                     break;
                 default:
-                    NESL_ASSERT((address >= 0x2000) && (address <= 0x2FFF));
+                    ASSERT((address >= 0x2000) && (address <= 0x2FFF));
                     result = NESL_FAILURE;
                     goto exit;
             }
@@ -286,7 +286,7 @@ static nesl_error_e NESL_TestVideoNametableAddress(uint16_t address, nesl_mirror
                     *bank = 1;
                     break;
                 default:
-                    NESL_ASSERT((address >= 0x2000) && (address <= 0x2FFF));
+                    ASSERT((address >= 0x2000) && (address <= 0x2FFF));
                     result = NESL_FAILURE;
                     goto exit;
             }
@@ -298,7 +298,7 @@ static nesl_error_e NESL_TestVideoNametableAddress(uint16_t address, nesl_mirror
             *bank = 1;
             break;
         default:
-            NESL_ASSERT(mirror < NESL_MIRROR_MAX);
+            ASSERT(mirror < NESL_MIRROR_MAX);
             result = NESL_FAILURE;
             goto exit;
     }
@@ -341,7 +341,7 @@ static nesl_error_e NESL_TestVideoSetPortAddress(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT((g_test.video.address.t.high == (address & 0x3F))
+    if(ASSERT((g_test.video.address.t.high == (address & 0x3F))
             && (g_test.video.port.latch == true))) {
         result = NESL_FAILURE;
         goto exit;
@@ -349,7 +349,7 @@ static nesl_error_e NESL_TestVideoSetPortAddress(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, (address + 1) & 0xFF);
 
-    if(NESL_ASSERT((g_test.video.address.t.low == ((address + 1) & 0xFF))
+    if(ASSERT((g_test.video.address.t.low == ((address + 1) & 0xFF))
             && (g_test.video.address.v.word == g_test.video.address.t.word)
             && (g_test.video.port.latch == false))) {
         result = NESL_FAILURE;
@@ -370,7 +370,7 @@ static nesl_error_e NESL_TestVideoSetPortControl(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT((g_test.video.port.control.raw == (address & 0xFF))
+    if(ASSERT((g_test.video.port.control.raw == (address & 0xFF))
             && (g_test.video.address.t.nametable_x == g_test.video.port.control.nametable_x)
             && (g_test.video.address.t.nametable_y == g_test.video.port.control.nametable_y))) {
         result = NESL_FAILURE;
@@ -396,14 +396,14 @@ static nesl_error_e NESL_TestVideoSetPortData(uint16_t address)
 
         for(addr = 0x0000; addr <= 0x3FFF; addr += (g_test.video.port.control.increment ? 32 : 1), ++data) {
 
-            if(NESL_ASSERT(g_test.video.address.v.word == addr)) {
+            if(ASSERT(g_test.video.address.v.word == addr)) {
                 result = NESL_FAILURE;
                 goto exit;
             }
 
             NESL_VideoWritePort(&g_test.video, address, data);
 
-            if(NESL_ASSERT((g_test.bus.data[addr] == data)
+            if(ASSERT((g_test.bus.data[addr] == data)
                     && (g_test.bus.address == addr)
                     && (g_test.bus.type == NESL_BUS_VIDEO))) {
                 result = NESL_FAILURE;
@@ -428,7 +428,7 @@ static nesl_error_e NESL_TestVideoSetPortMask(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT(g_test.video.port.mask.raw == (address & 0xFF))) {
+    if(ASSERT(g_test.video.port.mask.raw == (address & 0xFF))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -447,7 +447,7 @@ static nesl_error_e NESL_TestVideoSetPortOamAddress(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT(g_test.video.port.oam_address.low == (address & 0xFF))) {
+    if(ASSERT(g_test.video.port.oam_address.low == (address & 0xFF))) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -469,7 +469,7 @@ static nesl_error_e NESL_TestVideoSetPortOamData(uint16_t address)
     g_test.video.port.status.vertical_blank = false;
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT((((uint8_t *)g_test.video.ram.oam)[addr] == (address & 0xFF))
+    if(ASSERT((((uint8_t *)g_test.video.ram.oam)[addr] == (address & 0xFF))
             && (g_test.video.port.oam_address.low == ((addr + 1) & 0xFF)))) {
         result = NESL_FAILURE;
         goto exit;
@@ -479,7 +479,7 @@ static nesl_error_e NESL_TestVideoSetPortOamData(uint16_t address)
     g_test.video.port.status.vertical_blank = true;
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT((((uint8_t *)g_test.video.ram.oam)[addr] == (address & 0xFF))
+    if(ASSERT((((uint8_t *)g_test.video.ram.oam)[addr] == (address & 0xFF))
             && (g_test.video.port.oam_address.low == (addr & 0xFF)))) {
         result = NESL_FAILURE;
         goto exit;
@@ -499,7 +499,7 @@ static nesl_error_e NESL_TestVideoSetPortScroll(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, address & 0xFF);
 
-    if(NESL_ASSERT((g_test.video.address.t.coarse_x == ((address & 0xFF) >> 3))
+    if(ASSERT((g_test.video.address.t.coarse_x == ((address & 0xFF) >> 3))
             && (g_test.video.address.fine_x == ((address & 0xFF) & 7))
             && (g_test.video.port.latch == true))) {
         result = NESL_FAILURE;
@@ -508,7 +508,7 @@ static nesl_error_e NESL_TestVideoSetPortScroll(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, (address + 1) & 0xFF);
 
-    if(NESL_ASSERT((g_test.video.address.t.coarse_y == (((address + 1) & 0xFF) >> 3))
+    if(ASSERT((g_test.video.address.t.coarse_y == (((address + 1) & 0xFF) >> 3))
             && (g_test.video.address.t.fine_y == (((address + 1) & 0xFF) & 7))
             && (g_test.video.port.latch == false))) {
         result = NESL_FAILURE;
@@ -529,7 +529,7 @@ static nesl_error_e NESL_TestVideoSetPortUnused(uint16_t address)
 
     NESL_VideoWritePort(&g_test.video, address, 0xAC);
 
-    if(NESL_ASSERT(g_test.video.port.data.low == 0xAC)) {
+    if(ASSERT(g_test.video.port.data.low == 0xAC)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -562,7 +562,7 @@ static nesl_error_e NESL_TestVideoCycle(void)
 
         for(uint16_t cycle = 0; cycle <= 340; ++cycle) {
 
-            if(NESL_ASSERT((g_test.video.scanline == scanline)
+            if(ASSERT((g_test.video.scanline == scanline)
                     && (g_test.video.cycle == cycle))) {
                 result = NESL_SUCCESS;
                 goto exit;
@@ -572,7 +572,7 @@ static nesl_error_e NESL_TestVideoCycle(void)
 
             if((scanline == -1) && (cycle == 1)) {
 
-                if(NESL_ASSERT((g_test.video.port.status.sprite_overflow == false)
+                if(ASSERT((g_test.video.port.status.sprite_overflow == false)
                         && (g_test.video.port.status.sprite_0_hit == false)
                         && (g_test.video.port.status.vertical_blank == false))) {
                     result = NESL_SUCCESS;
@@ -582,7 +582,7 @@ static nesl_error_e NESL_TestVideoCycle(void)
 
             if((scanline == 241) && (cycle == 1)) {
 
-                if(NESL_ASSERT((g_test.video.port.status.sprite_overflow == false)
+                if(ASSERT((g_test.video.port.status.sprite_overflow == false)
                         && (g_test.video.port.status.sprite_0_hit == false)
                         && (g_test.video.port.status.vertical_blank == true)
                         && (g_test.bus.int_type == NESL_INTERRUPT_NON_MASKABLE))) {
@@ -593,7 +593,7 @@ static nesl_error_e NESL_TestVideoCycle(void)
 
             if((scanline > 0) && (scanline < 240) && (cycle == 260)) {
 
-                if(NESL_ASSERT(g_test.bus.int_type == NESL_INTERRUPT_MAPPER)) {
+                if(ASSERT(g_test.bus.int_type == NESL_INTERRUPT_MAPPER)) {
                     result = NESL_SUCCESS;
                     goto exit;
                 }
@@ -603,13 +603,13 @@ static nesl_error_e NESL_TestVideoCycle(void)
         }
     }
 
-    if(NESL_ASSERT(cycles == 89342)) {
+    if(ASSERT(cycles == 89342)) {
         result = NESL_SUCCESS;
         goto exit;
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -626,7 +626,7 @@ static nesl_error_e NESL_TestVideoInitialize(void)
         goto exit;
     }
 
-    if(NESL_ASSERT((NESL_VideoInitialize(&g_test.video, &g_test.bus.mirror) == NESL_SUCCESS)
+    if(ASSERT((NESL_VideoInitialize(&g_test.video, &g_test.bus.mirror) == NESL_SUCCESS)
             && (g_test.video.cycle == 0)
             && (g_test.video.scanline == -1)
             && (*g_test.video.mirror == NESL_MIRROR_VERTICAL)
@@ -644,7 +644,7 @@ static nesl_error_e NESL_TestVideoInitialize(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -682,28 +682,28 @@ static nesl_error_e NESL_TestVideoRead(void)
                     goto exit;
                 }
 
-                if(NESL_ASSERT(addr < 0x0400)) {
+                if(ASSERT(addr < 0x0400)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
 
                 g_test.video.ram.nametable[bank & 1][addr & 0x03FF] = address & 0xFF;
 
-                if(NESL_ASSERT(NESL_VideoRead(&g_test.video, address - addr_offset) == ((address - addr_offset) & 0xFF))) {
+                if(ASSERT(NESL_VideoRead(&g_test.video, address - addr_offset) == ((address - addr_offset) & 0xFF))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             case 0x3F00 ... 0x3FFF:
 
-                if(NESL_ASSERT((addr = NESL_TestVideoPaletteAddress(address)) < 0x20)) {
+                if(ASSERT((addr = NESL_TestVideoPaletteAddress(address)) < 0x20)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
 
                 g_test.video.ram.palette[addr & 0x1F] = address & 0x1F;
 
-                if(NESL_ASSERT(NESL_VideoRead(&g_test.video, address) == (address & 0x1F))) {
+                if(ASSERT(NESL_VideoRead(&g_test.video, address) == (address & 0x1F))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -714,7 +714,7 @@ static nesl_error_e NESL_TestVideoRead(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -744,7 +744,7 @@ static nesl_error_e NESL_TestVideoReadPort(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -764,7 +764,7 @@ static nesl_error_e NESL_TestVideoReset(void)
     g_test.bus.mirror = NESL_MIRROR_VERTICAL;
     NESL_VideoReset(&g_test.video, &g_test.bus.mirror);
 
-    if(NESL_ASSERT((g_test.video.cycle == 0)
+    if(ASSERT((g_test.video.cycle == 0)
             && (g_test.video.scanline == -1)
             && (*g_test.video.mirror == NESL_MIRROR_VERTICAL)
             && (g_test.video.address.v.word == 0)
@@ -781,7 +781,7 @@ static nesl_error_e NESL_TestVideoReset(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -800,7 +800,7 @@ static nesl_error_e NESL_TestVideoUninitialize(void)
 
     NESL_VideoUninitialize(&g_test.video);
 
-    if(NESL_ASSERT((g_test.video.cycle == 0)
+    if(ASSERT((g_test.video.cycle == 0)
             && (g_test.video.scanline == 0)
             && (g_test.video.mirror == NULL)
             && (g_test.video.address.v.word == 0)
@@ -817,7 +817,7 @@ static nesl_error_e NESL_TestVideoUninitialize(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -855,28 +855,28 @@ static nesl_error_e NESL_TestVideoWrite(void)
                     goto exit;
                 }
 
-                if(NESL_ASSERT(addr < 0x0400)) {
+                if(ASSERT(addr < 0x0400)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
 
                 NESL_VideoWrite(&g_test.video, address - addr_offset, (address - addr_offset) & 0xFF);
 
-                if(NESL_ASSERT(g_test.video.ram.nametable[bank & 1][addr & 0x03FF] == ((address - addr_offset) & 0xFF))) {
+                if(ASSERT(g_test.video.ram.nametable[bank & 1][addr & 0x03FF] == ((address - addr_offset) & 0xFF))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
                 break;
             case 0x3F00 ... 0x3FFF:
 
-                if(NESL_ASSERT((addr = NESL_TestVideoPaletteAddress(address)) < 0x20)) {
+                if(ASSERT((addr = NESL_TestVideoPaletteAddress(address)) < 0x20)) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
 
                 NESL_VideoWrite(&g_test.video, address, address & 0x1F);
 
-                if(NESL_ASSERT(g_test.video.ram.palette[addr & 0x1F] == (address & 0x1F))) {
+                if(ASSERT(g_test.video.ram.palette[addr & 0x1F] == (address & 0x1F))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -887,7 +887,7 @@ static nesl_error_e NESL_TestVideoWrite(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -917,7 +917,7 @@ static nesl_error_e NESL_TestVideoWritePort(void)
     }
 
 exit:
-    NESL_TEST_RESULT(result);
+    TEST_RESULT(result);
 
     return result;
 }
@@ -931,7 +931,7 @@ int main(void)
 
     nesl_error_e result = NESL_SUCCESS;
 
-    for(int index = 0; index < NESL_TEST_COUNT(TEST); ++index) {
+    for(int index = 0; index < TEST_COUNT(TEST); ++index) {
 
         if(TEST[index]() == NESL_FAILURE) {
             result = NESL_FAILURE;
