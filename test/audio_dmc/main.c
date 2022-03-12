@@ -48,7 +48,7 @@ extern "C" {
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
@@ -72,7 +72,7 @@ static void NESL_AudioBufferCopyOut(nesl_audio_buffer_t *buffer, int16_t *data, 
  * @param right Right offset
  * @return Distance between offsets
  */
-static int NESL_AudioBufferDistance(int max, int left, int right)
+static int nesl_audio_buffer_distance(int max, int left, int right)
 {
     int result = 0;
 
@@ -91,7 +91,7 @@ static int NESL_AudioBufferDistance(int max, int left, int right)
  * @param right Right offset
  * @return Minimum between offsets
  */
-static int NESL_AudioBufferMinimum(int left, int right)
+static int nesl_audio_buffer_minimum(int left, int right)
 {
     return (left > right) ? right : left;
 }
@@ -100,12 +100,12 @@ static int NESL_AudioBufferMinimum(int left, int right)
  * @brief Determine if buffer is empty.
  * @return true if empty, false otherwise
  */
-static bool NESL_AudioBufferEmpty(nesl_audio_buffer_t *buffer)
+static bool nesl_audio_buffer_empty(nesl_audio_buffer_t *buffer)
 {
     return !buffer->full && (buffer->write == buffer->read);
 }
 
-nesl_error_e NESL_AudioBufferInitialize(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e nesl_audio_buffer_initialize(nesl_audio_buffer_t *buffer, int length)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -121,26 +121,26 @@ exit:
     return result;
 }
 
-int NESL_AudioBufferRead(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, int16_t *data, int length)
 {
     int result = 0;
 
-    if(!NESL_AudioBufferEmpty(buffer)) {
+    if(!nesl_audio_buffer_empty(buffer)) {
 
-        if((result = NESL_AudioBufferMinimum(NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write), length)) > 0) {
-            NESL_AudioBufferCopyOut(buffer, data, result);
+        if((result = nesl_audio_buffer_minimum(nesl_audio_buffer_distance(buffer->length, buffer->read, buffer->write), length)) > 0) {
+            nesl_audio_buffer_copy_out(buffer, data, result);
         }
     }
 
     return result;
 }
 
-int NESL_AudioBufferReadable(nesl_audio_buffer_t *buffer)
+int nesl_audio_buffer_readable(nesl_audio_buffer_t *buffer)
 {
-    return NESL_AudioBufferDistance(buffer->length, buffer->read, buffer->write);
+    return nesl_audio_buffer_distance(buffer->length, buffer->read, buffer->write);
 }
 
-nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
+nesl_error_e nesl_audio_buffer_reset(nesl_audio_buffer_t *buffer)
 {
     buffer->read = 0;
     buffer->write = 0;
@@ -148,7 +148,7 @@ nesl_error_e NESL_AudioBufferReset(nesl_audio_buffer_t *buffer)
     return NESL_SUCCESS;
 }
 
-void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
+void nesl_audio_buffer_uninitialize(nesl_audio_buffer_t *buffer)
 {
     memset(g_test.buffer, 0, 256 * sizeof(*g_test.buffer));
     memset(buffer, 0, sizeof(*buffer));
@@ -157,9 +157,9 @@ void NESL_AudioBufferUninitialize(nesl_audio_buffer_t *buffer)
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninitialize(void)
+static void nesl_test_uninitialize(void)
 {
-    NESL_AudioDMCUninitialize(&g_test.dmc);
+    nesl_audio_dmc_uninitialize(&g_test.dmc);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -167,22 +167,22 @@ static void NESL_TestUninitialize(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static int NESL_TestInitialize(void)
+static int nesl_test_initialize(void)
 {
-    NESL_TestUninitialize();
+    nesl_test_uninitialize();
 
-    return NESL_AudioDMCInitialize(&g_test.dmc);
+    return nesl_audio_dmc_initialize(&g_test.dmc);
 }
 
 /**
  * @brief Test audio DMC synthesizer cycle.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCCycle(void)
+static nesl_error_e nesl_test_audio_dmc_cycle(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -198,11 +198,11 @@ exit:
  * @brief Test audio DMC synthesizer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCInitialize(void)
+static nesl_error_e nesl_test_audio_dmc_initialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -218,11 +218,11 @@ exit:
  * @brief Test audio DMC synthesizer read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCRead(void)
+static nesl_error_e nesl_test_audio_dmc_read(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -238,11 +238,11 @@ exit:
  * @brief Test audio DMC synthesizer readable.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCReadable(void)
+static nesl_error_e nesl_test_audio_dmc_readable(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -258,11 +258,11 @@ exit:
  * @brief Test audio DMC synthesizer reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCReset(void)
+static nesl_error_e nesl_test_audio_dmc_reset(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -278,11 +278,11 @@ exit:
  * @brief Test audio DMC synthesizer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCUninitialize(void)
+static nesl_error_e nesl_test_audio_dmc_uninitialize(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -298,11 +298,11 @@ exit:
  * @brief Test audio DMC synthesizer write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioDMCWrite(void)
+static nesl_error_e nesl_test_audio_dmc_write(void)
 {
     nesl_error_e result;
 
-    if((result = NESL_TestInitialize()) == NESL_FAILURE) {
+    if((result = nesl_test_initialize()) == NESL_FAILURE) {
         goto exit;
     }
 
@@ -316,9 +316,9 @@ exit:
 
 int main(void)
 {
-    static const NESL_Test TEST[] = {
-        NESL_TestAudioDMCCycle, NESL_TestAudioDMCInitialize, NESL_TestAudioDMCRead, NESL_TestAudioDMCReadable,
-        NESL_TestAudioDMCReset, NESL_TestAudioDMCUninitialize, NESL_TestAudioDMCWrite,
+    static const test TEST[] = {
+        nesl_test_audio_dmc_cycle, nesl_test_audio_dmc_initialize, nesl_test_audio_dmc_read, nesl_test_audio_dmc_readable,
+        nesl_test_audio_dmc_reset, nesl_test_audio_dmc_uninitialize, nesl_test_audio_dmc_write,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -330,7 +330,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninitialize();
+    nesl_test_uninitialize();
 
     return (int)result;
 }

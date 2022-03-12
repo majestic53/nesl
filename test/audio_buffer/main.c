@@ -41,7 +41,7 @@ static nesl_test_t g_test = {}; /*< Test context */
 extern "C" {
 #endif /* __cplusplus */
 
-nesl_error_e NESL_SetError(const char *file, const char *function, int line, const char *format, ...)
+nesl_error_e nesl_set_error(const char *file, const char *function, int line, const char *format, ...)
 {
     return NESL_FAILURE;
 }
@@ -53,7 +53,7 @@ nesl_error_e NESL_SetError(const char *file, const char *function, int line, con
  * @param right Right offset
  * @return Distance between offsets
  */
-static int NESL_TestDistance(int max, int left, int right)
+static int nesl_test_distance(int max, int left, int right)
 {
     int result = 0;
 
@@ -72,7 +72,7 @@ static int NESL_TestDistance(int max, int left, int right)
  * @param right Right offset
  * @return Minimum between offsets
  */
-static int NESL_TestMinimum(int left, int right)
+static int nesl_test_minimum(int left, int right)
 {
     return (left > right) ? right : left;
 }
@@ -80,9 +80,9 @@ static int NESL_TestMinimum(int left, int right)
 /**
  * @brief Uninitialize test context.
  */
-static void NESL_TestUninitialize(void)
+static void nesl_test_uninitialize(void)
 {
-    NESL_AudioBufferUninitialize(&g_test.buffer);
+    nesl_audio_buffer_uninitialize(&g_test.buffer);
     memset(&g_test, 0, sizeof(g_test));
 }
 
@@ -90,22 +90,22 @@ static void NESL_TestUninitialize(void)
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestInitialize(int length)
+static nesl_error_e nesl_test_initialize(int length)
 {
-    NESL_TestUninitialize();
+    nesl_test_uninitialize();
 
-    return NESL_AudioBufferInitialize(&g_test.buffer, length);
+    return nesl_audio_buffer_initialize(&g_test.buffer, length);
 }
 
 /**
  * @brief Test audio buffer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferInitialize(void)
+static nesl_error_e nesl_test_audio_buffer_initialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -128,17 +128,17 @@ exit:
  * @brief Test audio buffer read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferRead(void)
+static nesl_error_e nesl_test_audio_buffer_read(void)
 {
     int16_t buffer[10] = {}, data = 0;
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    if(ASSERT(NESL_AudioBufferRead(&g_test.buffer, buffer, sizeof(buffer) / sizeof(*buffer)) == 0)) {
+    if(ASSERT(nesl_audio_buffer_read(&g_test.buffer, buffer, sizeof(buffer) / sizeof(*buffer)) == 0)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -157,10 +157,10 @@ static nesl_error_e NESL_TestAudioBufferRead(void)
                 g_test.buffer.read = read;
                 g_test.buffer.write = write;
                 memset(buffer, 0, sizeof(buffer));
-                copied = NESL_AudioBufferRead(&g_test.buffer, buffer, length);
+                copied = nesl_audio_buffer_read(&g_test.buffer, buffer, length);
 
                 if(read != write) {
-                    int distance = NESL_TestMinimum(NESL_TestDistance(g_test.buffer.length, read, write), length);
+                    int distance = nesl_test_minimum(nesl_test_distance(g_test.buffer.length, read, write), length);
 
                     if(ASSERT((copied == distance)
                             && (g_test.buffer.read == ((read + distance) % g_test.buffer.length))
@@ -209,11 +209,11 @@ exit:
  * @brief Test audio buffer readable.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferReadable(void)
+static nesl_error_e nesl_test_audio_buffer_readable(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -225,11 +225,11 @@ static nesl_error_e NESL_TestAudioBufferReadable(void)
 
             g_test.buffer.read = read;
             g_test.buffer.write = write;
-            length = NESL_AudioBufferReadable(&g_test.buffer);
+            length = nesl_audio_buffer_readable(&g_test.buffer);
 
             if(read != write) {
 
-                if(ASSERT(length == NESL_TestDistance(g_test.buffer.length, read, write))) {
+                if(ASSERT(length == nesl_test_distance(g_test.buffer.length, read, write))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -250,11 +250,11 @@ exit:
  * @brief Test audio buffer reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferReset(void)
+static nesl_error_e nesl_test_audio_buffer_reset(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(30) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(30) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -262,7 +262,7 @@ static nesl_error_e NESL_TestAudioBufferReset(void)
     g_test.buffer.read = 10;
     g_test.buffer.write = 20;
 
-    if(ASSERT((NESL_AudioBufferReset(&g_test.buffer) == NESL_SUCCESS)
+    if(ASSERT((nesl_audio_buffer_reset(&g_test.buffer) == NESL_SUCCESS)
             && (g_test.buffer.read == 0)
             && (g_test.buffer.write == 0))) {
         result = NESL_FAILURE;
@@ -279,16 +279,16 @@ exit:
  * @brief Test audio buffer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferUninitialize(void)
+static nesl_error_e nesl_test_audio_buffer_uninitialize(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
 
-    NESL_AudioBufferUninitialize(&g_test.buffer);
+    nesl_audio_buffer_uninitialize(&g_test.buffer);
 
     if(ASSERT((g_test.buffer.data == NULL)
             && (g_test.buffer.length == 0)
@@ -308,12 +308,12 @@ exit:
  * @brief Test audio buffer write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferWrite(void)
+static nesl_error_e nesl_test_audio_buffer_write(void)
 {
     int16_t buffer[10] = {}, data = 0;
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -335,8 +335,8 @@ static nesl_error_e NESL_TestAudioBufferWrite(void)
                     g_test.buffer.write = write;
                     g_test.buffer.full = false;
                     memset(g_test.buffer.data, 0, g_test.buffer.length * sizeof(*buffer));
-                    copied = NESL_AudioBufferWrite(&g_test.buffer, buffer, length);
-                    distance = NESL_TestMinimum(NESL_TestDistance(g_test.buffer.length, write, read), length);
+                    copied = nesl_audio_buffer_write(&g_test.buffer, buffer, length);
+                    distance = nesl_test_minimum(nesl_test_distance(g_test.buffer.length, write, read), length);
 
                     if(ASSERT((copied == distance)
                             && (g_test.buffer.read == read)
@@ -359,7 +359,7 @@ static nesl_error_e NESL_TestAudioBufferWrite(void)
                         g_test.buffer.write = write;
                         g_test.buffer.full = true;
                         memset(g_test.buffer.data, 0, g_test.buffer.length * sizeof(*buffer));
-                        copied = NESL_AudioBufferWrite(&g_test.buffer, buffer, length);
+                        copied = nesl_audio_buffer_write(&g_test.buffer, buffer, length);
 
                         if(ASSERT((copied == 0)
                                 && (g_test.buffer.read == read)
@@ -393,11 +393,11 @@ exit:
  * @brief Test audio buffer writable.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e NESL_TestAudioBufferWritable(void)
+static nesl_error_e nesl_test_audio_buffer_writable(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(ASSERT(NESL_TestInitialize(5) == NESL_SUCCESS)) {
+    if(ASSERT(nesl_test_initialize(5) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
         goto exit;
     }
@@ -409,11 +409,11 @@ static nesl_error_e NESL_TestAudioBufferWritable(void)
 
             g_test.buffer.read = read;
             g_test.buffer.write = write;
-            length = NESL_AudioBufferWritable(&g_test.buffer);
+            length = nesl_audio_buffer_writable(&g_test.buffer);
 
             if(read != write) {
 
-                if(ASSERT(length == NESL_TestDistance(g_test.buffer.length, write, read))) {
+                if(ASSERT(length == nesl_test_distance(g_test.buffer.length, write, read))) {
                     result = NESL_FAILURE;
                     goto exit;
                 }
@@ -432,9 +432,9 @@ exit:
 
 int main(void)
 {
-    static const NESL_Test TEST[] = {
-        NESL_TestAudioBufferInitialize, NESL_TestAudioBufferRead, NESL_TestAudioBufferReadable, NESL_TestAudioBufferReset,
-        NESL_TestAudioBufferUninitialize, NESL_TestAudioBufferWrite, NESL_TestAudioBufferWritable,
+    static const test TEST[] = {
+        nesl_test_audio_buffer_initialize, nesl_test_audio_buffer_read, nesl_test_audio_buffer_readable, nesl_test_audio_buffer_reset,
+        nesl_test_audio_buffer_uninitialize, nesl_test_audio_buffer_write, nesl_test_audio_buffer_writable,
         };
 
     nesl_error_e result = NESL_SUCCESS;
@@ -446,7 +446,7 @@ int main(void)
         }
     }
 
-    NESL_TestUninitialize();
+    nesl_test_uninitialize();
 
     return (int)result;
 }
