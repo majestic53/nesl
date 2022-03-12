@@ -3,5 +3,5 @@
 *.sublime-workspace
 *.sublime-project
 *.o
-TEST-*
+test_*
 build/
