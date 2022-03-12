@@ -21,21 +21,21 @@
 
 /**
  * @file nesl.h
- * @brief NESL API.
+ * @brief NESL interface.
  */
 
 #ifndef NESL_H_
 #define NESL_H_
 
 /**
- * NESL API version
+ * NESL interface version
  */
-#define NESL_API_VERSION_1 1                    /*< API version 1 */
-#define NESL_API_VERSION NESL_API_VERSION_1     /*< Current API version */
+#define NESL_API_VERSION_1 1                    /*< Interface version 1 */
+#define NESL_API_VERSION NESL_API_VERSION_1     /*< Current interface version */
 
 /**
  * @enum nesl_error_e
- * @brief NESL Error codes.
+ * @brief NESL error codes.
  */
 typedef enum {
     NESL_FAILURE = -1,                          /*< Operation failed, call nesl_get_error */

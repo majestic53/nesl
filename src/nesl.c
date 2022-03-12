@@ -21,7 +21,7 @@
 
 /**
  * @file nesl.c
- * @brief Public API.
+ * @brief NESL interface.
  */
 
 #include <bus.h>
