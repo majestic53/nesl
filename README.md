@@ -1,6 +1,6 @@
 # NESL (NES-Lite)
 
-[![License: MIT](https://shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/majestic53/nesl/blob/master/LICENSE) [![Build Status](https://github.com/majestic53/nesl/workflows/Build/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/build.yml) [![Test Status](https://github.com/majestic53/nesl/workflows/Test/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/test.yml)
+[![License: MIT](https://shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/majestic53/nesl/blob/master/LICENSE.md) [![Build Status](https://github.com/majestic53/nesl/workflows/Build/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/build.yml) [![Test Status](https://github.com/majestic53/nesl/workflows/Test/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/test.yml)
 
 ### A lightweight NES emulator, written in C.
 
@@ -159,4 +159,4 @@ The following mappers are supported:
 
 ## License
 
-Copyright (C) 2022 David Jolly. Released under the [MIT License](https://opensource.org/licenses/MIT).
+Copyright (C) 2022 David Jolly. Released under the [MIT License](https://github.com/majestic53/nesl/blob/master/LICENSE.md).
