@@ -33,7 +33,7 @@
  */
 typedef struct {
     nesl_audio_square_t square; /*< Audio square-wave synthesizer context */
-    int16_t buffer[256];        /*< Audio buffer */
+    float buffer[256];          /*< Audio buffer */
 } nesl_test_t;
 
 static nesl_test_t g_test = {}; /*< Test context */
@@ -48,7 +48,7 @@ extern "C" {
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
@@ -121,7 +121,7 @@ exit:
     return result;
 }
 
-int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int length)
 {
     int result = 0;
 
@@ -186,7 +186,7 @@ static nesl_error_e nesl_test_audio_square_cycle(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);
@@ -206,7 +206,7 @@ static nesl_error_e nesl_test_audio_square_initialize(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);
@@ -226,7 +226,7 @@ static nesl_error_e nesl_test_audio_square_read(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);
@@ -246,7 +246,7 @@ static nesl_error_e nesl_test_audio_square_readable(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);
@@ -266,7 +266,7 @@ static nesl_error_e nesl_test_audio_square_reset(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);
@@ -286,7 +286,7 @@ static nesl_error_e nesl_test_audio_square_uninitialize(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);
@@ -306,7 +306,7 @@ static nesl_error_e nesl_test_audio_square_write(void)
         goto exit;
     }
 
-    /* TODO */
+    /* TODO: TEST CONTENT */
 
 exit:
     TEST_RESULT(result);

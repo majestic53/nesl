@@ -36,7 +36,7 @@ extern "C" {
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void nesl_audio_buffer_copy_in(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+static void nesl_audio_buffer_copy_in(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
     if((buffer->write + length) >= buffer->length) {
@@ -59,7 +59,7 @@ static void nesl_audio_buffer_copy_in(nesl_audio_buffer_t *buffer, int16_t *data
  * @param data Pointer to data array
  * @param length Maximum number of entries in data array
  */
-static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data, int length)
 {
 
     if((buffer->read + length) >= buffer->length) {
@@ -149,7 +149,7 @@ exit:
     return result;
 }
 
-int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int length)
 {
     int result = 0;
 
@@ -204,7 +204,7 @@ void nesl_audio_buffer_uninitialize(nesl_audio_buffer_t *buffer)
     memset(buffer, 0, sizeof(*buffer));
 }
 
-int nesl_audio_buffer_write(nesl_audio_buffer_t *buffer, int16_t *data, int length)
+int nesl_audio_buffer_write(nesl_audio_buffer_t *buffer, float *data, int length)
 {
     int result = 0;
 
@@ -212,7 +212,11 @@ int nesl_audio_buffer_write(nesl_audio_buffer_t *buffer, int16_t *data, int leng
 
     if(!nesl_audio_buffer_is_full(buffer)) {
 
-        if((result = nesl_audio_buffer_minimum(nesl_audio_buffer_distance(buffer->length, buffer->write, buffer->read), length)) > 0) {
+        if(!(result = nesl_audio_buffer_distance(buffer->length, buffer->write, buffer->read))) {
+            result = buffer->length;
+        }
+
+        if((result = nesl_audio_buffer_minimum(result, length)) > 0) {
             nesl_audio_buffer_copy_in(buffer, data, result);
         }
     }
@@ -227,7 +231,14 @@ int nesl_audio_buffer_writable(nesl_audio_buffer_t *buffer)
     int result;
 
     pthread_mutex_lock(&buffer->lock);
-    result = nesl_audio_buffer_distance(buffer->length, buffer->write, buffer->read);
+
+    if(!(result = nesl_audio_buffer_distance(buffer->length, buffer->write, buffer->read))) {
+
+        if(!nesl_audio_buffer_is_full(buffer)) {
+            result = buffer->length;
+        }
+    }
+
     pthread_mutex_unlock(&buffer->lock);
 
     return result;

@@ -43,7 +43,7 @@ static void nesl_audio_get_data(void *context, uint8_t *data, int length)
     memset(data, 0, length);
 
     if(nesl_audio_buffer_readable(buffer) >= 512) {
-        nesl_audio_buffer_read(buffer, (int16_t *)data, length / sizeof(int16_t));
+        nesl_audio_buffer_read(buffer, (float *)data, length / sizeof(float));
     }
 }
 
@@ -89,18 +89,20 @@ void nesl_audio_cycle(nesl_audio_t *audio, uint64_t cycle)
 {
 
     if(!(cycle % 6)) {
-        nesl_audio_square_cycle(&audio->synthesizer.square[SYNTHESIZER_SQUARE_1], cycle);
-        nesl_audio_square_cycle(&audio->synthesizer.square[SYNTHESIZER_SQUARE_2], cycle);
-        nesl_audio_triangle_cycle(&audio->synthesizer.triangle, cycle);
-        nesl_audio_noise_cycle(&audio->synthesizer.noise, cycle);
-        nesl_audio_dmc_cycle(&audio->synthesizer.dmc, cycle);
+        float elapsed = (cycle / (float)89342) / (float)60;
+
+        nesl_audio_square_cycle(&audio->synthesizer.square[SYNTHESIZER_SQUARE_1], elapsed);
+        nesl_audio_square_cycle(&audio->synthesizer.square[SYNTHESIZER_SQUARE_2], elapsed);
+        nesl_audio_triangle_cycle(&audio->synthesizer.triangle, elapsed);
+        nesl_audio_noise_cycle(&audio->synthesizer.noise, elapsed);
+        nesl_audio_dmc_cycle(&audio->synthesizer.dmc, elapsed);
 
         if((nesl_audio_square_readable(&audio->synthesizer.square[SYNTHESIZER_SQUARE_1]) >= 128)
                 || (nesl_audio_square_readable(&audio->synthesizer.square[SYNTHESIZER_SQUARE_2]) >= 128)
                 || (nesl_audio_triangle_readable(&audio->synthesizer.triangle) >= 128)
                 || (nesl_audio_noise_readable(&audio->synthesizer.noise) >= 128)
                 || (nesl_audio_dmc_readable(&audio->synthesizer.dmc) >= 128)) {
-            int16_t data[SYNTHESIZER_MAX + 1][128] = {};
+            float data[SYNTHESIZER_MAX + 1][128] = {};
 
             nesl_audio_square_read(&audio->synthesizer.square[SYNTHESIZER_SQUARE_1], data[SYNTHESIZER_SQUARE_1], 128);
             nesl_audio_square_read(&audio->synthesizer.square[SYNTHESIZER_SQUARE_2], data[SYNTHESIZER_SQUARE_2], 128);
@@ -108,7 +110,28 @@ void nesl_audio_cycle(nesl_audio_t *audio, uint64_t cycle)
             nesl_audio_noise_read(&audio->synthesizer.noise, data[SYNTHESIZER_NOISE], 128);
             nesl_audio_dmc_read(&audio->synthesizer.dmc, data[SYNTHESIZER_DMC], 128);
 
-            /* TODO: MIX SAMPLES[SYNTHESIZER_SQUARE_1-SYNTHESIZER_DMC] INTO SAMPLES[SYNTHESIZER_MAX] */
+            for(int sample = 0; sample < 128; ++sample) {
+
+                for(nesl_synthesizer_e channel = SYNTHESIZER_SQUARE_1; channel < SYNTHESIZER_MAX; ++channel) {
+
+                    if(data[channel][sample]) {
+
+                        /* TODO: ASSIGN CHANNEL VOLUME */
+                        data[SYNTHESIZER_MAX][sample] += data[channel][sample] * 1.f;
+                        /* --- */
+                    }
+                }
+
+                /* TODO: ASSIGN MASTER VOLUME */
+                data[SYNTHESIZER_MAX][sample] *= 1.f;
+                /* --- */
+
+                if(data[SYNTHESIZER_MAX][sample] < -1.f) {
+                    data[SYNTHESIZER_MAX][sample] = -1.f;
+                } else if(data[SYNTHESIZER_MAX][sample] > 1.f) {
+                    data[SYNTHESIZER_MAX][sample] = 1.f;
+                }
+            }
 
             nesl_audio_buffer_write(&audio->buffer, data[SYNTHESIZER_MAX], 128);
         }

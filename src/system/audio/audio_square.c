@@ -30,7 +30,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void nesl_audio_square_cycle(nesl_audio_square_t *square, uint64_t cycle)
+void nesl_audio_square_cycle(nesl_audio_square_t *square, float elapsed)
 {
     /* TODO: CYCLE SYNTHESIZER */
 }
@@ -47,7 +47,7 @@ exit:
     return result;
 }
 
-int nesl_audio_square_read(nesl_audio_square_t *square, int16_t *data, int length)
+int nesl_audio_square_read(nesl_audio_square_t *square, float *data, int length)
 {
     return nesl_audio_buffer_read(&square->buffer, data, length);
 }

@@ -30,7 +30,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void nesl_audio_noise_cycle(nesl_audio_noise_t *noise, uint64_t cycle)
+void nesl_audio_noise_cycle(nesl_audio_noise_t *noise, float elapsed)
 {
     /* TODO: CYCLE SYNTHESIZER */
 }
@@ -47,7 +47,7 @@ exit:
     return result;
 }
 
-int nesl_audio_noise_read(nesl_audio_noise_t *noise, int16_t *data, int length)
+int nesl_audio_noise_read(nesl_audio_noise_t *noise, float *data, int length)
 {
     return nesl_audio_buffer_read(&noise->buffer, data, length);
 }

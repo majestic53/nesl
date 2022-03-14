@@ -30,7 +30,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void nesl_audio_triangle_cycle(nesl_audio_triangle_t *triangle, uint64_t cycle)
+void nesl_audio_triangle_cycle(nesl_audio_triangle_t *triangle, float elapsed)
 {
     /* TODO: CYCLE SYNTHESIZER */
 }
@@ -47,7 +47,7 @@ exit:
     return result;
 }
 
-int nesl_audio_triangle_read(nesl_audio_triangle_t *triangle, int16_t *data, int length)
+int nesl_audio_triangle_read(nesl_audio_triangle_t *triangle, float *data, int length)
 {
     return nesl_audio_buffer_read(&triangle->buffer, data, length);
 }

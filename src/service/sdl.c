@@ -279,7 +279,7 @@ nesl_error_e nesl_service_set_audio(nesl_service_get_audio callback, void *conte
 
     desired.callback = callback;
     desired.channels = 1;
-    desired.format = AUDIO_S16SYS;
+    desired.format = AUDIO_F32SYS;
     desired.freq = 44100;
     desired.samples = 512;
     desired.userdata = context;
