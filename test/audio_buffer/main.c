@@ -214,7 +214,7 @@ static nesl_error_e nesl_test_audio_buffer_read_write(void)
 {
     int index, read, write;
     nesl_error_e result = NESL_SUCCESS;
-    float consumer[2] = {}, producer[10] = {};
+    float consumer[2] = {}, producer[20] = {};
 
     if(ASSERT(nesl_test_initialize(10) == NESL_SUCCESS)) {
         result = NESL_FAILURE;
@@ -224,11 +224,11 @@ static nesl_error_e nesl_test_audio_buffer_read_write(void)
     read = g_test.buffer.read;
     write = g_test.buffer.write;
 
-    for(index = 0; index < 10; ++index) {
+    for(index = 0; index < 20; ++index) {
         producer[index] = (index + 1) * 1024.f;
     }
 
-    for(int trial = 0; trial < 5; ++trial) {
+    for(int trial = 0; trial < 10; ++trial) {
 
         if(ASSERT((nesl_audio_buffer_write(&g_test.buffer, &producer[trial * 2], 2) == 2)
                 && (g_test.buffer.read == read)
