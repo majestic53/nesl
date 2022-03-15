@@ -1,19 +1,19 @@
 # NESL (NES-Lite)
 
-[![License: MIT](https://shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/majestic53/nesl/blob/master/LICENSE.md) [![Build Status](https://github.com/majestic53/nesl/workflows/Build/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/build.yml) [![Test Status](https://github.com/majestic53/nesl/workflows/Test/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/test.yml)
+[![License: MIT](https://shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md) [![Build Status](https://github.com/majestic53/nesl/workflows/Build/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/build.yml) [![Test Status](https://github.com/majestic53/nesl/workflows/Test/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/test.yml)
 
 ### A lightweight NES emulator, written in C.
 
 This project emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
 
-__NOTE__: This project is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file issues [here](https://github.com/majestic53/nesl/blob/master/CONTRIBUTING.md#places-to-contribute).
+__NOTE__: This project is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file issues [here](CONTRIBUTING.md#places-to-contribute).
 
 <p align="center">
-    <img src=https://github.com/majestic53/nesl/raw/master/docs/demo0.png><img src=https://github.com/majestic53/nesl/raw/master/docs/demo1.png>
+    <img src=docs/demo0.png><img src=docs/demo1.png>
     <br/>
-    <img src=https://github.com/majestic53/nesl/raw/master/docs/demo2.png><img src=https://github.com/majestic53/nesl/raw/master/docs/demo3.png>
+    <img src=docs/demo2.png><img src=docs/demo3.png>
     <br/>
-    <img src=https://github.com/majestic53/nesl/raw/master/docs/demo4.png><img src=https://github.com/majestic53/nesl/raw/master/docs/demo5.png>
+    <img src=docs/demo4.png><img src=docs/demo5.png>
 </p>
 
 ## Features
@@ -159,4 +159,4 @@ The following mappers are supported:
 
 ## License
 
-Copyright (C) 2022 David Jolly. Released under the [MIT License](https://github.com/majestic53/nesl/blob/master/LICENSE.md).
+Copyright (C) 2022 David Jolly. Released under the [MIT License](LICENSE.md).
