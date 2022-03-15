@@ -2,19 +2,19 @@
 
 This project is built around a common bus, allowing the various subsystems to communicate with each other:
 
-![Architecture](docs/arch.png "Architecture")
+![Architecture](../docs/arch.png "Architecture")
 
 ## File layout
 
-* Subsystem specific source files are placed into a subdirectory, under [`src/system`](src/system).
+* Subsystem specific source files are placed into a subdirectory, under [`src/system`](system).
 
-|Directory                               |Description                          |
-|:---------------------------------------|:------------------------------------|
-|[`src/common`](src/common)              |Common source files                  |
-|[`src/service`](src/service)            |Service source files (SDL by default)|
-|[`src/system`](src/system)              |Subsystem source files               |
-|[`src/system/audio`](src/system/audio)  |Audio-specific source files          |
-|[`src/system/mapper`](src/system/mapper)|Mapper-specific source files         |
+|Directory                           |Description                          |
+|:-----------------------------------|:------------------------------------|
+|[`src/common`](common)              |Common source files                  |
+|[`src/service`](service)            |Service source files (SDL by default)|
+|[`src/system`](system)              |Subsystem source files               |
+|[`src/system/audio`](system/audio)  |Audio-specific source files          |
+|[`src/system/mapper`](system/mapper)|Mapper-specific source files         |
 
 ## Coding style
 
