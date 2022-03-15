@@ -53,6 +53,7 @@ typedef struct {
 
     struct {
         SDL_AudioDeviceID audio;        /*!< Audio handle */
+        SDL_Cursor *cursor;             /*!< Cursor handle */
         SDL_Renderer *renderer;         /*!< Renderer handle */
         SDL_Texture *texture;           /*!< Texture handle */
         SDL_Window *window;             /*!< Window handle */
@@ -179,6 +180,13 @@ nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int line
         result = SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
+
+    if(!(g_service.handle.cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_CROSSHAIR))) {
+        result = SET_ERROR("%s", SDL_GetError());
+        goto exit;
+    }
+
+    SDL_SetCursor(g_service.handle.cursor);
 
     if(fullscreen) {
 
@@ -338,6 +346,10 @@ void nesl_service_set_pixel(uint8_t color, bool red, bool green, bool blue, uint
 void nesl_service_uninitialize(void)
 {
     nesl_service_close_audio();
+
+    if(g_service.handle.cursor) {
+        SDL_FreeCursor(g_service.handle.cursor);
+    }
 
     if(g_service.handle.texture) {
         SDL_DestroyTexture(g_service.handle.texture);
