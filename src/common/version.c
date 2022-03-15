@@ -21,7 +21,7 @@
 
 /*!
  * @file version.c
- * @brief Get global version string.
+ * @brief Global version.
  */
 
 #include <common.h>

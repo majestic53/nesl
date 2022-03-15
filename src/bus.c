@@ -21,7 +21,7 @@
 
 /*!
  * @file bus.c
- * @brief Common bus used by subsystems for communication.
+ * @brief Common bus.
  */
 
 #include <audio.h>

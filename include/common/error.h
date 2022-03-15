@@ -21,7 +21,7 @@
 
 /*!
  * @file error.h
- * @brief Get/Set global error string.
+ * @brief Global error.
  */
 
 #ifndef NESL_ERROR_H_

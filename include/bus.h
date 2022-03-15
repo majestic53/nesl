@@ -21,7 +21,7 @@
 
 /*!
  * @file bus.h
- * @brief Common bus used by subsystems for communication.
+ * @brief Common bus.
  */
 
 #ifndef NESL_BUS_H_

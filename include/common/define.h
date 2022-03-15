@@ -21,7 +21,7 @@
 
 /*!
  * @file define.h
- * @brief Common definitions and enumerations.
+ * @brief Common definitions.
  */
 
 #ifndef NESL_DEFINE_H_

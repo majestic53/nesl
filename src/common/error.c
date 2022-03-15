@@ -21,7 +21,7 @@
 
 /*!
  * @file error.c
- * @brief Get/Set global error string.
+ * @brief Global error.
  */
 
 #include <common.h>

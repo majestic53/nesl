@@ -21,7 +21,7 @@
 
 /*!
  * @file sdl.c
- * @brief Common service used by subsystems for input/output.
+ * @brief Common service.
  */
 
 #include <SDL2/SDL.h>
