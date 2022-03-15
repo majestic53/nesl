@@ -1,4 +1,4 @@
-# NESL (NES-Lite) Source
+# NESL (NES-Lite) Sources
 
 ## Detailed Documentation
 
