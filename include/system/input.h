@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file input.h
  * @brief Input subsystem.
  */
@@ -29,57 +29,57 @@
 
 #include <bus.h>
 
-/**
+/*!
  * @struct nesl_input_t
  * @brief Input context.
  */
 typedef struct {
 
     struct {
-        int position;           /*< Button position */
-        bool state[BUTTON_MAX]; /*< Button state (true:pressed, false:released) */
+        int position;           /*!< Button position */
+        bool state[BUTTON_MAX]; /*!< Button state (true:pressed, false:released) */
     } button[CONTROLLER_MAX];
 
-    bool strobe;                /*< Strobe state */
+    bool strobe;                /*!< Strobe state */
 } nesl_input_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Initialize input subsystem.
- * @param input Pointer to input subsystem context
+ * @param[in,out] input Pointer to input subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_input_initialize(nesl_input_t *input);
 
-/**
+/*!
  * @brief Read byte from input subsystem.
- * @param input Pointer to input subsystem context
- * @param address Input address
+ * @param[in,out] input Pointer to input subsystem context
+ * @param[in] address Input address
  * @return Input data
  */
 uint8_t nesl_input_read(nesl_input_t *input, uint16_t address);
 
-/**
+/*!
  * @brief Reset input subsystem.
- * @param input Pointer to input subsystem context
+ * @param[in,out] input Pointer to input subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_input_reset(nesl_input_t *input);
 
-/**
+/*!
  * @brief Uninitialize input subsystem.
- * @param input Pointer to input subsystem context
+ * @param[in,out] input Pointer to input subsystem context
  */
 void nesl_input_uninitialize(nesl_input_t *input);
 
-/**
+/*!
  * @brief Write byte to input subsystem.
- * @param input Pointer to input subsystem context
- * @param address Input address
- * @param data Input data
+ * @param[in,out] input Pointer to input subsystem context
+ * @param[in] address Input address
+ * @param[in] data Input data
  */
 void nesl_input_write(nesl_input_t *input, uint16_t address, uint8_t data);
 

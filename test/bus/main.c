@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for bus.
  */
@@ -31,47 +31,47 @@
 #include <video.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_bank_e type;               /*< Bank type */
-    uint16_t address;               /*< Bank address */
-    uint8_t data;                   /*< Bank data */
+    nesl_bank_e type;                   /*!< Bank type */
+    uint16_t address;                   /*!< Bank address */
+    uint8_t data;                       /*!< Bank data */
 
     struct {
-        bool reset;                 /*< Reset state */
+        bool reset;                     /*!< Reset state */
     } service;
 
     struct {
 
         struct {
-            bool reset;                 /*< Reset state */
+            bool reset;                 /*!< Reset state */
         } audio;
 
         struct {
-            bool reset;                 /*< Reset state */
+            bool reset;                 /*!< Reset state */
         } input;
 
         struct {
-            bool interrupt;             /*< Interrupt state */
-            bool reset;                 /*< Reset state */
+            bool interrupt;             /*!< Interrupt state */
+            bool reset;                 /*!< Reset state */
         } mapper;
 
         struct {
-            bool interrupt;             /*< Interrupt state */
-            bool interrupt_maskable;    /*< Maskable interrupt state */
-            bool reset;                 /*< Reset state */
+            bool interrupt;             /*!< Interrupt state */
+            bool interrupt_maskable;    /*!< Maskable interrupt state */
+            bool reset;                 /*!< Reset state */
         } processor;
 
         struct {
-            bool reset;                 /*< Reset state */
+            bool reset;                 /*!< Reset state */
         } video;
     } subsystem;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};     /*< Test context */
+static nesl_test_t g_test = {};         /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -292,7 +292,7 @@ void nesl_video_write_port(nesl_video_t *video, uint16_t address, uint8_t data)
     g_test.data = data;
 }
 
-/**
+/*!
  * @brief Initialize test context.
  */
 static void nesl_test_initialize(void)
@@ -300,7 +300,7 @@ static void nesl_test_initialize(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-/**
+/*!
  * @brief Test bus interrupt.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -352,7 +352,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test bus read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -466,7 +466,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test bus write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

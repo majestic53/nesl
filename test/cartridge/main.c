@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for cartridge subsystem.
  */
@@ -27,21 +27,21 @@
 #include <cartridge.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_cartridge_t cartridge;         /*< Cartridge context */
+    nesl_cartridge_t cartridge;         /*!< Cartridge context */
 
     struct {
-        nesl_cartridge_header_t header; /*< Cartridge header */
-        uint8_t program[2][16 * 1024];  /*< Program banks */
-        uint8_t character[1][8 * 1024]; /*< Character banks */
+        nesl_cartridge_header_t header; /*!< Cartridge header */
+        uint8_t program[2][16 * 1024];  /*!< Program banks */
+        uint8_t character[1][8 * 1024]; /*!< Character banks */
     } data;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};         /*< Test context */
+static nesl_test_t g_test = {};         /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,7 +52,7 @@ nesl_error_e nesl_set_error(const char *file, const char *function, int line, co
     return NESL_FAILURE;
 }
 
-/**
+/*!
  * @brief Uninitialize test context.
  */
 static void nesl_test_uninitialize(void)
@@ -61,7 +61,7 @@ static void nesl_test_uninitialize(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-/**
+/*!
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -107,7 +107,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test cartridge subsystem bank count.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -153,7 +153,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test cartridge subsystem mapper.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -191,7 +191,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test cartridge subsystem mirror.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -219,7 +219,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test cartridge subsystem read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -270,7 +270,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test cartridge subsystem write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

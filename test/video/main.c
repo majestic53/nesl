@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for video subsystem.
  */
@@ -28,30 +28,30 @@
 #include <video.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_video_t video;             /*< Video context */
+    nesl_video_t video;             /*!< Video context */
 
     struct {
-        nesl_bus_e type;            /*< Bus type */
-        uint16_t address;           /*< Bus address */
-        uint8_t data[16 * 1024];    /*< Bus data */
-        nesl_interrupt_e int_type;  /*< Bus interrupt */
-        nesl_mirror_e mirror;       /*< Bus mirror */
+        nesl_bus_e type;            /*!< Bus type */
+        uint16_t address;           /*!< Bus address */
+        uint8_t data[16 * 1024];    /*!< Bus data */
+        nesl_interrupt_e int_type;  /*!< Bus interrupt */
+        nesl_mirror_e mirror;       /*!< Bus mirror */
     } bus;
 } nesl_test_t;
 
-/**
+/*!
  * @brief Video port test function.
- * @param address Test address
+ * @param[in] address Test address
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 typedef nesl_error_e (*test_port)(uint16_t address);
 
-static nesl_test_t g_test = {};     /*< Test context */
+static nesl_test_t g_test = {};     /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,7 +101,7 @@ void nesl_service_set_pixel(uint8_t color, bool red_emphasis, bool green_emphasi
     return;
 }
 
-/**
+/*!
  * @brief Test video subsystem get data port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -158,7 +158,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem get OAM-data port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -179,7 +179,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem get status port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -204,7 +204,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem get unused port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -223,10 +223,10 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Initialize test context.
- * @param mirror Mapper mirror
- * @param initialize Initialize video
+ * @param[in] mirror Mapper mirror
+ * @param[in] initialize Initialize video
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_test_initialize(nesl_mirror_e mirror, bool initialize)
@@ -247,10 +247,11 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Calculate video nametable address.
- * @param address Desired address
- * @param bank Calcuated bank
+ * @param[in] address Desired address
+ * @param[out] bank Calcuated bank
+ * @param[out] addr Calculated address
  * @return Calculated address
  */
 static nesl_error_e nesl_test_video_nametable_address(uint16_t address, nesl_mirror_e mirror, int *bank, uint16_t *addr)
@@ -310,9 +311,9 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Calcluate video palette address.
- * @param address Desired address
+ * @param[in] address Desired address
  * @return Calculated address
  */
 static uint16_t nesl_test_video_palette_address(uint16_t address)
@@ -332,7 +333,7 @@ static uint16_t nesl_test_video_palette_address(uint16_t address)
     return address;
 }
 
-/**
+/*!
  * @brief Test video subsystem set address port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -361,7 +362,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set control port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -382,7 +383,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set data port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -419,7 +420,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set mask port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -438,7 +439,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set OAM-address port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -457,7 +458,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set OAM-data port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -490,7 +491,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set scroll port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -520,7 +521,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem set unused port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -539,7 +540,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem cycle.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -615,7 +616,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -650,7 +651,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -720,7 +721,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem read port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -750,7 +751,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -787,7 +788,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -823,7 +824,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -893,7 +894,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test video subsystem write port.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

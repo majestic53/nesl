@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for audio subsystem.
  */
@@ -28,55 +28,55 @@
 #include <service.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_audio_t audio;                     /*< Audio context */
+    nesl_audio_t audio;                     /*!< Audio context */
 
     struct {
-        nesl_service_get_audio callback;    /*< Audio callback */
-        void *context;                      /*< Audio callback context */
+        nesl_service_get_audio callback;    /*!< Audio callback */
+        void *context;                      /*!< Audio callback context */
     } setup;
 
     struct {
 
         struct {
-            uint16_t address;               /*< Read/write address */
-            uint8_t data;                   /*< Read/write data */
-            bool cycle;                     /*< Cycle state */
-            bool initialized;               /*< Initialized state */
-            bool reset;                     /*< Reset state */
+            uint16_t address;               /*!< Read/write address */
+            uint8_t data;                   /*!< Read/write data */
+            bool cycle;                     /*!< Cycle state */
+            bool initialized;               /*!< Initialized state */
+            bool reset;                     /*!< Reset state */
         } square[SYNTHESIZER_SQUARE_2 + 1];
 
         struct {
-            uint16_t address;               /*< Read/write address */
-            uint8_t data;                   /*< Read/write data */
-            bool cycle;                     /*< Cycle state */
-            bool initialized;               /*< Initialized state */
-            bool reset;                     /*< Reset state */
+            uint16_t address;               /*!< Read/write address */
+            uint8_t data;                   /*!< Read/write data */
+            bool cycle;                     /*!< Cycle state */
+            bool initialized;               /*!< Initialized state */
+            bool reset;                     /*!< Reset state */
         } triangle;
 
         struct {
-            uint16_t address;               /*< Read/write address */
-            uint8_t data;                   /*< Read/write data */
-            bool cycle;                     /*< Cycle state */
-            bool initialized;               /*< Initialized state */
-            bool reset;                     /*< Reset state */
+            uint16_t address;               /*!< Read/write address */
+            uint8_t data;                   /*!< Read/write data */
+            bool cycle;                     /*!< Cycle state */
+            bool initialized;               /*!< Initialized state */
+            bool reset;                     /*!< Reset state */
         } noise;
 
         struct {
-            uint16_t address;               /*< Read/write address */
-            uint8_t data;                   /*< Read/write data */
-            bool cycle;                     /*< Cycle state */
-            bool initialized;               /*< Initialized state */
-            bool reset;                     /*< Reset state */
+            uint16_t address;               /*!< Read/write address */
+            uint8_t data;                   /*!< Read/write data */
+            bool cycle;                     /*!< Cycle state */
+            bool initialized;               /*!< Initialized state */
+            bool reset;                     /*!< Reset state */
         } dmc;
     } synthesizer;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};             /*< Test context */
+static nesl_test_t g_test = {};             /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -335,7 +335,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -346,7 +346,7 @@ static nesl_error_e nesl_test_initialize(void)
     return nesl_audio_initialize(&g_test.audio);
 }
 
-/**
+/*!
  * @brief Test audio subsystem cycle.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -380,7 +380,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -412,7 +412,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio subsystem read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -451,7 +451,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio subsystem reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -486,7 +486,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -518,7 +518,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio subsystem write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

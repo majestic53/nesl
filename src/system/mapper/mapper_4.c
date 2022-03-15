@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file mapper_4.c
  * @brief Mapper 4 (MMC3) extension.
  */
@@ -30,9 +30,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Set mapper-4 charcter/program ROM banks.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 static void nesl_mapper_4_set_bank(nesl_mapper_t *mapper)
 {
@@ -73,9 +73,9 @@ static void nesl_mapper_4_set_bank(nesl_mapper_t *mapper)
     mapper->rom.program[3] = (banks * 16 * 1024) - (1 * 8 * 1024);
 }
 
-/**
+/*!
  * @brief Set mapper-4 mirror type.
- * @param mapper Pointer to mapper context
+ * @param[in,out] mapper Pointer to mapper context
  */
 static void nesl_mapper_4_set_mirror(nesl_mapper_t *mapper)
 {
@@ -87,11 +87,11 @@ static void nesl_mapper_4_set_mirror(nesl_mapper_t *mapper)
     }
 }
 
-/**
+/*!
  * @brief Set mapper-4 state.
- * @param mapper Pointer to mapper context
- * @param address mapper address
- * @param data mapper data
+ * @param[in,out] mapper Pointer to mapper context
+ * @param[in] address mapper address
+ * @param[in] data mapper data
  */
 static void nesl_mapper_4_set( nesl_mapper_t *mapper, uint16_t address, uint8_t data)
 {

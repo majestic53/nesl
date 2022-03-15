@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file NESL_assert.h
  * @brief Test assertion.
  */
@@ -27,9 +27,9 @@
 #ifndef NESL_TEST_ASSERT_H_
 #define NESL_TEST_ASSERT_H_
 
-/**
+/*!
  * @brief Test assertion macro.
- * @param _CONDITION_ Assert on condition
+ * @param[in] _CONDITION_ Assert on condition
  * @return NESL_FAILURE
  */
 #define ASSERT(_CONDITION_) \
@@ -39,12 +39,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Test assertion.
- * @param condition Constant pointer to condition string
- * @param file Constant pointer to file string
- * @param function Constant pointer to function string
- * @param line File line
+ * @param[in] condition Constant pointer to condition string
+ * @param[in] file Constant pointer to file string
+ * @param[in] function Constant pointer to function string
+ * @param[in] line File line
  * @return NESL_FAILURE
  */
 nesl_error_e nesl_assert(const char *condition, const char *file, const char *function, size_t line)

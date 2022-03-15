@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file cartridge.c
  * @brief Cartridge subsystem.
  */
@@ -30,10 +30,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Validate cartridge length/data.
- * @param data Pointer to data array
- * @param length Length of data array in bytes
+ * @param[in] data Pointer to data array
+ * @param[in] length Length of data array in bytes
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_cartridge_validate(const void *data, int length)

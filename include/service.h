@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file service.h
  * @brief Common service used by subsystems for input/output.
  */
@@ -29,37 +29,37 @@
 
 #include <common.h>
 
-/**
+/*!
  * @enum nesl_button_e
  * @brief Button types.
  */
 typedef enum {
-    BUTTON_A = 0,       /*< A button */
-    BUTTON_B,           /*< B button */
-    BUTTON_SELECT,      /*< Select button */
-    BUTTON_START,       /*< Start button */
-    BUTTON_UP,          /*< D-pad up button */
-    BUTTON_DOWN,        /*< D-pad down button */
-    BUTTON_LEFT,        /*< D-pad left button */
-    BUTTON_RIGHT,       /*< D-pad right button */
-    BUTTON_MAX,         /*< Maximum button */
+    BUTTON_A = 0,       /*!< A button */
+    BUTTON_B,           /*!< B button */
+    BUTTON_SELECT,      /*!< Select button */
+    BUTTON_START,       /*!< Start button */
+    BUTTON_UP,          /*!< D-pad up button */
+    BUTTON_DOWN,        /*!< D-pad down button */
+    BUTTON_LEFT,        /*!< D-pad left button */
+    BUTTON_RIGHT,       /*!< D-pad right button */
+    BUTTON_MAX,         /*!< Maximum button */
 } nesl_button_e;
 
-/**
+/*!
  * @enum nesl_controller_e
  * @brief Controller types.
  */
 typedef enum {
-    CONTROLLER_1 = 0,   /*< First controller */
-    CONTROLLER_2,       /*< Second controller */
-    CONTROLLER_MAX,     /*< Maximum controller */
+    CONTROLLER_1 = 0,   /*!< First controller */
+    CONTROLLER_2,       /*!< Second controller */
+    CONTROLLER_MAX,     /*!< Maximum controller */
 } nesl_controller_e;
 
-/**
+/*!
  * @brief Audio callback routine used to collect audio samples.
- * @param context Constant pointer to audio context
- * @param data Pointer to data buffer
- * @param length Data buffer length in bytes
+ * @param[in,out] context Constant pointer to audio context
+ * @param[out] data Pointer to data buffer
+ * @param[in] length Data buffer length in bytes
  */
 typedef void (*nesl_service_get_audio)(void *context, uint8_t *data, int length);
 
@@ -67,62 +67,62 @@ typedef void (*nesl_service_get_audio)(void *context, uint8_t *data, int length)
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Get controller button state.
- * @param controller Controller type
- * @param button Button type
+ * @param[in] controller Controller type
+ * @param[in] button Button type
  * @return true if pressed, false if released
  */
 bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button);
 
-/**
+/*!
  * @brief Initialize service.
- * @param title Constant pointer to window title
- * @param fullscreen Fullscreen enabled
- * @param linear Linear scaling enabled
- * @param scale Scaling value
+ * @param[in] title Constant pointer to window title
+ * @param[in] fullscreen Fullscreen enabled
+ * @param[in] linear Linear scaling enabled
+ * @param[in] scale Scaling value
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int linear, int scale);
 
-/**
+/*!
  * @brief Poll service state.
  * @return NESL_FAILURE on failure, NESL_SUCCESS or NESL_QUIT otherwise
  */
 nesl_error_e nesl_service_poll(void);
 
-/**
+/*!
  * @brief Redraw service pixels to display.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_service_redraw(void);
 
-/**
+/*!
  * @brief Reset service.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_service_reset(void);
 
-/**
+/*!
  * @brief Set service audio callback.
- * @param callback Pointer to audio callback function
- * @param context Constant pointer to audio context
+ * @param[in] callback Pointer to audio callback function
+ * @param[in] context Constant pointer to audio context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_service_set_audio(nesl_service_get_audio callback, void *context);
 
-/**
+/*!
  * @brief Set service pixel.
- * @param color Color value (0-63)
- * @param red Emphasize red channel
- * @param green Emphasize green channel
- * @param blue Emphasize blue channel
- * @param x X-coordinate
- * @param y Y-coordinate
+ * @param[in] color Color value (0-63)
+ * @param[in] red Emphasize red channel
+ * @param[in] green Emphasize green channel
+ * @param[in] blue Emphasize blue channel
+ * @param[in] x X-coordinate
+ * @param[in] y Y-coordinate
  */
 void nesl_service_set_pixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y);
 
-/**
+/*!
  * @brief Uninitialize service.
  */
 void nesl_service_uninitialize(void);

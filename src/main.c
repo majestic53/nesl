@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief NESL launcher application.
  */
@@ -32,23 +32,23 @@
 #include <stdlib.h>
 #include <nesl.h>
 
-/**
- * @enum nesl_bank_e
+/*!
+ * @enum nesl_option_e
  * @brief Interface options.
  */
 typedef enum {
-    OPTION_FULLSCREEN = 0,  /*< Set window fullscreen */
-    OPTION_HELP,            /*< Show help information */
-    OPTION_LINEAR,          /*< Set linear scaling */
-    OPTION_SCALE,           /*< Set window scaling */
-    OPTION_VERSION,         /*< Show version information */
-    OPTION_MAX,             /*< Maximum option */
+    OPTION_FULLSCREEN = 0,  /*!< Set window fullscreen */
+    OPTION_HELP,            /*!< Show help information */
+    OPTION_LINEAR,          /*!< Set linear scaling */
+    OPTION_SCALE,           /*!< Set window scaling */
+    OPTION_VERSION,         /*!< Show version information */
+    OPTION_MAX,             /*!< Maximum option */
 } nesl_option_e;
 
-/**
+/*!
  * @brief Color tracing macro.
- * @param _RESULT_ Error code
- * @param _FORMAT_ Error string format, followed by some number of arguments
+ * @param[in] _RESULT_ Error code
+ * @param[in] _FORMAT_ Error string format, followed by some number of arguments
  */
 #define TRACE(_RESULT_, _FORMAT_, ...) \
     fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "%s" _FORMAT_ "\x1b[0m", \
@@ -58,12 +58,12 @@ typedef enum {
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Read file at path.
- * @param input Pointer to NESL context
- * @param base Pointer to base path string
- * @param path Pointer to path string
- * @param NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ * @param[in] input Pointer to NESL context
+ * @param[in] base Pointer to base path string
+ * @param[in] path Pointer to path string
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e read_file(nesl_t *input, char *base, char *path)
 {
@@ -110,10 +110,10 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Show version string in stream.
- * @param stream File stream
- * @param verbose Verbose output
+ * @param[in,out] stream File stream
+ * @param[in] verbose Verbose output
  */
 static void show_version(FILE *stream, bool verbose)
 {
@@ -130,10 +130,10 @@ static void show_version(FILE *stream, bool verbose)
     }
 }
 
-/**
+/*!
  * @brief Show help string in stream.
- * @param stream File stream
- * @param verbose Verbose output
+ * @param[in,out] stream File stream
+ * @param[in] verbose Verbose output
  */
 static void show_help(FILE *stream, bool verbose)
 {

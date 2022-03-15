@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file define.h
  * @brief Common definitions and enumerations.
  */
@@ -36,25 +36,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-/**
+/*!
  * @struct nesl_register_t
  * @brief 16-bit register type.
  */
 typedef union {
 
     struct {
-        uint8_t bit_0 : 1;      /*< Bit-0 */
-        uint8_t unused : 5;     /*< Unused bit */
-        uint8_t bit_6 : 1;      /*< Bit-6 */
-        uint8_t bit_7 : 1;      /*< Bit-7 */
+        uint8_t bit_0 : 1;      /*!< Bit-0 */
+        uint8_t unused : 5;     /*!< Unused bit */
+        uint8_t bit_6 : 1;      /*!< Bit-6 */
+        uint8_t bit_7 : 1;      /*!< Bit-7 */
     };
 
     struct {
-        uint8_t low;            /*< Low byte */
-        uint8_t high;           /*< High byte */
+        uint8_t low;            /*!< Low byte */
+        uint8_t high;           /*!< High byte */
     };
 
-    uint16_t word;              /*< Word */
+    uint16_t word;              /*!< Word */
 } nesl_register_t;
 
 #endif /* NESL_DEFINE_H_ */

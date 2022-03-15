@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file mapper_3.h
  * @brief Mapper 3 (CNROM) extension.
  */
@@ -29,91 +29,91 @@
 
 #include <mapper.h>
 
-/**
+/*!
  * @union nesl_mapper_3_character_t
  * @brief Mapper-3 character register.
  */
 typedef union {
 
     struct {
-        uint8_t bank : 2;                   /*< Character bank */
+        uint8_t bank : 2;                   /*!< Character bank */
     };
 
-    uint8_t raw;                            /*< Raw byte */
+    uint8_t raw;                            /*!< Raw byte */
 } nesl_mapper_3_character_t;
 
-/**
+/*!
  * @struct nesl_mapper_3_t
  * @brief Mapper-3 context.
  */
 typedef struct {
-    nesl_mapper_3_character_t character;    /*< Character register */
+    nesl_mapper_3_character_t character;    /*!< Character register */
 } nesl_mapper_3_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Initialize mapper-3 extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_mapper_3_initialize(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Send mapper-3 extension interrupt.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_mapper_3_interrupt(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Read byte from mapper-3 RAM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
  * @return mapper data
  */
 uint8_t nesl_mapper_3_read_ram(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
 
-/**
+/*!
  * @brief Read byte from mapper-3 ROM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
  * @return mapper data
  */
 uint8_t nesl_mapper_3_read_rom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
 
-/**
+/*!
  * @brief Reset mapper-3 extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_mapper_3_reset(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Uninitialize mapper-3 extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 void nesl_mapper_3_uninitialize(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Write byte to mapper-3 RAM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
- * @param data mapper data
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
+ * @param[in] data mapper data
  */
 void nesl_mapper_3_write_ram(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
 
-/**
+/*!
  * @brief Write byte to mapper-3 ROM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
- * @param data mapper data
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
+ * @param[in] data mapper data
  */
 void nesl_mapper_3_write_rom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
 

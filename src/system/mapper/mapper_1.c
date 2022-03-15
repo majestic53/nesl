@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file mapper_1.c
  * @brief Mapper 1 (MMC1) extension.
  */
@@ -30,9 +30,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Set mapper-1 character ROM bank offsets.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 static void nesl_mapper_1_set_character(nesl_mapper_t *mapper)
 {
@@ -52,9 +52,9 @@ static void nesl_mapper_1_set_character(nesl_mapper_t *mapper)
     }
 }
 
-/**
+/*!
  * @brief Set mapper-1 mirror type.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 static void nesl_mapper_1_set_mirror(nesl_mapper_t *mapper)
 {
@@ -77,9 +77,9 @@ static void nesl_mapper_1_set_mirror(nesl_mapper_t *mapper)
     }
 }
 
-/**
+/*!
  * @brief Set mapper-1 program ROM bank offsets.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 static void nesl_mapper_1_set_program(nesl_mapper_t *mapper)
 {
@@ -103,11 +103,11 @@ static void nesl_mapper_1_set_program(nesl_mapper_t *mapper)
     }
 }
 
-/**
+/*!
  * @brief Set mapper-1 shift register and state.
- * @param mapper Pointer to mapper subsystem context
- * @param address mapper address
- * @param data mapper data
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] address mapper address
+ * @param[in] data mapper data
  */
 static void nesl_mapper_1_set(nesl_mapper_t *mapper, uint16_t address, uint8_t data)
 {

@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,24 +19,24 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file input.c
  * @brief Input subsystem.
  */
 
 #include <input.h>
 
-/**
+/*!
  * @struct nesl_strobe_t
  * @brief Input strobe state.
  */
 typedef union {
 
     struct {
-        uint8_t state : 1;  /*< Strobe state */
+        uint8_t state : 1;  /*!< Strobe state */
     };
 
-    uint8_t raw;            /*< Raw byte */
+    uint8_t raw;            /*!< Raw byte */
 } nesl_strobe_t;
 
 #ifdef __cplusplus

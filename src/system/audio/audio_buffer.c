@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file audio_buffer.c
  * @brief Audio circular-buffer.
  */
@@ -30,11 +30,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Copy audio data into circular buffer.
- * @param buffer Constant pointer to audio buffer context
- * @param data Pointer to data array
- * @param length Maximum number of entries in data array
+ * @param[in,out] buffer Constant pointer to audio buffer context
+ * @param[in] data Pointer to data array
+ * @param[in] length Maximum number of entries in data array
  */
 static void nesl_audio_buffer_copy_in(nesl_audio_buffer_t *buffer, float *data, int length)
 {
@@ -53,11 +53,11 @@ static void nesl_audio_buffer_copy_in(nesl_audio_buffer_t *buffer, float *data, 
     buffer->full = (buffer->write == buffer->read);
 }
 
-/**
+/*!
  * @brief Copy audio data out of circular buffer.
- * @param buffer Constant pointer to audio buffer context
- * @param data Pointer to data array
- * @param length Maximum number of entries in data array
+ * @param[in,out] buffer Constant pointer to audio buffer context
+ * @param[in] data Pointer to data array
+ * @param[in] length Maximum number of entries in data array
  */
 static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data, int length)
 {
@@ -76,11 +76,11 @@ static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data,
     buffer->full = false;
 }
 
-/**
+/*!
  * @brief Calculate the distance between the left and right offet, with wrap-around.
- * @param max Maximum length (used to wrap-around)
- * @param left Left offset
- * @param right Right offset
+ * @param[in] max Maximum length (used to wrap-around)
+ * @param[in] left Left offset
+ * @param[in] right Right offset
  * @return Distance between offsets
  */
 static int nesl_audio_buffer_distance(int max, int left, int right)
@@ -96,10 +96,10 @@ static int nesl_audio_buffer_distance(int max, int left, int right)
     return result;
 }
 
-/**
+/*!
  * @brief Calculate the minimum between the left and right offset.
- * @param left Left offset
- * @param right Right offset
+ * @param[in] left Left offset
+ * @param[in] right Right offset
  * @return Minimum between offsets
  */
 static int nesl_audio_buffer_minimum(int left, int right)
@@ -107,7 +107,7 @@ static int nesl_audio_buffer_minimum(int left, int right)
     return (left > right) ? right : left;
 }
 
-/**
+/*!
  * @brief Determine if buffer is empty.
  * @return true if empty, false otherwise
  */
@@ -116,7 +116,7 @@ static bool nesl_audio_buffer_is_empty(nesl_audio_buffer_t *buffer)
     return !buffer->full && (buffer->write == buffer->read);
 }
 
-/**
+/*!
  * @brief Determine if buffer is full.
  * @return true if full, false otherwise
  */

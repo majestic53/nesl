@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file mapper_3.c
  * @brief Mapper 3 (CNROM) extension.
  */
@@ -30,9 +30,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Set mapper-3 charcter ROM bank.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 static void nesl_mapper_3_set(nesl_mapper_t *mapper)
 {

@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file mapper_4.h
  * @brief Mapper 4 (MMC3) extension.
  */
@@ -29,136 +29,136 @@
 
 #include <mapper.h>
 
-/**
+/*!
  * @union nesl_mapper_4_mirror_t
  * @brief Mapper-4 mirror register.
  */
 typedef union {
 
     struct {
-        uint8_t mode : 1;               /*< Mirror mode (0:Vertical, 1:Horizontal) */
+        uint8_t mode : 1;               /*!< Mirror mode (0:Vertical, 1:Horizontal) */
     };
 
-    uint8_t raw;                        /*< Raw byte */
+    uint8_t raw;                        /*!< Raw byte */
 } nesl_mapper_4_mirror_t;
 
-/**
+/*!
  * @union nesl_mapper_4_protect_t
  * @brief Mapper-4 RAM protection register.
  */
 typedef union {
 
     struct {
-        uint8_t unused : 6;             /*< Unused */
-        uint8_t ram_read_only : 1;      /*< Program RAM read-only */
-        uint8_t ram_enable : 1;         /*< Program RAM enable */
+        uint8_t unused : 6;             /*!< Unused */
+        uint8_t ram_read_only : 1;      /*!< Program RAM read-only */
+        uint8_t ram_enable : 1;         /*!< Program RAM enable */
     };
 
-    uint8_t raw;                        /*< Raw byte */
+    uint8_t raw;                        /*!< Raw byte */
 } nesl_mapper_4_protect_t;
 
-/**
+/*!
  * @union nesl_mapper_4_select_t
  * @brief Mapper-4 select register.
  */
 typedef union {
 
     struct {
-        uint8_t bank : 3;               /*< Bank mode select */
-        uint8_t unused : 3;             /*< Unused */
-        uint8_t program : 1;            /*< Program bank */
-        uint8_t character : 1;          /*< Character bank */
+        uint8_t bank : 3;               /*!< Bank mode select */
+        uint8_t unused : 3;             /*!< Unused */
+        uint8_t program : 1;            /*!< Program bank */
+        uint8_t character : 1;          /*!< Character bank */
     };
 
-    uint8_t raw;                        /*< Raw byte */
+    uint8_t raw;                        /*!< Raw byte */
 } nesl_mapper_4_select_t;
 
-/**
+/*!
  * @struct nesl_mapper_4_t
  * @brief Mapper-4 context.
  */
 typedef struct {
 
     struct {
-        uint8_t index[8];               /*< Bank indicies */
-        uint8_t data;                   /*< Bank data */
+        uint8_t index[8];               /*!< Bank indicies */
+        uint8_t data;                   /*!< Bank data */
     } bank;
 
     struct {
-        bool enable;                    /*< Enable A12 interrupt */
-        uint8_t count;                  /*< Interrupt counter */
-        uint8_t latch;                  /*< Interrupt latch */
+        bool enable;                    /*!< Enable A12 interrupt */
+        uint8_t count;                  /*!< Interrupt counter */
+        uint8_t latch;                  /*!< Interrupt latch */
     } interrupt;
 
-    nesl_mapper_4_select_t select;      /*< Select register */
-    nesl_mapper_4_mirror_t mirror;      /*< Mirror register */
-    nesl_mapper_4_protect_t protect;    /*< RAM protection register */
+    nesl_mapper_4_select_t select;      /*!< Select register */
+    nesl_mapper_4_mirror_t mirror;      /*!< Mirror register */
+    nesl_mapper_4_protect_t protect;    /*!< RAM protection register */
 } nesl_mapper_4_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Initialize mapper-4 extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_mapper_4_initialize(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Send mapper-4 extension interrupt.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_mapper_4_interrupt(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Read byte from mapper-4 RAM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
  * @return mapper data
  */
 uint8_t nesl_mapper_4_read_ram(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
 
-/**
+/*!
  * @brief Read byte from mapper-4 ROM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
  * @return mapper data
  */
 uint8_t nesl_mapper_4_read_rom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address);
 
-/**
+/*!
  * @brief Reset mapper-4 extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 nesl_error_e nesl_mapper_4_reset(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Uninitialize mapper-4 extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 void nesl_mapper_4_uninitialize(nesl_mapper_t *mapper);
 
-/**
+/*!
  * @brief Write byte to mapper-4 RAM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
- * @param data mapper data
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
+ * @param[in] data mapper data
  */
 void nesl_mapper_4_write_ram(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
 
-/**
+/*!
  * @brief Write byte to mapper-4 ROM extension.
- * @param mapper Pointer to mapper subsystem context
- * @param type Bank type
- * @param address mapper address
- * @param data mapper data
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Bank type
+ * @param[in] address mapper address
+ * @param[in] data mapper data
  */
 void nesl_mapper_4_write_rom(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data);
 

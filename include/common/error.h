@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file error.h
  * @brief Get/Set global error string.
  */
@@ -29,9 +29,9 @@
 
 #include <define.h>
 
-/**
+/*!
  * @brief Set global error macro.
- * @param _FORMAT_ Error string format, followed by some number of arguments
+ * @param[in] _FORMAT_ Error string format, followed by some number of arguments
  * @return NESL_FAILURE
  */
 #define SET_ERROR(_FORMAT_, ...) \
@@ -41,12 +41,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Set global error.
- * @param file Constant pointer to file string
- * @param function Constant pointer to function string
- * @param line File line
- * @param format Error string format, followed by some number of arguments
+ * @param[in] file Constant pointer to file string
+ * @param[in] function Constant pointer to function string
+ * @param[in] line File line
+ * @param[in] format Error string format, followed by some number of arguments
  * @return NESL_FAILURE
  */
 nesl_error_e nesl_set_error(const char *file, const char *function, int line, const char *format, ...);

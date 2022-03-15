@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for mapper subsystem.
  */
@@ -27,33 +27,33 @@
 #include <mapper.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_mapper_t mapper;                       /*< Mapper context */
-    nesl_bank_e type;                           /*< Bank type */
-    uint16_t address;                           /*< Bank address */
-    uint8_t data;                               /*< Bank data */
-    bool interrupt;                             /*< Interrupt state */
-    bool reset;                                 /*< Reset state */
+    nesl_mapper_t mapper;                       /*!< Mapper context */
+    nesl_bank_e type;                           /*!< Bank type */
+    uint16_t address;                           /*!< Bank address */
+    uint8_t data;                               /*!< Bank data */
+    bool interrupt;                             /*!< Interrupt state */
+    bool reset;                                 /*!< Reset state */
 
     struct {
-        const nesl_cartridge_header_t *header;  /*< Cartridge header */
-        const void *data;                       /*< Cartridge data */
-        int length;                             /*< Cartridge data length in bytes */
-        bool initialized;                       /*< Cartridge initialized state */
-        nesl_error_e status;                    /*< Cartridge error state */
+        const nesl_cartridge_header_t *header;  /*!< Cartridge header */
+        const void *data;                       /*!< Cartridge data */
+        int length;                             /*!< Cartridge data length in bytes */
+        bool initialized;                       /*!< Cartridge initialized state */
+        nesl_error_e status;                    /*!< Cartridge error state */
     } cartridge;
 
     struct {
-        bool initialized;                       /*< Mapper extension initialized state */
-        nesl_error_e status;                    /*< Mapper extension error state */
+        bool initialized;                       /*!< Mapper extension initialized state */
+        nesl_error_e status;                    /*!< Mapper extension error state */
     } state;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};                 /*< Test context */
+static nesl_test_t g_test = {};                 /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -173,9 +173,9 @@ nesl_error_e nesl_set_error(const char *file, const char *function, int line, co
     return NESL_FAILURE;
 }
 
-/**
+/*!
  * @brief Test interrupt handler.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_test_interrupt_handler(nesl_mapper_t *mapper)
@@ -185,11 +185,11 @@ static nesl_error_e nesl_test_interrupt_handler(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-/**
+/*!
  * @brief Test read handler.
- * @param mapper Pointer to mapper subsystem context
- * @param type Mapper type
- * @param address Mapper address
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Mapper type
+ * @param[in] address Mapper address
  * @return Mapper data
  */
 static uint8_t nesl_test_read_handler(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address)
@@ -200,9 +200,9 @@ static uint8_t nesl_test_read_handler(nesl_mapper_t *mapper, nesl_bank_e type, u
     return g_test.data;
 }
 
-/**
+/*!
  * @brief Test reset handler.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_test_reset_handler(nesl_mapper_t *mapper)
@@ -212,12 +212,12 @@ static nesl_error_e nesl_test_reset_handler(nesl_mapper_t *mapper)
     return NESL_SUCCESS;
 }
 
-/**
+/*!
  * @brief Test write handler.
- * @param mapper Pointer to mapper subsystem context
- * @param type Mapper type
- * @param address Mapper address
- * @param data Mapper data
+ * @param[in,out] mapper Pointer to mapper subsystem context
+ * @param[in] type Mapper type
+ * @param[in] address Mapper address
+ * @param[in] data Mapper data
  */
 static void nesl_test_write_handler(nesl_mapper_t *mapper, nesl_bank_e type, uint16_t address, uint8_t data)
 {
@@ -226,10 +226,10 @@ static void nesl_test_write_handler(nesl_mapper_t *mapper, nesl_bank_e type, uin
     g_test.data = data;
 }
 
-/**
+/*!
  * @brief Initialize test context.
- * @param header Pointer to cartridge header
- * @param type Mapper type
+ * @param[in] header Pointer to cartridge header
+ * @param[in] type Mapper type
  */
 static void nesl_test_initialize(nesl_cartridge_header_t *header, nesl_mapper_e type)
 {
@@ -246,7 +246,7 @@ static void nesl_test_initialize(nesl_cartridge_header_t *header, nesl_mapper_e 
     g_test.mapper.extension.write_rom = &nesl_test_write_handler;
 }
 
-/**
+/*!
  * @brief Test mapper subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -298,7 +298,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper subsystem interrupt.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -329,7 +329,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper subsystem read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -361,7 +361,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper subsystem reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -392,7 +392,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -415,7 +415,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper subsystem write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

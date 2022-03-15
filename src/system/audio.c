@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file audio.c
  * @brief Audio subsystem.
  */
@@ -30,11 +30,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Get audio data callback.
- * @param context Pointer to audio context
- * @param data Pointer to data array
- * @param length Length of data array in bytes
+ * @param[in,out] context Pointer to audio context
+ * @param[out] data Pointer to data array
+ * @param[in] length Length of data array in bytes
  */
 static void nesl_audio_get_data(void *context, uint8_t *data, int length)
 {
@@ -47,9 +47,9 @@ static void nesl_audio_get_data(void *context, uint8_t *data, int length)
     }
 }
 
-/**
+/*!
  * @brief Get audio status register.
- * @param audio Pointer to audio subsystem context
+ * @param[in] audio Pointer to audio subsystem context
  * @return Audio status data
  */
 static uint8_t nesl_audio_get_status(nesl_audio_t *audio)
@@ -61,10 +61,10 @@ static uint8_t nesl_audio_get_status(nesl_audio_t *audio)
     return result.raw;
 }
 
-/**
+/*!
  * @brief Set audio frame register.
- * @param audio Pointer to audio subsystem context
- * @param data Audio frame data
+ * @param[in] audio Pointer to audio subsystem context
+ * @param[in] data Audio frame data
  */
 static void nesl_audio_set_frame(nesl_audio_t *audio, uint8_t data)
 {
@@ -73,10 +73,10 @@ static void nesl_audio_set_frame(nesl_audio_t *audio, uint8_t data)
     /* TODO: SET FRAME */
 }
 
-/**
+/*!
  * @brief Set audio status register.
- * @param audio Pointer to audio subsystem context
- * @param data Audio status data
+ * @param[in] audio Pointer to audio subsystem context
+ * @param[in] data Audio status data
  */
 static void nesl_audio_set_status(nesl_audio_t *audio, uint8_t data)
 {

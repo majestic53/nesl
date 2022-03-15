@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for input subsystem.
  */
@@ -27,16 +27,16 @@
 #include <input.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_input_t input;                                 /*< Input context */
-    bool state[CONTROLLER_MAX * BUTTON_MAX];  /*< Controller/button state */
+    nesl_input_t input;                         /*!< Input context */
+    bool state[CONTROLLER_MAX * BUTTON_MAX];    /*!< Controller/button state */
 } nesl_test_t;
 
-static nesl_test_t g_test = {};                         /*< Test context */
+static nesl_test_t g_test = {};                 /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,7 +52,7 @@ bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button)
     return g_test.state[KEY[controller][button] - 1];
 }
 
-/**
+/*!
  * @brief Initialize test context.
  */
 static void nesl_test_initialize(void)
@@ -60,7 +60,7 @@ static void nesl_test_initialize(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-/**
+/*!
  * @brief Test input subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -89,7 +89,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test input subsystem read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -152,7 +152,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test input subsystem reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -200,7 +200,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test input subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -244,7 +244,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test input subsystem write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for processor subsystem.
  */
@@ -27,32 +27,32 @@
 #include <processor.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_instruction_t
  * @brief Processor instruction data.
  */
 typedef struct {
-    nesl_instruction_e type;    /*< Instruction type */
-    nesl_operand_e mode;        /*< Instruction address mode */
-    uint8_t cycles;             /*< Instruction cycles */
+    nesl_instruction_e type;    /*!< Instruction type */
+    nesl_operand_e mode;        /*!< Instruction address mode */
+    uint8_t cycles;             /*!< Instruction cycles */
 } nesl_instruction_t;
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_processor_t processor; /*< Processor context */
+    nesl_processor_t processor; /*!< Processor context */
 
     struct {
-        nesl_bus_e type;        /*< Bus type */
-        uint16_t address;       /*< Bus address */
-        uint8_t ram[64 * 1024]; /*< Bus RAM */
-        uint8_t oam[64 * 4];    /*< Bus OAM RAM */
+        nesl_bus_e type;        /*!< Bus type */
+        uint16_t address;       /*!< Bus address */
+        uint8_t ram[64 * 1024]; /*!< Bus RAM */
+        uint8_t oam[64 * 4];    /*!< Bus OAM RAM */
     } bus;
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {}; /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -96,10 +96,10 @@ void nesl_bus_write(nesl_bus_e type, uint16_t address, uint8_t data)
     }
 }
 
-/**
+/*!
  * @brief Initialize test context.
- * @param address Program counter address
- * @param initialize Initialize processor
+ * @param[in] address Program counter address
+ * @param[in] initialize Initialize processor
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_test_initialize(uint16_t address, bool initialize)
@@ -121,14 +121,14 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Execute processor instruction.
- * @param address Program counter address
- * @param opcode Operation
- * @param mode Address mode
- * @param effective Effective address
- * @param indirect Indirect address
- * @param data Immediate data
+ * @param[in] address Program counter address
+ * @param[in] opcode Operation
+ * @param[in] mode Address mode
+ * @param[in] effective Effective address
+ * @param[in] indirect Indirect address
+ * @param[in] data Immediate data
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_test_instruction(uint16_t address, uint8_t opcode, nesl_operand_e mode, uint16_t effective, uint16_t indirect, uint8_t data)
@@ -218,15 +218,15 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Validate processor state.
- * @param accumulator Accumulator register
- * @param index_x Index-X register
- * @param index_y Index-Y register
- * @param program_counter Program-counter register
- * @param stack_pointer Stack-pointer register
- * @param status Status register
- * @param cycle Cycle count
+ * @param[in] accumulator Accumulator register
+ * @param[in] index_x Index-X register
+ * @param[in] index_y Index-Y register
+ * @param[in] program_counter Program-counter register
+ * @param[in] stack_pointer Stack-pointer register
+ * @param[in] status Status register
+ * @param[in] cycle Cycle count
  * @return false if state mismatches, true otherwise
  */
 static bool nesl_test_validate(uint8_t accumulator, uint8_t index_x, uint8_t index_y, uint16_t program_counter, uint8_t stack_pointer, uint8_t status, uint8_t cycle)
@@ -240,7 +240,7 @@ static bool nesl_test_validate(uint8_t accumulator, uint8_t index_x, uint8_t ind
             && (g_test.processor.cycle == cycle);
 }
 
-/**
+/*!
  * @brief Test processor subsystem cycle.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -270,7 +270,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -293,7 +293,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem arithmetic instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -835,7 +835,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem bit instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -907,7 +907,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem branch instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -1191,7 +1191,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem breakpoint instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -1231,7 +1231,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem clear bit instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -1305,7 +1305,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem compare instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -1627,7 +1627,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem decrement instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -1795,7 +1795,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem increment instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -1963,7 +1963,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem jump instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -2018,7 +2018,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem load instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -2329,7 +2329,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem logical instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -2907,7 +2907,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem no-operation instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -2934,7 +2934,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem pull instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3035,7 +3035,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem push instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3081,7 +3081,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem return instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3147,7 +3147,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem rotate instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3339,7 +3339,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem set bit instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3398,7 +3398,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem shift instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3590,7 +3590,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem store instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3823,7 +3823,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem transfer instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -3997,7 +3997,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem unsupported instruction.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -4078,7 +4078,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem interrupt.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -4184,7 +4184,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -4212,7 +4212,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -4243,7 +4243,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem transfer.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -4343,7 +4343,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -4371,7 +4371,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test processor subsystem write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

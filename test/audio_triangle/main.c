@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for audio triangle-wave synthesizer.
  */
@@ -27,26 +27,26 @@
 #include <audio_triangle.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_audio_triangle_t triangle; /*< Audio triangle-wave synthesizer context */
-    float buffer[256];              /*< Audio buffer */
+    nesl_audio_triangle_t triangle; /*!< Audio triangle-wave synthesizer context */
+    float buffer[256];              /*!< Audio buffer */
 } nesl_test_t;
 
-static nesl_test_t g_test = {};     /*< Test context */
+static nesl_test_t g_test = {};     /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Copy audio data into circular buffer.
- * @param buffer Constant pointer to audio buffer context
- * @param data Pointer to data array
- * @param length Maximum number of entries in data array
+ * @param[in,out] buffer Constant pointer to audio buffer context
+ * @param[in,out] data Pointer to data array
+ * @param[in] length Maximum number of entries in data array
  */
 static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data, int length)
 {
@@ -65,11 +65,11 @@ static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data,
     buffer->full = false;
 }
 
-/**
+/*!
  * @brief Calculate the distance between the left and right offet, with wrap-around.
- * @param max Maximum length (used to wrap-around)
- * @param left Left offset
- * @param right Right offset
+ * @param[in] max Maximum length (used to wrap-around)
+ * @param[in] left Left offset
+ * @param[in] right Right offset
  * @return Distance between offsets
  */
 static int nesl_audio_buffer_distance(int max, int left, int right)
@@ -85,10 +85,10 @@ static int nesl_audio_buffer_distance(int max, int left, int right)
     return result;
 }
 
-/**
+/*!
  * @brief Calculate the minimum between the left and right offset.
- * @param left Left offset
- * @param right Right offset
+ * @param[in] left Left offset
+ * @param[in] right Right offset
  * @return Minimum between offsets
  */
 static int nesl_audio_buffer_minimum(int left, int right)
@@ -96,7 +96,7 @@ static int nesl_audio_buffer_minimum(int left, int right)
     return (left > right) ? right : left;
 }
 
-/**
+/*!
  * @brief Determine if buffer is empty.
  * @return true if empty, false otherwise
  */
@@ -154,7 +154,7 @@ void nesl_audio_buffer_uninitialize(nesl_audio_buffer_t *buffer)
     memset(buffer, 0, sizeof(*buffer));
 }
 
-/**
+/*!
  * @brief Uninitialize test context.
  */
 static void nesl_test_uninitialize(void)
@@ -163,7 +163,7 @@ static void nesl_test_uninitialize(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-/**
+/*!
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -174,7 +174,7 @@ static int nesl_test_initialize(void)
     return nesl_audio_triangle_initialize(&g_test.triangle);
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer cycle.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -194,7 +194,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -214,7 +214,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -234,7 +234,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer readable.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -254,7 +254,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -274,7 +274,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -294,7 +294,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio triangle synthesizer write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

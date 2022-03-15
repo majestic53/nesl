@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file bus.c
  * @brief Common bus used by subsystems for communication.
  */
@@ -30,29 +30,29 @@
 #include <processor.h>
 #include <video.h>
 
-/**
+/*!
  * @struct nesl_bus_t
  * @brief Bus and subsystem contexts.
  */
 typedef struct {
-    uint64_t cycle;                 /*< Cycle-count since start of emulation */
+    uint64_t cycle;                 /*!< Cycle-count since start of emulation */
 
     struct {
-        nesl_audio_t audio;         /*< Audio subsystem context */
-        nesl_input_t input;         /*< Input subsystem context */
-        nesl_mapper_t mapper;       /*< Mapper subsystem context */
-        nesl_processor_t processor; /*< Processor subsystem context */
-        nesl_video_t video;         /*< Video subsystem context */
+        nesl_audio_t audio;         /*!< Audio subsystem context */
+        nesl_input_t input;         /*!< Input subsystem context */
+        nesl_mapper_t mapper;       /*!< Mapper subsystem context */
+        nesl_processor_t processor; /*!< Processor subsystem context */
+        nesl_video_t video;         /*!< Video subsystem context */
     } subsystem;
 } nesl_bus_t;
 
-static nesl_bus_t g_bus = {};       /*< Bus context */
+static nesl_bus_t g_bus = {};       /*!< Bus context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Reset Bus/Service and subsystems.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

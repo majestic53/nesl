@@ -1,10 +1,16 @@
-# Project Architecture
+# NESL (NES-Lite) Source
+
+## Detailed Documentation
+
+See the doxygen comments [here](../docs/html/index.html) for more details.
+
+## Project Architecture
 
 This project is built around a common bus, allowing the various subsystems to communicate with each other:
 
 ![Architecture](../docs/arch.png "Architecture")
 
-## File layout
+### File layout
 
 * Subsystem specific source files are placed into a subdirectory, under [`src/system`](system).
 
@@ -16,11 +22,11 @@ This project is built around a common bus, allowing the various subsystems to co
 |[`src/system/audio`](system/audio)  |Audio-specific source files          |
 |[`src/system/mapper`](system/mapper)|Mapper-specific source files         |
 
-## Coding style
+### Coding style
 
 This project uses the following coding style:
 
-### Enumerations
+#### Enumerations
 
 ```c
 /*!
@@ -34,7 +40,7 @@ typedef enum {
 } nesl_xxx_e;
 ```
 
-### Structures
+#### Structures
 
 ```c
 /*!
@@ -48,7 +54,7 @@ typedef struct {
 } nesl_xxx_t;
 ```
 
-### Functions
+#### Functions
 
 ```c
 #ifdef __cplusplus

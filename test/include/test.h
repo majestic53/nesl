@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file NESL_common.h
  * @brief Common test header.
  */
@@ -29,17 +29,17 @@
 
 #include <assert.h>
 
-/**
+/*!
  * @brief Test count macro.
- * @param _TESTS_ Pointer to test array
+ * @param[in] _TESTS_ Pointer to test array
  * @return Number of test in test array
  */
 #define TEST_COUNT(_TESTS_) \
     sizeof(_TESTS_) / sizeof(*(_TESTS_))
 
-/**
+/*!
  * @brief Test result macro.
- * @param _RESULT_ Test result
+ * @param[in] _RESULT_ Test result
  */
 #define TEST_RESULT(_RESULT_) \
     fprintf(((_RESULT_) != NESL_SUCCESS) ? stderr : stdout, "[%s%s%s] %s\n", \
@@ -47,7 +47,7 @@
         ((_RESULT_) != NESL_SUCCESS) ? "FAIL" : "PASS", \
         "\x1b[0m", __FUNCTION__)
 
-/**
+/*!
  * @brief Test function.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

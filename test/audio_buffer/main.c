@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for audio circular-buffer.
  */
@@ -27,15 +27,15 @@
 #include <audio_buffer.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_audio_buffer_t buffer; /*< Audio buffer context */
+    nesl_audio_buffer_t buffer; /*!< Audio buffer context */
 } nesl_test_t;
 
-static nesl_test_t g_test = {}; /*< Test context */
+static nesl_test_t g_test = {}; /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,11 +46,11 @@ nesl_error_e nesl_set_error(const char *file, const char *function, int line, co
     return NESL_FAILURE;
 }
 
-/**
+/*!
  * @brief Calculate the distance between the left and right offet, with wrap-around.
- * @param max Maximum length (used to wrap-around)
- * @param left Left offset
- * @param right Right offset
+ * @param[in] max Maximum length (used to wrap-around)
+ * @param[in] left Left offset
+ * @param[in] right Right offset
  * @return Distance between offsets
  */
 static int nesl_test_distance(int max, int left, int right)
@@ -66,10 +66,10 @@ static int nesl_test_distance(int max, int left, int right)
     return result;
 }
 
-/**
+/*!
  * @brief Calculate the minimum between the left and right offset.
- * @param left Left offset
- * @param right Right offset
+ * @param[in] left Left offset
+ * @param[in] right Right offset
  * @return Minimum between offsets
  */
 static int nesl_test_minimum(int left, int right)
@@ -77,7 +77,7 @@ static int nesl_test_minimum(int left, int right)
     return (left > right) ? right : left;
 }
 
-/**
+/*!
  * @brief Uninitialize test context.
  */
 static void nesl_test_uninitialize(void)
@@ -86,7 +86,7 @@ static void nesl_test_uninitialize(void)
     memset(&g_test, 0, sizeof(g_test));
 }
 
-/**
+/*!
  * @brief Initialize test context.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -97,7 +97,7 @@ static nesl_error_e nesl_test_initialize(int length)
     return nesl_audio_buffer_initialize(&g_test.buffer, length);
 }
 
-/**
+/*!
  * @brief Test audio buffer initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -124,7 +124,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -206,7 +206,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer read/write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -268,7 +268,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer readable.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -309,7 +309,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -338,7 +338,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -367,7 +367,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -455,7 +455,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test audio buffer writable.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,19 +19,19 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file version.c
  * @brief Get global version string.
  */
 
 #include <common.h>
 
-/**
+/*!
  * @brief Versioning macros.
  */
-#define VERSION_MAJOR 0     /*< Major version */
-#define VERSION_MINOR 1     /*< Minor version */
-#define VERSION_PATCH 42    /*< Patch version */
+#define VERSION_MAJOR 0     /*!< Major version */
+#define VERSION_MINOR 1     /*!< Minor version */
+#define VERSION_PATCH 43    /*!< Patch version */
 
 #ifdef __cplusplus
 extern "C" {

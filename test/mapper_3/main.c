@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file main.c
  * @brief Test application for mapper 3 extension.
  */
@@ -27,31 +27,31 @@
 #include <mapper_3.h>
 #include <test.h>
 
-/**
+/*!
  * @struct nesl_test_t
  * @brief Contains the test contexts.
  */
 typedef struct {
-    nesl_mapper_t mapper;                       /*< Mapper type */
-    nesl_bank_e type;                           /*< Bank type */
-    uint32_t address;                           /*< Bank address */
-    uint8_t data;                               /*< Bank data */
+    nesl_mapper_t mapper;                       /*!< Mapper type */
+    nesl_bank_e type;                           /*!< Bank type */
+    uint32_t address;                           /*!< Bank address */
+    uint8_t data;                               /*!< Bank data */
 
     struct {
 
         struct {
-            uint8_t character[8 * 1024];        /*< Character RAM */
-            uint8_t program[8 * 1024];          /*< Program RAM */
+            uint8_t character[8 * 1024];        /*!< Character RAM */
+            uint8_t program[8 * 1024];          /*!< Program RAM */
         } ram;
 
         struct {
-            uint8_t character[4 * 8 * 1024];    /*< Character ROM */
-            uint8_t program[2 * 16 * 1024];     /*< Program ROM */
+            uint8_t character[4 * 8 * 1024];    /*!< Character ROM */
+            uint8_t program[2 * 16 * 1024];     /*!< Program ROM */
         } rom;
     } cartridge;
 } nesl_test_t;
 
-static nesl_test_t g_test = {};                 /*< Test context */
+static nesl_test_t g_test = {};                 /*!< Test context */
 
 #ifdef __cplusplus
 extern "C" {
@@ -117,7 +117,7 @@ nesl_error_e nesl_set_error(const char *file, const char *function, int line, co
     return NESL_FAILURE;
 }
 
-/**
+/*!
  * @brief Uninitialize test context.
  */
 static void nesl_test_uninitialize(void)
@@ -131,7 +131,7 @@ static void nesl_test_uninitialize(void)
     g_test.mapper.extension.write_rom = NULL;
 }
 
-/**
+/*!
  * @brief Initialize test context.
  * @param header Pointer to cartridge header
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
@@ -151,7 +151,7 @@ static nesl_error_e nesl_test_initialize(const nesl_cartridge_header_t *header)
     return nesl_mapper_3_initialize(&g_test.mapper);
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension initialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -212,7 +212,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension interrupt.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -236,7 +236,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension RAM read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -292,7 +292,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension ROM read.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -374,7 +374,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension reset.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -406,7 +406,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension uninitialization.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -432,7 +432,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension RAM write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
@@ -489,7 +489,7 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Test mapper-3 extension ROM write.
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */

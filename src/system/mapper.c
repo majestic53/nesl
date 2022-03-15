@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file mapper.c
  * @brief Mapper subsystem.
  */
@@ -32,37 +32,37 @@
 #include <mapper_30.h>
 #include <mapper_66.h>
 
-/**
+/*!
  * @struct nesl_mapper_extension_t
  * @brief Mapper extension context.
  */
 typedef struct {
-    nesl_mapper_e type;                                                     /*< Mapper type */
-    nesl_error_e (*initialize)(nesl_mapper_t *mapper);                      /*< Mapper extension initialization */
-    void (*uninitialize)(nesl_mapper_t *mapper);                            /*< Mapper extension uninitialization */
+    nesl_mapper_e type;                                                     /*!< Mapper type */
+    nesl_error_e (*initialize)(nesl_mapper_t *mapper);                      /*!< Mapper extension initialization */
+    void (*uninitialize)(nesl_mapper_t *mapper);                            /*!< Mapper extension uninitialization */
 } nesl_mapper_extension_t;
 
-/**
+/*!
  * @brief Supported mapper extensions array.
  * @note If a new mapper extension is added, it must be added into this array
  */
 static const nesl_mapper_extension_t CONTEXT[] = {
-    { MAPPER_0, nesl_mapper_0_initialize, nesl_mapper_0_uninitialize, },    /*< Mapper 0 (NROM) */
-    { MAPPER_1, nesl_mapper_1_initialize, nesl_mapper_1_uninitialize, },    /*< Mapper 1 (MMC1) */
-    { MAPPER_2, nesl_mapper_2_initialize, nesl_mapper_2_uninitialize, },    /*< Mapper 2 (UxROM) */
-    { MAPPER_3, nesl_mapper_3_initialize, nesl_mapper_3_uninitialize, },    /*< Mapper 3 (CNROM) */
-    { MAPPER_4, nesl_mapper_4_initialize, nesl_mapper_4_uninitialize, },    /*< Mapper 4 (MMC3) */
-    { MAPPER_30, nesl_mapper_30_initialize, nesl_mapper_30_uninitialize, }, /*< Mapper 30 (UNROM) */
-    { MAPPER_66, nesl_mapper_66_initialize, nesl_mapper_66_uninitialize, }, /*< Mapper 66 (GxROM) */
+    { MAPPER_0, nesl_mapper_0_initialize, nesl_mapper_0_uninitialize, },    /*!< Mapper 0 (NROM) */
+    { MAPPER_1, nesl_mapper_1_initialize, nesl_mapper_1_uninitialize, },    /*!< Mapper 1 (MMC1) */
+    { MAPPER_2, nesl_mapper_2_initialize, nesl_mapper_2_uninitialize, },    /*!< Mapper 2 (UxROM) */
+    { MAPPER_3, nesl_mapper_3_initialize, nesl_mapper_3_uninitialize, },    /*!< Mapper 3 (CNROM) */
+    { MAPPER_4, nesl_mapper_4_initialize, nesl_mapper_4_uninitialize, },    /*!< Mapper 4 (MMC3) */
+    { MAPPER_30, nesl_mapper_30_initialize, nesl_mapper_30_uninitialize, }, /*!< Mapper 30 (UNROM) */
+    { MAPPER_66, nesl_mapper_66_initialize, nesl_mapper_66_uninitialize, }, /*!< Mapper 66 (GxROM) */
     };
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Initialize mapper extension.
- * @param mapper Pointer to mapper subsystem context
+ * @param[in,out] mapper Pointer to mapper subsystem context
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
 static nesl_error_e nesl_mapper_extension_initialize(nesl_mapper_t *mapper)
@@ -92,10 +92,9 @@ exit:
     return result;
 }
 
-/**
+/*!
  * @brief Uninitialize mapper extension.
- * @param mapper Pointer to mapper subsystem context
- * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ * @param[in,out] mapper Pointer to mapper subsystem context
  */
 static void nesl_mapper_extension_uninitialize(nesl_mapper_t *mapper)
 {

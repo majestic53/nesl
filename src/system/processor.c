@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,54 +19,54 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file processor.c
  * @brief Processor subsystem.
  */
 
 #include <processor.h>
 
-/**
+/*!
  * @struct nesl_instruction_t
  * @brief Processor instruction data.
  */
 typedef struct {
-    nesl_instruction_e type;    /*< Instruction type */
-    nesl_operand_e mode;        /*< Instruction address mode */
-    uint8_t cycles;             /*< Instruction cycles */
+    nesl_instruction_e type;    /*!< Instruction type */
+    nesl_operand_e mode;        /*!< Instruction address mode */
+    uint8_t cycles;             /*!< Instruction cycles */
 } nesl_instruction_t;
 
-/**
+/*!
  * @struct nesl_operand_t
  * @brief Processor operand data.
  */
 typedef struct {
-    nesl_register_t data;       /*< Immediate data */
-    nesl_register_t effective;  /*< Effective address to data */
-    nesl_register_t indirect;   /*< Indirect address to data */
-    bool page_cross;            /*< Page boundary crossed */
+    nesl_register_t data;       /*!< Immediate data */
+    nesl_register_t effective;  /*!< Effective address to data */
+    nesl_register_t indirect;   /*!< Indirect address to data */
+    bool page_cross;            /*!< Page boundary crossed */
 } nesl_operand_t;
 
-/**
+/*!
  * @brief Processor execution function.
- * @param processor Pointer to processor context
- * @param instruction Constant pointer to instruction data
- * @param operand Constant pointer to operand data
+ * @param[in,out] processor Pointer to processor context
+ * @param[in] instruction Constant pointer to instruction data
+ * @param[in] operand Constant pointer to operand data
  */
 typedef void (*nesl_processor_execute)(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand);
 
-/**
+/*!
  * @brief Processor operand function.
- * @param processor Pointer to processor context
- * @param operand Pointer to operand data
+ * @param[in,out] processor Pointer to processor context
+ * @param[in] operand Pointer to operand data
  */
 typedef void (*nesl_processor_operand)(nesl_processor_t *processor, nesl_operand_t *operand);
 
-/**
+/*!
  * @brief Processor operation function.
- * @param processor Pointer to processor context
- * @param left Pointer to left register context
- * @param right Constant pointer to right register context
+ * @param[in,out] processor Pointer to processor context
+ * @param[in] left Pointer to left register context
+ * @param[in] right Constant pointer to right register context
  */
 typedef void (*nesl_processor_operation)(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right);
 
@@ -74,9 +74,9 @@ typedef void (*nesl_processor_operation)(nesl_processor_t *processor, nesl_regis
 extern "C" {
 #endif /* __cplusplus */
 
-/**
+/*!
  * @brief Fetch byte at processor program counter and post-increment.
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  * @return Byte at processor program counter
  */
 static uint8_t nesl_processor_fetch(nesl_processor_t *processor)
@@ -84,9 +84,9 @@ static uint8_t nesl_processor_fetch(nesl_processor_t *processor)
     return nesl_bus_read(BUS_PROCESSOR, processor->state.program_counter.word++);
 }
 
-/**
+/*!
  * @brief Fetch word at processor program counter and post-increment.
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  * @return Word at processor program counter
  */
 static uint16_t nesl_processor_fetch_word(nesl_processor_t *processor)
@@ -94,9 +94,9 @@ static uint16_t nesl_processor_fetch_word(nesl_processor_t *processor)
     return nesl_processor_fetch(processor) | (nesl_processor_fetch(processor) << 8);
 }
 
-/**
+/*!
  * @brief Pull byte from processor stack and pre-increment.
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  * @return Byte from processor stack
  */
 static uint8_t nesl_processor_pull(nesl_processor_t *processor)
@@ -104,9 +104,9 @@ static uint8_t nesl_processor_pull(nesl_processor_t *processor)
     return nesl_bus_read(BUS_PROCESSOR, 0x0100 | ++processor->state.stack_pointer.low);
 }
 
-/**
+/*!
  * @brief Pull word from processor stack and pre-increment.
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  * @return Word from processor stack
  */
 static uint16_t nesl_processor_pull_word(nesl_processor_t *processor)
@@ -114,20 +114,20 @@ static uint16_t nesl_processor_pull_word(nesl_processor_t *processor)
     return nesl_processor_pull(processor) | (nesl_processor_pull(processor) << 8);
 }
 
-/**
+/*!
  * @brief Push byte to processor stack and post-decrement.
- * @param processor Pointer to processor subsystem context
- * @param data Byte to processor stack
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] data Byte to processor stack
  */
 static void nesl_processor_push(nesl_processor_t *processor, uint8_t data)
 {
     nesl_bus_write(BUS_PROCESSOR, 0x0100 | processor->state.stack_pointer.low--, data);
 }
 
-/**
+/*!
  * @brief Push word to processor stack and post-decrement.
- * @param processor Pointer to processor subsystem context
- * @param data Word to processor stack
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] data Word to processor stack
  */
 static void nesl_processor_push_word(nesl_processor_t *processor, uint16_t data)
 {
@@ -135,10 +135,10 @@ static void nesl_processor_push_word(nesl_processor_t *processor, uint16_t data)
     nesl_processor_push(processor, data);
 }
 
-/**
+/*!
  * @brief Read word from processor bus.
- * @param processor Pointer to processor subsystem context
- * @param address Processor bus address
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] address Processor bus address
  * @return Word at processor program counter
  */
 static uint16_t nesl_processor_read_word(nesl_processor_t *processor, uint16_t address)
@@ -146,11 +146,11 @@ static uint16_t nesl_processor_read_word(nesl_processor_t *processor, uint16_t a
     return nesl_bus_read(BUS_PROCESSOR, address) | (nesl_bus_read(BUS_PROCESSOR, address + 1) << 8);
 }
 
-/**
+/*!
  * @brief Perform add-carry operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_add_carry(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -164,11 +164,11 @@ static void nesl_processor_operation_add_carry(nesl_processor_t *processor, nesl
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform compare operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_compare(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -182,11 +182,11 @@ static void nesl_processor_operation_compare(nesl_processor_t *processor, nesl_r
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform decrement operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_decrement(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -195,11 +195,11 @@ static void nesl_processor_operation_decrement(nesl_processor_t *processor, nesl
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform increment operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_increment(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -208,11 +208,11 @@ static void nesl_processor_operation_increment(nesl_processor_t *processor, nesl
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform logical and operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_logical_and(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -221,11 +221,11 @@ static void nesl_processor_operation_logical_and(nesl_processor_t *processor, ne
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform logical exclusive-or operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_logical_exclusive_or(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -234,11 +234,11 @@ static void nesl_processor_operation_logical_exclusive_or(nesl_processor_t *proc
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform logical or operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_logical_or(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -247,11 +247,11 @@ static void nesl_processor_operation_logical_or(nesl_processor_t *processor, nes
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform rotate-left operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_rotate_left(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -264,11 +264,11 @@ static void nesl_processor_operation_rotate_left(nesl_processor_t *processor, ne
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform rotate-right operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_rotate_right(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -281,11 +281,11 @@ static void nesl_processor_operation_rotate_right(nesl_processor_t *processor, n
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform shift-left operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_shift_left(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -295,11 +295,11 @@ static void nesl_processor_operation_shift_left(nesl_processor_t *processor, nes
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform shift-right operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_shift_right(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -309,11 +309,11 @@ static void nesl_processor_operation_shift_right(nesl_processor_t *processor, ne
     processor->state.status.zero = !left->low;
 }
 
-/**
+/*!
  * @brief Perform transfer operation.
- * @param processor Pointer to processor subsystem context
- * @param left Left operand
- * @param right Right operand
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] left Left operand
+ * @param[in] right Right operand
  */
 static void nesl_processor_operation_transfer(nesl_processor_t *processor, nesl_register_t *left, const nesl_register_t *right)
 {
@@ -326,11 +326,11 @@ static void nesl_processor_operation_transfer(nesl_processor_t *processor, nesl_
     left->low = right->low;
 }
 
-/**
+/*!
  * @brief Execute arithetic instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_arithmetic(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -351,11 +351,11 @@ static void nesl_processor_execute_arithmetic(nesl_processor_t *processor, const
     }
 }
 
-/**
+/*!
  * @brief Execute bit instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_bit(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -366,11 +366,11 @@ static void nesl_processor_execute_bit(nesl_processor_t *processor, const nesl_i
     processor->state.status.zero = !(processor->state.accumulator.low & data.low);
 }
 
-/**
+/*!
  * @brief Execute branch instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_branch(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -416,11 +416,11 @@ static void nesl_processor_execute_branch(nesl_processor_t *processor, const nes
     }
 }
 
-/**
+/*!
  * @brief Execute break instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_breakpoint(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -431,11 +431,11 @@ static void nesl_processor_execute_breakpoint(nesl_processor_t *processor, const
     processor->state.program_counter.word = nesl_processor_read_word(processor, 0xFFFE);
 }
 
-/**
+/*!
  * @brief Execute clear bit instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_clear(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -458,11 +458,11 @@ static void nesl_processor_execute_clear(nesl_processor_t *processor, const nesl
     }
 }
 
-/**
+/*!
  * @brief Execute compare instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_compare(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -491,11 +491,11 @@ static void nesl_processor_execute_compare(nesl_processor_t *processor, const ne
     }
 }
 
-/**
+/*!
  * @brief Execute decrement instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_decrement(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -518,11 +518,11 @@ static void nesl_processor_execute_decrement(nesl_processor_t *processor, const 
     }
 }
 
-/**
+/*!
  * @brief Execute increment instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_increment(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -545,11 +545,11 @@ static void nesl_processor_execute_increment(nesl_processor_t *processor, const 
     }
 }
 
-/**
+/*!
  * @brief Execute jump instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_jump(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -561,11 +561,11 @@ static void nesl_processor_execute_jump(nesl_processor_t *processor, const nesl_
     processor->state.program_counter.word = operand->effective.word;
 }
 
-/**
+/*!
  * @brief Execute load instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_load(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -597,11 +597,11 @@ static void nesl_processor_execute_load(nesl_processor_t *processor, const nesl_
     }
 }
 
-/**
+/*!
  * @brief Execute logical instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_logical(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -630,22 +630,22 @@ static void nesl_processor_execute_logical(nesl_processor_t *processor, const ne
     }
 }
 
-/**
+/*!
  * @brief Execute no-op instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_no_operation(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
     return;
 }
 
-/**
+/*!
  * @brief Execute pull instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_pull(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -665,11 +665,11 @@ static void nesl_processor_execute_pull(nesl_processor_t *processor, const nesl_
     }
 }
 
-/**
+/*!
  * @brief Execute push instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_push(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -686,11 +686,11 @@ static void nesl_processor_execute_push(nesl_processor_t *processor, const nesl_
     }
 }
 
-/**
+/*!
  * @brief Execute return instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_return(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -709,11 +709,11 @@ static void nesl_processor_execute_return(nesl_processor_t *processor, const nes
     }
 }
 
-/**
+/*!
  * @brief Execute rotate instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_rotate(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -741,11 +741,11 @@ static void nesl_processor_execute_rotate(nesl_processor_t *processor, const nes
     }
 }
 
-/**
+/*!
  * @brief Execute set instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_set(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -765,11 +765,11 @@ static void nesl_processor_execute_set(nesl_processor_t *processor, const nesl_i
     }
 }
 
-/**
+/*!
  * @brief Execute shift instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_shift(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -797,11 +797,11 @@ static void nesl_processor_execute_shift(nesl_processor_t *processor, const nesl
     }
 }
 
-/**
+/*!
  * @brief Execute store instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_store(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -824,11 +824,11 @@ static void nesl_processor_execute_store(nesl_processor_t *processor, const nesl
     nesl_bus_write(BUS_PROCESSOR, operand->effective.word, data.low);
 }
 
-/**
+/*!
  * @brief Execute transfer instruction.
- * @param processor Pointer to processor subsystem context
- * @param instruction Constant pointer to instruction context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] instruction Constant pointer to instruction context
+ * @param[in] operand Constant pointer to operand context
  */
 static void nesl_processor_execute_transfer(nesl_processor_t *processor, const nesl_instruction_t *instruction, const nesl_operand_t *operand)
 {
@@ -857,10 +857,10 @@ static void nesl_processor_execute_transfer(nesl_processor_t *processor, const n
     }
 }
 
-/**
+/*!
  * @brief Calcuate absolute addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_absolute(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -870,10 +870,10 @@ static void nesl_processor_operand_absolute(nesl_processor_t *processor, nesl_op
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate absolute-x addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_absolute_x(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -883,10 +883,10 @@ static void nesl_processor_operand_absolute_x(nesl_processor_t *processor, nesl_
     operand->page_cross = (operand->effective.high != operand->data.high);
 }
 
-/**
+/*!
  * @brief Calcuate absolute-y addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_absolute_y(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -896,10 +896,10 @@ static void nesl_processor_operand_absolute_y(nesl_processor_t *processor, nesl_
     operand->page_cross = (operand->effective.high != operand->data.high);
 }
 
-/**
+/*!
  * @brief Calcuate accumulator addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_accumulator(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -909,10 +909,10 @@ static void nesl_processor_operand_accumulator(nesl_processor_t *processor, nesl
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate immediate addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_immediate(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -922,10 +922,10 @@ static void nesl_processor_operand_immediate(nesl_processor_t *processor, nesl_o
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate implied addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_implied(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -935,10 +935,10 @@ static void nesl_processor_operand_implied(nesl_processor_t *processor, nesl_ope
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate indirect addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_indirect(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -955,10 +955,10 @@ static void nesl_processor_operand_indirect(nesl_processor_t *processor, nesl_op
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate indirect-x addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_indirect_x(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -970,10 +970,10 @@ static void nesl_processor_operand_indirect_x(nesl_processor_t *processor, nesl_
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate indirect-y addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_indirect_y(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -984,10 +984,10 @@ static void nesl_processor_operand_indirect_y(nesl_processor_t *processor, nesl_
     operand->page_cross = (operand->effective.high != operand->indirect.high);
 }
 
-/**
+/*!
  * @brief Calcuate relative addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_relative(nesl_processor_t *processor, nesl_operand_t *operand)
 
@@ -1003,10 +1003,10 @@ static void nesl_processor_operand_relative(nesl_processor_t *processor, nesl_op
     operand->page_cross = (operand->effective.high != processor->state.program_counter.high);
 }
 
-/**
+/*!
  * @brief Calcuate zeropage addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_zeropage(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -1016,10 +1016,10 @@ static void nesl_processor_operand_zeropage(nesl_processor_t *processor, nesl_op
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate zeropage-x addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_zeropage_x(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -1030,10 +1030,10 @@ static void nesl_processor_operand_zeropage_x(nesl_processor_t *processor, nesl_
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Calcuate zeropage-y addressing mode operand.
- * @param processor Pointer to processor subsystem context
- * @param operand Constant pointer to operand context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in,out] operand Constant pointer to operand context
  */
 static void nesl_processor_operand_zeropage_y(nesl_processor_t *processor, nesl_operand_t *operand)
 {
@@ -1044,9 +1044,9 @@ static void nesl_processor_operand_zeropage_y(nesl_processor_t *processor, nesl_
     operand->page_cross = false;
 }
 
-/**
+/*!
  * @brief Execute instruction.
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  */
 static void nesl_processor_instruction(nesl_processor_t *processor)
 {
@@ -1151,9 +1151,9 @@ static void nesl_processor_instruction(nesl_processor_t *processor)
     EXECUTE[instruction->type](processor, instruction, &operand);
 }
 
-/**
+/*!
  * @brief Execute maskable interrupt (IRQ).
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  */
 static void nesl_processor_interrupt_maskable(nesl_processor_t *processor)
 {
@@ -1165,9 +1165,9 @@ static void nesl_processor_interrupt_maskable(nesl_processor_t *processor)
     processor->cycle = 7;
 }
 
-/**
+/*!
  * @brief Execute non-maskable interrupt (NMI).
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
  */
 static void nesl_processor_interrupt_non_maskable(nesl_processor_t *processor)
 {
@@ -1179,9 +1179,10 @@ static void nesl_processor_interrupt_non_maskable(nesl_processor_t *processor)
     processor->cycle = 7;
 }
 
-/**
+/*!
  * @brief Execute transfer (DMA).
- * @param processor Pointer to processor subsystem context
+ * @param[in,out] processor Pointer to processor subsystem context
+ * @param[in] cycle Cycle count
  */
 static void nesl_processor_transfer(nesl_processor_t *processor, uint64_t cycle)
 {

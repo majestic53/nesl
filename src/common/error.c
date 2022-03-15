@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,22 +19,22 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file error.c
  * @brief Get/Set global error string.
  */
 
 #include <common.h>
 
-/**
+/*!
  * @struct nesl_error_t
  * @brief Contains the error context.
  */
 typedef struct {
-    char buffer[256];               /*< Error string */
+    char buffer[256];               /*!< Error string */
 } nesl_error_t;
 
-static nesl_error_t g_error = {};   /*< Error context */
+static nesl_error_t g_error = {};   /*!< Error context */
 
 #ifdef __cplusplus
 extern "C" {

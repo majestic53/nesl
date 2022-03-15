@@ -17,6 +17,7 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+DIR_DOCS=docs/
 DIR_SRC=src/
 DIR_TEST=test/
 
@@ -29,6 +30,16 @@ MAX_PARALLEL=8
 
 .PHONY: all
 all: release
+
+.PHONY: analyze
+analyze:
+	@cloc .
+	@cppcheck --enable=all --std=c11 --suppress=missingIncludeSystem .
+
+.PHONY: docs
+docs:
+	@rm -rf $(DIR_DOCS)html
+	@doxygen $(DIR_DOCS)Doxyfile
 
 .PHONY: debug
 debug:

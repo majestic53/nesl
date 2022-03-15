@@ -1,4 +1,4 @@
-/**
+/*
  * NESL
  * Copyright (C) 2022 David Jolly
  *
@@ -19,7 +19,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
+/*!
  * @file sdl.c
  * @brief Common service used by subsystems for input/output.
  */
@@ -27,44 +27,47 @@
 #include <SDL2/SDL.h>
 #include <bus.h>
 
-/**
+/*!
  * @union nesl_color_t
  * @brief Contains pixel color channels.
  */
 typedef union {
 
     struct {
-        uint8_t blue;                   /*< Blue channel */
-        uint8_t green;                  /*< Green channel */
-        uint8_t red;                    /*< Red channel */
+        uint8_t blue;                   /*!< Blue channel */
+        uint8_t green;                  /*!< Green channel */
+        uint8_t red;                    /*!< Red channel */
     };
 
-    uint32_t raw;                       /*< Raw word */
+    uint32_t raw;                       /*!< Raw word */
 } nesl_color_t;
 
-/**
+/*!
  * @struct nesl_service_t
  * @brief Contains the service contexts.
  */
 typedef struct {
-    uint32_t tick;                      /*< Tick since last redraw */
-    bool fullscreen;                    /*< Fullscreen state */
-    nesl_color_t pixel[240][256];       /*< Pixel buffer */
+    uint32_t tick;                      /*!< Tick since last redraw */
+    bool fullscreen;                    /*!< Fullscreen state */
+    nesl_color_t pixel[240][256];       /*!< Pixel buffer */
 
     struct {
-        SDL_AudioDeviceID audio;        /*< Audio handle */
-        SDL_Renderer *renderer;         /*< Renderer handle */
-        SDL_Texture *texture;           /*< Texture handle */
-        SDL_Window *window;             /*< Window handle */
+        SDL_AudioDeviceID audio;        /*!< Audio handle */
+        SDL_Renderer *renderer;         /*!< Renderer handle */
+        SDL_Texture *texture;           /*!< Texture handle */
+        SDL_Window *window;             /*!< Window handle */
     } handle;
 } nesl_service_t;
 
-static nesl_service_t g_service = {};   /*< Service context */
+static nesl_service_t g_service = {};   /*!< Service context */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @brief Close audio device.
+ */
 static void nesl_service_close_audio(void)
 {
 
@@ -75,6 +78,10 @@ static void nesl_service_close_audio(void)
     }
 }
 
+/**
+ * @brief Clear display.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
 static nesl_error_e nesl_service_clear(void)
 {
 
@@ -88,7 +95,11 @@ static nesl_error_e nesl_service_clear(void)
     return nesl_service_redraw();
 }
 
-static nesl_error_e nesl_service_set_fullscreen(void)
+/**
+ * @brief Toggle display fullscreen mode.
+ * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
+ */
+static nesl_error_e nesl_service_toggle_fullscreen(void)
 {
     nesl_error_e result = NESL_SUCCESS;
 
@@ -171,7 +182,7 @@ nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int line
 
     if(fullscreen) {
 
-        if((result = nesl_service_set_fullscreen()) == NESL_FAILURE) {
+        if((result = nesl_service_toggle_fullscreen()) == NESL_FAILURE) {
             goto exit;
         }
     }
@@ -199,7 +210,7 @@ nesl_error_e nesl_service_poll(void)
                     switch(event.key.keysym.scancode) {
                         case SDL_SCANCODE_F11:
 
-                            if((result = nesl_service_set_fullscreen()) == NESL_FAILURE) {
+                            if((result = nesl_service_toggle_fullscreen()) == NESL_FAILURE) {
                                 goto exit;
                             }
                             break;
