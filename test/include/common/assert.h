@@ -20,7 +20,7 @@
  */
 
 /*!
- * @file NESL_assert.h
+ * @file assert.h
  * @brief Test assertion.
  */
 

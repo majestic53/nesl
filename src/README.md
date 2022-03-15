@@ -1,9 +1,5 @@
 # NESL (NES-Lite) Sources
 
-## Detailed Documentation
-
-See the doxygen comments [here](../docs/html/index.html) for more details.
-
 ## Project Architecture
 
 This project is built around a common bus, allowing the various subsystems to communicate with each other:

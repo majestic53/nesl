@@ -20,7 +20,7 @@
  */
 
 /*!
- * @file NESL_common.h
+ * @file test.h
  * @brief Common test header.
  */
 

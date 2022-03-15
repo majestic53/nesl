@@ -250,6 +250,7 @@ exit:
 /*!
  * @brief Calculate video nametable address.
  * @param[in] address Desired address
+ * @param[in] mirror Mapper mirror
  * @param[out] bank Calcuated bank
  * @param[out] addr Calculated address
  * @return Calculated address
