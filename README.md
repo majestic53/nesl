@@ -22,6 +22,7 @@ __NOTE__: This project is a still a work-in-progress. Some features may be incom
 
 * Support for all official processor instructions.
 * Support for common mapper types.
+* Support for zapper (light-gun).
 
 ### Work-in-progress
 
