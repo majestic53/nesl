@@ -27,9 +27,6 @@
 #ifndef NESL_H_
 #define NESL_H_
 
-/*!
- * NESL interface version
- */
 #define NESL_API_VERSION_1 1                    /*!< Interface version 1 */
 #define NESL_API_VERSION NESL_API_VERSION_1     /*!< Current interface version */
 
