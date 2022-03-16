@@ -26,9 +26,6 @@
 
 #include <common.h>
 
-/*!
- * @brief Versioning macros.
- */
 #define VERSION_MAJOR 0     /*!< Major version */
 #define VERSION_MINOR 1     /*!< Minor version */
 #define VERSION_PATCH 43    /*!< Patch version */
