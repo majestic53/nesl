@@ -50,25 +50,22 @@ nesl_error_e nesl_input_initialize(nesl_input_t *input)
 
 uint8_t nesl_input_read(nesl_input_t *input, uint16_t address)
 {
-    nesl_strobe_t result = { .raw = 0x41 };
-    nesl_controller_e controller = CONTROLLER_MAX;
+    nesl_input_state_t result = {};
 
     switch(address) {
         case 0x4016:
-            controller = CONTROLLER_1;
+            result.raw = 0x41;
+
+            if(input->button[CONTROLLER_1].position < BUTTON_MAX) {
+                result.button = input->button[CONTROLLER_1].state[input->button[CONTROLLER_1].position++].button;
+            }
             break;
         case 0x4017:
-            controller = CONTROLLER_2;
+            result.sensor = nesl_service_get_sensor(CONTROLLER_2);
+            result.trigger = nesl_service_get_trigger(CONTROLLER_2);
             break;
         default:
             break;
-    }
-
-    if(controller < CONTROLLER_MAX) {
-
-        if(input->button[controller].position < BUTTON_MAX) {
-            result.state = input->button[controller].state[input->button[controller].position++] ? 1 : 0;
-        }
     }
 
     return result.raw;
@@ -80,7 +77,7 @@ nesl_error_e nesl_input_reset(nesl_input_t *input)
     for(nesl_controller_e controller = 0; controller < CONTROLLER_MAX; ++controller) {
 
         for(nesl_button_e button = 0; button < BUTTON_MAX; ++button) {
-            input->button[controller].state[button] = false;
+            input->button[controller].state[button].button = false;
         }
 
         input->button[controller].position = BUTTON_MAX;
@@ -109,14 +106,11 @@ nesl_input_write(nesl_input_t *input, uint16_t address, uint8_t data)
 
                 if(!strobe.state) {
 
-                    for(nesl_controller_e controller = 0; controller < CONTROLLER_MAX; ++controller) {
-
-                        for(nesl_button_e button = 0; button < BUTTON_MAX; ++button) {
-                            input->button[controller].state[button] = nesl_service_get_button(controller, button);
-                        }
-
-                        input->button[controller].position = BUTTON_A;
+                    for(nesl_button_e button = 0; button < BUTTON_MAX; ++button) {
+                        input->button[CONTROLLER_1].state[button].button = nesl_service_get_button(CONTROLLER_1, button);
                     }
+
+                    input->button[CONTROLLER_1].position = BUTTON_A;
                 }
             }
 

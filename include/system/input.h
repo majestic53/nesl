@@ -30,17 +30,33 @@
 #include <bus.h>
 
 /*!
+ * @union nesl_input_state_t
+ * @brief Input state context.
+ */
+typedef union {
+
+    struct {
+        uint8_t button : 1;                     /*!< Button state */
+        uint8_t unused : 2;                     /*!< Unused bits */
+        uint8_t sensor : 1;                     /*!< Sensor state */
+        uint8_t trigger : 1;                    /*!< Trigger state */
+    };
+
+    uint8_t raw;                                /*!< Raw state */
+} nesl_input_state_t;
+
+/*!
  * @struct nesl_input_t
  * @brief Input context.
  */
 typedef struct {
 
     struct {
-        int position;           /*!< Button position */
-        bool state[BUTTON_MAX]; /*!< Button state (true:pressed, false:released) */
+        int position;                           /*!< Button position */
+        nesl_input_state_t state[BUTTON_MAX];   /*!< Button state */
     } button[CONTROLLER_MAX];
 
-    bool strobe;                /*!< Strobe state */
+    bool strobe;                                /*!< Strobe state */
 } nesl_input_t;
 
 #ifdef __cplusplus

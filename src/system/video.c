@@ -324,7 +324,6 @@ static void nesl_video_render(nesl_video_t *video)
                     if(!index) {
                         video->sprite.sprite_0_render = true;
                     }
-
                     break;
                 }
             }

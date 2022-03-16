@@ -76,14 +76,27 @@ extern "C" {
 bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button);
 
 /*!
+ * @brief Get controller sensor state.
+ * @param[in] controller Controller type
+ * @return true if not-detected, false if detected
+ */
+bool nesl_service_get_sensor(nesl_controller_e controller);
+
+/*!
+ * @brief Get controller trigger state.
+ * @param[in] controller Controller type
+ * @return true if pressed, false if released
+ */
+bool nesl_service_get_trigger(nesl_controller_e controller);
+
+/*!
  * @brief Initialize service.
  * @param[in] title Constant pointer to window title
- * @param[in] fullscreen Fullscreen enabled
  * @param[in] linear Linear scaling enabled
  * @param[in] scale Scaling value
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int linear, int scale);
+nesl_error_e nesl_service_initialize(const char *title, int linear, int scale);
 
 /*!
  * @brief Poll service state.

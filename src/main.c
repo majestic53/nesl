@@ -37,7 +37,6 @@
  * @brief Interface options.
  */
 typedef enum {
-    OPTION_FULLSCREEN = 0,  /*!< Set window fullscreen */
     OPTION_HELP,            /*!< Show help information */
     OPTION_LINEAR,          /*!< Set linear scaling */
     OPTION_SCALE,           /*!< Set window scaling */
@@ -146,8 +145,8 @@ static void show_help(FILE *stream, bool verbose)
     TRACE(NESL_SUCCESS, "%s", "nesl [options] file\n");
 
     if(verbose) {
-        static const char *OPTION[] = { "-f", "-h", "-l", "-s", "-v", },
-            *DESCRIPTION[] = { "Set window fullscreen", "Show help information", "Set linear scaling", "Set window scaling", "Show version information", };
+        static const char *OPTION[] = { "-h", "-l", "-s", "-v", },
+            *DESCRIPTION[] = { "Show help information", "Set linear scaling", "Set window scaling", "Show version information", };
 
         TRACE(NESL_SUCCESS, "%s", "\n");
 
@@ -166,12 +165,9 @@ int main(int argc, char *argv[])
 
     opterr = 1;
 
-    while((option = getopt(argc, argv, "fhls:v")) != -1) {
+    while((option = getopt(argc, argv, "hls:v")) != -1) {
 
         switch(option) {
-            case 'f':
-                input.fullscreen = true;
-                break;
             case 'h':
                 show_help(stdout, true);
                 goto exit;

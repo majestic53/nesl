@@ -48,6 +48,7 @@ debug:
 .PHONY: release
 release:
 	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_RELEASE)
+	@make $(FLAGS_MAKE) $(DIR_SRC) strip
 
 .PHONY: test
 test: test-release

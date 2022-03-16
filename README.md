@@ -26,7 +26,6 @@ __NOTE__: This project is a still a work-in-progress. Some features may be incom
 ### Work-in-progress
 
 * Support for audio synthesis.
-* Support for light-gun controller
 
 ## Latest release
 
@@ -87,7 +86,6 @@ The following options are available:
 
 |Option|Description             |
 |:-----|:-----------------------|
-|-f    |Set window fullscreen   |
 |-h    |Show help information   |
 |-l    |Set linear scaling      |
 |-s    |Set window scaling      |
@@ -101,22 +99,16 @@ To launch the binary with a file, run the following command:
 nesl file
 ```
 
-To launch the binary in fullscreen mode, run the following command:
-
-```bash
-nesl -f file
-```
-
 To launch the binary with nearest-scaling (1x-4x), run the following command:
 
 ```bash
-nesl -s [1-4] file
+nesl -s [1-8] file
 ```
 
 To launch the binary with linear-scaling (1x-4x), run the following command:
 
 ```bash
-nesl -ls [1-4] file
+nesl -ls [1-8] file
 ```
 
 ### Keybindings
@@ -127,21 +119,26 @@ The following keybindings are available:
 
 |Button    |Keyboard|
 |:---------|:-------|
-|Fullscreen|F11     |
 |Reset     |R       |
 
-#### Controllers
+#### Controller 1
 
-|Button |Controller 1|Controller 2|
-|:------|:-----------|:-----------|
-|A      |L           |N/A         |
-|B      |K           |N/A         |
-|Select |C           |N/A         |
-|Start  |Space       |N/A         |
-|Up     |W           |N/A         |
-|Down   |S           |N/A         |
-|Left   |A           |N/A         |
-|Right  |D           |N/A         |
+|Button |Keyboard|
+|:------|:-------|
+|A      |L       |
+|B      |K       |
+|Select |C       |
+|Start  |Space   |
+|Up     |W       |
+|Down   |S       |
+|Left   |A       |
+|Right  |D       |
+
+#### Controller 2
+
+|Button |Mouse|
+|:------|:----|
+|Trigger|Left |
 
 ### Mapper support
 

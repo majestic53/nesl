@@ -48,7 +48,7 @@ typedef union {
  */
 typedef struct {
     uint32_t tick;                      /*!< Tick since last redraw */
-    bool fullscreen;                    /*!< Fullscreen state */
+    uint8_t scale;                      /*!< Scaling */
     nesl_color_t pixel[240][256];       /*!< Pixel buffer */
 
     struct {
@@ -96,25 +96,6 @@ static nesl_error_e nesl_service_clear(void)
     return nesl_service_redraw();
 }
 
-/**
- * @brief Toggle display fullscreen mode.
- * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
- */
-static nesl_error_e nesl_service_toggle_fullscreen(void)
-{
-    nesl_error_e result = NESL_SUCCESS;
-
-    if(SDL_SetWindowFullscreen(g_service.handle.window, !g_service.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0)) {
-        result = SET_ERROR("%s", SDL_GetError());
-        goto exit;
-    }
-
-    g_service.fullscreen = !g_service.fullscreen;
-
-exit:
-    return result;
-}
-
 bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button)
 {
     static uint32_t KEY[CONTROLLER_MAX][BUTTON_MAX] = {
@@ -131,14 +112,43 @@ bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button)
     return SDL_GetKeyboardState(NULL)[KEY[controller][button]] ? true : false;
 }
 
-nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int linear, int scale)
+bool nesl_service_get_sensor(nesl_controller_e controller)
+{
+    bool result = true;
+
+    if(controller == CONTROLLER_2) {
+        int x, y;
+
+        SDL_GetMouseState(&x, &y);
+        result = (g_service.pixel[y / g_service.scale][x / g_service.scale].raw != 0xFFFEFEFF);
+    }
+
+    return result;
+}
+
+bool nesl_service_get_trigger(nesl_controller_e controller)
+{
+    bool result = false;
+
+    if(controller == CONTROLLER_2) {
+        int x, y;
+
+        result = (SDL_GetMouseState(&x, &y) & SDL_BUTTON_LMASK);
+    }
+
+    return result;
+}
+
+nesl_error_e nesl_service_initialize(const char *title, int linear, int scale)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(scale < 1) {
-        scale = 1;
-    } else if(scale > 4) {
-        scale = 4;
+    g_service.scale = scale;
+
+    if(g_service.scale < 1) {
+        g_service.scale = 1;
+    } else if(g_service.scale > 8) {
+        g_service.scale = 8;
     }
 
     if(SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO)) {
@@ -146,7 +156,7 @@ nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int line
         goto exit;
     }
 
-    if(!(g_service.handle.window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256 * scale, 240 * scale, SDL_WINDOW_RESIZABLE))) {
+    if(!(g_service.handle.window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256 * g_service.scale, 240 * g_service.scale, 0))) {
         result = SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -188,13 +198,6 @@ nesl_error_e nesl_service_initialize(const char *title, int fullscreen, int line
 
     SDL_SetCursor(g_service.handle.cursor);
 
-    if(fullscreen) {
-
-        if((result = nesl_service_toggle_fullscreen()) == NESL_FAILURE) {
-            goto exit;
-        }
-    }
-
     if((result = nesl_service_reset()) == NESL_FAILURE) {
         goto exit;
     }
@@ -216,12 +219,6 @@ nesl_error_e nesl_service_poll(void)
                 if(!event.key.repeat) {
 
                     switch(event.key.keysym.scancode) {
-                        case SDL_SCANCODE_F11:
-
-                            if((result = nesl_service_toggle_fullscreen()) == NESL_FAILURE) {
-                                goto exit;
-                            }
-                            break;
                         case SDL_SCANCODE_R:
 
                             if((result = nesl_bus_interrupt(INTERRUPT_RESET)) == NESL_FAILURE) {

@@ -40,6 +40,10 @@ clean:
 	@rm -rf $(DIR_BUILD)
 	@rm -rf $(FILES_OBJ)
 
+.PHONY: strip
+strip:
+	@strip $(DIR_BUILD)*
+
 $(DIR_BUILD):
 	@mkdir -p $@
 

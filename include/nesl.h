@@ -51,9 +51,8 @@ typedef struct {
     void *data;                                 /*!< Data */
     int length;                                 /*!< Data length in bytes */
     char *title;                                /*!< Window title (can be NULL) */
-    int fullscreen;                             /*!< Window fullscreen (default:false) */
     int linear;                                 /*!< Window linear scaling (default:false) */
-    int scale;                                  /*!< Window scaling [1-4] (default:1) */
+    int scale;                                  /*!< Window scaling [1-8] (default:1) */
 } nesl_t;
 
 /*!

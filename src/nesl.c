@@ -35,7 +35,7 @@ int nesl(const nesl_t *context)
 {
     int result;
 
-    if((result = nesl_service_initialize(context->title, context->fullscreen, context->linear, context->scale)) == NESL_FAILURE) {
+    if((result = nesl_service_initialize(context->title, context->linear, context->scale)) == NESL_FAILURE) {
         goto exit;
     }
 
