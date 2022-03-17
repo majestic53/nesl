@@ -54,8 +54,9 @@ typedef struct {
     struct {
         int position;                           /*!< Button position */
         nesl_input_state_t state[BUTTON_MAX];   /*!< Button state */
-    } button[CONTROLLER_MAX];
+    } controller;
 
+    nesl_input_state_t zapper;                  /*!< Zapper (light-gun) */
     bool strobe;                                /*!< Strobe state */
 } nesl_input_t;
 

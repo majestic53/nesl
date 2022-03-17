@@ -96,47 +96,29 @@ static nesl_error_e nesl_service_clear(void)
     return nesl_service_redraw();
 }
 
-bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button)
+bool nesl_service_get_button(nesl_button_e button)
 {
-    static uint32_t KEY[CONTROLLER_MAX][BUTTON_MAX] = {
-        {
-            SDL_SCANCODE_L, SDL_SCANCODE_K, SDL_SCANCODE_C, SDL_SCANCODE_SPACE,
-            SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
-        },
-        {
-            SDL_SCANCODE_UNKNOWN, SDL_SCANCODE_UNKNOWN, SDL_SCANCODE_UNKNOWN, SDL_SCANCODE_UNKNOWN,
-            SDL_SCANCODE_UNKNOWN, SDL_SCANCODE_UNKNOWN, SDL_SCANCODE_UNKNOWN, SDL_SCANCODE_UNKNOWN,
-        },
-    };
+    static uint32_t KEY[BUTTON_MAX] = {
+        SDL_SCANCODE_L, SDL_SCANCODE_K, SDL_SCANCODE_C, SDL_SCANCODE_SPACE,
+        SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
+        };
 
-    return SDL_GetKeyboardState(NULL)[KEY[controller][button]] ? true : false;
+    return SDL_GetKeyboardState(NULL)[KEY[button]] ? true : false;
 }
 
-bool nesl_service_get_sensor(nesl_controller_e controller)
+bool nesl_service_get_sensor(void)
 {
-    bool result = true;
+    int x, y;
 
-    if(controller == CONTROLLER_2) {
-        int x, y;
-
-        SDL_GetMouseState(&x, &y);
-        result = (g_service.pixel[y / g_service.scale][x / g_service.scale].raw != 0xFFFEFEFF);
-    }
-
-    return result;
+    SDL_GetMouseState(&x, &y);
+    return g_service.pixel[y / g_service.scale][x / g_service.scale].raw != 0xFFFEFEFF;
 }
 
-bool nesl_service_get_trigger(nesl_controller_e controller)
+bool nesl_service_get_trigger(void)
 {
-    bool result = false;
+    int x, y;
 
-    if(controller == CONTROLLER_2) {
-        int x, y;
-
-        result = (SDL_GetMouseState(&x, &y) & SDL_BUTTON_LMASK);
-    }
-
-    return result;
+    return SDL_GetMouseState(&x, &y) & SDL_BUTTON_LMASK;
 }
 
 nesl_error_e nesl_service_initialize(const char *title, int linear, int scale)

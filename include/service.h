@@ -46,16 +46,6 @@ typedef enum {
 } nesl_button_e;
 
 /*!
- * @enum nesl_controller_e
- * @brief Controller types.
- */
-typedef enum {
-    CONTROLLER_1 = 0,   /*!< First controller */
-    CONTROLLER_2,       /*!< Second controller */
-    CONTROLLER_MAX,     /*!< Maximum controller */
-} nesl_controller_e;
-
-/*!
  * @brief Audio callback routine used to collect audio samples.
  * @param[in,out] context Constant pointer to audio context
  * @param[out] data Pointer to data buffer
@@ -69,25 +59,22 @@ extern "C" {
 
 /*!
  * @brief Get controller button state.
- * @param[in] controller Controller type
  * @param[in] button Button type
  * @return true if pressed, false if released
  */
-bool nesl_service_get_button(nesl_controller_e controller, nesl_button_e button);
+bool nesl_service_get_button(nesl_button_e button);
 
 /*!
  * @brief Get controller sensor state.
- * @param[in] controller Controller type
  * @return true if not-detected, false if detected
  */
-bool nesl_service_get_sensor(nesl_controller_e controller);
+bool nesl_service_get_sensor(void);
 
 /*!
  * @brief Get controller trigger state.
- * @param[in] controller Controller type
  * @return true if pressed, false if released
  */
-bool nesl_service_get_trigger(nesl_controller_e controller);
+bool nesl_service_get_trigger(void);
 
 /*!
  * @brief Initialize service.
