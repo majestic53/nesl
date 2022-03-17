@@ -111,6 +111,7 @@ bool nesl_service_get_sensor(void)
     int x, y;
 
     SDL_GetMouseState(&x, &y);
+
     return g_service.pixel[y / g_service.scale][x / g_service.scale].raw != 0xFFFEFEFF;
 }
 
