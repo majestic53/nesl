@@ -36,7 +36,7 @@
 typedef struct {
     pthread_mutex_t lock;   /*!< Mutex */
     float *data;            /*!< Audio data buffer */
-    int length;             /*!< Audio data length in bytes */
+    int count;              /*!< Audio data count */
     int read;               /*!< Read index */
     int write;              /*!< Write index */
     bool full;              /*!< Full flag */
@@ -49,19 +49,19 @@ extern "C" {
 /*!
  * @brief Initialize audio buffer.
  * @param[in,out] buffer Constant pointer to audio buffer context
- * @param[in] length Max number of entries
+ * @param[in] count Max number of entries
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-nesl_error_e nesl_audio_buffer_initialize(nesl_audio_buffer_t *buffer, int length);
+nesl_error_e nesl_audio_buffer_initialize(nesl_audio_buffer_t *buffer, int count);
 
 /*!
  * @brief Read bytes from audio buffer.
  * @param[in,out] buffer Constant pointer to audio buffer context
  * @param[in,out] data Pointer to data array
- * @param[in] length Maximum number of entries in data array
+ * @param[in] count Maximum number of entries in data array
  * @return Number of entries read
  */
-int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int length);
+int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int count);
 
 /*!
  * @brief Readable bytes in audio buffer.
@@ -87,10 +87,10 @@ void nesl_audio_buffer_uninitialize(nesl_audio_buffer_t *buffer);
  * @brief Write bytes to audio buffer.
  * @param[in,out] buffer Constant pointer to audio buffer context
  * @param[in] data Pointer to data array
- * @param[in] length Bumber of entries in data array
+ * @param[in] count Bumber of entries in data array
  * @return Number of entries written
  */
-int nesl_audio_buffer_write(nesl_audio_buffer_t *buffer, float *data, int length);
+int nesl_audio_buffer_write(nesl_audio_buffer_t *buffer, float *data, int count);
 
 /*!
  * @brief Writable bytes in audio buffer.

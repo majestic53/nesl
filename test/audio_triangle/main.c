@@ -46,40 +46,40 @@ extern "C" {
  * @brief Copy audio data into circular buffer.
  * @param[in,out] buffer Constant pointer to audio buffer context
  * @param[in,out] data Pointer to data array
- * @param[in] length Maximum number of entries in data array
+ * @param[in] count Maximum number of entries in data array
  */
-static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data, int length)
+static void nesl_audio_buffer_copy_out(nesl_audio_buffer_t *buffer, float *data, int count)
 {
 
-    if((buffer->read + length) >= buffer->length) {
-        int offset = buffer->length - buffer->read;
+    if((buffer->read + count) >= buffer->count) {
+        int offset = buffer->count - buffer->read;
 
         memcpy(data, &buffer->data[buffer->read], offset * sizeof(*data));
-        length -= offset;
+        count -= offset;
         data += offset;
         buffer->read = 0;
     }
 
-    memcpy(data, &buffer->data[buffer->read], length * sizeof(*data));
-    buffer->read += length;
+    memcpy(data, &buffer->data[buffer->read], count * sizeof(*data));
+    buffer->read += count;
     buffer->full = false;
 }
 
 /*!
  * @brief Calculate the distance between the left and right offet, with wrap-around.
- * @param[in] max Maximum length (used to wrap-around)
+ * @param[in] count Maximum count (used to wrap-around)
  * @param[in] left Left offset
  * @param[in] right Right offset
  * @return Distance between offsets
  */
-static int nesl_audio_buffer_distance(int max, int left, int right)
+static int nesl_audio_buffer_distance(int count, int left, int right)
 {
     int result = 0;
 
     if(left <= right) {
         result = right - left;
     } else {
-        result = (max - left) + right;
+        result = (count - left) + right;
     }
 
     return result;
@@ -105,29 +105,29 @@ static bool nesl_audio_buffer_empty(nesl_audio_buffer_t *buffer)
     return !buffer->full && (buffer->write == buffer->read);
 }
 
-nesl_error_e nesl_audio_buffer_initialize(nesl_audio_buffer_t *buffer, int length)
+nesl_error_e nesl_audio_buffer_initialize(nesl_audio_buffer_t *buffer, int count)
 {
     nesl_error_e result = NESL_SUCCESS;
 
-    if(length != 256) {
+    if(count != 256) {
         result = NESL_FAILURE;
         goto exit;
     }
 
     buffer->data = g_test.buffer;
-    buffer->length = length;
+    buffer->count = count;
 
 exit:
     return result;
 }
 
-int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int length)
+int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int count)
 {
     int result = 0;
 
     if(!nesl_audio_buffer_empty(buffer)) {
 
-        if((result = nesl_audio_buffer_minimum(nesl_audio_buffer_distance(buffer->length, buffer->read, buffer->write), length)) > 0) {
+        if((result = nesl_audio_buffer_minimum(nesl_audio_buffer_distance(buffer->count, buffer->read, buffer->write), count)) > 0) {
             nesl_audio_buffer_copy_out(buffer, data, result);
         }
     }
@@ -137,7 +137,7 @@ int nesl_audio_buffer_read(nesl_audio_buffer_t *buffer, float *data, int length)
 
 int nesl_audio_buffer_readable(nesl_audio_buffer_t *buffer)
 {
-    return nesl_audio_buffer_distance(buffer->length, buffer->read, buffer->write);
+    return nesl_audio_buffer_distance(buffer->count, buffer->read, buffer->write);
 }
 
 nesl_error_e nesl_audio_buffer_reset(nesl_audio_buffer_t *buffer)
