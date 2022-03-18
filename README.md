@@ -122,7 +122,7 @@ The following keybindings are available:
 |:---------|:-------|
 |Reset     |R       |
 
-#### Controller 1
+#### Controller
 
 |Button |Keyboard|
 |:------|:-------|
@@ -135,7 +135,7 @@ The following keybindings are available:
 |Left   |A       |
 |Right  |D       |
 
-#### Controller 2
+#### Zapper (Light-gun)
 
 |Button |Mouse|
 |:------|:----|
