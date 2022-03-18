@@ -98,7 +98,7 @@ static nesl_error_e nesl_service_clear(void)
 
 bool nesl_service_get_button(nesl_button_e button)
 {
-    static uint32_t KEY[BUTTON_MAX] = {
+    static const uint32_t KEY[BUTTON_MAX] = {
         SDL_SCANCODE_L, SDL_SCANCODE_K, SDL_SCANCODE_C, SDL_SCANCODE_SPACE,
         SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
         };

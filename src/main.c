@@ -59,12 +59,12 @@ extern "C" {
 
 /*!
  * @brief Read file at path.
- * @param[in] input Pointer to NESL context
+ * @param[in] context Pointer to NESL context
  * @param[in] base Pointer to base path string
  * @param[in] path Pointer to path string
  * @return NESL_FAILURE on failure, NESL_SUCCESS otherwise
  */
-static nesl_error_e read_file(nesl_t *input, char *base, char *path)
+static nesl_error_e read_file(nesl_t *context, char *base, char *path)
 {
     FILE *file = NULL;
     nesl_error_e result = NESL_SUCCESS;
@@ -77,7 +77,7 @@ static nesl_error_e read_file(nesl_t *input, char *base, char *path)
 
     fseek(file, 0, SEEK_END);
 
-    if((input->length = ftell(file)) <= 0) {
+    if((context->length = ftell(file)) <= 0) {
         TRACE(NESL_FAILURE, "%s: File is empty -- %s\n", base, path);
         result = NESL_FAILURE;
         goto exit;
@@ -85,19 +85,19 @@ static nesl_error_e read_file(nesl_t *input, char *base, char *path)
 
     fseek(file, 0, SEEK_SET);
 
-    if(!(input->data = calloc(input->length, sizeof(uint8_t)))) {
-        TRACE(NESL_FAILURE, "%s: Failed to allocate buffer -- %.2f KB (%i bytes)\n", base, input->length / 1024.f, input->length);
+    if(!(context->data = calloc(context->length, sizeof(uint8_t)))) {
+        TRACE(NESL_FAILURE, "%s: Failed to allocate buffer -- %.2f KB (%i bytes)\n", base, context->length / 1024.f, context->length);
         result = NESL_FAILURE;
         goto exit;
     }
 
-    if(fread(input->data, sizeof(uint8_t), input->length, file) != input->length) {
+    if(fread(context->data, sizeof(uint8_t), context->length, file) != context->length) {
         TRACE(NESL_FAILURE, "%s: Failed to read file -- %s\n", base, path);
         result = NESL_FAILURE;
         goto exit;
     }
 
-    input->title = basename(path);
+    context->title = basename(path);
 
 exit:
 
@@ -160,7 +160,7 @@ static void show_help(FILE *stream, bool verbose)
 int main(int argc, char *argv[])
 {
     int option;
-    nesl_t input = {};
+    nesl_t context = {};
     nesl_error_e result = NESL_SUCCESS;
 
     opterr = 1;
@@ -172,10 +172,10 @@ int main(int argc, char *argv[])
                 show_help(stdout, true);
                 goto exit;
             case 'l':
-                input.linear = true;
+                context.linear = true;
                 break;
             case 's':
-                input.scale = strtol(optarg, NULL, 10);
+                context.scale = strtol(optarg, NULL, 10);
                 break;
             case 'v':
                 show_version(stdout, false);
@@ -189,22 +189,22 @@ int main(int argc, char *argv[])
 
     for(option = optind; option < argc; ++option) {
 
-        if((result = read_file(&input, argv[0], argv[option])) == NESL_FAILURE) {
+        if((result = read_file(&context, argv[0], argv[option])) == NESL_FAILURE) {
             goto exit;
         }
         break;
     }
 
-    if((result = nesl(&input)) == NESL_FAILURE) {
+    if((result = nesl(&context)) == NESL_FAILURE) {
         TRACE(NESL_FAILURE, "%s: %s\n", argv[0], nesl_get_error());
         goto exit;
     }
 
 exit:
 
-    if(input.data) {
-        free(input.data);
-        input.data = NULL;
+    if(context.data) {
+        free(context.data);
+        context.data = NULL;
     }
 
     return (int)result;
