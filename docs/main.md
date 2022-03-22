@@ -22,65 +22,59 @@ This project uses the following coding style:
 
 #### Enumerations
 
-```c
-/*!
- * @enum nesl_xxx_e
- * @brief ...
- */
-typedef enum {
-    XXX_A = 0,          /*!< Doxygen comment */
-    XXX_B,              /*!< Doxygen comment */
-    ...
-} nesl_xxx_e;
-```
+    /*!
+     * @enum nesl_xxx_e
+     * @brief ...
+     */
+    typedef enum {
+        XXX_A = 0,          /*!< Doxygen comment */
+        XXX_B,              /*!< Doxygen comment */
+        ...
+    } nesl_xxx_e;
 
 #### Structures
 
-```c
-/*!
- * @struct nesl_xxx_t
- * @brief ...
- */
-typedef struct {
-    nesl_xxx_e val_0;   /*!< Doxygen comment */
-    int val_1;          /*!< Doxygen comment */
-    ...
-} nesl_xxx_t;
-```
+    /*!
+     * @struct nesl_xxx_t
+     * @brief ...
+     */
+    typedef struct {
+        nesl_xxx_e val_0;   /*!< Doxygen comment */
+        int val_1;          /*!< Doxygen comment */
+        ...
+    } nesl_xxx_t;
 
 #### Functions
 
-```c
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+    #ifdef __cplusplus
+    extern "C" {
+    #endif /* __cplusplus */
 
-...
+    ...
 
-/*!
- * @brief ...
- * @param[in,out] arg_0 ...
- * @param[in] arg_1 ...
- * @return ...
- */
-int nesl_xxx_yyy(nesl_xxx_t *arg_0, nesl_xxx_e arg_1, ...)
-{
-    int result = NESL_SUCCESS;
+    /*!
+     * @brief ...
+     * @param[in,out] arg_0 ...
+     * @param[in] arg_1 ...
+     * @return ...
+     */
+    int nesl_xxx_yyy(nesl_xxx_t *arg_0, nesl_xxx_e arg_1, ...)
+    {
+        int result = NESL_SUCCESS;
 
-    if(arg_0 == NULL) {
-        result = NESL_FAILURE;
-        goto exit;
+        if(arg_0 == NULL) {
+            result = NESL_FAILURE;
+            goto exit;
+        }
+
+        ...
+
+    exit:
+        return result;
     }
 
     ...
 
-exit:
-    return result;
-}
-
-...
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-```
+    #ifdef __cplusplus
+    }
+    #endif /* __cplusplus */
