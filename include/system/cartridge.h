@@ -31,7 +31,7 @@
 
 /*!
  * @enum nesl_bank_e
- * @brief Bank types.
+ * @brief Bank type.
  */
 typedef enum {
     BANK_CHARACTER_RAM = 0,                 /*!< Character RAM bank (CHR) */
@@ -43,7 +43,7 @@ typedef enum {
 
 /*!
  * @enum nesl_mapper_e
- * @brief Mapper types.
+ * @brief Mapper type.
  */
 typedef enum {
     MAPPER_0 = 0,                           /*!< Mapper 0 (NROM) */
@@ -57,7 +57,7 @@ typedef enum {
 
 /*!
  * @enum nesl_mirror_e
- * @brief Mirroring types.
+ * @brief Mirroring type.
  */
 typedef enum {
     MIRROR_HORIZONTAL = 0,                  /*!< Horizontal mirror */

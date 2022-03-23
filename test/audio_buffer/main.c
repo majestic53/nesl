@@ -48,7 +48,7 @@ nesl_error_e nesl_set_error(const char *file, const char *function, int line, co
 
 /*!
  * @brief Calculate the distance between the left and right offet, with wrap-around.
- * @param[in] max Maximum count (used to wrap-around)
+ * @param[in] count Maximum count (used to wrap-around)
  * @param[in] left Left offset
  * @param[in] right Right offset
  * @return Distance between offsets

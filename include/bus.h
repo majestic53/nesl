@@ -31,7 +31,7 @@
 
 /*!
  * @enum nesl_bus_e
- * @brief Bus types.
+ * @brief Bus type.
  */
 typedef enum {
     BUS_PROCESSOR = 0,      /*!< Processor bus (16-bit) */
@@ -42,7 +42,7 @@ typedef enum {
 
 /*!
  * @enum nesl_interrupt_e
- * @brief Interrupt types.
+ * @brief Interrupt type.
  */
 typedef enum {
     INTERRUPT_RESET = 0,    /*!< Reset interrupt (RST) */

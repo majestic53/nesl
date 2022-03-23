@@ -32,7 +32,7 @@
 
 /*!
  * @enum nesl_error_e
- * @brief NESL error codes.
+ * @brief NESL error code.
  */
 typedef enum {
     NESL_FAILURE = -1,                          /*!< Operation failed, call nesl_get_error */

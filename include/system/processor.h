@@ -31,7 +31,7 @@
 
 /*!
  * @enum nesl_instruction_e
- * @brief Instruction types.
+ * @brief Instruction type.
  */
 typedef enum {
     INSTRUCTION_ADC = 0,                    /*!< Add-carry instruction */
@@ -95,7 +95,7 @@ typedef enum {
 
 /*!
  * @enum nesl_operand_e
- * @brief Operand addressing mode types.
+ * @brief Operand addressing mode type.
  */
 typedef enum {
     OPERAND_ABSOLUTE = 0,                   /*!< Absolute (ABS) */

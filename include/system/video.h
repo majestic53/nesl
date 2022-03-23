@@ -31,7 +31,7 @@
 
 /*!
  * @enum nesl_port_e
- * @brief Video port types.
+ * @brief Video port type.
  */
 typedef enum {
     PORT_CONTROL = 0,                               /*!< Control register */

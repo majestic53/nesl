@@ -1,3 +1,5 @@
+This project emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
+
 ### Project Architecture
 
 This project is built around a common bus, allowing the various subsystems to communicate with each other:

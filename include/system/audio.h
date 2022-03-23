@@ -35,7 +35,7 @@
 
 /*!
  * @enum nesl_synthesizer_e
- * @brief Synthesizer types.
+ * @brief Synthesizer type.
  */
 typedef enum {
     SYNTHESIZER_SQUARE_1 = 0,                                       /*!< First square-wave synthesizer */

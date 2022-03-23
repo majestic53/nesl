@@ -34,7 +34,7 @@
 
 /*!
  * @enum nesl_option_e
- * @brief Interface options.
+ * @brief Interface option.
  */
 typedef enum {
     OPTION_HELP,            /*!< Show help information */

@@ -31,7 +31,7 @@
 
 /*!
  * @enum nesl_button_e
- * @brief Button types.
+ * @brief Button type.
  */
 typedef enum {
     BUTTON_A = 0,       /*!< A button */
