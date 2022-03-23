@@ -6,7 +6,7 @@ This project is built around a common bus, allowing the various subsystems to co
 
 ### File layout
 
-* Subsystem specific source files are placed into a subdirectory, under `src/system`.
+Subsystem specific source files are placed into a subdirectory, under `src/system`.
 
 |Directory          |Description                          |
 |:------------------|:------------------------------------|
