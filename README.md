@@ -30,7 +30,7 @@ __NOTE__: This project is a still a work-in-progress. Some features may be incom
 
 ## Latest release
 
-The latest release can be found here: `TBD`
+The latest release can be found [here](https://github.com/majestic53/nesl/releases).
 
 ## Building from source
 
