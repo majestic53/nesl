@@ -18,7 +18,7 @@ Subsystem source files can be found under the following directories:
 
 ## Testing
 
-Each subsystem has unit-tests, found under [`../test`](test)
+Each subsystem has unit-tests, found under [`test`](../test)
 
 ## Coding style
 
