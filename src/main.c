@@ -122,7 +122,7 @@ static void show_version(FILE *stream, bool verbose)
         TRACE(NESL_SUCCESS, "%s", "NESL ");
     }
 
-    TRACE(NESL_SUCCESS, "%i.%i.%i\n", version->major, version->minor, version->patch);
+    TRACE(NESL_SUCCESS, "%i.%i-%X\n", version->major, version->minor, version->patch);
 
     if(verbose) {
         TRACE(NESL_SUCCESS, "%s", "Copyright (C) 2022 David Jolly\n");

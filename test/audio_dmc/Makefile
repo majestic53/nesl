@@ -17,38 +17,8 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_BUILD=../build/
-DIR_INCLUDE=../include/
-DIR_ROOT=./
+DIR_SRC=../../src/system/audio/
 
-FILE=nesl
-FILE_BIN=$(DIR_BUILD)$(FILE)
-FILES_OBJ=$(patsubst $(DIR_ROOT)%.c,$(DIR_ROOT)%.o,$(FILES_SRC))
-FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
+FILE=audio_dmc
 
-FLAGS_INCLUDE=$(subst $(DIR_INCLUDE),-I$(DIR_INCLUDE),$(shell find $(DIR_INCLUDE) -maxdepth 2 -type d))
-FLAGS_LIB=-lpthread -lSDL2 -lSDL2main
-
-.PHONY: all
-all: build
-
-.PHONY: build
-build: $(FILE_BIN)
-
-.PHONY: clean
-clean:
-	@rm -rf $(DIR_BUILD)
-	@rm -rf $(FILES_OBJ)
-
-.PHONY: strip
-strip:
-	@strip $(DIR_BUILD)*
-
-$(DIR_BUILD):
-	@mkdir -p $@
-
-$(DIR_ROOT)%.o: $(DIR_ROOT)%.c
-	$(CC) $(FLAGS) $(FLAGS_INCLUDE) -c -o $@ $<
-
-$(FILE_BIN): $(DIR_BUILD) $(FILES_OBJ)
-	$(CC) $(FLAGS) $(FILES_OBJ) $(FLAGS_LIB) -o $@
+include ../include/test.mk

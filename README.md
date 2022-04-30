@@ -116,7 +116,7 @@ nesl -ls [1-8] file
 
 The following keybindings are available:
 
-#### Console
+#### General
 
 |Button    |Keyboard|
 |:---------|:-------|

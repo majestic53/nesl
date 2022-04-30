@@ -17,53 +17,8 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_DOCS=docs/
-DIR_SRC=src/
-DIR_TEST=test/
+DIR_SRC=../../src/system/mapper/
 
-FLAGS=-march=native\ -mtune=native\ -std=c11\ -Wall\ -Werror
-FLAGS_DEBUG=FLAGS=$(FLAGS)\ -g
-FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3\ -flto
-FLAGS_MAKE=--no-print-directory -C
+FILE=mapper_3
 
-MAX_PARALLEL=8
-
-.PHONY: all
-all: release
-
-.PHONY: analyze
-analyze:
-	@cloc .
-	@cppcheck --enable=all --std=c11 --suppress=missingIncludeSystem .
-
-.PHONY: docs
-docs:
-	@rm -rf $(DIR_DOCS)html
-	@doxygen $(DIR_DOCS)Doxyfile
-
-.PHONY: debug
-debug:
-	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_DEBUG)
-
-.PHONY: release
-release:
-	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_RELEASE)
-	@make $(FLAGS_MAKE) $(DIR_SRC) strip
-
-.PHONY: test
-test: test-release
-
-.PHONY: test-debug
-test-debug:
-	@make $(FLAGS_MAKE) $(DIR_TEST) build $(FLAGS_DEBUG)
-	@make $(FLAGS_MAKE) $(DIR_TEST) run
-
-.PHONY: test-release
-test-release:
-	@make $(FLAGS_MAKE) $(DIR_TEST) build $(FLAGS_RELEASE)
-	@make $(FLAGS_MAKE) $(DIR_TEST) run
-
-.PHONY: clean
-clean:
-	@make $(FLAGS_MAKE) $(DIR_SRC) clean
-	@make $(FLAGS_MAKE) $(DIR_TEST) clean
+include ../include/test.mk

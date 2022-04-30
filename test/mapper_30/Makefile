@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/mapper/
 
-FILE=mapper_66
+FILE=mapper_30
 
-include ../include/makefile
+include ../include/test.mk

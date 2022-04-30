@@ -51,8 +51,10 @@ nesl_error_e nesl_set_error(const char *file, const char *function, int line, co
 
     va_start(arguments, format);
     vsnprintf(g_error.buffer, sizeof(g_error.buffer), format, arguments);
-    snprintf(g_error.buffer + strlen(g_error.buffer), sizeof(g_error.buffer) - strlen(g_error.buffer), " (%s:%s@%i)", function, file, line);
     va_end(arguments);
+#ifdef DEBUG
+    snprintf(g_error.buffer + strlen(g_error.buffer), sizeof(g_error.buffer) - strlen(g_error.buffer), " (%s:%s@%i)", function, file, line);
+#endif /* DEBUG */
 
     return NESL_FAILURE;
 }

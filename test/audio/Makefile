@@ -17,8 +17,8 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_SRC=../../src/
+DIR_SRC=../../src/system/
 
-FILE=bus
+FILE=audio
 
-include ../include/makefile
+include ../include/test.mk

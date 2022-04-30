@@ -1,12 +1,12 @@
 # Project Architecture
 
-This project is built around a common bus, allowing the various subsystems to communicate with each other:
+This project contains a series of subsystems, each representing one component of the phyiscal hardware in the NES. The subsystems each communicate with each other and are driven by a central bus and service. The bus and service interface to the outside world for configuration and IO. The following diagram gives a high-level idea of how all the components fit together:
 
 ![Architecture](../docs/arch.png "Architecture")
 
 ## File layout
 
-Subsystem specific source files are placed into a subdirectory, under [`src/system`](system).
+Subsystem source files can be found under the following directories:
 
 |Directory                           |Description                          |
 |:-----------------------------------|:------------------------------------|
@@ -16,9 +16,13 @@ Subsystem specific source files are placed into a subdirectory, under [`src/syst
 |[`src/system/audio`](system/audio)  |Audio-specific source files          |
 |[`src/system/mapper`](system/mapper)|Mapper-specific source files         |
 
+## Testing
+
+Each subsystem has unit-tests, found under [`test`](test)
+
 ## Coding style
 
-This project uses the following coding style:
+The source code generally conforms to the following coding standard:
 
 ### Enumerations
 

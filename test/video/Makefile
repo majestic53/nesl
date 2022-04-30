@@ -17,8 +17,8 @@
 # AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DIR_SRC=../../src/system/mapper/
+DIR_SRC=../../src/system/
 
-FILE=mapper_30
+FILE=video
 
-include ../include/makefile
+include ../include/test.mk

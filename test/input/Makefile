@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/
 
-FILE=processor
+FILE=input
 
-include ../include/makefile
+include ../include/test.mk

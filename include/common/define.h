@@ -36,6 +36,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define NESL_MAJOR 0            /*!< Major version */
+#define NESL_MINOR 1            /*!< Minor version */
+                                /*!< Patch version */
+#define NESL_PATCH 0x4b28777
+
 /*!
  * @struct nesl_register_t
  * @brief 16-bit register type.

@@ -19,6 +19,6 @@
 
 DIR_SRC=../../src/system/
 
-FILE=video
+FILE=cartridge
 
-include ../include/makefile
+include ../include/test.mk
