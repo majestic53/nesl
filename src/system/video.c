@@ -755,7 +755,7 @@ uint8_t nesl_video_read_oam(nesl_video_t *video, uint8_t address)
 
 uint8_t nesl_video_read_port(nesl_video_t *video, uint16_t address)
 {
-    static const nesl_video_get_port PORT[] = {
+    const nesl_video_get_port PORT[] = {
         nesl_video_get_port_unused, nesl_video_get_port_unused, nesl_video_get_port_status, nesl_video_get_port_unused,
         nesl_video_get_port_oam_data, nesl_video_get_port_unused, nesl_video_get_port_unused, nesl_video_get_port_data,
         };
@@ -803,7 +803,7 @@ void nesl_video_write_oam(nesl_video_t *video, uint8_t address, uint8_t data)
 
 void nesl_video_write_port(nesl_video_t *video, uint16_t address, uint8_t data)
 {
-    static const nesl_video_set_port PORT[] = {
+    const nesl_video_set_port PORT[] = {
         nesl_video_set_port_control, nesl_video_set_port_mask, nesl_video_set_port_unused, nesl_video_set_port_oam_address,
         nesl_video_set_port_oam_data, nesl_video_set_port_scroll, nesl_video_set_port_address, nesl_video_set_port_data,
         };

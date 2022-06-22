@@ -602,7 +602,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_audio_cycle, nesl_test_audio_initialize, nesl_test_audio_read, nesl_test_audio_reset,
         nesl_test_audio_uninitialize, nesl_test_audio_write,
         };

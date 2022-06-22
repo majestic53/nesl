@@ -316,7 +316,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_audio_dmc_cycle, nesl_test_audio_dmc_initialize, nesl_test_audio_dmc_read, nesl_test_audio_dmc_readable,
         nesl_test_audio_dmc_reset, nesl_test_audio_dmc_uninitialize, nesl_test_audio_dmc_write,
         };

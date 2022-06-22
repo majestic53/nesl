@@ -53,11 +53,17 @@ typedef struct {
 
     struct {
         SDL_AudioDeviceID audio;        /*!< Audio handle */
+        SDL_GameController *controller; /*!< Controller handle */
         SDL_Cursor *cursor;             /*!< Cursor handle */
         SDL_Renderer *renderer;         /*!< Renderer handle */
         SDL_Texture *texture;           /*!< Texture handle */
         SDL_Window *window;             /*!< Window handle */
     } handle;
+
+    struct {
+        SDL_JoystickID id;              /*!< Joystick ID */
+        bool connected;                 /*!< Joystick connected status */
+    } joystick;
 } nesl_service_t;
 
 static nesl_service_t g_service = {};   /*!< Service context */
@@ -98,12 +104,25 @@ static nesl_error_e nesl_service_clear(void)
 
 bool nesl_service_get_button(nesl_button_e button)
 {
-    static const uint32_t KEY[BUTTON_MAX] = {
-        SDL_SCANCODE_L, SDL_SCANCODE_K, SDL_SCANCODE_C, SDL_SCANCODE_SPACE,
-        SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
-        };
+    bool result = false;
 
-    return SDL_GetKeyboardState(NULL)[KEY[button]] ? true : false;
+    if(g_service.joystick.connected) {
+        const SDL_GameControllerButton KEY[BUTTON_MAX] = {
+            SDL_CONTROLLER_BUTTON_A, SDL_CONTROLLER_BUTTON_B, SDL_CONTROLLER_BUTTON_BACK, SDL_CONTROLLER_BUTTON_START,
+            SDL_CONTROLLER_BUTTON_DPAD_UP, SDL_CONTROLLER_BUTTON_DPAD_DOWN, SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+            };
+
+        result = SDL_GameControllerGetButton(g_service.handle.controller, KEY[button]) ? true : false;
+    } else {
+        const uint32_t KEY[BUTTON_MAX] = {
+            SDL_SCANCODE_L, SDL_SCANCODE_K, SDL_SCANCODE_C, SDL_SCANCODE_SPACE,
+            SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
+            };
+
+        result = SDL_GetKeyboardState(NULL)[KEY[button]] ? true : false;
+    }
+
+    return result;
 }
 
 bool nesl_service_get_sensor(void)
@@ -125,6 +144,9 @@ bool nesl_service_get_trigger(void)
 nesl_error_e nesl_service_initialize(const char *title, int linear, int scale)
 {
     nesl_error_e result = NESL_SUCCESS;
+    const char *controller_map[] = {
+        "03000000790000001100000010010000,Retro Controller,a:b1,b:b2,back:b8,dpdown:+a1,dpleft:-a0,dpright:+a0,dpup:-a1,leftshoulder:b6,lefttrigger:b7,rightshoulder:b4,righttrigger:b5,start:b9,x:b0,y:b3,platform:Linux",
+        };
 
     g_service.scale = scale;
 
@@ -134,7 +156,7 @@ nesl_error_e nesl_service_initialize(const char *title, int linear, int scale)
         g_service.scale = 8;
     }
 
-    if(SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO)) {
+    if(SDL_Init(SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_VIDEO)) {
         result = SET_ERROR("%s", SDL_GetError());
         goto exit;
     }
@@ -185,6 +207,14 @@ nesl_error_e nesl_service_initialize(const char *title, int linear, int scale)
         goto exit;
     }
 
+    for(size_t index = 0; index < sizeof(controller_map) / sizeof(*controller_map); ++index) {
+
+        if(SDL_GameControllerAddMapping(controller_map[index]) == -1) {
+            result = SET_ERROR("%s", SDL_GetError());
+            goto exit;
+        }
+    }
+
 exit:
     return result;
 }
@@ -197,6 +227,37 @@ nesl_error_e nesl_service_poll(void)
     while(SDL_PollEvent(&event)) {
 
         switch(event.type) {
+            case SDL_CONTROLLERDEVICEADDED:
+
+                if(!g_service.handle.controller && SDL_IsGameController(event.cdevice.which)) {
+                    SDL_Joystick *joystick = NULL;
+
+                    if(!(g_service.handle.controller = SDL_GameControllerOpen(event.cdevice.which))) {
+                        result = SET_ERROR("%s", SDL_GetError());
+                        goto exit;
+                    }
+
+                    if(!(joystick = SDL_GameControllerGetJoystick(g_service.handle.controller))) {
+                        result = SET_ERROR("%s", SDL_GetError());
+                        goto exit;
+                    }
+
+                    if((g_service.joystick.id = SDL_JoystickInstanceID(joystick)) == -1) {
+                        result = SET_ERROR("%s", SDL_GetError());
+                        goto exit;
+                    }
+
+                    g_service.joystick.connected = true;
+                }
+                break;
+            case SDL_CONTROLLERDEVICEREMOVED:
+
+                if(g_service.handle.controller && (g_service.joystick.id == event.cdevice.which)) {
+                    SDL_GameControllerClose(g_service.handle.controller);
+                    g_service.handle.controller = NULL;
+                    memset(&g_service.joystick, 0, sizeof(g_service.joystick));
+                }
+                break;
             case SDL_KEYUP:
 
                 if(!event.key.repeat) {
@@ -297,7 +358,7 @@ exit:
 
 void nesl_service_set_pixel(uint8_t color, bool red, bool green, bool blue, uint8_t x, uint8_t y)
 {
-    static const uint32_t PALETTE[] = {
+    const uint32_t PALETTE[] = {
         0xFF656565, 0xFF002D69, 0xFF131F7F, 0xFF3C137C, 0xFF690B62, 0xFF730A37, 0xFF710F07, 0xFF5A1A00,
         0xFF342800, 0xFF0B3400, 0xFF003C00, 0xFF003D10, 0xFF003840, 0xFF000000, 0xFF000000, 0xFF000000,
         0xFFAEAEAE, 0xFF0F63B3, 0xFF4051D0, 0xFF7841CC, 0xFFA736A9, 0xFFC03470, 0xFFBD3C30, 0xFF9F4A00,
@@ -326,6 +387,10 @@ void nesl_service_set_pixel(uint8_t color, bool red, bool green, bool blue, uint
 void nesl_service_uninitialize(void)
 {
     nesl_service_close_audio();
+
+    if(g_service.handle.controller) {
+        SDL_GameControllerClose(g_service.handle.controller);
+    }
 
     if(g_service.handle.cursor) {
         SDL_FreeCursor(g_service.handle.cursor);

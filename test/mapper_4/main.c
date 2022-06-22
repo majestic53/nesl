@@ -929,7 +929,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_mapper_4_initialize, nesl_test_mapper_4_interrupt, nesl_test_mapper_4_read_ram, nesl_test_mapper_4_read_rom,
         nesl_test_mapper_4_reset, nesl_test_mapper_4_uninitialize, nesl_test_mapper_4_write_ram, nesl_test_mapper_4_write_rom,
         };

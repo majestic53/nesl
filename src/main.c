@@ -145,7 +145,7 @@ static void show_help(FILE *stream, bool verbose)
     TRACE(NESL_SUCCESS, "%s", "nesl [options] file\n");
 
     if(verbose) {
-        static const char *OPTION[] = { "-h", "-l", "-s", "-v", },
+        const char *OPTION[] = { "-h", "-l", "-s", "-v", },
             *DESCRIPTION[] = { "Show help information", "Set linear scaling", "Set window scaling", "Show version information", };
 
         TRACE(NESL_SUCCESS, "%s", "\n");

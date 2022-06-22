@@ -728,7 +728,7 @@ exit:
  */
 static nesl_error_e nesl_test_video_read_port(void)
 {
-    static const test_port TEST_PORT[] = {
+    const test_port TEST_PORT[] = {
         nesl_test_video_get_port_unused, nesl_test_video_get_port_unused, nesl_test_video_get_port_status, nesl_test_video_get_port_unused,
         nesl_test_video_get_port_oam_data, nesl_test_video_get_port_unused, nesl_test_video_get_port_unused, nesl_test_video_get_port_data,
         };
@@ -901,7 +901,7 @@ exit:
  */
 static nesl_error_e nesl_test_video_write_port(void)
 {
-    static const test_port TEST_PORT[] = {
+    const test_port TEST_PORT[] = {
         nesl_test_video_set_port_control, nesl_test_video_set_port_mask, nesl_test_video_set_port_unused, nesl_test_video_set_port_oam_address,
         nesl_test_video_set_port_oam_data, nesl_test_video_set_port_scroll, nesl_test_video_set_port_address, nesl_test_video_set_port_data,
         };
@@ -927,7 +927,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_video_cycle, nesl_test_video_initialize, nesl_test_video_read, nesl_test_video_read_port,
         nesl_test_video_reset, nesl_test_video_uninitialize, nesl_test_video_write, nesl_test_video_write_port,
         };

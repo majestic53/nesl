@@ -29,7 +29,7 @@ FLAGS_PATCH="s/NESL_PATCH .*/NESL_PATCH 0x$(shell git rev-parse --short HEAD)/g"
 FILES_SRC=$(shell find $(DIR_ROOT) -name '*.c')
 
 FLAGS_INCLUDE=$(subst $(DIR_INCLUDE),-I$(DIR_INCLUDE),$(shell find $(DIR_INCLUDE) -maxdepth 2 -type d))
-FLAGS_LIB=-lpthread -lSDL2 -lSDL2main
+FLAGS_LIB=-lpthread -lSDL2
 
 .PHONY: all
 all: build

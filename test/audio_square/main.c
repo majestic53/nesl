@@ -316,7 +316,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_audio_square_cycle, nesl_test_audio_square_initialize, nesl_test_audio_square_read, nesl_test_audio_square_readable,
         nesl_test_audio_square_reset, nesl_test_audio_square_uninitialize, nesl_test_audio_square_write,
         };

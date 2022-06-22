@@ -497,7 +497,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_mapper_0_initialize, nesl_test_mapper_0_interrupt, nesl_test_mapper_0_read_ram, nesl_test_mapper_0_read_rom,
         nesl_test_mapper_0_reset, nesl_test_mapper_0_uninitialize, nesl_test_mapper_0_write_ram, nesl_test_mapper_0_write_rom,
         };

@@ -46,7 +46,7 @@ extern "C" {
 
 bool nesl_service_get_button(nesl_button_e button)
 {
-    static const uint32_t KEY[BUTTON_MAX] = {
+    const uint32_t KEY[BUTTON_MAX] = {
         1, 2, 3, 4, 5, 6, 7, 8,
         };
 
@@ -382,7 +382,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_input_initialize, nesl_test_input_read, nesl_test_input_reset, nesl_test_input_uninitialize,
         nesl_test_input_write,
         };

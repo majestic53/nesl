@@ -513,7 +513,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_audio_buffer_initialize, nesl_test_audio_buffer_read, nesl_test_audio_buffer_read_write, nesl_test_audio_buffer_readable,
         nesl_test_audio_buffer_reset, nesl_test_audio_buffer_uninitialize, nesl_test_audio_buffer_write, nesl_test_audio_buffer_writable,
         };

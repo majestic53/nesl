@@ -313,7 +313,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_cartridge_get_banks, nesl_test_cartridge_get_mapper, nesl_test_cartridge_get_mirror, nesl_test_cartridge_read,
         nesl_test_cartridge_write,
         };

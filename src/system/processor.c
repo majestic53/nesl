@@ -1050,7 +1050,7 @@ static void nesl_processor_operand_zeropage_y(nesl_processor_t *processor, nesl_
  */
 static void nesl_processor_instruction(nesl_processor_t *processor)
 {
-    static const nesl_processor_execute EXECUTE[] = {
+    const nesl_processor_execute EXECUTE[] = {
         nesl_processor_execute_arithmetic, nesl_processor_execute_logical, nesl_processor_execute_shift, nesl_processor_execute_branch,
         nesl_processor_execute_branch, nesl_processor_execute_branch, nesl_processor_execute_bit, nesl_processor_execute_branch,
         nesl_processor_execute_branch, nesl_processor_execute_branch, nesl_processor_execute_breakpoint, nesl_processor_execute_branch,
@@ -1068,7 +1068,7 @@ static void nesl_processor_instruction(nesl_processor_t *processor)
         nesl_processor_execute_no_operation,
         };
 
-    static const nesl_instruction_t INSTRUCTION[] = {
+    const nesl_instruction_t INSTRUCTION[] = {
         { INSTRUCTION_BRK, OPERAND_IMPLIED, 7 }, { INSTRUCTION_ORA, OPERAND_INDIRECT_X, 6 }, { INSTRUCTION_NOP, OPERAND_IMPLIED, 2 }, { INSTRUCTION_NOP, OPERAND_INDIRECT_X, 8 },
         { INSTRUCTION_NOP, OPERAND_ZEROPAGE, 3 }, { INSTRUCTION_ORA, OPERAND_ZEROPAGE, 3 }, { INSTRUCTION_ASL, OPERAND_ZEROPAGE, 5 }, { INSTRUCTION_NOP, OPERAND_ZEROPAGE, 5 },
         { INSTRUCTION_PHP, OPERAND_IMPLIED, 3 }, { INSTRUCTION_ORA, OPERAND_IMMEDIATE, 2 }, { INSTRUCTION_ASL, OPERAND_ACCUMULATOR, 2 }, { INSTRUCTION_NOP, OPERAND_IMMEDIATE, 2 },
@@ -1135,7 +1135,7 @@ static void nesl_processor_instruction(nesl_processor_t *processor)
         { INSTRUCTION_NOP, OPERAND_ABSOLUTE_X, 4 }, { INSTRUCTION_SBC, OPERAND_ABSOLUTE_X, 4 }, { INSTRUCTION_INC, OPERAND_ABSOLUTE_X, 7 }, { INSTRUCTION_NOP, OPERAND_ABSOLUTE_X, 7 },
         };
 
-    static const nesl_processor_operand OPERAND[] = {
+    const nesl_processor_operand OPERAND[] = {
         nesl_processor_operand_absolute, nesl_processor_operand_absolute_x, nesl_processor_operand_absolute_y, nesl_processor_operand_accumulator,
         nesl_processor_operand_immediate, nesl_processor_operand_implied, nesl_processor_operand_indirect, nesl_processor_operand_indirect_x,
         nesl_processor_operand_indirect_y, nesl_processor_operand_relative, nesl_processor_operand_zeropage, nesl_processor_operand_zeropage_x,

@@ -23,7 +23,7 @@ DIR_TEST=test/
 
 FLAGS=-march=native\ -mtune=native\ -std=c11\ -Wall\ -Werror
 FLAGS_DEBUG=FLAGS=$(FLAGS)\ -DDEBUG\ -g
-FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3\ -flto
+FLAGS_RELEASE=FLAGS=$(FLAGS)\ -O3
 FLAGS_MAKE=--no-print-directory -C
 
 MAX_PARALLEL=8
@@ -42,15 +42,12 @@ docs:
 	@doxygen $(DIR_DOCS)Doxyfile
 
 .PHONY: debug
-debug:
+debug: clean
 	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_DEBUG)
 
-.PHONY: patch
-patch:
-	@make $(FLAGS_MAKE) $(DIR_SRC) patch
-
 .PHONY: release
-release:
+release: clean
+	@make $(FLAGS_MAKE) $(DIR_SRC) patch
 	@make $(FLAGS_MAKE) $(DIR_SRC) build -j${MAX_PARALLEL} $(FLAGS_RELEASE)
 	@make $(FLAGS_MAKE) $(DIR_SRC) strip
 
@@ -58,12 +55,12 @@ release:
 test: test-release
 
 .PHONY: test-debug
-test-debug:
+test-debug: clean
 	@make $(FLAGS_MAKE) $(DIR_TEST) build $(FLAGS_DEBUG)
 	@make $(FLAGS_MAKE) $(DIR_TEST) run
 
 .PHONY: test-release
-test-release:
+test-release: clean
 	@make $(FLAGS_MAKE) $(DIR_TEST) build $(FLAGS_RELEASE)
 	@make $(FLAGS_MAKE) $(DIR_TEST) run
 
@@ -71,3 +68,4 @@ test-release:
 clean:
 	@make $(FLAGS_MAKE) $(DIR_SRC) clean
 	@make $(FLAGS_MAKE) $(DIR_TEST) clean
+	@rm -rf $(DIR_DOCS)html

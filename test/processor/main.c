@@ -4003,7 +4003,7 @@ exit:
  */
 static nesl_error_e nesl_test_processor_instruction_unsupported(void)
 {
-    static const nesl_instruction_t UNSUPPORTED[] = {
+    const nesl_instruction_t UNSUPPORTED[] = {
         { 0x02, OPERAND_IMPLIED, 2 }, { 0x03, OPERAND_INDIRECT_X, 8 }, { 0x04, OPERAND_ZEROPAGE, 3 }, { 0x07, OPERAND_ZEROPAGE, 5 },
         { 0x0B, OPERAND_IMMEDIATE, 2 }, { 0x0C, OPERAND_ABSOLUTE, 4 }, { 0x0F, OPERAND_ABSOLUTE, 6 }, { 0x12, OPERAND_IMPLIED, 2 },
         { 0x13, OPERAND_INDIRECT_Y, 8 }, { 0x14, OPERAND_ZEROPAGE_X, 4 }, { 0x17, OPERAND_ZEROPAGE_X, 6 }, { 0x1A, OPERAND_IMMEDIATE, 2 },
@@ -4412,7 +4412,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_processor_cycle, nesl_test_processor_initialize, nesl_test_processor_instruction_arithmetic, nesl_test_processor_instruction_bit,
         nesl_test_processor_instruction_branch, nesl_test_processor_instruction_breakpoint, nesl_test_processor_instruction_clear, nesl_test_processor_instruction_compare,
         nesl_test_processor_instruction_decrement, nesl_test_processor_instruction_increment, nesl_test_processor_instruction_jump, nesl_test_processor_instruction_load,

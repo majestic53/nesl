@@ -590,7 +590,7 @@ exit:
 
 int main(void)
 {
-    static const test TEST[] = {
+    const test TEST[] = {
         nesl_test_bus_interrupt, nesl_test_bus_read, nesl_test_bus_write,
         };
 

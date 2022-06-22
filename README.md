@@ -4,9 +4,9 @@
 
 ### A lightweight NES emulator, written in C.
 
-This project emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
+`NESL` emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
 
-__NOTE__: This project is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file issues [here](CONTRIBUTING.md#places-to-contribute).
+__NOTE__: `NESL` is a still a work-in-progress. Some features may be incomplete or may contain bugs. See how to contribute and file issues [here](CONTRIBUTING.md#places-to-contribute).
 
 <p align="center">
     <img src=docs/demo0.png><img src=docs/demo1.png>
@@ -22,11 +22,13 @@ __NOTE__: This project is a still a work-in-progress. Some features may be incom
 
 * Support for all official processor instructions.
 * Support for common mapper types.
-* Support for zapper (light-gun).
+* Support for certain USB retro controllers.
+* Support for zapper light-gun (using the mouse).
 
 ### Work-in-progress
 
 * Support for audio synthesis.
+* Support for additional mapper types.
 
 ## Latest release
 
@@ -34,11 +36,11 @@ The latest release can be found [here](https://github.com/majestic53/nesl/releas
 
 ## Building from source
 
-__NOTE__: This project has been tested under Linux, using the GCC compiler. Some modifications may be required to build with a different OS/compiler.
+__NOTE__: `NESL` has been tested under Linux, using the GCC compiler. Some modifications may be required to build with a different OS/compiler.
 
 ### Preparing to build
 
-The following libraries are required to build this project:
+The following libraries are required to build `NESL`:
 * [SDL2 (Simple DirectMedia Layer)](https://wikipedia.org/wiki/Simple_DirectMedia_Layer)
 
 #### On Debian-based systems
@@ -124,16 +126,16 @@ The following keybindings are available:
 
 #### Controller
 
-|Button |Keyboard|
-|:------|:-------|
-|A      |L       |
-|B      |K       |
-|Select |C       |
-|Start  |Space   |
-|Up     |W       |
-|Down   |S       |
-|Left   |A       |
-|Right  |D       |
+|Button |Keyboard|Retro USB Controller|
+|:------|:-------|:-------------------|
+|A      |L       |A                   |
+|B      |K       |B                   |
+|Select |C       |Select              |
+|Start  |Space   |Start               |
+|Up     |W       |Up                  |
+|Down   |S       |Down                |
+|Left   |A       |Left                |
+|Right  |D       |Right               |
 
 #### Zapper (Light-gun)
 
