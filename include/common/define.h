@@ -39,7 +39,7 @@
 #define NESL_MAJOR 0            /*!< Major version */
 #define NESL_MINOR 1            /*!< Minor version */
                                 /*!< Patch version */
-#define NESL_PATCH 0x127d736
+#define NESL_PATCH 0x660cd2f
 
 /*!
  * @struct nesl_register_t

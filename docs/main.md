@@ -1,8 +1,8 @@
-This project emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
+`NESL` emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
 
 ### Project Architecture
 
-This project contains a series of subsystems, each representing one component of the phyiscal hardware in the NES. The subsystems each communicate with each other and are driven by a central bus and service. The bus and service interface to the outside world for configuration and IO. The following diagram gives a high-level idea of how all the components fit together:
+`NESL` contains a series of subsystems, each representing one component of the phyiscal hardware in the NES. The subsystems each communicate with each other and are driven by a central bus and service. The bus and service interface to the outside world for configuration and IO. The following diagram gives a high-level idea of how all the components fit together:
 
 ![](arch.png)
 
