@@ -2,6 +2,8 @@
 
 [![License: MIT](https://shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md) [![Build Status](https://github.com/majestic53/nesl/workflows/Build/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/build.yml) [![Test Status](https://github.com/majestic53/nesl/workflows/Test/badge.svg)](https://github.com/majestic53/nesl/actions/workflows/test.yml)
 
+__NOTE__: This is an archived repo. `NESL` has been moved to [https://sr.ht/~dajolly/nesl/](https://sr.ht/~dajolly/nesl/). All further development will happen there.
+
 ### A lightweight NES emulator, written in C.
 
 `NESL` emulates the original NES hardware with enough accuracy to run most common games, while being performant and natively compilable on Linux, MacOS and Windows.
