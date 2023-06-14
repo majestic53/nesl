@@ -1272,7 +1272,7 @@ uint8_t nesl_processor_read(nesl_processor_t *processor, uint16_t address)
     return result;
 }
 
-int nesl_processor_reset(nesl_processor_t *processor)
+nesl_error_e nesl_processor_reset(nesl_processor_t *processor)
 {
     memset(processor, 0, sizeof(*processor));
     nesl_processor_push_word(processor, processor->state.program_counter.word);

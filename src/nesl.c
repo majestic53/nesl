@@ -31,7 +31,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int nesl(const nesl_t *context)
+nesl_error_e nesl(const nesl_t *context)
 {
     int result;
 
